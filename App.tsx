@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TouchableOpacity,
   Pressable,
@@ -14,35 +14,42 @@ import { s } from './src/styles';
 import { OwnButton } from './src/components/OwnButton';
 /* import Icon from 'react-native-vector-icons/FontAwesome'; */
 import Ionicons from '@expo/vector-icons/Ionicons';
+//import { demo } from './src/components/OwnButton';
 
 function App(): React.JSX.Element {
+
+  const [ demo, setDemo ] = useState([]);
+
+  //let setDemo:any = []
+
+  console.log("Adder:", demo)
 
   return (
     <View style={[s.background]}>
       <View style={[s.contour]}>
-        {/* <View style={[s.upper]} /> */}
-        {/* <OwnButton value="M"></OwnButton> */}
-        <Ionicons name='md-checkmark-circle' size={32} color='green' />
-    
-        <OwnButton value="/"></OwnButton>
-        <OwnButton value="X"></OwnButton>
-        <OwnButton value=""></OwnButton>
-        <OwnButton value="7"></OwnButton>
-        <OwnButton value="8"></OwnButton>
-        <OwnButton value="9"></OwnButton>
-        <OwnButton value="/"></OwnButton>
-        <OwnButton value="4"></OwnButton>
-        <OwnButton value="5"></OwnButton>
-        <OwnButton value="6"></OwnButton>
-        <OwnButton value="-"></OwnButton>
-        <OwnButton value="1"></OwnButton>
-        <OwnButton value="2"></OwnButton>
-        <OwnButton value="3"></OwnButton>
-        <OwnButton value="+"></OwnButton>
-        <OwnButton value="M"></OwnButton>
-        <OwnButton value="0"></OwnButton>
-        <OwnButton value="."></OwnButton>
-        <OwnButton value="="></OwnButton>
+        {/* <View style={[s.upper]}>{ demo }</View> */}
+        {/* <Text style={[s.upper]}>{ demo }</Text> */}
+        <Text style={[s.upper]}></Text>
+        <OwnButton setDemo={setDemo} value="( )"></OwnButton>
+        <OwnButton setDemo={setDemo} value="C"></OwnButton>
+        <OwnButton setDemo={setDemo} value="/"></OwnButton>
+        <OwnButton setDemo={setDemo} value="DEL"></OwnButton>
+        <OwnButton setDemo={setDemo} value="7"></OwnButton>
+        <OwnButton setDemo={setDemo} value="8"></OwnButton>
+        <OwnButton setDemo={setDemo} value="9"></OwnButton>
+        <OwnButton setDemo={setDemo} value="X"></OwnButton>
+        <OwnButton setDemo={setDemo} value="4"></OwnButton>
+        <OwnButton setDemo={setDemo} value="5"></OwnButton>
+        <OwnButton setDemo={setDemo} value="6"></OwnButton>
+        <OwnButton setDemo={setDemo} value="-"></OwnButton>
+        <OwnButton setDemo={setDemo} value="1"></OwnButton>
+        <OwnButton setDemo={setDemo} value="2"></OwnButton>
+        <OwnButton setDemo={setDemo} value="3"></OwnButton>
+        <OwnButton setDemo={setDemo} value="+"></OwnButton>
+        <OwnButton setDemo={setDemo} value="+/-"></OwnButton>
+        <OwnButton setDemo={setDemo} value="0"></OwnButton>
+        <OwnButton setDemo={setDemo} value="."></OwnButton>
+        <OwnButton setDemo={setDemo} value="="></OwnButton>
       </View>
     </View>
   );

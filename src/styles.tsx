@@ -14,15 +14,19 @@ export const s = StyleSheet.create({
     backgroundColor: 'silver',
     width: opw * 90,
     borderColor: 'darkblue',
-    height: opw * 112,
+    height: opw * 134,
     borderWidth: 2,
     maxWidth: '100%',
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignContent: 'space-around',
-    paddingTop: opw * 0.75,
-    paddingBottom: opw * 0.75,
+    /* alignContent: 'stretch', */
+    alignContent: 'space-between',
+    /* alignContent: 'space-around', */
+    paddingTop: opw * 1.5,
+    paddingBottom: opw * 1.5,
+    /* paddingTop: opw * 0.75,
+    paddingBottom: opw * 0.75, */
   },
   upper: {
     backgroundColor: 'antiquewhite',
