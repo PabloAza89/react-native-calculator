@@ -28,11 +28,14 @@ export const s = StyleSheet.create({
     /* paddingTop: opw * 0.75,
     paddingBottom: opw * 0.75, */
   },
-  upper: {
+  result: {
     backgroundColor: 'antiquewhite',
     width: opw * 86,
     height: opw * 20,
     borderColor: 'darkblue',
+    fontSize: 30,
+    textAlign: 'right',
+    textAlignVertical: 'center'
   },
   mid: {
     backgroundColor: 'aqua',
@@ -48,6 +51,8 @@ export const s = StyleSheet.create({
     fontSize: 40,
     textAlign: 'center',
     textAlignVertical: 'center',
+    /* fontWeight: '600', */
+    /* transform: 'scaleX(1.5)' */
   },
   text: {
     backgroundColor: 'red',

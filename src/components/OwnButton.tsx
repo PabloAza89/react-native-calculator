@@ -5,39 +5,36 @@ import {
 } from 'react-native';
 import { s } from '../styles';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
-import { Adder } from './Adder';
-
-//export let demo: "s";
-//const [ demo, setDemo ] = useState("");
-
-
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface OwnButtonI {
   value?: string,
+  demo?: any,
   setDemo?: any,
 };
 
-export function OwnButton({ value, setDemo }: OwnButtonI): React.JSX.Element {
+export function OwnButton({ value, demo, setDemo }: OwnButtonI): React.JSX.Element {
 
   function handlePress(val: any) {
-    console.log("AA", val);
-    {/* <Adder value={value}/> */}
-    {/* <Adder value={val}/> */}
-    //tF(val)
-    //Adder(val)
-    setDemo((prev: any) => prev + val)
-    //setDemo.push(val)
-    //<Adder setDemo={setDemo}/>
-    //<Adder val="333"/>
-    //setDemo(val)
-    /* demo = val */
-    /* setDemo(prev => prev + val) */
+
+    if (demo === "" && !isNaN(val) || demo !== "") {
+      if (val === "=") {
+
+      }
+      else if (val === "C") setDemo("")
+      else if (val === "B") {
+        let seqOne = demo.split("")
+        seqOne.pop()
+        let seqTwo = seqOne.join("")
+        setDemo(seqTwo)
+      }
+      else setDemo((prev: any) => prev + val)
+
+    }
+    
+
   }
 
-  //const [ demo, setDemo ] = useState("");
-
-  //console.log("BB", demo)
 
   return (
 
@@ -47,7 +44,12 @@ export function OwnButton({ value, setDemo }: OwnButtonI): React.JSX.Element {
       adjustsFontSizeToFit={true}
       numberOfLines={1}
     >
-      { value === "DEL" ? <Ionicons name='md-backspace' size={40} color='black' /> : value }
+      {
+        value === "B" ?
+        <Ionicons name='backspace' size={40} color='#363535' /> :
+        value === "M" ?
+        <MaterialCommunityIcons name='plus-minus-variant' size={40} color='#363535' /> :
+        value }
     </Text>
   );
 }
