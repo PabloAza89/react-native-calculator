@@ -1,5 +1,10 @@
-//let init = "2x2x2"
-let init = "2/2x2x2".split("") // ['S'P'L'I'T'E'D']
+//let init = "2x(2x2"
+//let init = "((2/2x2)x2+(1+(1x2)))".split("") // ['S'P'L'I'T'E'D']
+let init = "(((3x2+1)+2x1)x2)))".split("") // ['S'P'L'I'T'E'D']
+//let init = "4+1".split("") // ['S'P'L'I'T'E'D']
+// (2x2x2)
+// (2/(2x2x2))
+// "2/[2x2x2]+[1+1]x2" OK
 let parsed = [] // [10, x, 3, +, 3, -, 2] // WELL PARSED
 let arr2 = [] // [DO ALL X]
 let arr3 = [] // [DO ALL /]
@@ -14,46 +19,71 @@ init.forEach((e, i) => { // => parsed
   else parsed.push(e)
 })
 
-let idx = 0
-let op = 0 // op = operator // 0 = x // 1 = /
 
-// parsed = [ '2', '+', '2', 'x', '2', 'x', '2' ]
+//let idx = 0
+//let op = 0 // op = operator // 0 = x // 1 = /
+
+
+let openPar = parsed.indexOf(")") // FIND FIRST OPEN ( PARENTHESIS, MOVING INDEX
+let closePar = openPar;// FIND FIRST CLOSED ) PARENTHESIS
 
 do {
-  if (op === 0 && parsed[idx - 1] !== undefined && !isNaN(parsed[idx - 1]) && parsed[idx] === "x" && !isNaN(parsed[idx + 1])) {
-    console.log("TT", idx, curr.length)
-    //curr.push(parseInt(parsed[idx - 1]) * parseInt(parsed[idx + 1]))
-    //curr[0] = parseInt(curr[0]) * parseInt(parsed[idx + 1])
-    if (curr.length === 0 ) curr[0] = parseInt(parsed[idx - 1]) * parseInt(parsed[idx + 1])
-    else curr[0] = parseInt(curr[0]) * parseInt(parsed[idx + 1])
-    //idx = idx + 2
-    if (parsed[idx + 2] !== undefined ) idx = idx + 2
-    else idx++
+  if (parsed[openPar] === "(") {
+    console.log("ACA")
+    //firstOpenPar = firstCloseParCopy;
+    break;
   }
-  if (op === 1 && parsed[idx - 1] !== undefined && !isNaN(parsed[idx - 1]) && parsed[idx] === "/" && !isNaN(parsed[idx + 1])) {
-    console.log("TT", idx, curr.length)
-    //curr.push(parseInt(parsed[idx - 1]) * parseInt(parsed[idx + 1]))
-    //curr[0] = parseInt(curr[0]) * parseInt(parsed[idx + 1])
-    if (curr.length === 0 ) curr[0] = parseInt(parsed[idx - 1]) / parseInt(parsed[idx + 1])
-    else curr[0] = parseInt(curr[0]) * parseInt(parsed[idx + 1])
-    //idx = idx + 2
-    if (parsed[idx + 2] !== undefined ) idx = idx + 2
-    else idx++
-  }
-  else idx++
+  else openPar--
+} while (openPar !== -1)
 
-  if (idx === parsed.length - 1) {
-    op++;
-    idx = 0
-  }
+let toDo = parsed.splice(openPar, closePar - (openPar - 1))
 
-} while (idx < parsed.length - 1 && op < 4)
 
 console.log(
+  //parsed.splice(openPar, closePar, ''),
+  //parsed.splice(0, 21),
+  //parsed.splice(2,6-1),
+  //parsed
+  toDo
+  //parsed.splice(7, 11 - 6),
+  //parsed.splice(openPar, openPar + closePar),
+  //"openPar", openPar,
+  //"closePar", closePar,
+  // "firstClosePar", firstClosePar,
+  //"(((3x2)+1)+(2x(1x2)))".matchAll(/[(]/)
+  //parsed.indexOf(")")
   //parsed,
-  curr
+  //curr
   //"asd"
 )
+
+// parsed = [ '2', '/', '2', 'x', '2', 'x', '2' ]
+// (()())
+// do {
+//   if (op === 0 && parsed[idx - 1] !== undefined && !isNaN(parsed[idx - 1]) && parsed[idx] === "x" && !isNaN(parsed[idx + 1])) {
+//     console.log("TT", idx, curr.length)
+//     if (curr.length === 0 ) curr[0] = parseInt(parsed[idx - 1]) * parseInt(parsed[idx + 1])
+//     else curr[0] = parseInt(curr[0]) * parseInt(parsed[idx + 1])
+//     if (parsed[idx + 2] !== undefined ) idx = idx + 2
+//     else idx++
+//   }
+//   if (op === 1 && parsed[idx - 1] !== undefined && !isNaN(parsed[idx - 1]) && parsed[idx] === "/" && !isNaN(parsed[idx + 1])) {
+//     console.log("TT", idx, curr.length)
+//     if (curr.length === 0 ) curr[0] = parseInt(parsed[idx - 1]) / parseInt(parsed[idx + 1])
+//     else curr[0] = parseInt(curr[0]) / parseInt(parsed[idx + 1])
+//     if (parsed[idx + 2] !== undefined ) idx = idx + 2
+//     else idx++
+//   }
+//   else idx++
+
+//   if (idx === parsed.length - 1) {
+//     op++;
+//     idx = 0
+//   }
+
+// } while (idx < parsed.length - 1 && op < 4)
+
+
 
 // arr1.forEach((e, i) => { // => arr2 // [DO ALL X]
 //   if (e === "x" && !isNaN(arr1[i - 1]) && !isNaN(arr1[i + 1])) arr2.push(parseInt(arr1[i - 1]) * parseInt(arr1[i + 1]))
