@@ -8,27 +8,44 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface OwnButtonI {
-  value?: string,
-  demo?: any,
-  setDemo?: any,
+  value?: any,
+  init?: any,
+  setInit?: any,
+  resPressed?: any,
+  setResPressed?: any,
+  arr1?: any,
+  arr5?: any
 };
 
-export function OwnButton({ value, demo, setDemo }: OwnButtonI): React.JSX.Element {
+export function OwnButton({ value, init, setInit, setResPressed, resPressed, arr1, arr5 }: OwnButtonI): React.JSX.Element {
+  //console.log("PROPS", props)
+  function handlePress() {
 
-  function handlePress(val: any) {
+    // console.log("resPressed", resPressed)
+    // console.log("init", init)
+    // console.log("val", val)
+    if (resPressed && init !== "" && value === "+") {
+      setResPressed(false);
+      setInit(arr1[0].toString());
+      console.log("EXECUTED")
+    }
 
-    if (demo === "" && !isNaN(val) || demo !== "") {
-      if (val === "=") {
+    if (value === "X") value = "x"
 
+    if (value === "C") { setResPressed(false); setInit("") }
+    else if (init === "" && !isNaN(value) || init !== "") {
+      if (value === "=") {
+        setResPressed(true);
+        setInit(arr5[0].toString())
       }
-      else if (val === "C") setDemo("")
-      else if (val === "B") {
-        let seqOne = demo.split("")
+      //else if (value === "C") setInit("")
+      else if (value === "B") {
+        let seqOne = init.split("")
         seqOne.pop()
         let seqTwo = seqOne.join("")
-        setDemo(seqTwo)
+        setInit(seqTwo)
       }
-      else setDemo((prev: any) => prev + val)
+      else setInit((prev: any) => prev + value)
 
     }
     
@@ -39,7 +56,7 @@ export function OwnButton({ value, demo, setDemo }: OwnButtonI): React.JSX.Eleme
   return (
 
     <Text
-      onPress={() => handlePress(value)}
+      onPress={() => handlePress()}
       style={[s.ownButton]}
       adjustsFontSizeToFit={true}
       numberOfLines={1}
