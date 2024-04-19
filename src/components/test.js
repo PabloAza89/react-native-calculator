@@ -1,25 +1,38 @@
-let init = "((10x2x3/2+2)+2x1)x2".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
-let parsed = [] // [10, x, 30, +, 3, -, 2] // WELL PARSED
+let init = "(((10x2x3/2+2)+2x2)x2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET LATER
+//let init = "(20x(2x3)/2+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
+//         "(20x6/2+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
+//         "(120/2+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
+//         "(60+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
+//         "(62)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 
-init.forEach((e, i) => { // => parsed
+let parsed = [] // [10, x, 30, +, 3, -, 2] // WELL PARSED // UPDATED EVERY ( PARENTHESIS ) CALC
+
+init.forEach((e, i) => { // => first parsed result
   if (parsed.length === 0) parsed.push(e)
   else if (!isNaN(init[i - 1]) && !isNaN(e)) parsed[parsed.length - 1] = parsed[parsed.length - 1].concat(e)
   else parsed.push(e)
 })
 
-let openPar = parsed.indexOf(")") // FIND FIRST OPEN ( PARENTHESIS NEXT TO ), MOVING INDEX
-let closePar = openPar;// FIND FIRST CLOSED ) PARENTHESIS
+let openPar
+let closePar
+let toDo
 
-console.log(parsed.indexOf(")") + 1)
+function updateOpenAndCloseParenthesis() {
+  openPar = parsed.indexOf(")") // FIND FIRST OPEN ( PARENTHESIS NEXT TO ), MOVING INDEX
+  closePar = openPar;// FIND FIRST CLOSED ) PARENTHESIS
 
-do {
-  if (parsed[openPar] === "(") break;
-  else openPar--
-} while (openPar !== -1)
+  do {
+    if (parsed[openPar] === "(") break;
+    else openPar--
+  } while (openPar !== -1)
 
-let toDo = parsed.splice(openPar, closePar - (openPar - 1)) // Extract toDo from Main
-toDo.splice(0, 1) // Delete (
-toDo.splice(-1, 1) // Delete )
+  toDo = parsed.splice(openPar, closePar - (openPar - 1)) // Extract toDo from Main (init)
+  toDo.splice(0, 1) // Delete open (
+  toDo.splice(-1, 1) // Delete close )
+
+}
+
+updateOpenAndCloseParenthesis()
 
 let foundMul;
 let foundDiv;
@@ -73,16 +86,33 @@ while (toDo.length !== 1 && firstOp !== undefined || secOp !== undefined) {
     toDo.splice(idx - 1, 0, curr)
     idx = 1
   }
+
   else idx++
+
+  updateVariables()
+
+  console.log("parsed.length", parsed)
+  console.log("parsed", parsed)
+  console.log("toDo", toDo)
+  console.log("curr", curr)
+  console.log("openPar", openPar)
+
+  console.log(firstOp)
+  console.log(secOp)
+  // if (toDo.length === 1) {
+  if (parsed.length > 1 && firstOp === undefined && secOp === undefined) {
+    parsed.splice(openPar, 0, curr)
+    updateOpenAndCloseParenthesis()
+    updateVariables()
+  }
+  
+  // if (parsed.length === 1) {
+
+  //   console.log("FINISH AaAA")
+  //   break
+  // }
 }
 
-console.log(
-  //foundMul,
-  //foundDiv,
-  `openPar: ${openPar}`,
-  `closePar: ${closePar}`,
-  `firstOp: ${firstOp}`,
-  `secOp: ${secOp}`,
-  `toDo: ${toDo}`,
-  `curr: ${curr}`,
-)
+//console.log("FINISH")
+// console.log(toDo)
+// console.log(parsed)
