@@ -1,5 +1,5 @@
-let init = "(((10x2x3/2+2)+2x2)x2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET LATER
-//let init = "(20x(2x3)/2+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
+//let init = "(((10x2x3/2+2)+2x2)x2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET LATER
+let init = "(((20x(2x3))/2)+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 //         "(20x6/2+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 //         "(120/2+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 //         "(60+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
@@ -113,6 +113,7 @@ while (toDo.length !== 1 && firstOp !== undefined || secOp !== undefined) {
   // }
 }
 
-//console.log("FINISH")
-// console.log(toDo)
-// console.log(parsed)
+console.log("FINISH")
+console.log(toDo)
+console.log(parsed)
+console.log(curr)
