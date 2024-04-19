@@ -1,4 +1,4 @@
-let init = "(((10/2x3)+2x1)x2)))".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
+let init = "(((10x2-2)+2x1)x2)))".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 //let init = "4+1".split("") // ['S'P'L'I'T'E'D']
 // (2x2x2)
 // (2/(2x2x2))
@@ -40,75 +40,80 @@ toDo.splice(-1, 1) // Delete )
 
 let foundMul = toDo.indexOf("x")
 let foundDiv = toDo.indexOf("/")
-let firstOp; // firstOperator Found = x or /
+let firstOp;
 if (foundMul < foundDiv && foundMul > 0 || foundMul > 0 && foundDiv === -1) firstOp = "x"
 if (foundDiv < foundMul && foundDiv > 0 || foundDiv > 0 && foundMul === -1) firstOp = "/"
 
-let opOne = { // operation One
+let opOne = { // operation One // x or /
   'x': function(a, b) { return parseInt(a) * parseInt(b) },
   '/': function(a, b) { return parseInt(a) / parseInt(b) }
 };
 
+let foundPlus = toDo.indexOf("+")
+let foundMin = toDo.indexOf("-")
+let secOp;
+if (foundPlus < foundMin && foundPlus > 0 || foundPlus > 0 && foundMin === -1) firstOp = "+"
+if (foundMin < foundPlus && foundMin > 0 || foundMin > 0 && foundPlus === -1) firstOp = "-"
+
+let opTwo = { // operation Two // + or -
+  '+': function(a, b) { return parseInt(a) + parseInt(b) },
+  '-': function(a, b) { return parseInt(a) - parseInt(b) }
+};
+
 let curr;
-let idx = 0
-let lap = 0 // op = operator // 0 = x // 1 = /
+let idx = 1
 
-// toDo = [ '4', 'x', '2', '+', '3' ]
+while (toDo.length !== 1 && firstOp !== undefined) {
 
-if (firstOp !== undefined) {
-  
-  while (/* toDo.length !== 0 */ /* && */ lap < 2) {
+  foundMul = toDo.indexOf("x") // update x index
+  foundDiv = toDo.indexOf("/") // update x index
+  if (foundMul < foundDiv && foundMul > 0 || foundMul > 0 && foundDiv === -1) firstOp = "x" // update x or / found
+  if (foundDiv < foundMul && foundDiv > 0 || foundDiv > 0 && foundMul === -1) firstOp = "/" // update x or / found
 
-    foundMul = toDo.indexOf("x")
-    foundDiv = toDo.indexOf("/")
-    firstOp; // firstOperator Found = x or /
-    if (foundMul < foundDiv && foundMul > 0 || foundMul > 0 && foundDiv === -1) firstOp = "x"
-    if (foundDiv < foundMul && foundDiv > 0 || foundDiv > 0 && foundMul === -1) firstOp = "/"
+  console.log(idx)
+  console.log(toDo)
+  console.log(firstOp)
+  console.log(foundMul)
+  console.log(foundDiv)
+  // TODOS OK
 
-    foundMul = toDo.indexOf("x")
-    foundDiv = toDo.indexOf("/")
-    console.log(toDo)
-    console.log(firstOp)
-    console.log(foundMul)
-    console.log(foundDiv)
+  if (foundMul === -1 && foundDiv === -1) firstOp = undefined;
 
+  if (toDo[idx - 1] !== undefined && !isNaN(toDo[idx - 1]) && toDo[idx] === firstOp && !isNaN(toDo[idx + 1])) {
 
-    if (toDo[idx - 1] !== undefined && !isNaN(toDo[idx - 1]) && toDo[idx] === firstOp && !isNaN(toDo[idx + 1])) {
-      console.log("TT", idx/* , curr.length */)
-      //if (curr.length === 0) {
-        console.log("idx", idx)
-        curr = opOne[firstOp](toDo[idx - 1], toDo[idx + 1])
-        console.log("idx - 1", idx - 1)
-        console.log("idx - 1", idx + 1)
+    //console.log("idx", idx)
+    curr = opOne[firstOp](toDo[idx - 1], toDo[idx + 1])
+    // console.log("idx - 1", idx - 1)
+    // console.log("idx - 1", idx + 1)
 
-        toDo.splice(idx - 1, 3)
-        toDo.splice(idx - 1, 0, curr)
-        console.log("toDo", toDo)
+    toDo.splice(idx - 1, 3)
+    toDo.splice(idx - 1, 0, curr)
+    //console.log("toDo", toDo)
 
-        console.log("curr", curr)
-        console.log("toDo", toDo)
-        idx = 0
-        lap++
-        //break;
-      //}
-      // else {
-      //   curr[0] = opOne[firstOp](curr[0], toDo[idx + 1])
-      // }
-
-      // if (toDo[idx + 2] !== undefined ) idx = idx + 2
-      //else idx++
-    }
-    else idx++
-    if (idx === toDo.length - 1) lap++
-   // console.log("LAP", lap, "IDX", idx)
-    // if (idx === toDo.length - 1) {
-    //   //lap++;
-    //   lap++
-    //   idx = 0
-    //   console.log("LAP", lap, "IDX", idx)
-    // }
+    // console.log("curr", curr)
+    // console.log("toDo", toDo.length)
+    idx = 1
   }
+  // if (toDo[idx - 1] !== undefined && !isNaN(toDo[idx - 1]) && toDo[idx] === secOp && !isNaN(toDo[idx + 1])) {
+
+  //   //console.log("idx", idx)
+  //   curr = opOne[secOp](toDo[idx - 1], toDo[idx + 1])
+  //   // console.log("idx - 1", idx - 1)
+  //   // console.log("idx - 1", idx + 1)
+
+  //   toDo.splice(idx - 1, 3)
+  //   toDo.splice(idx - 1, 0, curr)
+  //   //console.log("toDo", toDo)
+
+  //   // console.log("curr", curr)
+  //   // console.log("toDo", toDo.length)
+  //   idx = 1
+  // }
+  else idx++
+  //if (toDo.length === 1 && firstOp !== undefined) firstOp === undefined
+  //if (toDo.length === 1 && firstOp !== undefined) firstOp === undefined
 }
+
 
 console.log(
   //foundMul,
