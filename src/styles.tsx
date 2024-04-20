@@ -14,7 +14,8 @@ export const s = StyleSheet.create({
     backgroundColor: 'silver',
     width: opw * 90,
     borderColor: 'darkblue',
-    height: opw * 134,
+    /* height: opw * 134, */
+    height: opw * 129.6,
     borderWidth: 2,
     maxWidth: '100%',
     flexWrap: 'wrap',
@@ -49,6 +50,17 @@ export const s = StyleSheet.create({
     height: opw * 20,
     borderColor: 'darkblue',
     fontSize: 40,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    /* fontWeight: '600', */
+    /* transform: 'scaleX(1.5)' */
+  },
+  ownButtonSmaller: {
+    backgroundColor: 'red',
+    width: opw * 15.6,
+    height: opw * 15.6,
+    borderColor: 'darkblue',
+    fontSize: 32,
     textAlign: 'center',
     textAlignVertical: 'center',
     /* fontWeight: '600', */

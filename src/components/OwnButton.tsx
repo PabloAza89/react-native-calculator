@@ -9,47 +9,45 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 interface OwnButtonI {
   value?: any,
-  init?: any,
-  setInit?: any,
+  input?: any,
+  setInput?: any,
   resPressed?: any,
   setResPressed?: any,
   arr1?: any,
-  arr5?: any
+  arr5?: any,
+  smaller?: boolean
 };
 
-export function OwnButton({ value, init, setInit, setResPressed, resPressed, arr1, arr5 }: OwnButtonI): React.JSX.Element {
+export function OwnButton({ value, input, setInput, setResPressed, resPressed, arr1, arr5, smaller }: OwnButtonI): React.JSX.Element {
   //console.log("PROPS", props)
   function handlePress() {
 
     // console.log("resPressed", resPressed)
     // console.log("init", init)
     // console.log("val", val)
-    if (resPressed && init !== "" && value === "+") {
+    if (resPressed && input !== "" && value === "+") {
       setResPressed(false);
-      setInit(arr1[0].toString());
+      setInput(arr1[0].toString());
       console.log("EXECUTED")
     }
 
     if (value === "X") value = "x"
 
-    if (value === "C") { setResPressed(false); setInit("") }
-    else if (init === "" && !isNaN(value) || init !== "") {
+    if (value === "C") { setResPressed(false); setInput("") }
+    else if (input === "" && !isNaN(value) || input !== "") {
       if (value === "=") {
         setResPressed(true);
-        setInit(arr5[0].toString())
+        setInput(arr5[0].toString())
       }
       //else if (value === "C") setInit("")
       else if (value === "B") {
-        let seqOne = init.split("")
+        let seqOne = input.split("")
         seqOne.pop()
         let seqTwo = seqOne.join("")
-        setInit(seqTwo)
+        setInput(seqTwo)
       }
-      else setInit((prev: any) => prev + value)
-
+      else setInput((prev: any) => prev + value)
     }
-    
-
   }
 
 
@@ -57,7 +55,7 @@ export function OwnButton({ value, init, setInit, setResPressed, resPressed, arr
 
     <Text
       onPress={() => handlePress()}
-      style={[s.ownButton]}
+      style={[ smaller ? s.ownButtonSmaller : s.ownButton ]}
       adjustsFontSizeToFit={true}
       numberOfLines={1}
     >
@@ -65,8 +63,9 @@ export function OwnButton({ value, init, setInit, setResPressed, resPressed, arr
         value === "B" ?
         <Ionicons name='backspace' size={40} color='#363535' /> :
         value === "M" ?
-        <MaterialCommunityIcons name='plus-minus-variant' size={40} color='#363535' /> :
-        value }
+        "-X" :
+        value
+      }
     </Text>
   );
 }
