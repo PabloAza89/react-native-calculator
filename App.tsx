@@ -44,7 +44,7 @@ const [ resPressed, setResPressed ] = useState(false);
       <View style={[s.contour]}>
         {/* <Text style={[s.result]}>{ input }</Text> */}
         {/* <Text style={[s.result]}>{ resPressed ? arr5 : arr1 }</Text> */}
-        <Text style={[s.result]}>{ input }</Text>
+        <Text style={[s.result]}>{ input.replaceAll(/M/g,"-") }</Text>
         <OwnButton input={input} setInput={setInput} value="(" smaller={true} />
         <OwnButton input={input} setInput={setInput} value=")" smaller={true} />
         <OwnButton input={input} setInput={setInput} value="C" smaller={true} setResPressed={setResPressed} />
