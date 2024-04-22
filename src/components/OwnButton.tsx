@@ -28,7 +28,7 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
     // console.log("val", val)
 
     // test ↓↓↓
-    setInput((value * -1).toString()) // test
+    //setInput((value * -1).toString()) // test
 
     if (value === "C") { setInput(""); return } // CLEAR ALL
 
@@ -60,8 +60,32 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
       value === "/" ||
       value === "+" ||
       value === "-" ||
-      value === ")") // STOP IF ATTEMP + AND + (REPEATED OPERATORS)
+      value === ")" ||
+      value === "." ) // STOP IF ATTEMP + AND + (REPEATED OPERATORS)
     ) return
+
+    if (
+      input.slice(-1) === ")" &&
+      value === "."
+    ) return // STOP IF ATTEMP ).
+
+    if (
+      input.slice(-1) === "." &&
+      isNaN(parseInt(value))
+    ) return // STOP IF ATTEMP .. or .( or .x
+
+    if (
+      !isNaN(parseInt(input[input.length - 1])) &&
+      !isNaN(parseInt(input[input.length - 2])) &&
+      !isNaN(parseInt(value))
+    ) return // STOP IF ATTEMP .999 or .777 (floating point number > 2)
+
+    // if (
+    //   !isNaN(parseInt(input[input.length - 2])) &&
+    //   !isNaN(parseInt(input[input.length - 1])) &&
+    //   (!isNaN(parseInt(value)) || value === ".")
+    // ) return // STOP IF ATTEMP .9.
+
 
     if (input.length === 0) {
       if (
@@ -71,7 +95,7 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
         value === "-" ||
         value === "X" ||
         value === ")"
-      ) return // STOP IF ) FIRST
+      ) return // STOP IF ATTEMP ) FIRST
     }
 
     if (
@@ -81,19 +105,48 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
 
     if (
       input.slice(-1) === ")" &&
-      !isNaN(parseInt(value))
-    ) return // STOP IF ATTEMP )9
+      (!isNaN(parseInt(value)) || value === "M")
+    ) return // STOP IF ATTEMP )9 or )M
 
     if (
-      !isNaN(parseInt(input.slice(-1))) &&
-      value === "("
-    ) return // STOP IF ATTEMP 9(
+      !isNaN(parseInt(input.slice(-1))) && // last input is a number
+      (value === "(" || value === "M")
+    ) return // STOP IF ATTEMP 9( or 9M
+
+    // if (
+    //   input.slice(-1) === ")" &&
+    //   !isNaN(parseInt(value))
+    // ) return // STOP IF ATTEMP )9
+
+    if (
+      input.slice(-1) === "M" && // M = negative value
+      (value === "X" ||
+      value === "/" ||
+      value === "+" ||
+      value === "-" ||
+      value === "." ||
+      value === "(" ||
+      value === ")" ||
+      value === "M")
+    ) return // STOP IF ATTEMP M+
+
+    // if (
+    //   input.slice(-1) === "M" && // M = negative value
+    //   (input.slice(-1) === " X" ||
+    //   value === "/" ||
+    //   value === "+" ||
+    //   value === "-" ||
+    //   value === "." ||
+    //   value === "(" ||
+    //   value === ")" ||
+    //   value === "M")
+    // ) return // STOP IF ATTEMP M+
 
     
-    if (value === "X") setInput((prev: any) => prev + " x ")
-    else if (value === "/") setInput((prev: any) => prev + " / ")
-    else if (value === "+") setInput((prev: any) => prev + " + ")
-    else if (value === "-") setInput((prev: any) => prev + " - ")
+    if (value === "X") setInput((prev: any) => prev + " x ") // set operator with spaces
+    else if (value === "/") setInput((prev: any) => prev + " / ") // set operator with spaces
+    else if (value === "+") setInput((prev: any) => prev + " + ") // set operator with spaces
+    else if (value === "-") setInput((prev: any) => prev + " - ") // set operator with spaces
     else setInput((prev: any) => prev + value)
       //if (value === ")") return
     //   setInput((prev: any) => prev + value)
