@@ -10,7 +10,7 @@ import {
   useColorScheme,
   View
 } from 'react-native';
-import { s } from './src/styles';
+import { s } from './src/styles/styles';
 import { OwnButton } from './src/components/OwnButton';
 
 function App(): React.JSX.Element {
@@ -37,7 +37,7 @@ const [ resPressed, setResPressed ] = useState(false);
 
   //console.log("arr1:", arr1)
   //console.log("arr5:", arr5)
-
+  console.log("INPUT:", input)
 
   return (
     <View style={[s.background]}>

@@ -7,6 +7,9 @@ let init = "20x(2)x3/2+(2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 //         "(60+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 //         "(62)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 
+/**
+ * @type {(string | any[])[]}
+ */
 let parsed = [] // [10, x, 30, +, 3, -, 2] // WELL PARSED // UPDATED EVERY ( PARENTHESIS ) CALC
 
 let error = false; // 
