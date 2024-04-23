@@ -74,5 +74,11 @@ export const s = StyleSheet.create({
     fontSize: 40,
     textAlign: 'center',
     textAlignVertical: 'center'
-  }
+  },
+  parErr: {
+    color: 'red',
+    fontSize: 17,
+    textAlign: 'center',
+    textAlignVertical: 'center'
+  },
 });

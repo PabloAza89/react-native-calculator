@@ -26,7 +26,7 @@ function updateOpenAndCloseParenthesis() {
     else openPar--
   } while (openPar !== -1)
 
-  toDo = parsed.splice(openPar, closePar - (openPar - 1)) // Extract toDo from Main (init)
+  toDo =  // Extract toDo from Main (init)
   toDo.splice(0, 1) // Delete open (
   toDo.splice(-1, 1) // Delete close )
 
