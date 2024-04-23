@@ -43,8 +43,8 @@ let opOne = { // operation One // x or /
   '/': function(a, b) { return parseInt(a) / parseInt(b) }
 };
 
-let foundPlus = toDo.indexOf("+")
-let foundMin = toDo.indexOf("-")
+let foundPlus;
+let foundMin;
 let secOp;
 
 let opTwo = { // operation Two // + or -
@@ -91,26 +91,20 @@ while (toDo.length !== 1 && firstOp !== undefined || secOp !== undefined) {
 
   updateVariables()
 
-  console.log("parsed.length", parsed)
-  console.log("parsed", parsed)
-  console.log("toDo", toDo)
-  console.log("curr", curr)
-  console.log("openPar", openPar)
+  // console.log("parsed.length", parsed)
+  // console.log("parsed", parsed)
+  // console.log("toDo", toDo)
+  // console.log("curr", curr)
+  // console.log("openPar", openPar)
 
-  console.log(firstOp)
-  console.log(secOp)
+  // console.log(firstOp)
+  // console.log(secOp)
   // if (toDo.length === 1) {
   if (parsed.length > 1 && firstOp === undefined && secOp === undefined) {
     parsed.splice(openPar, 0, curr)
     updateOpenAndCloseParenthesis()
     updateVariables()
   }
-  
-  // if (parsed.length === 0) {
-
-  //   console.log("FINISH AaAA")
-  //   break
-  // }
 }
 
 console.log("FINISH")

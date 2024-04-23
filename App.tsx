@@ -38,14 +38,13 @@ const [ resPressed, setResPressed ] = useState(false);
 
   //console.log("arr1:", arr1)
   //console.log("arr5:", arr5)
-  console.log("INPUT:", input)
+  //console.log("INPUT:", input)
 
   return (
     <View style={[s.background]}>
-      { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
       <View style={[s.contour]}>
-        {/* <Text style={[s.result]}>{ input }</Text> */}
-        {/* <Text style={[s.result]}>{ resPressed ? arr5 : arr1 }</Text> */}
+        { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
+        {/* <Text style={s.parErr}>CHECK PARENTHESIS</Text> */}
         <Text style={[s.result]}>{ input.replaceAll(/M/g,"-") }</Text>
         <OwnButton input={input} setInput={setInput} value="(" setParErr={setParErr} smaller={true} />
         <OwnButton input={input} setInput={setInput} value=")" setParErr={setParErr} smaller={true} />
