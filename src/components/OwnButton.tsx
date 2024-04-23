@@ -133,9 +133,10 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
       input.slice(-3) === " + " ||
       input.slice(-3) === " - " ||
       input.slice(-1) === "(" ||
-      input.slice(-1) === "M") &&
+      input.slice(-1) === "M" ||
+      input.length === 0) &&
       value === "="
-    ) return // STOP IF ATTEMPT M= or +=
+    ) return // STOP IF ATTEMPT M= or += or ""=
 
     /// -----------> END STOPPERS <----------- ///
 
