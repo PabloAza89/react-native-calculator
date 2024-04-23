@@ -1,6 +1,6 @@
 //let init = "(((10x2x3/2+2)+2x2)x2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET LATER
-//let init = "20)x2x(3/2+(2)".split("") // ['S'P'L'I'T'E'D'] // TEST PARENTHESIS ERROR
-let init = "20x(2)x3/2+(2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
+let init = "20)xM2x(3/2+(M2)".split("") // ['S'P'L'I'T'E'D'] // TEST PARENTHESIS ERROR
+//let init = "20x(2)x3/2+(2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 //let init = "20x2x3/2+2".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 //         "(20x6/2+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
 //         "(120/2+2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
@@ -11,10 +11,11 @@ let init = "20x(2)x3/2+(2)".split("") // ['S'P'L'I'T'E'D'] // TEST TARGET
  * @type {(string | any[])[]}
  */
 let parsed = [] // [10, x, 30, +, 3, -, 2] // WELL PARSED // UPDATED EVERY ( PARENTHESIS ) CALC
+// DONE
 
-let error = false; // 
+let error = false; // DONE
 
-if (
+if ( // DONE
   init.filter(e => e === "(").length !==
   init.filter(e => e === ")").length
 ) {
@@ -28,7 +29,7 @@ if (
   init[init.length - 1] === "("
 ) {
   error = true // Check ) and ( parenthesis position on the sides
-}
+} // DONE (UNREACHABLE)
 
 
 // init.forEach((e, i) => { // => first parsed result
@@ -62,7 +63,7 @@ if (
 if (init[0] !== "(" && init[init.length - 1] !== ")") { // Add ( and ) to beginning and end
   init.unshift("(")
   init.push(")")
-}
+} // DONE, MORE SIMPLIFIED
 
 ///
 

@@ -6,7 +6,7 @@ import {
 import { s } from '../styles/styles';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { adder } from '../functions/adder';
+import { Adder } from '../functions/Adder';
 
 interface OwnButtonI {
   value?: any,
@@ -16,15 +16,18 @@ interface OwnButtonI {
   setResPressed?: any,
   arr1?: any,
   arr5?: any,
-  smaller?: boolean
+  smaller?: boolean,
+  setParErr?: any
 };
 
-export function OwnButton({ value, input, setInput, setResPressed, resPressed, arr1, arr5, smaller }: OwnButtonI): React.JSX.Element {
+export function OwnButton({ value, input, setInput, setResPressed, resPressed, arr1, arr5, smaller, setParErr }: OwnButtonI): React.JSX.Element {
   function handlePress() {
     //console.log("INPUT:", input)
     // console.log("val", val)
     // test ↓↓↓
     //setInput((value * -1).toString()) // test
+
+    if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
 
     /// -----------> BEGIN STOPPERS <----------- ///
 
@@ -138,7 +141,7 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
 
     /// -----------> BEGIN CALC <----------- ///
 
-    if (value === "=") adder(input)
+    if (value === "=") { Adder({ input, setParErr }); return }
 
     /// -----------> END CALC <----------- ///
 

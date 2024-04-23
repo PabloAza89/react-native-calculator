@@ -17,6 +17,7 @@ function App(): React.JSX.Element {
 
 //  const [ demo, setInput ] = useState<any[]>([]);
 const [ input, setInput ] = useState("");
+const [ parErr, setParErr ] = useState(false);
 const [ resPressed, setResPressed ] = useState(false);
 
 //let input = "3-100"
@@ -41,31 +42,32 @@ const [ resPressed, setResPressed ] = useState(false);
 
   return (
     <View style={[s.background]}>
+      { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
       <View style={[s.contour]}>
         {/* <Text style={[s.result]}>{ input }</Text> */}
         {/* <Text style={[s.result]}>{ resPressed ? arr5 : arr1 }</Text> */}
         <Text style={[s.result]}>{ input.replaceAll(/M/g,"-") }</Text>
-        <OwnButton input={input} setInput={setInput} value="(" smaller={true} />
-        <OwnButton input={input} setInput={setInput} value=")" smaller={true} />
-        <OwnButton input={input} setInput={setInput} value="C" smaller={true} setResPressed={setResPressed} />
-        <OwnButton input={input} setInput={setInput} value="M" smaller={true} />
-        <OwnButton input={input} setInput={setInput} value="B" smaller={true} />
-        <OwnButton input={input} setInput={setInput} value="7" />
-        <OwnButton input={input} setInput={setInput} value="8" />
-        <OwnButton input={input} setInput={setInput} value="9" />
-        <OwnButton input={input} setInput={setInput} value="X" />
-        <OwnButton input={input} setInput={setInput} value="4" />
-        <OwnButton input={input} setInput={setInput} value="5" />
-        <OwnButton input={input} setInput={setInput} value="6" />
-        <OwnButton input={input} setInput={setInput} value="-" />
-        <OwnButton input={input} setInput={setInput} value="1" />
-        <OwnButton input={input} setInput={setInput} value="2" />
-        <OwnButton input={input} setInput={setInput} value="3" />
-        <OwnButton input={input} setInput={setInput} value="+" />
-        <OwnButton input={input} setInput={setInput} value="/" />
-        <OwnButton input={input} setInput={setInput} value="0" />
-        <OwnButton input={input} setInput={setInput} value="." />
-        <OwnButton input={input} setInput={setInput} value="=" setResPressed={setResPressed} /* arr5={arr5} */ />
+        <OwnButton input={input} setInput={setInput} value="(" setParErr={setParErr} smaller={true} />
+        <OwnButton input={input} setInput={setInput} value=")" setParErr={setParErr} smaller={true} />
+        <OwnButton input={input} setInput={setInput} value="C" setParErr={setParErr} smaller={true} setResPressed={setResPressed} />
+        <OwnButton input={input} setInput={setInput} value="M" setParErr={setParErr} smaller={true} />
+        <OwnButton input={input} setInput={setInput} value="B" setParErr={setParErr} smaller={true} />
+        <OwnButton input={input} setInput={setInput} value="7" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="8" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="9" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="X" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="4" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="5" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="6" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="-" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="1" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="2" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="3" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="+" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="/" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="0" setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="." setParErr={setParErr} />
+        <OwnButton input={input} setInput={setInput} value="=" setParErr={setParErr} setResPressed={setResPressed} />
       </View>
     </View>
   );
