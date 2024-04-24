@@ -5,7 +5,6 @@ interface AdderI {
 }
 
 export function Adder({ input, setParErr }: AdderI) {
-
   
   let init = input.replace(/ /g,'').split("") // OK
 
@@ -18,17 +17,24 @@ export function Adder({ input, setParErr }: AdderI) {
   //) { console.log("ERROR") }
   
   /// -----------> END PARENTHESIS STOPPERS <----------- ///
+
+  /// -----------> BEGIN NEGATIVE & FLOATING POINT PARSER <----------- ///
   
   let parsed: any[] = []
-  
-  init.forEach((e: any, i: any) => { // ADD 'M37' or '99' JOINED, ELSE PUSH x ALONE
-    if ((init[i - 1] === "M" || !isNaN(parseInt(init[i - 1]))) && !isNaN(parseInt(e))) parsed[parsed.length - 1] = parsed[parsed.length - 1].concat(e)
+
+  init.forEach((e: any, i: any) => { // ADD 'M37' or '99' or '7.32' JOINED, ELSE PUSH x ALONE
+    if (
+      (init[i - 1] === "M" || init[i - 1] === "." || !isNaN(parseInt(init[i - 1]))) &&
+      (!isNaN(parseInt(e)) || e === ".")
+    ) parsed[parsed.length - 1] = parsed[parsed.length - 1].concat(e)
     else parsed.push(e)
   })
-  
+
   parsed.forEach((e, i) => { // M95 => -1 * 95 // NEGATIVE PARSER
-    if (e.slice(0, 1) === "M") parsed[i] = -1 * parseInt(e.slice(1, e.length))
+    if (e.slice(0, 1) === "M") parsed[i] = -1 * parseFloat(e.slice(1, e.length))
   })
+
+  /// -----------> END NEGATIVE & FLOATING POINT PARSER <----------- ///
   
   let openPar: any; // OPEN PARENTHESIS FOUND, MOVING INDEX
   let closePar: any; // CLOSE PARENTHESIS FOUND
@@ -71,8 +77,8 @@ export function Adder({ input, setParErr }: AdderI) {
   let firstOp: any;
   
   let opOne: any = { // operation One // x or /
-    'x': function(a: any, b: any) { return parseInt(a) * parseInt(b) },
-    '/': function(a: any, b: any) { return parseInt(a) / parseInt(b) }
+    'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) },
+    '/': function(a: any, b: any) { return parseFloat(a) / parseFloat(b) }
   };
   
   let foundPlus: any;
@@ -80,8 +86,8 @@ export function Adder({ input, setParErr }: AdderI) {
   let secOp: any;
   
   let opTwo: any = { // operation Two // + or -
-    '+': function(a: any, b: any) { return parseInt(a) + parseInt(b) },
-    '-': function(a: any, b: any) { return parseInt(a) - parseInt(b) }
+    '+': function(a: any, b: any) { return parseFloat(a) + parseFloat(b) },
+    '-': function(a: any, b: any) { return parseFloat(a) - parseFloat(b) }
   };
   
   function updateOperators() { // firstOp & secOp
@@ -105,9 +111,9 @@ export function Adder({ input, setParErr }: AdderI) {
     updateOperators() // MULTI, DIV, PLUS & MINUS
   
     if (toDo[index - 1] !== undefined && // DO ALL x OR /
-      !isNaN(parseInt(toDo[index - 1])) &&
+      !isNaN(parseFloat(toDo[index - 1])) &&
       toDo[index] === firstOp &&
-      !isNaN(parseInt(toDo[index + 1]))
+      !isNaN(parseFloat(toDo[index + 1]))
     ) {
       innerToDo = opOne[firstOp](toDo[index - 1], toDo[index + 1])
       toDo.splice(index - 1, 3)
@@ -116,9 +122,9 @@ export function Adder({ input, setParErr }: AdderI) {
     }
     else if (firstOp === undefined && // DO ALL + OR -
       toDo[index - 1] !== undefined &&
-      !isNaN(parseInt(toDo[index - 1])) &&
+      !isNaN(parseFloat(toDo[index - 1])) &&
       toDo[index] === secOp &&
-      !isNaN(parseInt(toDo[index + 1]))
+      !isNaN(parseFloat(toDo[index + 1]))
     ) {
       innerToDo = opTwo[secOp](toDo[index - 1], toDo[index + 1])
       toDo.splice(index - 1, 3)
@@ -146,7 +152,9 @@ export function Adder({ input, setParErr }: AdderI) {
     }
   }
   
-  console.log("PARSED END", parsed)
+  //console.log("PARSED END", parsed[0].toFixed(2))
+  //console.log("PARSED END", parseFloat(parsed[0]).toFixed[2])
+  console.log("PARSED END", parseFloat(parsed[0]).toFixed(2))
   console.log("TODO END", toDo)
 
 }
