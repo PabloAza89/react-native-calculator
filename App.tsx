@@ -45,11 +45,11 @@ const [ resPressed, setResPressed ] = useState(false);
       <View style={[s.contour]}>
         { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
         {/* <Text style={s.parErr}>CHECK PARENTHESIS</Text> */}
-        <Text style={[s.result]}>{ input.replaceAll(/M/g,"-") }</Text>
+        <Text style={[s.result]}>{ input.replaceAll(/N/g,"-") }</Text>
         <OwnButton input={input} setInput={setInput} value="(" setParErr={setParErr} smaller={true} />
         <OwnButton input={input} setInput={setInput} value=")" setParErr={setParErr} smaller={true} />
         <OwnButton input={input} setInput={setInput} value="C" setParErr={setParErr} smaller={true} setResPressed={setResPressed} />
-        <OwnButton input={input} setInput={setInput} value="M" setParErr={setParErr} smaller={true} />
+        <OwnButton input={input} setInput={setInput} value="N" setParErr={setParErr} smaller={true} />
         <OwnButton input={input} setInput={setInput} value="B" setParErr={setParErr} smaller={true} />
         <OwnButton input={input} setInput={setInput} value="7" setParErr={setParErr} />
         <OwnButton input={input} setInput={setInput} value="8" setParErr={setParErr} />
