@@ -33,6 +33,23 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
 
     if (value === "C") { setInput(""); return } // CLEAR INPUT AND STOP
 
+    let splitted = input.replace(/ /g,'').split("") // OK
+
+    if (
+      value === "=" &&
+      splitted.indexOf("x") === -1 &&
+      splitted.indexOf("/") === -1 &&
+      splitted.indexOf("+") === -1 &&
+      splitted.indexOf("-") === -1
+    ) return // STOP IF "=" IS PRESSED & INPUT DONT HAVE x / + or -
+
+    if (
+      value === "=" &&
+      splitted.filter((e: any) => e === "(").length !== // STOP IF ((( AND ))) AMOUNT ARE UNEQUAL
+      splitted.filter((e: any) => e === ")").length
+    ) { setParErr(true); return }
+
+
     if (value === "B") { // Backspace
       if (input.slice(-3) === " x " || // if last input is an operator: "123 + "
         input.slice(-3) === " / " ||
@@ -106,16 +123,16 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
 
     if (
       input.slice(-1) === ")" &&
-      (!isNaN(parseInt(value)) || value === "M")
-    ) return // STOP IF ATTEMPT )9 or )M
+      (!isNaN(parseInt(value)) || value === "N")
+    ) return // STOP IF ATTEMPT )9 or )N
 
     if (
       !isNaN(parseInt(input.slice(-1))) && // last input is a number
-      (value === "(" || value === "M")
-    ) return // STOP IF ATTEMPT 9( or 9M
+      (value === "(" || value === "N")
+    ) return // STOP IF ATTEMPT 9( or 9N
 
     if (
-      input.slice(-1) === "M" && // M = negative value
+      input.slice(-1) === "N" && // N = negative value
       (value === "X" ||
       value === "/" ||
       value === "+" ||
@@ -123,8 +140,8 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
       value === "." ||
       value === "(" ||
       value === ")" ||
-      value === "M")
-    ) return // STOP IF ATTEMPT M+
+      value === "N")
+    ) return // STOP IF ATTEMPT N+
 
 
     if (
@@ -133,10 +150,10 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
       input.slice(-3) === " + " ||
       input.slice(-3) === " - " ||
       input.slice(-1) === "(" ||
-      input.slice(-1) === "M" ||
+      input.slice(-1) === "N" ||
       input.length === 0) &&
       value === "="
-    ) return // STOP IF ATTEMPT M= or += or ""=
+    ) return // STOP IF ATTEMPT N= or += or ""=
 
     /// -----------> END STOPPERS <----------- ///
 
@@ -169,7 +186,7 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
       {
         value === "B" ?
         <Ionicons name='backspace' size={40} color='#363535' /> :
-        value === "M" ?
+        value === "N" ?
         "-X" :
         value
       }
