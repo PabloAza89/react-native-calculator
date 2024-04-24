@@ -43,8 +43,8 @@ export function Adder({ input, setParErr }: AdderI) {
 
  
 
-    openPar = parsed.indexOf(")") // FIND FIRST OPEN ( PARENTHESIS NEXT TO ), MOVING INDEX
-    closePar = openPar; // FIND FIRST CLOSED ) PARENTHESIS
+    openPar = parsed.indexOf(")") // OPEN PARENTHESIS FOUND, MOVING INDEX
+    closePar = openPar; // CLOSED PARENTHESIS FOUND
 
     
   
@@ -53,11 +53,11 @@ export function Adder({ input, setParErr }: AdderI) {
       else openPar--
     }
 
-    console.log("openPar 1:", openPar)
-    console.log("closePar 1:", closePar)
-    console.log("parsed 1:", parsed)
+    // console.log("openPar 1:", openPar)
+    // console.log("closePar 1:", closePar)
+    // console.log("parsed 1:", parsed)
 
-    if (openPar === -1 && closePar === -1 && parsed.length >= 1) {
+    if (openPar === -1 && closePar === -1 && parsed.length > 1) {
       parsed.unshift("(") // ADD PARENTHESIS AT BEGINNING // TODO
       parsed.push(")") // ADD PARENTHESIS AT END // TODO
       openPar = 0;
@@ -68,7 +68,9 @@ export function Adder({ input, setParErr }: AdderI) {
       toDo = parsed.splice(openPar, closePar - (openPar - 1)) // Extract toDo from Main (init)
       toDo.splice(0, 1) // Delete open ( ToDo
       toDo.splice(-1, 1) // Delete close ) ToDo
-      console.log("ENTRO EN ESTE 1")
+      parsed.splice(openPar, 0, "WAIT") // REPLACE OPERATION WITH "WAIT"
+      console.log("toDo dentro de (){}:", toDo)
+      console.log("parsed dentro de (){}:", parsed)
     }
     //if (toDo.)
     else if (openPar === -1 && closePar !== -1) {
@@ -77,9 +79,9 @@ export function Adder({ input, setParErr }: AdderI) {
   
     
 
-    console.log("openPar", openPar)
-    console.log("closePar", closePar)
-    console.log("ToDo", toDo)
+    console.log("openPar:", openPar)
+    console.log("closePar:", closePar)
+    //console.log("ToDo", toDo)
   
   }
   
@@ -127,10 +129,15 @@ export function Adder({ input, setParErr }: AdderI) {
   let idx = 1
 
   //while (parsed.length !== 1 && (firstOp !== undefined || secOp !== undefined)) {
-  while (parsed.length > 1) {
-   
+  //while (parsed.length !== 1 && parsed.includes("WAIT")) {
+  while (parsed.includes("WAIT")) {
+    /* if (parsed.length === 1) {
+      console.log("entro en este AAA")
+      break
+    } */
+    console.log("entro en este otro BBB")
     //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA")
-    console.log("toDo.length", toDo.length)
+    console.log("TODO ACTUAL", toDo)
     updateVariables() // MULTI, DIV, PLUS & MINUS
   
     if (toDo[idx - 1] !== undefined && // DO ALL x OR /
@@ -138,6 +145,7 @@ export function Adder({ input, setParErr }: AdderI) {
       toDo[idx] === firstOp &&
       !isNaN(parseInt(toDo[idx + 1]))
     ) { 
+      console.log("HIZO MULTI")
       curr = opOne[firstOp](toDo[idx - 1], toDo[idx + 1])
       toDo.splice(idx - 1, 3)
       toDo.splice(idx - 1, 0, curr)
@@ -148,7 +156,8 @@ export function Adder({ input, setParErr }: AdderI) {
       !isNaN(parseInt(toDo[idx - 1])) &&
       toDo[idx] === secOp &&
       !isNaN(parseInt(toDo[idx + 1]))
-    ) { 
+    ) {
+      console.log("HIZO SUMA")
       curr = opTwo[secOp](toDo[idx - 1], toDo[idx + 1])
       toDo.splice(idx - 1, 3)
       toDo.splice(idx - 1, 0, curr)
@@ -167,22 +176,32 @@ export function Adder({ input, setParErr }: AdderI) {
     //   //break;
     // }
 
-    if (parsed.length > 1 && firstOp === undefined && secOp === undefined) {
+    if (parsed.length >= 1 && firstOp === undefined && secOp === undefined && parsed.includes("WAIT") && toDo.length !== 1) {
+      let qq = parsed.indexOf("WAIT")
+      parsed.splice(qq, 1, curr)
       //parsed.splice(openPar, 0, curr)
-      parsed.splice(openPar, 0, toDo[0])
-      console.log("openPar 2:", openPar)
-      console.log("closePar 2:", closePar)
-      console.log("AAAAAAAAA", curr)
+      //parsed.splice(openPar, 0, toDo[0])
+      console.log("parsed ACTUAL:", parsed)
+      // console.log("openPar 2:", openPar)
+      // console.log("closePar 2:", closePar)
+      // console.log("AAAAAAAAA", curr)
       updateOpenAndCloseParenthesis()
       updateVariables()
-      break;
+      //break;
+    } 
+    else if (toDo.length === 1 && parsed.includes("WAIT")) {
+      console.log("ENTRO EN ESTE OTRO DE POR ACA")
+      let qq = parsed.indexOf("WAIT")
+      parsed.splice(qq, 1, toDo[0])
+      updateOpenAndCloseParenthesis()
+      updateVariables()
     }
-    if (parsed.length === 3) {
-      parsed.unshift("(") // ADD PARENTHESIS AT BEGINNING // TODO
-      parsed.push(")") // ADD PARENTHESIS AT END // TODO
-      console.log("BBBBBBBBBBBBBBBBBBBBBBBBBB")
-      break;
-    }
+    // else {
+    //   parsed.unshift("(") // ADD PARENTHESIS AT BEGINNING // TODO
+    //   parsed.push(")") // ADD PARENTHESIS AT END // TODO
+    //   console.log("BBBBBBBBBBBBBBBBBBBBBBBBBB")
+    //   break;
+    // }
   }
 
   //console.log("ENTRO EN ESTE DE ACA")
