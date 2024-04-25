@@ -29,14 +29,36 @@ export const s = StyleSheet.create({
     /* paddingTop: opw * 0.75,
     paddingBottom: opw * 0.75, */
   },
-  result: {
+  displayContainer: {
     backgroundColor: 'antiquewhite',
     width: opw * 86,
     height: opw * 20,
     borderColor: 'darkblue',
     fontSize: 30,
+    /* textAlign: 'right',
+    textAlignVertical: 'center', */
+    /* alignContent: 'center', */
+    /* paddingLeft: 10,
+    paddingRight: 10, */
+    /* justifyContent: 'flex-start' */
+    justifyContent: 'center',
+    /* alignItems: 'center', */
+    alignItems: 'flex-end',
+    overflow: 'scroll',
+    /* flex: 1 */
+    /* overflow: 'scroll' */
+  },
+  mainResult: {
+    backgroundColor: 'burlywood',
+    /* width: opw * 82, */
+    height: opw * 10,
+    borderColor: 'darkblue',
+    fontSize: 30,
     textAlign: 'right',
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
+    /* paddingLeft: 10,
+    paddingRight: 10, */
+    /* overflow: 'scroll' */
   },
   mid: {
     backgroundColor: 'aqua',

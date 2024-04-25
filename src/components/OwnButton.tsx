@@ -5,10 +5,13 @@ import {
 } from 'react-native';
 import { s } from '../styles/styles';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+//import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Adder } from '../functions/Adder';
 
 interface OwnButtonI {
+  //onPress?: any,
+  scrollEnd?: any,
+  parErr?: any,
   value?: any,
   input?: any,
   setInput?: any,
@@ -20,12 +23,15 @@ interface OwnButtonI {
   setParErr?: any
 };
 
-export function OwnButton({ value, input, setInput, setResPressed, resPressed, arr1, arr5, smaller, setParErr }: OwnButtonI): React.JSX.Element {
-  function handlePress() {
-    //console.log("INPUT:", input)
-    // console.log("val", val)
-    // test ↓↓↓
-    //setInput((value * -1).toString()) // test
+export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPressed, resPressed, arr1, arr5, smaller, setParErr }: OwnButtonI): React.JSX.Element {
+  async function handlePress() {
+
+    /* scrollEnd() */
+    //onPress && onPress()
+    //onPress()
+    //scrollEnd()
+
+    if (parErr === true && value === "="){ scrollEnd(); return }
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
 
@@ -37,18 +43,17 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
 
     if (
       value === "=" &&
+      splitted.filter((e: any) => e === "(").length !== // STOP IF ((( AND ))) AMOUNT ARE UNEQUAL
+      splitted.filter((e: any) => e === ")").length
+    ) { setParErr(true); scrollEnd(); return }
+
+    if (
+      value === "=" &&
       splitted.indexOf("x") === -1 &&
       splitted.indexOf("/") === -1 &&
       splitted.indexOf("+") === -1 &&
       splitted.indexOf("-") === -1
-    ) return // STOP IF "=" IS PRESSED & INPUT DONT HAVE x / + or -
-
-    if (
-      value === "=" &&
-      splitted.filter((e: any) => e === "(").length !== // STOP IF ((( AND ))) AMOUNT ARE UNEQUAL
-      splitted.filter((e: any) => e === ")").length
-    ) { setParErr(true); return }
-
+    ) { scrollEnd(); return } // STOP IF "=" IS PRESSED & INPUT DONT HAVE x / + or -
 
     if (value === "B") { // Backspace
       if (input.slice(-3) === " x " || // if last input is an operator: "123 + "
@@ -78,17 +83,17 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
       value === "-" ||
       value === ")" ||
       value === "." ) // STOP IF ATTEMPT + AND + (REPEATED OPERATORS)
-    ) return
+    ) { scrollEnd(); return }
 
     if (
       input.slice(-1) === ")" &&
       value === "."
-    ) return // STOP IF ATTEMPT ).
+    ) { scrollEnd(); return } // STOP IF ATTEMPT ).
 
     if (
       input.slice(-1) === "." &&
       isNaN(parseInt(value))
-    ) return // STOP IF ATTEMPT .. or .( or .x
+    ) { scrollEnd(); return } // STOP IF ATTEMPT .. or .( or .x
 
     if (
       (!isNaN(parseInt(input[input.length - 1])) &&
@@ -96,14 +101,14 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
       input[input.length - 3] === "." &&
       !isNaN(parseInt(input[input.length - 4]))) &&
       (!isNaN(parseInt(value)) || value === ".")
-    ) return // STOP IF ATTEMPT 3.999 or 3.77. (floating point number > 2)
+    ) { scrollEnd(); return } // STOP IF ATTEMPT 3.999 or 3.77. (floating point number > 2)
 
     if (
       (!isNaN(parseInt(input[input.length - 1])) &&
       input[input.length - 2] === "." &&
       !isNaN(parseInt(input[input.length - 3]))) &&
       value === "."
-    ) return // STOP IF ATTEMPT 3.9.
+    ) { scrollEnd(); return } // STOP IF ATTEMPT 3.9.
 
     if (input.length === 0) {
       if (
@@ -119,17 +124,17 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
     if (
       input.slice(-1) === ")" &&
       value === "("
-    ) return // STOP IF ATTEMPT )(
+    ) { scrollEnd(); return } // STOP IF ATTEMPT )(
 
     if (
       input.slice(-1) === ")" &&
       (!isNaN(parseInt(value)) || value === "N")
-    ) return // STOP IF ATTEMPT )9 or )N
+    ) { scrollEnd(); return } // STOP IF ATTEMPT )9 or )N
 
     if (
       !isNaN(parseInt(input.slice(-1))) && // last input is a number
       (value === "(" || value === "N")
-    ) return // STOP IF ATTEMPT 9( or 9N
+    ) { scrollEnd(); return } // STOP IF ATTEMPT 9( or 9N
 
     if (
       input.slice(-1) === "N" && // N = negative value
@@ -141,7 +146,7 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
       value === "(" ||
       value === ")" ||
       value === "N")
-    ) return // STOP IF ATTEMPT N+
+    ) { scrollEnd(); return } // STOP IF ATTEMPT N+
 
 
     if (
@@ -153,13 +158,13 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
       input.slice(-1) === "N" ||
       input.length === 0) &&
       value === "="
-    ) return // STOP IF ATTEMPT N= or += or ""=
+    ) { scrollEnd(); return } // STOP IF ATTEMPT N= or += or ""=
 
     /// -----------> END STOPPERS <----------- ///
 
     /// -----------> BEGIN CALC <----------- ///
 
-    if (value === "=") { Adder({ input, setParErr }); return }
+    if (value === "=") { Adder({ scrollEnd, input, setParErr }); return }
 
     /// -----------> END CALC <----------- ///
 
@@ -178,7 +183,7 @@ export function OwnButton({ value, input, setInput, setResPressed, resPressed, a
 
   return (
     <Text
-      onPress={() => handlePress()}
+      onPress={() => handlePress() }
       style={[ smaller ? s.ownButtonSmaller : s.ownButton ]}
       adjustsFontSizeToFit={true}
       numberOfLines={1}

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+//import type { MutableRefObject } from 'react';
 import {
   TouchableOpacity,
   Pressable,
@@ -34,39 +35,75 @@ const [ resPressed, setResPressed ] = useState(false);
 //   else arr1.push(e)
 // })
 
-
+useEffect(() => {
+  scrollEnd()
+}, [input])
 
   //console.log("arr1:", arr1)
   //console.log("arr5:", arr5)
   //console.log("INPUT:", input)
 
+  //const scrollRef = useRef();
+
+  // const onPressTouch = () => {
+  //   scrollRef.current?.scrollTo({
+  //     x: 0,
+  //     animated: true,
+  //   });
+  // }
+
+  //const scrollRef = useRef(null);
+  const scrollRef = React.createRef<ScrollView>();
+
+  const scrollEnd = () => {
+    //if (scrollRef.current !== null) (scrollRef.current as any).scrollToEnd({ animated: true })
+    //if (scrollRef.current !== null) scrollRef.current.scrollToEnd({ animated: true })
+      scrollRef.current?.scrollToEnd({ animated: false })
+      
+    
+
+  }
+
   return (
     <View style={[s.background]}>
       <View style={[s.contour]}>
         { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
-        {/* <Text style={s.parErr}>CHECK PARENTHESIS</Text> */}
-        <Text style={[s.result]}>{ input.replaceAll(/N/g,"-") }</Text>
-        <OwnButton input={input} setInput={setInput} value="(" setParErr={setParErr} smaller={true} />
-        <OwnButton input={input} setInput={setInput} value=")" setParErr={setParErr} smaller={true} />
-        <OwnButton input={input} setInput={setInput} value="C" setParErr={setParErr} smaller={true} setResPressed={setResPressed} />
-        <OwnButton input={input} setInput={setInput} value="N" setParErr={setParErr} smaller={true} />
-        <OwnButton input={input} setInput={setInput} value="B" setParErr={setParErr} smaller={true} />
-        <OwnButton input={input} setInput={setInput} value="7" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="8" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="9" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="X" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="4" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="5" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="6" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="-" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="1" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="2" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="3" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="+" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="/" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="0" setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="." setParErr={setParErr} />
-        <OwnButton input={input} setInput={setInput} value="=" setParErr={setParErr} setResPressed={setResPressed} />
+        <View style={[s.displayContainer]}>
+          <ScrollView
+            overScrollMode="never"
+            //ref={scrollRef}
+            ref={scrollRef}
+            //onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: false })}
+            //onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: false })}
+            // bounces={false}
+            // bouncesZoom={false}
+            horizontal={true}
+            //automaticallyAdjustContentInsets={true}
+          >
+            <Text style={[s.mainResult]}>{ input.replaceAll(/N/g,"-") }</Text>
+          </ScrollView>
+        </View>
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="(" setParErr={setParErr} smaller={true} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value=")" setParErr={setParErr} smaller={true} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="C" setParErr={setParErr} smaller={true} setResPressed={setResPressed} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="N" setParErr={setParErr} smaller={true} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="B" setParErr={setParErr} smaller={true} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="7" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="8" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="9" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="X" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="4" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="5" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="6" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="-" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="1" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="2" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="3" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="+" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="/" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="0" setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="." setParErr={setParErr} />
+        <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="=" setParErr={setParErr} parErr={parErr} setResPressed={setResPressed} />
       </View>
     </View>
   );
