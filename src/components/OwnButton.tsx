@@ -20,10 +20,11 @@ interface OwnButtonI {
   arr1?: any,
   arr5?: any,
   smaller?: boolean,
-  setParErr?: any
+  setParErr?: any,
+  setSecInput?: any,
 };
 
-export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPressed, resPressed, arr1, arr5, smaller, setParErr }: OwnButtonI): React.JSX.Element {
+export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPressed, resPressed, arr1, arr5, smaller, setParErr, setSecInput }: OwnButtonI): React.JSX.Element {
   async function handlePress() {
 
     /* scrollEnd() */
@@ -31,7 +32,7 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
     //onPress()
     //scrollEnd()
 
-    if (parErr === true && value === "="){ scrollEnd(); return }
+    if (parErr === true && value === "="){ scrollEnd(); return } // STOP IF PARENTHESIS ERROR IS DISPLAYED & ATTEMPT "="
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
 
@@ -164,7 +165,7 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
 
     /// -----------> BEGIN CALC <----------- ///
 
-    if (value === "=") { Adder({ scrollEnd, input, setParErr }); return }
+    if (value === "=") { Adder({ scrollEnd, input, setInput, setSecInput, setParErr }); return }
 
     /// -----------> END CALC <----------- ///
 
