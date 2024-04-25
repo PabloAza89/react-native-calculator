@@ -1,13 +1,17 @@
 
 interface AdderI {
-  scrollEnd?: any,
   input?: any,
   setParErr?: any
 }
 
-export function Adder({ scrollEnd, input, setParErr }: AdderI) {
+//export function Adder({ input, setParErr }: AdderI) {
 
-  let init = input.replace(/ /g,'').split("") // OK
+  //let init = input.replace(/ /g,'').split("") // OK
+  //let init = "20)x(3+(2)".replace(/ /g,'').split("") // OK FIRST LEVEL ERROR
+  //let init = "(2x3)/2)+(2".replace(/ /g,'').split("") // OK SECOND LEVEL ERROR
+  //let init = "((2x3)/2))+(2".replace(/ /g,'').split("") // OK THIRD LEVEL ERROR
+  let init = "((((2 x 3)/2)))) + (2".replace(/ /g,'').split("") // OK MANY LEVEL ERROR
+  
 
   /// -----------> BEGIN NEGATIVE & FLOATING POINT PARSER <----------- ///
 
@@ -67,23 +71,25 @@ export function Adder({ scrollEnd, input, setParErr }: AdderI) {
       toDo.splice(0, 1) // Delete open ( ToDo
       toDo.splice(-1, 1) // Delete close ) ToDo
     }
-    else if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
-      //console.log("ERROR ENTRO EN ESTE 2");
-      setParErr(true); return
-    }
+    // else if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
+    //   console.log("ERROR ENTRO EN ESTE 2");
+    //   return;
+    //   //setParErr(true); return
+    // }
   }
 
   updateParenthesis()
+
+  if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
+    console.log("ERROR ENTRO EN ESTE 2");
+    return;
+    //setParErr(true); return
+  }
 
   // if (openPar === -1 && closePar === -1 && parsed.indexOf("x") === -1 && parsed.indexOf("/") === -1 && parsed.indexOf("+") === -1 && parsed.indexOf("-") === -1) {
   //   console.log("entro en este otro")
   //   return
   // }
-  if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
-    // console.log("ERROR ENTRO EN ESTE 2");
-    // return;
-    setParErr(true); scrollEnd(); return
-  }
 
   let foundMul: any;
   let foundDiv: any;
@@ -168,9 +174,9 @@ export function Adder({ scrollEnd, input, setParErr }: AdderI) {
       parsed.splice(openPar, 0, innerToDo)
       updateParenthesis()
       if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
-        // console.log("ERROR ENTRO EN ESTE 2");
-        // return;
-        setParErr(true); scrollEnd(); return
+        console.log("ERROR ENTRO EN ESTE 2");
+        return;
+        //setParErr(true); return
       }
       updateOperators()
       index = 1
@@ -179,9 +185,9 @@ export function Adder({ scrollEnd, input, setParErr }: AdderI) {
       parsed.splice(openPar, 0, toDo[0])
       updateParenthesis()
       if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
-        // console.log("ERROR ENTRO EN ESTE 2");
-        // return;
-        setParErr(true); scrollEnd(); return
+        console.log("ERROR ENTRO EN ESTE 2");
+        return;
+        //setParErr(true); return
       }
       updateOperators()
       index = 1
@@ -199,4 +205,7 @@ export function Adder({ scrollEnd, input, setParErr }: AdderI) {
   console.log("Parsed End", parsed[0])
   
 
-}
+//}
+
+
+export {}
