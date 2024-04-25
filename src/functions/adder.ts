@@ -2,10 +2,12 @@
 interface AdderI {
   scrollEnd?: any,
   input?: any,
+  setInput?: any,
+  setSecInput?: any,
   setParErr?: any
 }
 
-export function Adder({ scrollEnd, input, setParErr }: AdderI) {
+export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) {
 
   let init = input.replace(/ /g,'').split("") // OK
 
@@ -43,12 +45,12 @@ export function Adder({ scrollEnd, input, setParErr }: AdderI) {
       else openPar--
     }
 
-    console.log("openPar === -1", openPar)
-    console.log("closePar === -1", closePar)
-    console.log(parsed.indexOf("x"))
-    console.log(parsed.indexOf("/"))
-    console.log(parsed.indexOf("+"))
-    console.log(parsed.indexOf("-"))
+    // console.log("openPar === -1", openPar)
+    // console.log("closePar === -1", closePar)
+    // console.log(parsed.indexOf("x"))
+    // console.log(parsed.indexOf("/"))
+    // console.log(parsed.indexOf("+"))
+    // console.log(parsed.indexOf("-"))
 
     //console.log()
 
@@ -58,11 +60,11 @@ export function Adder({ scrollEnd, input, setParErr }: AdderI) {
       parsed.push(")") // ADD PARENTHESIS AT END // TODO
       openPar = 0;
       closePar = parsed.length - 1
-      console.log("entro aca")
+      //console.log("entro aca")
     }
 
     if (openPar !== -1 && closePar !== -1) { // FOUND OPEN & CLOSE TAG
-      console.log("toDo", toDo)
+      //console.log("toDo", toDo)
       toDo = parsed.splice(openPar, closePar - (openPar - 1)) // Extract toDo from Main (init)
       toDo.splice(0, 1) // Delete open ( ToDo
       toDo.splice(-1, 1) // Delete close ) ToDo
@@ -106,7 +108,7 @@ export function Adder({ scrollEnd, input, setParErr }: AdderI) {
   function updateOperators() { // firstOp & secOp
     //console.log("AA", toDo.indexOf("x"))
     
-      console.log("BB", toDo)
+      //console.log("BB", toDo)
       foundMul = toDo && toDo.indexOf("x") // UPDATE x INDEX
       foundDiv = toDo && toDo.indexOf("/") // UPDATE / INDEX
       if (foundMul < foundDiv && foundMul > 0 || foundMul > 0 && foundDiv === -1) firstOp = "x"
@@ -197,6 +199,6 @@ export function Adder({ scrollEnd, input, setParErr }: AdderI) {
   //console.log("integer", integer)
   //console.log("TODO END", toDo)
   console.log("Parsed End", parsed[0])
-  
+  console.log("END REACHED")
 
 }

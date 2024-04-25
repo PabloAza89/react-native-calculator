@@ -35,30 +35,28 @@ export const s = StyleSheet.create({
     height: opw * 20,
     borderColor: 'darkblue',
     fontSize: 30,
-    /* textAlign: 'right',
-    textAlignVertical: 'center', */
-    /* alignContent: 'center', */
-    /* paddingLeft: 10,
-    paddingRight: 10, */
-    /* justifyContent: 'flex-start' */
-    justifyContent: 'center',
-    /* alignItems: 'center', */
     alignItems: 'flex-end',
-    overflow: 'scroll',
-    /* flex: 1 */
-    /* overflow: 'scroll' */
+    justifyContent: 'center'
   },
   mainResult: {
     backgroundColor: 'burlywood',
     /* width: opw * 82, */
-    height: opw * 10,
+    height: opw * 8,
+    lineHeight: opw * 8,
     borderColor: 'darkblue',
     fontSize: 30,
     textAlign: 'right',
     textAlignVertical: 'center',
-    /* paddingLeft: 10,
-    paddingRight: 10, */
-    /* overflow: 'scroll' */
+  },
+  secondaryResult: {
+    backgroundColor: 'lightgreen',
+    /* width: opw * 82, */
+    height: opw * 6,
+    lineHeight: opw * 6,
+    borderColor: 'darkblue',
+    fontSize: 17,
+    textAlign: 'right',
+    textAlignVertical: 'center',
   },
   mid: {
     backgroundColor: 'aqua',
