@@ -38,7 +38,7 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
 
     /// -----------> BEGIN STOPPERS <----------- ///
 
-    if (value === "C") { setInput(""); return } // CLEAR INPUT AND STOP
+    if (value === "C") { setInput(""); setSecInput(""); return } // CLEAR INPUT AND STOP
 
     let splitted = input.replace(/ /g,'').split("") // OK
 
@@ -61,13 +61,15 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
         input.slice(-3) === " / " ||
         input.slice(-3) === " + " ||
         input.slice(-3) === " - ") {
-        setInput(input.slice(0,-3))
+        setInput(input.slice(0,-3));
+        setSecInput("");
         return
       } else { // else
-        let seqOne = input.split("")
-        seqOne.pop()
-        let seqTwo = seqOne.join("")
-        setInput(seqTwo)
+        let seqOne = input.split("");
+        seqOne.pop();
+        let seqTwo = seqOne.join("");
+        setInput(seqTwo);
+        setSecInput("");
         return
       }
     } // EDIT PREVIOUS INPUT AND STOP
@@ -102,7 +104,7 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
       input[input.length - 3] === "." &&
       !isNaN(parseInt(input[input.length - 4]))) &&
       (!isNaN(parseInt(value)) || value === ".")
-    ) { scrollEnd(); return } // STOP IF ATTEMPT 3.999 or 3.77. (floating point number > 2)
+    ) { scrollEnd(); console.log("ABC"); return } // STOP IF ATTEMPT 3.999 or 3.77. (floating point number > 2)
 
     if (
       (!isNaN(parseInt(input[input.length - 1])) &&
@@ -171,11 +173,11 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
 
     /// -----------> BEGIN INPUT UPDATE <----------- ///
 
-    if (value === "X") setInput((prev: any) => prev + " x ") // set operator with spaces
-    else if (value === "/") setInput((prev: any) => prev + " / ") // set operator with spaces
-    else if (value === "+") setInput((prev: any) => prev + " + ") // set operator with spaces
-    else if (value === "-") setInput((prev: any) => prev + " - ") // set operator with spaces
-    else setInput((prev: any) => prev + value)
+    if (value === "X") { setInput((prev: any) => prev + " x "); setSecInput("") } // set operator with spaces
+    else if (value === "/") { setInput((prev: any) => prev + " / "); setSecInput("") } // set operator with spaces
+    else if (value === "+") { setInput((prev: any) => prev + " + "); setSecInput("") } // set operator with spaces
+    else if (value === "-") { setInput((prev: any) => prev + " - "); setSecInput("") } // set operator with spaces
+    else { setInput((prev: any) => prev + value); setSecInput("") }
 
     /// -----------> END INPUT UPDATE <----------- ///
 

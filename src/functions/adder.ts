@@ -9,14 +9,20 @@ interface AdderI {
 
 export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) {
 
-  let init = input.replace(/ /g,'').split("") // OK
+  //let init = input.replace(/ /g,'').split("") // OK
+  let init = input.split("") // OK
+  //let init = "-3059.2703999999994 + 1".split("") // OK
+  
+
+  console.log("input arriba:", input)
 
   /// -----------> BEGIN NEGATIVE & FLOATING POINT PARSER <----------- ///
 
   let parsed: any[] = []
 
   init.forEach((e: any, i: any) => { // ADD 'N37' or '99' or '7.32' JOINED, ELSE PUSH x ALONE
-    if (
+    if (e === " ") return
+    else if (
       (init[i - 1] === "N" || init[i - 1] === "." || !isNaN(parseInt(init[i - 1]))) &&
       (!isNaN(parseInt(e)) || e === ".")
     ) parsed[parsed.length - 1] = parsed[parsed.length - 1].concat(e)
@@ -26,6 +32,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   parsed.forEach((e, i) => { // N95 => -1 * 95 // NEGATIVE PARSER
     if (e.slice(0, 1) === "N") parsed[i] = -1 * parseFloat(e.slice(1, e.length))
   })
+
+  console.log("PARSED FLOATING", parsed)
 
   /// -----------> END NEGATIVE & FLOATING POINT PARSER <----------- ///
 
@@ -92,6 +100,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   let firstOp: any;
 
   let opOne: any = { // operation One // x or /
+    // 'x': function(a: any, b: any) { return (parseFloat(a) * parseFloat(b)).toFixed(2) },
+    // '/': function(a: any, b: any) { return (parseFloat(a) / parseFloat(b)).toFixed(2) }
     'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) },
     '/': function(a: any, b: any) { return parseFloat(a) / parseFloat(b) }
   };
@@ -129,8 +139,6 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   //if (toDo !== undefined) updateOperators()
   //if (openPar !== -1 && openPar !== -1) updateOperators()
   updateOperators()
-    
-  
 
   while (parsed.length !== 1) {
 
@@ -198,7 +206,17 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   //console.log("float", float % 10)
   //console.log("integer", integer)
   //console.log("TODO END", toDo)
-  console.log("Parsed End", parsed[0])
+
+  
+  //setSecInput(input)
+  //setInput(parsed[0])
+  console.log("input abajo:", input)
+  
+  setSecInput(input)
+  if (parsed[0] !== undefined) setInput(parsed[0].toString())
+  //setInput(parsed[0].toString())
+
+  console.log("Final result:", parsed[0])
   console.log("END REACHED")
 
 }
