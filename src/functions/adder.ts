@@ -100,10 +100,10 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   let firstOp: any;
 
   let opOne: any = { // operation One // x or /
-    // 'x': function(a: any, b: any) { return (parseFloat(a) * parseFloat(b)).toFixed(2) },
-    // '/': function(a: any, b: any) { return (parseFloat(a) / parseFloat(b)).toFixed(2) }
-    'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) },
-    '/': function(a: any, b: any) { return parseFloat(a) / parseFloat(b) }
+    'x': function(a: any, b: any) { return (parseFloat(a) * parseFloat(b)).toFixed(4) },
+    '/': function(a: any, b: any) { return (parseFloat(a) / parseFloat(b)).toFixed(4) }
+    // 'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) },
+    // '/': function(a: any, b: any) { return parseFloat(a) / parseFloat(b) }
   };
 
   let foundPlus: any;
@@ -111,8 +111,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   let secOp: any;
 
   let opTwo: any = { // operation Two // + or -
-    '+': function(a: any, b: any) { return parseFloat(a) + parseFloat(b) },
-    '-': function(a: any, b: any) { return parseFloat(a) - parseFloat(b) }
+    '+': function(a: any, b: any) { return (parseFloat(a) + parseFloat(b)).toFixed(4) },
+    '-': function(a: any, b: any) { return (parseFloat(a) - parseFloat(b)).toFixed(4) }
   };
 
   function updateOperators() { // firstOp & secOp
