@@ -9,31 +9,33 @@ interface AdderI {
 
 export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) {
 
-  //let init = input.replace(/ /g,'').split("") // OK
-  let init = input.split("") // OK
+  let init = input.replace(/ /g,'').split("") // OK
+  //let init = input.split("") // OK
   //let init = "-3059.2703999999994 + 1".split("") // OK
   
 
-  console.log("input arriba:", input)
+  console.log("INPUT:", input)
 
   /// -----------> BEGIN NEGATIVE & FLOATING POINT PARSER <----------- ///
 
   let parsed: any[] = []
 
   init.forEach((e: any, i: any) => { // ADD 'N37' or '99' or '7.32' JOINED, ELSE PUSH x ALONE
-    if (e === " ") return
-    else if (
+    /* if (e === " ") return
+    else  */if (
       (init[i - 1] === "N" || init[i - 1] === "." || !isNaN(parseInt(init[i - 1]))) &&
       (!isNaN(parseInt(e)) || e === ".")
     ) parsed[parsed.length - 1] = parsed[parsed.length - 1].concat(e)
     else parsed.push(e)
   })
 
+  console.log("FIRST PARSING:", parsed)
+
   parsed.forEach((e, i) => { // N95 => -1 * 95 // NEGATIVE PARSER
     if (e.slice(0, 1) === "N") parsed[i] = -1 * parseFloat(e.slice(1, e.length))
   })
 
-  console.log("PARSED FLOATING", parsed)
+  console.log("SECOND PARSING:", parsed)
 
   /// -----------> END NEGATIVE & FLOATING POINT PARSER <----------- ///
 
@@ -97,10 +99,10 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
 
   let foundMul: any;
   let foundDiv: any;
-  let firstOp: any;
+  let firOp: any;
 
-  let opOne: any = { // operation One // x or /
-    'x': function(a: any, b: any) { return (parseFloat(a) * parseFloat(b)).toFixed(4) },
+  let opOne: any = { // OPERATION ONE ==> x OR /
+    'x': function(a: any, b: any) { return (parseFloat(a) * parseFloat(b)).toFixed(4) }, // DECIMAL LIMITED TO 4 PLACES === 10 THOUSANDTHS
     '/': function(a: any, b: any) { return (parseFloat(a) / parseFloat(b)).toFixed(4) }
     // 'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) },
     // '/': function(a: any, b: any) { return parseFloat(a) / parseFloat(b) }
@@ -110,20 +112,20 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   let foundMin: any;
   let secOp: any;
 
-  let opTwo: any = { // operation Two // + or -
+  let opTwo: any = { // OPERATION ONE ==> + OR -
     '+': function(a: any, b: any) { return (parseFloat(a) + parseFloat(b)).toFixed(4) },
     '-': function(a: any, b: any) { return (parseFloat(a) - parseFloat(b)).toFixed(4) }
   };
 
-  function updateOperators() { // firstOp & secOp
+  function updateOperators() { // firOp & secOp
     //console.log("AA", toDo.indexOf("x"))
     
       //console.log("BB", toDo)
       foundMul = toDo && toDo.indexOf("x") // UPDATE x INDEX
       foundDiv = toDo && toDo.indexOf("/") // UPDATE / INDEX
-      if (foundMul < foundDiv && foundMul > 0 || foundMul > 0 && foundDiv === -1) firstOp = "x"
-      if (foundDiv < foundMul && foundDiv > 0 || foundDiv > 0 && foundMul === -1) firstOp = "/"
-      if (foundMul === -1 && foundDiv === -1) firstOp = undefined;
+      if (foundMul < foundDiv && foundMul > 0 || foundMul > 0 && foundDiv === -1) firOp = "x"
+      if (foundDiv < foundMul && foundDiv > 0 || foundDiv > 0 && foundMul === -1) firOp = "/"
+      if (foundMul === -1 && foundDiv === -1) firOp = undefined;
 
       foundPlus = toDo && toDo.indexOf("+") // UPDATE + INDEX
       foundMin = toDo && toDo.indexOf("-") // UPDATE - INDEX
@@ -147,16 +149,16 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
     if (toDo !== undefined && // DO ALL x OR /
       toDo[index - 1] !== undefined &&
       !isNaN(parseFloat(toDo[index - 1])) &&
-      toDo[index] === firstOp &&
+      toDo[index] === firOp &&
       !isNaN(parseFloat(toDo[index + 1]))
     ) {
-      innerToDo = opOne[firstOp](toDo[index - 1], toDo[index + 1])
+      innerToDo = opOne[firOp](toDo[index - 1], toDo[index + 1])
       toDo.splice(index - 1, 3)
       toDo.splice(index - 1, 0, innerToDo)
       index = 1
     }
     else if (toDo !== undefined && // DO ALL + OR -
-      firstOp === undefined &&
+      firOp === undefined &&
       toDo[index - 1] !== undefined &&
       !isNaN(parseFloat(toDo[index - 1])) &&
       toDo[index] === secOp &&
@@ -172,9 +174,9 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       index++
     }
 
-    updateOperators() // firstOp & secOp
+    updateOperators() // firOp & secOp
 
-    if (toDo !== undefined && parsed.length !== 1 && firstOp === undefined && secOp === undefined && toDo.length !== 1) {
+    if (toDo !== undefined && parsed.length !== 1 && firOp === undefined && secOp === undefined && toDo.length !== 1) {
       parsed.splice(openPar, 0, innerToDo)
       updateParenthesis()
       if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
@@ -210,10 +212,40 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   
   //setSecInput(input)
   //setInput(parsed[0])
-  console.log("input abajo:", input)
+  //console.log("input abajo:", input)
   
   setSecInput(input)
-  if (parsed[0] !== undefined) setInput(parsed[0].toString())
+  //setInput(parseFloat(parsed[0]).toString()) // parsed[0] CAN BE NUMBER OR STRING // parseFloat REMOVES EXTRA 00
+  //if (parsed[0] !== undefined) setInput(parsed[0].toString())
+
+  let resultToArray = parsed[0].toString().split("")
+  //let stringify = parsed[0].toString()
+  if (resultToArray[0] === "-") {
+    let splitted = parseFloat(resultToArray.join("")).toString().split("");
+    splitted.splice(0, 1, "N");
+    setInput(splitted.join(""))
+    console.log("result 1:", splitted.join(""))
+    //stringify.splice(0, 1, "N");
+    
+    //resultToArray.splice(0, 1, "N");
+    //console.log("resultToArray 1:", resultToArray.join(""))
+    //let ActualResultToArray = parseFloat(resultToArray.join(""))
+    //console.log("resultToArray 1", resultToArray.join(""))
+    //setInput(ActualResultToArray.toString())
+    //setInput(resultToArray.join(""))
+    //setInput(parseFloat(resultToArray.join("")).toString())
+  } else {
+    //console.log("resultToArray 2:", resultToArray.join(""))
+    //let ActualResultToArray = parseFloat(resultToArray.join(""))
+    //console.log("resultToArray 2", resultToArray.join(""))
+    //setInput(ActualResultToArray.toString())
+    setInput(parseFloat(resultToArray.join("")).toString())
+
+    //setInput(resultToArray.join(""))
+    //console.log("resultToArray 2", resultToArray.join(""))
+    //setInput(parseFloat(resultToArray.join("")).toString())
+  }
+
   //setInput(parsed[0].toString())
 
   console.log("Final result:", parsed[0])
