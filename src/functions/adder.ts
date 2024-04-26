@@ -103,8 +103,10 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   let firOp: any;
 
   let opOne: any = { // OPERATION ONE ==> x OR /
-    'x': function(a: any, b: any) { return (parseFloat(a) * parseFloat(b)).toFixed(4) }, // DECIMAL LIMITED TO 4 PLACES === 10 THOUSANDTHS
-    '/': function(a: any, b: any) { return (parseFloat(a) / parseFloat(b)).toFixed(4) }
+    'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) }, // DECIMAL LIMITED TO 4 PLACES === 10 THOUSANDTHS
+    '/': function(a: any, b: any) { return parseFloat(a) / parseFloat(b) }
+    // 'x': function(a: any, b: any) { return (parseFloat(a) * parseFloat(b)).toFixed(4) }, // DECIMAL LIMITED TO 4 PLACES === 10 THOUSANDTHS
+    // '/': function(a: any, b: any) { return (parseFloat(a) / parseFloat(b)).toFixed(4) }
     // 'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) },
     // '/': function(a: any, b: any) { return parseFloat(a) / parseFloat(b) }
   };
@@ -114,8 +116,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   let secOp: any;
 
   let opTwo: any = { // OPERATION ONE ==> + OR -
-    '+': function(a: any, b: any) { return (parseFloat(a) + parseFloat(b)).toFixed(4) },
-    '-': function(a: any, b: any) { return (parseFloat(a) - parseFloat(b)).toFixed(4) }
+    '+': function(a: any, b: any) { return parseFloat(a) + parseFloat(b) },
+    '-': function(a: any, b: any) { return parseFloat(a) - parseFloat(b) }
   };
 
   function updateOperators() { // firOp & secOp
