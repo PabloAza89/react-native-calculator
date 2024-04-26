@@ -23,8 +23,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   init.forEach((e: any, i: any) => { // ADD 'N37' or '99' or '7.32' JOINED, ELSE PUSH x ALONE
     /* if (e === " ") return
     else  */if (
-      (init[i - 1] === "N" || init[i - 1] === "." || !isNaN(parseInt(init[i - 1]))) &&
-      (!isNaN(parseInt(e)) || e === ".")
+      (init[i - 1] === "N" || init[i - 1] === "." || !isNaN(parseInt(init[i - 1])) || init[i - 1] === "e" || (init[i - 2] === "e" && init[i - 1] === "+") || (init[i - 2] === "e" && init[i - 1] === "-")) &&
+      (!isNaN(parseInt(e)) || e === "." || e === "e" || (init[i - 1] === "e" && e === "+") || (init[i - 1] === "e" && e === "-"))
     ) parsed[parsed.length - 1] = parsed[parsed.length - 1].concat(e)
     else parsed.push(e)
   })
@@ -36,6 +36,7 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   })
 
   console.log("SECOND PARSING:", parsed)
+  //return // DEV
 
   /// -----------> END NEGATIVE & FLOATING POINT PARSER <----------- ///
 
