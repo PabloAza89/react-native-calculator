@@ -218,38 +218,50 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   //console.log("input abajo:", input)
   
   setSecInput(input)
-  //setInput(parseFloat(parsed[0]).toString()) // parsed[0] CAN BE NUMBER OR STRING // parseFloat REMOVES EXTRA 00
-  //if (parsed[0] !== undefined) setInput(parsed[0].toString())
 
-  let resultToArray = parsed[0].toString().split("")
-  //let stringify = parsed[0].toString()
-  if (resultToArray[0] === "-") {
-    let splitted = parseFloat(resultToArray.join("")).toString().split("");
-    splitted.splice(0, 1, "N");
-    setInput(splitted.join(""))
-    console.log("result 1:", splitted.join(""))
-    //stringify.splice(0, 1, "N");
+  let resultToArray = parsed[0].toString().split("") // parsed[0] CAN BE NUMBER OR STRING // parseFloat REMOVES EXTRA 00
+
+
+
+  //if (resultToArray.includes("e")) {
+    //resultToArray.join("")
+
+  //} else 
+
+  // if (resultToArray.includes("e")) {
+
+  // }
+  
+  if (!resultToArray.includes("e")) { // LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS NOT IN SCIENTIFIC NOTATION
+    //let target = resultToArray.filter((e: any) => e !== "-" && e !== ".")
+    let target = resultToArray.filter((e: any) => e !== "-")
+    if (target.length > 16) {
+      let parsed = parseInt(target.slice(0, 8).join(""))
+    } else {
+      resultToArray = parseFloat(parseFloat(resultToArray.join("")).toFixed(4)).toString().split("")
+    }
     
-    //resultToArray.splice(0, 1, "N");
-    //console.log("resultToArray 1:", resultToArray.join(""))
-    //let ActualResultToArray = parseFloat(resultToArray.join(""))
-    //console.log("resultToArray 1", resultToArray.join(""))
-    //setInput(ActualResultToArray.toString())
-    //setInput(resultToArray.join(""))
-    //setInput(parseFloat(resultToArray.join("")).toString())
-  } else {
-    //console.log("resultToArray 2:", resultToArray.join(""))
-    //let ActualResultToArray = parseFloat(resultToArray.join(""))
-    //console.log("resultToArray 2", resultToArray.join(""))
-    //setInput(ActualResultToArray.toString())
-    setInput(parseFloat(resultToArray.join("")).toString())
 
-    //setInput(resultToArray.join(""))
-    //console.log("resultToArray 2", resultToArray.join(""))
-    //setInput(parseFloat(resultToArray.join("")).toString())
-  }
+    
+  } // ELSE DON'T LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS IN SCIENTIFIC NOTATION
+
+  // else {
+  //   setInput(parseFloat(resultToArray.join("")).toString())
+  // }
 
   //setInput(parsed[0].toString())
+
+  // a lo ultimo
+
+  if (resultToArray[0] === "-") {
+    //let splitted = parseFloat(resultToArray.join("")).toString().split("");
+    //splitted.splice(0, 1, "N");
+    //setInput(splitted.join(""))
+    resultToArray.splice(0, 1, "N")
+  }
+
+  //setInput(splitted.join(""))
+  setInput(resultToArray.join(""))
 
   console.log("Final result:", parsed[0])
   console.log("END REACHED")
