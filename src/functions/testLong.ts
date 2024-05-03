@@ -1,20 +1,15 @@
+import { createIconSetFromFontello } from "@expo/vector-icons"
 
-interface AdderI {
-  scrollEnd?: any,
-  input?: any,
-  setInput?: any,
-  setSecInput?: any,
-  setParErr?: any
-}
+  //let init = input.replace(/ /g,'').split("") // OK
+  //let init = "10003400000000.12+0.11".replace(/ /g,'').split("") // OK
+  //let init = "10000000003400000000.12+0.11".replace(/ /g,'').split("") // OK
+  //let init = "(104043257603400000000.12+0.11)xN1".replace(/ /g,'').split("") // OK
+  let init = "(100003000000000.12+0.11)xN23.87".replace(/ /g,'').split("") //
+  //let init = "".replace(/ /g,'').split("") //
+  //let init = "".replace(/ /g,'').split("") //
+  //let init = "".replace(/ /g,'').split("") //
 
-export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) {
-
-  let init = input.replace(/ /g,'').split("") // OK
-  //let init = input.split("") // OK
-  //let init = "-3059.2703999999994 + 1".split("") // OK
-  
-
-  console.log("INPUT:", input)
+  //console.log("INPUT:", input)
 
   /// -----------> BEGIN NEGATIVE & FLOATING POINT PARSER <----------- ///
 
@@ -82,7 +77,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
     }
     else if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
       //console.log("ERROR ENTRO EN ESTE 2");
-      setParErr(true); return
+      //setParErr(true); return
+      console.log("ERROR PARENTHESIS")
     }
   }
 
@@ -95,7 +91,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
     // console.log("ERROR ENTRO EN ESTE 2");
     // return;
-    setParErr(true); scrollEnd(); return
+    //setParErr(true); scrollEnd(); return
+    console.log("ERROR PARENTHESIS")
   }
 
   let foundMul: any;
@@ -185,7 +182,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
         // console.log("ERROR ENTRO EN ESTE 2");
         // return;
-        setParErr(true); scrollEnd(); return
+        //setParErr(true); scrollEnd(); return
+        console.log("ERROR PARENTHESIS")
       }
       updateOperators()
       index = 1
@@ -196,7 +194,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
         // console.log("ERROR ENTRO EN ESTE 2");
         // return;
-        setParErr(true); scrollEnd(); return
+        //setParErr(true); scrollEnd(); return
+        console.log("ERROR PARENTHESIS")
       }
       updateOperators()
       index = 1
@@ -217,7 +216,7 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   //setInput(parsed[0])
   //console.log("input abajo:", input)
   
-  setSecInput(input)
+  //setSecInput(input)
 
   let resultToArray = parsed[0].toString().split("") // parsed[0] CAN BE NUMBER OR STRING // parseFloat REMOVES EXTRA 00
 
@@ -234,14 +233,24 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   
   if (!resultToArray.includes("e")) { // LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS NOT IN SCIENTIFIC NOTATION
     //let target = resultToArray.filter((e: any) => e !== "-" && e !== ".")
-    let target = resultToArray.filter((e: any) => e !== "-")
+    let target = resultToArray.filter((e: any) => e !== "-") // DOT IS TREATED AS A MAIN CHARACTER
     if (target.length > 16) {
       //let parsed = parseInt(target.slice(0, 8).join(""))
+      //console.log(resultToArray[0])
+      //if ()
+      let prefix = resultToArray[0]
       let splitted = target.slice(0, 8);
       let indexFound
       for (let i = 7; i >= 0 ; i--) {
         if (splitted[i] !== "0") { indexFound = i; break }
       }
+      console.log(splitted)
+      console.log(indexFound)
+      console.log(target)
+      //console.log((parseFloat((parseFloat(target.join(""))).toFixed(4))).toExponential(indexFound))
+      resultToArray = (parseFloat((parseFloat(target.join(""))).toFixed(4))).toExponential(indexFound).toString().split("")
+      if (prefix === "-") resultToArray.unshift("-")
+
       
     } else {
       resultToArray = parseFloat(parseFloat(resultToArray.join("")).toFixed(4)).toString().split("")
@@ -267,9 +276,10 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   }
 
   //setInput(splitted.join(""))
-  setInput(resultToArray.join(""))
+  //setInput(resultToArray.join(""))
 
   console.log("Final result:", parsed[0])
   console.log("END REACHED")
+  console.log(resultToArray.join(""))
 
-}
+export {}
