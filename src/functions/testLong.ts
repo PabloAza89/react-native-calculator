@@ -4,7 +4,15 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
   //let init = "10003400000000.12+0.11".replace(/ /g,'').split("") // OK
   //let init = "10000000003400000000.12+0.11".replace(/ /g,'').split("") // OK
   //let init = "(104043257603400000000.12+0.11)xN1".replace(/ /g,'').split("") // OK
-  let init = "(100003000000000.12+0.11)xN23.87".replace(/ /g,'').split("") //
+  //let init = "(100003000000000.12+0.11)xN23.87".replace(/ /g,'').split("") //
+  //let init = "(1000030000.12+0.11)xN23.87".replace(/ /g,'').split("") //
+  //let init = "(0.12+0.11)xN23.87".replace(/ /g,'').split("") //
+  //let init = "456456464789742123123123333123123x3".replace(/ /g,'').split("") //
+  let init = "N120002342342342342343242342342342300700003242343243200.12+0.11".replace(/ /g,'').split("") //
+  //let init = "".replace(/ /g,'').split("") //
+  //let init = "".replace(/ /g,'').split("") //
+  //let init = "".replace(/ /g,'').split("") //
+  //let init = "".replace(/ /g,'').split("") //
   //let init = "".replace(/ /g,'').split("") //
   //let init = "".replace(/ /g,'').split("") //
   //let init = "".replace(/ /g,'').split("") //
@@ -231,10 +239,13 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
 
   // }
   
-  if (!resultToArray.includes("e")) { // LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS NOT IN SCIENTIFIC NOTATION
+  //if (!resultToArray.includes("e")) { // LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS NOT IN SCIENTIFIC NOTATION
     //let target = resultToArray.filter((e: any) => e !== "-" && e !== ".")
     let target = resultToArray.filter((e: any) => e !== "-") // DOT IS TREATED AS A MAIN CHARACTER
-    if (target.length > 16) {
+    //if ((parseInt(resultToArray.join("")) > 9 || parseInt(resultToArray.join("")) < -9) && target.length > 16) {
+    //if ((parseInt(resultToArray.join("")) > 9 || parseInt(resultToArray.join("")) < -9) && target.length > 16) {
+    if ((Number(resultToArray.join("")) > 9 || Number(resultToArray.join("")) < -9) && target.length > 16) {
+    //if (true) {
       //let parsed = parseInt(target.slice(0, 8).join(""))
       //console.log(resultToArray[0])
       //if ()
@@ -251,14 +262,10 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
       resultToArray = (parseFloat((parseFloat(target.join(""))).toFixed(4))).toExponential(indexFound).toString().split("")
       if (prefix === "-") resultToArray.unshift("-")
 
-      
     } else {
       resultToArray = parseFloat(parseFloat(resultToArray.join("")).toFixed(4)).toString().split("")
     }
-    
-
-    
-  } // ELSE DON'T LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS IN SCIENTIFIC NOTATION
+  //} // ELSE DON'T LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS IN SCIENTIFIC NOTATION
 
   // else {
   //   setInput(parseFloat(resultToArray.join("")).toString())
@@ -279,7 +286,6 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
   //setInput(resultToArray.join(""))
 
   console.log("Final result:", parsed[0])
-  console.log("END REACHED")
   console.log(resultToArray.join(""))
 
 export {}
