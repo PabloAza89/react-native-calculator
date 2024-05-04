@@ -232,24 +232,32 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
 
   // }
   
-  if (!resultToArray.includes("e")) { // LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS NOT IN SCIENTIFIC NOTATION
+  //if (!resultToArray.includes("e")) { // LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS NOT IN SCIENTIFIC NOTATION
     //let target = resultToArray.filter((e: any) => e !== "-" && e !== ".")
-    let target = resultToArray.filter((e: any) => e !== "-")
-    if (target.length > 16) {
+    let target = resultToArray.filter((e: any) => e !== "-") // DOT IS TREATED AS A MAIN CHARACTER
+    if ((parseInt(resultToArray.join("")) > 9 || parseInt(resultToArray.join("")) < -9) && target.length > 16) {
+    //if (false) {
       //let parsed = parseInt(target.slice(0, 8).join(""))
+      let prefix = resultToArray[0]
       let splitted = target.slice(0, 8);
       let indexFound
       for (let i = 7; i >= 0 ; i--) {
         if (splitted[i] !== "0") { indexFound = i; break }
       }
+      console.log("splitted", splitted)
+      console.log("indexFound", indexFound)
+      console.log("target", target)
+      resultToArray = (parseFloat((parseFloat(target.join(""))).toFixed(4))).toExponential(indexFound).toString().split("")
+      if (prefix === "-") resultToArray.unshift("-")
       
     } else {
-      resultToArray = parseFloat(parseFloat(resultToArray.join("")).toFixed(4)).toString().split("")
+      //resultToArray = parseFloat(parseFloat(resultToArray.join("")).toFixed(4)).toString().split("")
+      resultToArray = parseFloat(resultToArray.join("")).toString().split("")
     }
     
 
     
-  } // ELSE DON'T LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS IN SCIENTIFIC NOTATION
+  //} // ELSE DON'T LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS IN SCIENTIFIC NOTATION
 
   // else {
   //   setInput(parseFloat(resultToArray.join("")).toString())
