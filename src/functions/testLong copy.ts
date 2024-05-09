@@ -3,6 +3,8 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
   //let init = input.replace(/ /g,'').split("") // OK
   //let init = "4.6+2.3".replace(/ /g,'').split("") // OK
   let init = "(104043257603400000000.12+0.11) x N1".replace(/ /g,'').split("") // OK
+  //let init = "(1040434.12+0.11) x N1".replace(/ /g,'').split("") // OK
+
   //let init = "(104043257603400000000.12+0.11)xN1".replace(/ /g,'').split("") // OK
   //let init = "(100003000000000.12+0.11)xN23.87".replace(/ /g,'').split("") //
   //let init = "(1000030000.12+0.11)xN23.87".replace(/ /g,'').split("") //
@@ -237,7 +239,7 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
 
   //let rawToArray = parseFloat(Number(parsed[0]).toFixed(4)).toString().split("") // parsed[0] CAN BE NUMBER OR STRING // parseFloat REMOVES EXTRA 00
   let rawToArray = parsed[0].toString().split("") // parsed[0] CAN BE NUMBER OR STRING // parseFloat REMOVES EXTRA 00
-
+  let result
 
 
   //if (rawToArray.includes("e")) {
@@ -270,32 +272,55 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
     //if (Number(rawToArray.join("")) > 9 && prevMinus.length > 16) {
     console.log(prevMinus)
     console.log(rawToArray.join(""))
-    if (prevMinus.length > 16 /* && ((Number(rawToArray.join("")) > 9) || (Number(rawToArray.join("")) < -9)) */) {
+    //if (prevMinus.length > 16) {
+    if (prevMinus.length > 12) { // FIRST ORDER // IF > 12 THEN toExponential
     //if (true) {
       //let parsed = parseInt(prevMinus.slice(0, 8).join(""))
       //console.log(rawToArray[0])
       //if ()
-      let prefix = rawToArray[0]
-      let dot = prevMinus.indexOf(".")
-      console.log(dot)
-      let slice
-      let intAfterDot
-      //if (dot !== -1 && (!(Number(rawToArray.join("")) > 9) && !(Number(rawToArray.join("")) < -9))) { // ex 9.3 or -8.3
-      // if (dot !== -1) { // ex 9.3 or -8.3
-      //   console.log("aca")
-      //   slice = prevMinus.slice(dot + 1 , dot + 9);
-      // }
-      // else
-      if (dot !== -1) {
+      let slice2 = prevMinus.slice(0, 8)
+      let largeRefInt
+      console.log(slice2)
+      if (!slice2.includes(".")) {
         console.log("aca")
-        slice = prevMinus.slice(dot+1, dot + 9);
+        //slice = prevMinus.slice(1, 9);
         for (let i = 7; i >= 0 ; i--) {
           console.log(i)
-          console.log(slice[i])
-          if (slice[i] !== "0" && slice[i] !== undefined) { intAfterDot = i; break }
+          console.log(slice2)
+          console.log(slice2[i])
+          if (slice2[i] !== "0" && slice2[i] !== undefined) { largeRefInt = i; break }
         }
-
       }
+      console.log(largeRefInt)
+      console.log(parseFloat(prevMinus.join("")).toExponential(largeRefInt))
+      result = parseFloat(prevMinus.join("")).toExponential(largeRefInt)
+
+      // let prefix = rawToArray[0]
+      // let dot = prevMinus.indexOf(".")
+      // console.log(dot)
+      // let slice
+      // let intAfterDot
+
+      // if (dot !== -1) { // DOT
+      //   console.log("aca")
+      //   slice = prevMinus.slice(dot+1, dot + 9);
+      //   for (let i = 7; i >= 0 ; i--) {
+      //     console.log(i)
+      //     console.log(slice)
+      //     console.log(slice[i])
+      //     if (slice[i] !== "0" && slice[i] !== undefined) { intAfterDot = i; break }
+      //   }
+
+      // } else { // NO DOT
+      //   console.log("aca")
+      //   slice = prevMinus.slice(1, 9);
+      //   for (let i = 7; i >= 0 ; i--) {
+      //     console.log(i)
+      //     console.log(slice)
+      //     console.log(slice[i])
+      //     if (slice[i] !== "0" && slice[i] !== undefined) { intAfterDot = i; break }
+      //   }
+      // }
       
       
       console.log(rawToArray)
@@ -376,25 +401,26 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
   //if (prevMinus.length > 16) console.log(parseFloat(rawToArray.join("")))
   //else console.log(rawToArray.join(""))
 
-  if (prevMinus.length < 16) {
-    console.log(rawToArray)
-    console.log(parseFloat(rawToArray.join("")))
-    rawToArray = (parseFloat(rawToArray.join(""))).toString().split("")
-    if (rawToArray[0] === "-") { // NEGATIVE PARSER
-      console.log(rawToArray)
-      rawToArray.splice(0, 1, "N")
-      console.log(rawToArray)
-    }
-    console.log(rawToArray.join("")) // RESPONSE 1
-  }
-  else {
-    console.log(rawToArray)
-    if (rawToArray[0] === "-") { // NEGATIVE PARSER
-      console.log(rawToArray)
-      rawToArray.splice(0, 1, "N")
-      console.log(rawToArray)
-    }
-    console.log(rawToArray.join("")) // RESPONSE 2
-  }
+  // if (prevMinus.length < 16) {
+  //   console.log(rawToArray)
+  //   console.log(parseFloat(rawToArray.join("")))
+  //   rawToArray = (parseFloat(rawToArray.join(""))).toString().split("")
+  //   if (rawToArray[0] === "-") { // NEGATIVE PARSER
+  //     console.log(rawToArray)
+  //     rawToArray.splice(0, 1, "N")
+  //     console.log(rawToArray)
+  //   }
+  //   console.log(rawToArray.join("")) // RESPONSE 1
+  // }
+  // else {
+  //   console.log(rawToArray)
+  //   if (rawToArray[0] === "-") { // NEGATIVE PARSER
+  //     console.log(rawToArray)
+  //     rawToArray.splice(0, 1, "N")
+  //     console.log(rawToArray)
+  //   }
+  //   console.log(rawToArray.join("")) // RESPONSE 2
+  // }
+  console.log(result)
   
 export {}
