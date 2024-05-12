@@ -3,7 +3,7 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
   //let init = input.replace(/ /g,'').split("") // OK
   //let init = "4.6+2.3".replace(/ /g,'').split("") // OK
 
-  let init = "232234232323276 x 3992231".replace(/ /g,'').split("") // OK
+  let init = "456456464789742123123123333123123 x 3".replace(/ /g,'').split("") // OK
   //let init = "100034000000.1 + 3".replace(/ /g,'').split("") // OK
 
   //let init = "(1040434.12+0.11) x N1".replace(/ /g,'').split("") // OK
@@ -292,12 +292,20 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
       !isScientific && prevMinus.indexOf(".") === -1 ?
       prevMinus.length :
       undefined
-    let spacesLeft = 12 - intLength
+    let spacesLeft = 12 - intLength // TO COMPLETE 12 SPACES
+    let spacesAfterE =
+    prevMinus.indexOf("+") !== -1 ?
+    prevMinus.slice(prevMinus.indexOf("+")+1) :
+    prevMinus.indexOf("-") !== -1 ?
+    prevMinus.slice(prevMinus.indexOf("-")+1) :
+    undefined
+      //prevMinus.slice(prevMinus.indexOf("-")+1)
 
     console.log(isScientific)
     console.log(dotIndex)
     console.log(intLength)
     console.log(spacesLeft)
+    console.log(spacesAfterE)
 
     // if (!prevMinus.includes("e") && prevMinus.slice(0,12).every((e:any) => /[0-9]/.test(e)) && prevMinus.indexOf(".") < 15) {
     //   console.log("aca")
@@ -353,9 +361,21 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
       console.log(dotIndex)
       console.log(intLength)
       console.log(spacesLeft)
+      console.log(spacesAfterE)
 
-      result = (parseFloat(prevMinus.join("")).toExponential(8)).split("") // TESTING+1
-      console.log(result)
+      // result = (parseFloat(prevMinus.join("")).toExponential(8)).split("") //
+      // console.log(result)
+
+      if (dotIndex === -1) { // NUMBER IS LIKE 1e+21
+        result = (parseFloat(prevMinus.join("")).toExponential(0)).split("") //
+        console.log(result)
+      }
+
+      else {
+        console.log("aca")
+
+      }
+
 
       if (dotIndex !== -1) { // S.N. IS LIKE -2.44182584e-7
         console.log("aca")
