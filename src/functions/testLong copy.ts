@@ -3,7 +3,7 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
   //let init = input.replace(/ /g,'').split("") // OK
   //let init = "4.6+2.3".replace(/ /g,'').split("") // OK
 
-  let init = "N2.0808652e+20 x 365".replace(/ /g,'').split("") // OK
+  let init = "45645646478.000000000000000000002 x 3".replace(/ /g,'').split("") // OK
   //let init = "100034000000.1 + 3".replace(/ /g,'').split("") // OK
 
   //let init = "(1040434.12+0.11) x N1".replace(/ /g,'').split("") // OK
@@ -383,19 +383,12 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
         // [ 7 . 5 9 5 1 5 8 0 e + 2 2 ]
 
         while ( result[result.indexOf("e")-1] === "0") {
+          console.log("aca")
           result.splice(result.indexOf("e")-1, 1)
         }
         console.log(result)
 
       }
-      // else { // Number is like 1e+21
-      //   console.log("aca")
-      //   console.log(prevMinus)
-      //   result = prevMinus
-      //   console.log(result)
-      // }
-
-
     }
 
     // else if (!prevMinus.includes("e") && prevMinus.length > 12 && !prevMinus.slice(0,12).includes(".")) { // LARGE INT
