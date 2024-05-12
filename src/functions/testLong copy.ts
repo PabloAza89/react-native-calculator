@@ -3,7 +3,7 @@ import { createIconSetFromFontello } from "@expo/vector-icons"
   //let init = input.replace(/ /g,'').split("") // OK
   //let init = "4.6+2.3".replace(/ /g,'').split("") // OK
 
-  let init = "10000000000000000000000 x N1".replace(/ /g,'').split("") // OK
+  let init = "232234232323276 x 3992231".replace(/ /g,'').split("") // OK
   //let init = "100034000000.1 + 3".replace(/ /g,'').split("") // OK
 
   //let init = "(1040434.12+0.11) x N1".replace(/ /g,'').split("") // OK
