@@ -30,13 +30,13 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
     /* scrollEnd() */
     //onPress && onPress()
     //onPress()
-    //scrollEnd()
-
-    if (parErr === true && value === "="){ scrollEnd(); return } // STOP IF PARENTHESIS ERROR IS DISPLAYED & ATTEMPT "="
+    //scrollEnd()    
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
 
     /// -----------> BEGIN STOPPERS <----------- ///
+
+    if (parErr === true && value === "="){ scrollEnd(); return } // STOP IF PARENTHESIS ERROR IS DISPLAYED & ATTEMPT "=" // OJO ESTE IBA PRIMERO // TEST
 
     if (value === "C") { setInput(""); setSecInput(""); return } // CLEAR INPUT AND STOP
 
@@ -64,7 +64,13 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
         setInput(input.slice(0,-3));
         setSecInput("");
         return
-      } else { // else
+      } 
+      else if (input.slice(-8) === "Infinity") { // if last input is Infinity: "Infinity" // TEST
+        setInput(input.slice(0,-8));
+        setSecInput("");
+        return
+      } 
+      else { // else
         let seqOne = input.split("");
         seqOne.pop();
         let seqTwo = seqOne.join("");
@@ -162,6 +168,16 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
       input.length === 0) &&
       value === "="
     ) { scrollEnd(); return } // STOP IF ATTEMPT N= or += or ""=
+
+    if (input.includes("Infinity") && value === "=") { setInput("Infinity"); setSecInput(input); scrollEnd(); return } // STOP IF INPUT INCLUDES "INFINITY" & ATTEMPT "=" // TEST
+
+    if (
+      input.slice(-8) === "Infinity" &&
+      (value === "(" ||
+      value === "N" ||
+      !isNaN(parseInt(value)) ||
+      value === ".")
+    ) { scrollEnd(); return } // STOP IF ATTEMPT Infinity( or InfinityN or Infinity9 or Infinity. // TEST
 
     /// -----------> END STOPPERS <----------- ///
 

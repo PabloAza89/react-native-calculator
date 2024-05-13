@@ -10,33 +10,23 @@ interface AdderI {
 export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) {
 
   let init = input.replace(/ /g,'').split("") // OK
-  //let init = input.split("") // OK
-  //let init = "-3059.2703999999994 + 1".split("") // OK
-  
-
-  console.log("INPUT:", input)
+  //let init = "N98765432119876543211987654321198765431219876543211987654321198765432119876543211987654321198765432119876543211987654321198765432119876543211987654321198765432119876543211987654321198765432119876543211987654321198765432119876543211987654321198765432119876543211987654321198756432119876543211987654321198765432119876543211 x 1".replace(/ /g,'').split("") // OK".replace(/ /g,'').split("") // OK
 
   /// -----------> BEGIN NEGATIVE & FLOATING POINT PARSER <----------- ///
 
   let parsed: any[] = []
 
   init.forEach((e: any, i: any) => { // ADD 'N37' or '99' or '7.32' JOINED, ELSE PUSH x ALONE
-    /* if (e === " ") return
-    else  */if (
+    if (
       (init[i - 1] === "N" || init[i - 1] === "." || !isNaN(parseInt(init[i - 1])) || init[i - 1] === "e" || (init[i - 2] === "e" && init[i - 1] === "+") || (init[i - 2] === "e" && init[i - 1] === "-")) &&
       (!isNaN(parseInt(e)) || e === "." || e === "e" || (init[i - 1] === "e" && e === "+") || (init[i - 1] === "e" && e === "-"))
     ) parsed[parsed.length - 1] = parsed[parsed.length - 1].concat(e)
     else parsed.push(e)
   })
 
-  console.log("FIRST PARSING:", parsed)
-
   parsed.forEach((e, i) => { // N95 => -1 * 95 // NEGATIVE PARSER
     if (e.slice(0, 1) === "N") parsed[i] = -1 * parseFloat(e.slice(1, e.length))
   })
-
-  console.log("SECOND PARSING:", parsed)
-  //return // DEV
 
   /// -----------> END NEGATIVE & FLOATING POINT PARSER <----------- ///
 
@@ -56,46 +46,29 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       else openPar--
     }
 
-    // console.log("openPar === -1", openPar)
-    // console.log("closePar === -1", closePar)
-    // console.log(parsed.indexOf("x"))
-    // console.log(parsed.indexOf("/"))
-    // console.log(parsed.indexOf("+"))
-    // console.log(parsed.indexOf("-"))
-
-    //console.log()
-
     if (openPar === -1 && closePar === -1 && (parsed.indexOf("x") !== -1 || parsed.indexOf("/") !== -1 || parsed.indexOf("+") !== -1 || parsed.indexOf("-") !== -1)) {
-    //if (openPar === -1 && closePar === -1) {
       parsed.unshift("(") // ADD PARENTHESIS AT BEGINNING // TODO
       parsed.push(")") // ADD PARENTHESIS AT END // TODO
       openPar = 0;
       closePar = parsed.length - 1
-      //console.log("entro aca")
     }
 
     if (openPar !== -1 && closePar !== -1) { // FOUND OPEN & CLOSE TAG
-      //console.log("toDo", toDo)
       toDo = parsed.splice(openPar, closePar - (openPar - 1)) // Extract toDo from Main (init)
       toDo.splice(0, 1) // Delete open ( ToDo
       toDo.splice(-1, 1) // Delete close ) ToDo
     }
     else if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
-      //console.log("ERROR ENTRO EN ESTE 2");
       setParErr(true); return
+      //console.log("ERROR PARENTHESIS")
     }
   }
 
   updateParenthesis()
 
-  // if (openPar === -1 && closePar === -1 && parsed.indexOf("x") === -1 && parsed.indexOf("/") === -1 && parsed.indexOf("+") === -1 && parsed.indexOf("-") === -1) {
-  //   console.log("entro en este otro")
-  //   return
-  // }
   if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
-    // console.log("ERROR ENTRO EN ESTE 2");
-    // return;
     setParErr(true); scrollEnd(); return
+    //console.log("ERROR PARENTHESIS")
   }
 
   let foundMul: any;
@@ -103,12 +76,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   let firOp: any;
 
   let opOne: any = { // OPERATION ONE ==> x OR /
-    'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) }, // DECIMAL LIMITED TO 4 PLACES === 10 THOUSANDTHS
+    'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) },
     '/': function(a: any, b: any) { return parseFloat(a) / parseFloat(b) }
-    // 'x': function(a: any, b: any) { return (parseFloat(a) * parseFloat(b)).toFixed(4) }, // DECIMAL LIMITED TO 4 PLACES === 10 THOUSANDTHS
-    // '/': function(a: any, b: any) { return (parseFloat(a) / parseFloat(b)).toFixed(4) }
-    // 'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) },
-    // '/': function(a: any, b: any) { return parseFloat(a) / parseFloat(b) }
   };
 
   let foundPlus: any;
@@ -121,32 +90,22 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   };
 
   function updateOperators() { // firOp & secOp
-    //console.log("AA", toDo.indexOf("x"))
-    
-      //console.log("BB", toDo)
-      foundMul = toDo && toDo.indexOf("x") // UPDATE x INDEX
-      foundDiv = toDo && toDo.indexOf("/") // UPDATE / INDEX
-      if (foundMul < foundDiv && foundMul > 0 || foundMul > 0 && foundDiv === -1) firOp = "x"
-      if (foundDiv < foundMul && foundDiv > 0 || foundDiv > 0 && foundMul === -1) firOp = "/"
-      if (foundMul === -1 && foundDiv === -1) firOp = undefined;
+    foundMul = toDo && toDo.indexOf("x") // UPDATE x INDEX
+    foundDiv = toDo && toDo.indexOf("/") // UPDATE / INDEX
+    if (foundMul < foundDiv && foundMul > 0 || foundMul > 0 && foundDiv === -1) firOp = "x"
+    if (foundDiv < foundMul && foundDiv > 0 || foundDiv > 0 && foundMul === -1) firOp = "/"
+    if (foundMul === -1 && foundDiv === -1) firOp = undefined;
 
-      foundPlus = toDo && toDo.indexOf("+") // UPDATE + INDEX
-      foundMin = toDo && toDo.indexOf("-") // UPDATE - INDEX
-      if (foundPlus < foundMin && foundPlus > 0 || foundPlus > 0 && foundMin === -1) secOp = "+" // update + or - found
-      if (foundMin < foundPlus && foundMin > 0 || foundMin > 0 && foundPlus === -1) secOp = "-" // update + or - found
-      if (foundPlus === -1 && foundMin === -1) secOp = undefined;
-
-      //return
-    
+    foundPlus = toDo && toDo.indexOf("+") // UPDATE + INDEX
+    foundMin = toDo && toDo.indexOf("-") // UPDATE - INDEX
+    if (foundPlus < foundMin && foundPlus > 0 || foundPlus > 0 && foundMin === -1) secOp = "+" // update + or - found
+    if (foundMin < foundPlus && foundMin > 0 || foundMin > 0 && foundPlus === -1) secOp = "-" // update + or - found
+    if (foundPlus === -1 && foundMin === -1) secOp = undefined;
   }
 
-  //console.log("TODO A VER", toDo)
-  //if (toDo !== undefined) updateOperators()
-  //if (openPar !== -1 && openPar !== -1) updateOperators()
   updateOperators()
 
   while (parsed.length !== 1) {
-
     updateOperators() // MULTI, DIV, PLUS & MINUS
 
     if (toDo !== undefined && // DO ALL x OR /
@@ -156,6 +115,15 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       !isNaN(parseFloat(toDo[index + 1]))
     ) {
       innerToDo = opOne[firOp](toDo[index - 1], toDo[index + 1])
+
+      let firSign = toDo[index - 1].toString().slice(0,1) === '-' ? -1 : 1
+      let secSign = toDo[index + 1].toString().slice(0,1) === '-' ? -1 : 1
+
+      if (innerToDo.toString() === "NaN") {
+        console.log("aca")
+        innerToDo = firSign * secSign * Infinity
+      }
+
       toDo.splice(index - 1, 3)
       toDo.splice(index - 1, 0, innerToDo)
       index = 1
@@ -168,25 +136,27 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       !isNaN(parseFloat(toDo[index + 1]))
     ) {
       innerToDo = opTwo[secOp](toDo[index - 1], toDo[index + 1])
+
+      let firSign = toDo[index - 1].toString().slice(0,1) === '-' ? '-' : '+'
+      let secSign = toDo[index + 1].toString().slice(0,1) === '-' ? '-' : '+'
+
+      if (innerToDo.toString() === "NaN") {
+        if (firSign === '-' && secOp !== secSign) innerToDo = -Infinity
+        else innerToDo = Infinity
+      }
+
       toDo.splice(index - 1, 3)
       toDo.splice(index - 1, 0, innerToDo)
       index = 1
     }
 
-    else {
-      index++
-    }
+    else index++
 
     updateOperators() // firOp & secOp
 
     if (toDo !== undefined && parsed.length !== 1 && firOp === undefined && secOp === undefined && toDo.length !== 1) {
       parsed.splice(openPar, 0, innerToDo)
       updateParenthesis()
-      if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
-        // console.log("ERROR ENTRO EN ESTE 2");
-        // return;
-        setParErr(true); scrollEnd(); return
-      }
       updateOperators()
       index = 1
     }
@@ -194,90 +164,57 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       parsed.splice(openPar, 0, toDo[0])
       updateParenthesis()
       if (openPar === -1 && closePar !== -1) { // STOP IF INNER PARENTHESIS ARE BAD POSITIONED
-        // console.log("ERROR ENTRO EN ESTE 2");
-        // return;
         setParErr(true); scrollEnd(); return
+        //console.log("ERROR PARENTHESIS")
       }
       updateOperators()
       index = 1
     }
   }
 
-  //console.log("PARSED END", parsed[0].toFixed(2))
-  //console.log("PARSED END", parseFloat(parsed[0]).toFixed[2])
-  //console.log("PARSED END", parseFloat(parsed[0]).toFixed(2))
-  //let float = parsed[0].toString()
-  //let integer = parseInt(parsed[0])
-  //console.log("float", float % 10)
-  //console.log("integer", integer)
-  //console.log("TODO END", toDo)
+  let rawToArray = parsed[0].toString().split("") // parsed[0] CAN BE NUMBER OR STRING // parseFloat REMOVES EXTRA 00
+  let prefix = rawToArray[0] // FILTER "-" (IF EXISTS)
+  let prevMinus =
+    rawToArray[0] === "-" ?
+    rawToArray.slice(1, rawToArray.length) :
+    rawToArray
+  let isScientific = prevMinus.includes("e")
+  let dotIndex = prevMinus.indexOf(".")
+  let intLength =
+    !isScientific && prevMinus.indexOf(".") !== -1 ?
+    prevMinus.slice(0, dotIndex).length :
+    !isScientific && prevMinus.indexOf(".") === -1 ?
+    prevMinus.length :
+    undefined
+  let spacesLeft = 12 - intLength // TO COMPLETE 12 SPACES
+  let spacesAfterE =
+    prevMinus.indexOf("+") !== -1 ?
+    prevMinus.slice(prevMinus.indexOf("+") + 1) :
+    prevMinus.indexOf("-") !== -1 ?
+    prevMinus.slice(prevMinus.indexOf("-") + 1) :
+    undefined
+  let result // result always as [ "A", "R", "R", "A", "Y" ] // FINAL RESULT
 
-  
-  //setSecInput(input)
-  //setInput(parsed[0])
-  //console.log("input abajo:", input)
-  
-  setSecInput(input)
+  if (prevMinus.join("") === "Infinity") result = prevMinus // RESULT IS INFINITY
 
-  let resultToArray = parsed[0].toString().split("") // parsed[0] CAN BE NUMBER OR STRING // parseFloat REMOVES EXTRA 00
-
-
-
-  //if (resultToArray.includes("e")) {
-    //resultToArray.join("")
-
-  //} else 
-
-  // if (resultToArray.includes("e")) {
-
-  // }
-  
-  //if (!resultToArray.includes("e")) { // LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS NOT IN SCIENTIFIC NOTATION
-    //let target = resultToArray.filter((e: any) => e !== "-" && e !== ".")
-    let target = resultToArray.filter((e: any) => e !== "-") // DOT IS TREATED AS A MAIN CHARACTER
-    if ((parseInt(resultToArray.join("")) > 9 || parseInt(resultToArray.join("")) < -9) && target.length > 16) {
-    //if (false) {
-      //let parsed = parseInt(target.slice(0, 8).join(""))
-      let prefix = resultToArray[0]
-      let splitted = target.slice(0, 8);
-      let indexFound
-      for (let i = 7; i >= 0 ; i--) {
-        if (splitted[i] !== "0") { indexFound = i; break }
-      }
-      console.log("splitted", splitted)
-      console.log("indexFound", indexFound)
-      console.log("target", target)
-      resultToArray = (parseFloat((parseFloat(target.join(""))).toFixed(4))).toExponential(indexFound).toString().split("")
-      if (prefix === "-") resultToArray.unshift("-")
-      
-    } else {
-      //resultToArray = parseFloat(parseFloat(resultToArray.join("")).toFixed(4)).toString().split("")
-      resultToArray = parseFloat(resultToArray.join("")).toString().split("")
+  else if (intLength > 12) { // LARGE INT
+    let slice2 = prevMinus.slice(0, 8)
+    let dot11
+    let largeRefInt
+    for (let i = 7; i >= 0 ; i--) {
+      if (slice2[i] !== "0" && slice2[i] !== undefined) { largeRefInt = i; break }
     }
-    
-
-    
-  //} // ELSE DON'T LIMIT DECIMALS TO 4 POSITIONS // NUMBER IS IN SCIENTIFIC NOTATION
-
-  // else {
-  //   setInput(parseFloat(resultToArray.join("")).toString())
-  // }
-
-  //setInput(parsed[0].toString())
-
-  // a lo ultimo
-
-  if (resultToArray[0] === "-") {
-    //let splitted = parseFloat(resultToArray.join("")).toString().split("");
-    //splitted.splice(0, 1, "N");
-    //setInput(splitted.join(""))
-    resultToArray.splice(0, 1, "N")
+    result = (parseFloat(parseFloat(prevMinus.join("")).toExponential(largeRefInt))).toExponential().split("")
   }
 
-  //setInput(splitted.join(""))
-  setInput(resultToArray.join(""))
+  // SMALL INT
+  else if (intLength < 13) result = parseFloat(parseFloat(prevMinus.join("")).toFixed(spacesLeft)).toString().split("")
 
-  console.log("Final result:", parsed[0])
-  console.log("END REACHED")
+  // NUMBER IS IN SCIENTIFIC NOTATION
+  else result = parseFloat(parseFloat(prevMinus.join("")).toExponential(9 - spacesAfterE.length)).toString().split("")
 
+  if (prefix === "-") result?.splice(0,0,"N") // NEGATIVE PARSER
+
+  setInput(result?.join(""))
+  console.log(result?.join("")) // FINAL RESULT
 }
