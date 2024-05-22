@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import type { PropsWithChildren } from 'react';
 import {
   Text,
@@ -8,19 +8,14 @@ import {
 } from 'react-native';
 import { s } from './OwnButtonCSS';
 import Ionicons from '@expo/vector-icons/Ionicons';
-//import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-//import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Adder } from '../../functions/Adder';
 
 interface OwnButtonI {
-  //onPress?: any,
   scrollEnd?: any,
   parErr?: any,
   value?: any,
   input?: any,
   setInput?: any,
-  resPressed?: any,
-  setResPressed?: any,
   arr1?: any,
   arr5?: any,
   smaller?: boolean,
@@ -28,13 +23,8 @@ interface OwnButtonI {
   setSecInput?: any,
 };
 
-export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPressed, resPressed, arr1, arr5, smaller, setParErr, setSecInput }: OwnButtonI): React.JSX.Element {
+export function OwnButton({ scrollEnd, parErr, value, input, setInput, arr1, arr5, smaller, setParErr, setSecInput }: OwnButtonI): React.JSX.Element {
   async function handlePress() {
-
-    /* scrollEnd() */
-    //onPress && onPress()
-    //onPress()
-    //scrollEnd()    
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
 
@@ -209,7 +199,7 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
   return (
     <TouchableHighlight
       underlayColor="#dddddd"
-      activeOpacity={1}  
+      activeOpacity={1}
       style={[ smaller ? s.ownButtonSmaller : s.ownButton ]}
       onPress={() => handlePress()}
     >

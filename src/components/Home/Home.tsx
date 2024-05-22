@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-//import type { MutableRefObject } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TouchableOpacity,
   Pressable,
@@ -13,20 +12,14 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { s } from './HomeCSS';
-//import { ss } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-//const Stack = createNativeStackNavigator();
 
 function Home({ navigation }: any): React.JSX.Element {
 
   const [ input, setInput ] = useState("");
   const [ secInput, setSecInput ] = useState("");
   const [ parErr, setParErr ] = useState(false);
-  const [ resPressed, setResPressed ] = useState(false);
 
   useEffect(() => {
     scrollEnd()
@@ -43,6 +36,8 @@ function Home({ navigation }: any): React.JSX.Element {
   return (
 
         <View style={[s.background]}>
+          {/* <StatusBar barStyle="light-content" backgroundColor="lightblue" /> */}
+          <StatusBar translucent={true} backgroundColor={'transparent'}/>
           <View style={[s.contour]}>
             { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
             <View style={[s.displayContainer]}>
@@ -67,8 +62,8 @@ function Home({ navigation }: any): React.JSX.Element {
               <Text style={[s.secondaryResult]} />
             </View>
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="(" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
-            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value=")" setParErr={setParErr} setSecInput={setSecInput} smaller={true}  />
-            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="C" setParErr={setParErr} setSecInput={setSecInput} smaller={true} setResPressed={setResPressed} />
+            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value=")" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
+            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="C" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="N" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="B" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="7" setParErr={setParErr} setSecInput={setSecInput} />
@@ -86,9 +81,12 @@ function Home({ navigation }: any): React.JSX.Element {
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="/" setParErr={setParErr} setSecInput={setSecInput} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="0" setParErr={setParErr} setSecInput={setSecInput} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="." setParErr={setParErr} setSecInput={setSecInput} />
-            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="=" setParErr={setParErr} setSecInput={setSecInput} parErr={parErr} setResPressed={setResPressed} />
+            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="=" setParErr={setParErr} setSecInput={setSecInput} parErr={parErr} />
 
-            <TouchableHighlight style={s.question}
+            <TouchableHighlight
+              underlayColor="#8aaeba"
+              activeOpacity={1}
+              style={s.question}
               onPress={() => navigation.navigate('About')}
             >
               <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />

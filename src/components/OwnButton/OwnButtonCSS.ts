@@ -1,6 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
-const opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
+import { StyleSheet } from 'react-native';
+import { opw } from '../constants'
 
 export const s = StyleSheet.create({
   ownButtonT: {
