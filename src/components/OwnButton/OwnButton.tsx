@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import type { PropsWithChildren } from 'react';
 import {
-  Text
+  Text,
+  TouchableOpacity,
+  TouchableHighlight,
+  View
 } from 'react-native';
-import { s } from '../styles/styles';
+import { s } from './OwnButtonCSS';
 import Ionicons from '@expo/vector-icons/Ionicons';
+//import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 //import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { Adder } from '../functions/Adder';
+import { Adder } from '../../functions/Adder';
 
 interface OwnButtonI {
   //onPress?: any,
@@ -36,7 +40,9 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
 
     /// -----------> BEGIN STOPPERS <----------- ///
 
-    if (parErr === true && value === "="){ scrollEnd(); return } // STOP IF PARENTHESIS ERROR IS DISPLAYED & ATTEMPT "=" // OJO ESTE IBA PRIMERO // TEST
+    if (input.length === input.replace(/ /g,'').length && value === "=") { scrollEnd(); return } // STOP IF INPUT IS "1e+38" or "1e+" or IF THERE IS NO OPERATION SIGN AND ATTEMPT = //
+
+    if (parErr === true && value === "=") { scrollEnd(); return } // STOP IF PARENTHESIS ERROR IS DISPLAYED & ATTEMPT "=" // OJO ESTE IBA PRIMERO // TEST
 
     if (value === "C") { setInput(""); setSecInput(""); return } // CLEAR INPUT AND STOP
 
@@ -64,12 +70,12 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
         setInput(input.slice(0,-3));
         setSecInput("");
         return
-      } 
+      }
       else if (input.slice(-8) === "Infinity") { // if last input is Infinity: "Infinity" // TEST
         setInput(input.slice(0,-8));
         setSecInput("");
         return
-      } 
+      }
       else { // else
         let seqOne = input.split("");
         seqOne.pop();
@@ -201,19 +207,25 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, setResPre
 
 
   return (
-    <Text
-      onPress={() => handlePress() }
+    <TouchableHighlight
+      underlayColor="#dddddd"
+      activeOpacity={1}  
       style={[ smaller ? s.ownButtonSmaller : s.ownButton ]}
-      adjustsFontSizeToFit={true}
-      numberOfLines={1}
+      onPress={() => handlePress()}
     >
-      {
-        value === "B" ?
-        <Ionicons name='backspace' size={40} color='#363535' /> :
-        value === "N" ?
-        "-X" :
-        value
-      }
-    </Text>
+      <Text style={[ smaller ? s.ownButtonSmallerT : s.ownButtonT ]}>
+        {
+          value === "B" ?
+          <Ionicons name='backspace' size={40} color='rgba(0, 0, 0, .5)' /> :
+          value === "N" ?
+          "-X" :
+          value === "(" || value === ")" ?
+          <Text style={[ s.lineHeight ]}>{ value }</Text> :
+          value
+        }
+      </Text>
+    </TouchableHighlight>
   );
 }
+
+export default OwnButton;
