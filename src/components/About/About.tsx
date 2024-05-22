@@ -11,14 +11,15 @@ import {
   useColorScheme,
   View
 } from 'react-native';
+import { s } from './AboutCSS';
+//import { OwnButton } from './OwnButton';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './src/components/Home/Home';
-import About from './src/components/About/About';
 
-const Stack = createNativeStackNavigator();
+//const Stack = createNativeStackNavigator();
 
-function App(): React.JSX.Element {
+function About({ navigation }: any): React.JSX.Element {
 
   const [ input, setInput ] = useState("");
   const [ secInput, setSecInput ] = useState("");
@@ -38,19 +39,13 @@ function App(): React.JSX.Element {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-        />
-        <Stack.Screen
-          name="About"
-          component={About}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={[s.background]}>
+      <Button
+        title="asd"
+        onPress={() => navigation.navigate('Home')}
+      />
+    </View>
   );
 }
 
-export default App;
+export default About;

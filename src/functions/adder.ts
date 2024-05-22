@@ -215,6 +215,7 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
 
   if (prefix === "-") result?.splice(0,0,"N") // NEGATIVE PARSER
 
+  setSecInput(input)
   setInput(result?.join(""))
   console.log(result?.join("")) // FINAL RESULT
 }
