@@ -119,10 +119,7 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       let firSign = toDo[index - 1].toString().slice(0,1) === '-' ? -1 : 1
       let secSign = toDo[index + 1].toString().slice(0,1) === '-' ? -1 : 1
 
-      if (innerToDo.toString() === "NaN") {
-        console.log("aca")
-        innerToDo = firSign * secSign * Infinity
-      }
+      if (innerToDo.toString() === "NaN") innerToDo = firSign * secSign * Infinity
 
       toDo.splice(index - 1, 3)
       toDo.splice(index - 1, 0, innerToDo)
@@ -217,5 +214,5 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
 
   setSecInput(input)
   setInput(result?.join(""))
-  console.log(result?.join("")) // FINAL RESULT
+  //console.log(result?.join("")) // FINAL RESULT
 }
