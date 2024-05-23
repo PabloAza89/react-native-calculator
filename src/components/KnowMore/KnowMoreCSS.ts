@@ -22,7 +22,6 @@ export const s = StyleSheet.create({
   text: {
     fontWeight: '500',
     fontSize: 24,
-    textAlign: 'center'
   },
   imageWrapper: {
     marginTop: 20,
@@ -33,22 +32,13 @@ export const s = StyleSheet.create({
     right: (opw * -30) / 2,
     top: (opw * 30) / 3,
   },
-  textInButtonUpper: {
+  textInButton: {
     color: 'white',
     fontWeight: '600',
     fontSize: 14,
     lineHeight: 15,
     marginLeft: -6,
     marginRight: 2
-  },
-  textInButtonLower: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 14,
-    lineHeight: 15,
-    marginRight: 4,
-    marginLeft: -4,
-    transform: [{ rotate: '180deg' }],
   },
   space: {
     width: 25,
