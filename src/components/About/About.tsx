@@ -24,7 +24,7 @@ function About({ navigation }: any): React.JSX.Element {
         <StatusBar translucent={true} backgroundColor={'transparent'}/>
       </LinearGradient>
       <Text style={s.text}>
-        This App is created by{"\n"}
+        This App is developed by{"\n"}
         Juan Pablo Azambuyo
       </Text>
       <View style={s.imageWrapper}>
@@ -46,17 +46,17 @@ function About({ navigation }: any): React.JSX.Element {
         color='rgba(0, 0, 0, .7)'
         onPress={() => navigation.navigate('Home')}
       >
-        <Text style={s.buttonTextUpper}>BACK</Text>
+        <Text style={s.textInButtonUpper}>BACK</Text>
       </Ionicons.Button>
       <View style={s.space} />
       <Ionicons.Button
         name='chevron-back-circle-sharp'
         size={30}
         color='rgba(0, 0, 0, .7)'
-        onPress={() => navigation.navigate('Home')}
-        style={s.buttonLower}
+        onPress={() => navigation.navigate('KnowMore')}
+        style={s.buttonAndIconLower}
       >
-        <Text style={s.buttonTextLower}>HOW IT WORKS ?</Text>
+        <Text style={s.textInButtonLower}>HOW DOES IT WORK ?</Text>
       </Ionicons.Button>
     </View>
   );
