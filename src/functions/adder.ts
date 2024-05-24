@@ -196,7 +196,6 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
 
   else if (intLength > 12) { // LARGE INT
     let slice2 = prevMinus.slice(0, 8)
-    let dot11
     let largeRefInt
     for (let i = 7; i >= 0 ; i--) {
       if (slice2[i] !== "0" && slice2[i] !== undefined) { largeRefInt = i; break }

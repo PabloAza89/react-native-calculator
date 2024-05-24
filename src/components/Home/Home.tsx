@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  TouchableOpacity,
-  Pressable,
-  Button,
-  SafeAreaView,
   ScrollView,
   StatusBar,
   Text,
-  useColorScheme,
   View,
-  TouchableHighlight,
+  TouchableHighlight
 } from 'react-native';
 import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
@@ -36,7 +31,6 @@ function Home({ navigation }: any): React.JSX.Element {
   return (
 
         <View style={[s.background]}>
-          {/* <StatusBar barStyle="light-content" backgroundColor="lightblue" /> */}
           <StatusBar translucent={true} backgroundColor={'transparent'}/>
           <View style={[s.contour]}>
             { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
@@ -91,10 +85,7 @@ function Home({ navigation }: any): React.JSX.Element {
             >
               <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
             </TouchableHighlight>
-            
           </View>
-          
-
         </View>
   );
 }
