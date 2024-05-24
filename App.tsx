@@ -17,15 +17,16 @@ function App(): React.JSX.Element {
           headerShown: false
         }}
       >
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Home"
           component={Home}
+          options={{ animation: 'slide_from_right' }}
         />
         <Stack.Screen
           name="About"
           component={About}
           options={{ animation: 'slide_from_right' }}
-        /> */}
+        />
         <Stack.Screen
           name="KnowMore"
           component={KnowMore}
