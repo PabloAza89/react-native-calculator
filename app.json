@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "icon": "./assets/images/icon.png",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "backgroundColor": "#ffff00",
+      "resizeMode": "cover"
+    }
+  },
+  "name": "reactNativeCalculator",
+  "displayName": "reactNativeCalculator"
+}
