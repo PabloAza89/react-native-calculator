@@ -1,0 +1,62 @@
+//import { Image, StyleSheet, Platform, View, Text } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from './components/Home/Home';
+import About from './components/About/About';
+import KnowMore from './components/KnowMore/KnowMore';
+import { setStatusBarTranslucent } from 'expo-status-bar';
+import { registerRootComponent } from 'expo';
+
+const Stack: any = createNativeStackNavigator();
+
+//registerRootComponent(Home);
+
+function App(): React.JSX.Element {
+  return (
+    <NavigationContainer independent={true}>
+      <Stack.Navigator
+        //independent={true}
+        initialRouteName="Home"
+        screenOptions={{
+          //headerShown: false,
+          headerShown: true,
+          //title: 'something else',
+          //header: { style: { backgroundColor: 'orange', marginTop: 24 } }
+          //,statusBarTranslucent:true
+           //,statusBarHidden:true,
+          // navigationBarHidden:true
+          //statusBarTranslucent:true ,statusBarHidden:false,navigationBarHidden:true
+        }}
+      >
+        <Stack.Screen
+          //independent={true}
+          name="Home"
+          component={Home}
+          options={{
+            animation: 'slide_from_right',
+            headerShown: false,
+            setStatusBarTranslucent: true,
+            //statusBarHidden: true,
+            navigationBarHidden: true, // BOTTOM
+            //statusBarTranslucent:true ,
+            //headerShown: false,statusBarTranslucent:true ,statusBarHidden:false,navigationBarHidden:true
+          }}
+        />
+        <Stack.Screen
+          name="About"
+          component={About}
+          options={{ animation: 'slide_from_right' }}
+        />
+        <Stack.Screen
+          name="KnowMore"
+          component={KnowMore}
+          options={{ animation: 'slide_from_right' }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+//export default registerRootComponent(App);
+export default App;
