@@ -15,7 +15,8 @@ function App(): React.JSX.Element {
         initialRouteName="Home"
         screenOptions={{
           headerShown: false,
-          navigationBarHidden: true,
+          navigationBarColor: 'transparent', // BOTTOM
+          //navigationBarHidden: true, // BOTTOM
         }}
       >
         <Stack.Screen
