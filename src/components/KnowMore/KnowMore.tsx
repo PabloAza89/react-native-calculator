@@ -15,10 +15,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
-//import { opw } from '../constants';
-import { Dimensions } from 'react-native';
+import { hph } from '../constants';
+// import { Dimensions } from 'react-native';
 
-const oph = Dimensions.get('window').height
+// const oph = Dimensions.get('window').height
 
 function KnowMore({ navigation }: any): React.JSX.Element {
 
@@ -87,9 +87,9 @@ function KnowMore({ navigation }: any): React.JSX.Element {
           //  `red`,
           //  `rgba(255, 255, 255, 1)`
         ]}
-        style={[ s.linearGradientStatus, { height: 24 } ]}
+        style={[ s.linearGradientStatus, { height: insets.top } ]}
           //start={{ x: 0, y: ((oph / insets.top) / 2) + insets.top }} // x = from left // y = from top
-          start={{ x: 0, y: (oph / (insets.top / 2)) - insets.top }} // x = from left // y = from top
+          start={{ x: 0, y: (hph / (insets.top / 2)) - insets.top }} // x = from left // y = from top
           end={{x: 1, y: 0}} // x = from left // y = from bottom
       >
       </LinearGradient>
