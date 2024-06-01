@@ -10,9 +10,15 @@ import {
 import { s } from './KnowMoreCSS';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
+//import ReactLinearGradient from 'react-native-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
+//import { opw } from '../constants';
+import { Dimensions } from 'react-native';
+
+const oph = Dimensions.get('window').height
 
 function KnowMore({ navigation }: any): React.JSX.Element {
 
@@ -25,13 +31,13 @@ function KnowMore({ navigation }: any): React.JSX.Element {
     });
   }
 
-  const handleScroll = (e: any) => {
-    //console.log(e.nativeEvent.contentOffset.y)
-  }
+  /* const handleScroll = (e: any) => {
+    console.log(e.nativeEvent.contentOffset.y)
+  } */
 
-  const onViewableItemsChanged = (e: any) => {
+  /* const onViewableItemsChanged = (e: any) => {
     console.log(e)
-  }
+  } */
 
   interface counterI {
     [index: string]: number
@@ -54,6 +60,8 @@ function KnowMore({ navigation }: any): React.JSX.Element {
     return () => clearInterval(interval);
   }, [counterA, currIdxA, goUpA])
 
+  let insets = useSafeAreaInsets();
+
   return (
     <View>
       <LinearGradient
@@ -62,14 +70,34 @@ function KnowMore({ navigation }: any): React.JSX.Element {
           `rgba(255, 255, 255, 1)`
         ]}
         style={s.linearGradient}
-        start={{ x: 0, y: 1}} // x = from left // y = from top
-        end={{x: 1, y: 0}} // x = from left // y = from top
-      >
-        <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
+          start={{ x: 0, y: 1}} // x = from left // y = from top
+          end={{x: 1, y: 0}} // x = from left // y = from bottom
+      > 
+      
+        
+        <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
+        
+        
       </LinearGradient>
+
+      <LinearGradient
+        colors={[
+          `rgba(${counterA["0"]}, ${counterA["1"]}, ${counterA["2"]}, 0.9)`,
+          `rgba(255, 255, 255, 0.9)`
+          //  `red`,
+          //  `rgba(255, 255, 255, 1)`
+        ]}
+        style={[ s.linearGradientStatus, { height: 24 } ]}
+          //start={{ x: 0, y: ((oph / insets.top) / 2) + insets.top }} // x = from left // y = from top
+          start={{ x: 0, y: (oph / (insets.top / 2)) - insets.top }} // x = from left // y = from top
+          end={{x: 1, y: 0}} // x = from left // y = from bottom
+      >
+      </LinearGradient>
+
+
       <ScrollView
         ref={scrollRef}
-        onScroll={(e) => handleScroll(e)}
+        //onScroll={(e) => handleScroll(e)}
         overScrollMode="never"
       >
         <View style={s.background}>
@@ -197,7 +225,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
             </Text>
           </View>
 
-          <View onViewableItemsChanged={(e) => onViewableItemsChanged(e)} style={s.eachItem}>
+          <View style={s.eachItem}>
             <Entypo
               name='new'
               size={30}
