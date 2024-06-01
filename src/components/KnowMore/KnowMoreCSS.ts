@@ -6,7 +6,20 @@ export const s = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    height: '100%'
+    height: '100%',
+  },
+  linearGradientStatus: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    /* height: '10%', */
+    //height: '100%',
+    //height: 392 * 2,
+    //marginBottom: 392 * 2,
+    //marginTop: 392 / 3,
+    //marginBottom: 5000,
+    //height: 70,
+    zIndex: 4,
   },
   background: {
     width: '100%',

@@ -5,11 +5,22 @@ import Home from './src/components/Home/Home';
 import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
 
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
+
 const Stack: any = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
 
   return (
+
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Home"
@@ -19,7 +30,7 @@ function App(): React.JSX.Element {
           //navigationBarHidden: true, // BOTTOM
         }}
       >
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Home"
           component={Home}
           options={{ animation: 'slide_from_right' }}
@@ -28,7 +39,7 @@ function App(): React.JSX.Element {
           name="About"
           component={About}
           options={{ animation: 'slide_from_right' }}
-        />
+        /> */}
         <Stack.Screen
           name="KnowMore"
           component={KnowMore}
@@ -36,6 +47,7 @@ function App(): React.JSX.Element {
         />
       </Stack.Navigator>
     </NavigationContainer>
+
   );
 }
 
