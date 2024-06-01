@@ -8,7 +8,8 @@
     "expo": "npx expo",
     "start": "react-native start",
     "emu": "sh ./emu.sh",
-    "emu2": "sh ./emu2.sh"
+    "emu2": "sh ./emu2.sh",
+    "reloemu": "sh ./reloemu.sh"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
