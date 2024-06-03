@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- <color name="splashscreen_background">#42D1DB</color> --> <!-- lightblue -->
+  <!-- <color name="splashscreen_background">#87DB42</color> --> <!-- test green -->
+  <color name="splashscreen_background">#FAB234</color> <!-- orange --> <!-- 1 & 2 -->
+  <!-- <color name="splashscreen_background">#00000000</color> --> <!-- test  transparent -->
+</resources>
