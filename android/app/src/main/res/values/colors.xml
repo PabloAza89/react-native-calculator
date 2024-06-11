@@ -2,7 +2,12 @@
 <resources>
   <!-- <color name="splashscreen_background">#42D1DB</color> --> <!-- lightblue -->
   <!-- <color name="splashscreen_background">#87DB42</color> --> <!-- test green -->
-  <color name="splashscreen_background">#FAB234</color> <!-- orange --> <!-- 1 & 2 -->
-  <!-- <color name="test">#F9FC1C</color> --> <!-- TEST -->
+  <!-- <color name="splashscreen_background">#FAB234</color> --> <!-- orange --> <!-- 1 & 2 -->
+  <!-- <color name="splashscreen_background">#DEFA8C</color> --> <!-- VERY LIGHT YELLOW GREEN --> <!-- 1 & 2 -->
+  <color name="splashscreen_background">#F542DA</color> <!-- fuchsia --> <!-- 1 & 2 -->
+  <color name="test">#DEFA8C</color> <!-- VERY LIGHT YELLOW GREEN -->
+  <!-- <color name="test">#F542DA</color> --> <!-- fuchsia -->
+  
+  <!-- <color name="test">#D654CB</color> -->
   <!-- <color name="splashscreen_background">#00000000</color> --> <!-- test  transparent -->
 </resources>
