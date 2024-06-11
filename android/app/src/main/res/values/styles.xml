@@ -1,23 +1,64 @@
 <resources>
 
+    <!-- <style name="Theme.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/test</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style> -->
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+
+        
+    
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar"> <!-- OK -->
+    <!-- <style name="AppTheme" parent="Theme.SplashScreen"> --> <!-- OK -->
+    <!-- <style name="AppTheme" parent="Theme.Holo.Dialog"> --> <!-- NO -->
+    <!-- <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"> --> <!-- OK -->
+    <!-- <style name="AppTheme" parent="Theme.AppCompat.Light"> --> <!-- OK -->
+    <!-- <style name="AppTheme" parent="Theme.AppCompat"> --> <!-- NO -->
         <!-- Customize your theme here. -->
+        
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="android:statusBarColor">#4FC8E0</item> <!-- CYAN --> <!-- 2: STATUS BAR -->
+        <item name="android:navigationBarColor">#DCE04F</item> <!-- YELLOW --> <!-- 2: NAVIGATION BAR -->
+        
         <item name="android:windowBackground">@drawable/splashscreen</item> <!-- ORI -->
+
+<!-- 
+        <item name="windowSplashScreenBackground">@color/test</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item> -->
+
         <!-- <item name="android:windowBackground">@drawable/ic_launcher_foreground</item> --> <!-- TEST -->
         <!-- <item name="android:windowBackground">@drawable/ic_launcher_background</item> --> <!-- TEST -->
         <!-- <item name="android:windowFullscreen">true</item> -->
-        <item name="android:statusBarColor">#A22FE0</item> <!-- RED --> <!-- 2: STATUS BAR -->
-        <item name="android:navigationBarColor">#DCE04F</item> <!-- YELLOW --> <!-- 2: NAVIGATION BAR -->
+        
         <!-- <item name="android:windowDisablePreview">true</item> --> <!-- TEST -->
+        <!-- <item name="android:windowIsTranslucent">true</item> -->
+        <!-- <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@null</item> -->
+        <!-- <item name="android:windowBackground">@null</item> test -->
         <!-- <item name="android:windowIsTranslucent">true</item> --> <!-- TEST -->
         <!-- <item name="android:windowSplashScreenBackground">@color/test</item> --> <!-- TEST --> <!-- LIGHT TURQUOISE -->
         <!-- <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item> --> <!-- TEST -->
     </style>
 
-    <!-- <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
-    </style> -->
+    <style name="Start" parent="Theme.BootSplash">
+        <!-- <item name="windowSplashScreenBackground">@color/splashscreen_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item> -->
+
+        <item name="bootSplashBackground">@color/splashscreen_background</item>
+        <item name="bootSplashLogo">@drawable/logo</item>
+        <item name="postBootSplashTheme">@style/AppTheme</item>
+
+        <!-- <item name="windowSplashScreenBackground">#F542DA</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.AnimatedSplashScreen</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo</item> -->
+
+    </style>
+
+    
 
 </resources>
