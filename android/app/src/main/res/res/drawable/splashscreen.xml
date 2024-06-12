@@ -1,0 +1,14 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- <item android:drawable="@color/splashscreen_background"/> --> <!-- ORIGINAL -->
+    <!-- <background android:drawable="@color/splashscreen_background"/> --> <!-- TEST -->
+
+    <item android:drawable="@color/splashscreen_background"/>
+    <item>
+        <bitmap
+            android:src="@drawable/logo"
+            
+            android:gravity="center"
+        />
+    </item>
+
+</layer-list>

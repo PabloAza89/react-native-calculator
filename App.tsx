@@ -31,8 +31,16 @@ function App(): React.JSX.Element {
   //   });
   // }, []);
 
+  // useEffect(() => {
+  //   RNBootSplash.hide({ fade: true })
+  //   //RNBootSplash.hide()
+  // }, [])
+
+  // <NavigationContainer onReady={() => RNBootSplash.hide({ fade: true })}>
+
   return (
 
+    
     <NavigationContainer onReady={() => RNBootSplash.hide()}>
       <Stack.Navigator
         initialRouteName="Home"
