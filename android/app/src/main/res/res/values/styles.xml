@@ -18,11 +18,11 @@
     <!-- <style name="AppTheme" parent="Theme.AppCompat"> --> <!-- NO -->
         <!-- Customize your theme here. -->
         
-        <!-- <item name="android:editTextBackground">@drawable/rn_edit_text_material</item> -->
-        <!-- <item name="android:statusBarColor">#4FC8E0</item> --> <!-- CYAN --> <!-- 2: STATUS BAR -->
-        <!-- <item name="android:navigationBarColor">#DCE04F</item> --> <!-- YELLOW --> <!-- 2: NAVIGATION BAR -->
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="android:statusBarColor">#4FC8E0</item> <!-- CYAN --> <!-- 2: STATUS BAR -->
+        <item name="android:navigationBarColor">#DCE04F</item> <!-- YELLOW --> <!-- 2: NAVIGATION BAR -->
         
-        <!-- <item name="android:windowBackground">@drawable/splashscreen</item> --> <!-- ORI -->
+        <item name="android:windowBackground">@drawable/splashscreen</item> <!-- ORI -->
 
 <!-- 
         <item name="windowSplashScreenBackground">@color/test</item>
@@ -50,10 +50,7 @@
 
         <item name="bootSplashBackground">@color/splashscreen_background</item>
         <item name="bootSplashLogo">@drawable/logo</item>
-        <!-- <item name="postBootSplashTheme">@style/AppTheme</item> -->
-
-        <item name="android:statusBarColor">#9D1CED</item> <!-- VIOLET --> <!-- 2: STATUS BAR -->
-        <item name="android:navigationBarColor">#1703FC</item> <!-- BLUE --> <!-- 2: NAVIGATION BAR -->
+        <item name="postBootSplashTheme">@style/AppTheme</item>
 
         <!-- <item name="windowSplashScreenBackground">#F542DA</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
