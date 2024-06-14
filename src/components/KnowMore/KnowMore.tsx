@@ -16,11 +16,16 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { hph } from '../constants';
+import {Dimensions} from 'react-native';
 // import { Dimensions } from 'react-native';
 
 // const oph = Dimensions.get('window').height
 
 function KnowMore({ navigation }: any): React.JSX.Element {
+
+  let deviceHeight = Dimensions.get('screen').height;
+  let windowHeight = Dimensions.get('window').height;
+  
 
   const scrollRef = useRef<any>();
 
@@ -61,6 +66,8 @@ function KnowMore({ navigation }: any): React.JSX.Element {
   }, [counterA, currIdxA, goUpA])
 
   let insets = useSafeAreaInsets();
+
+  //console.log("KM deviceHeight", deviceHeight, "KM windowHeight", windowHeight)
 
   return (
     <View>

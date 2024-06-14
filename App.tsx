@@ -5,6 +5,7 @@ import Home from './src/components/Home/Home';
 import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
 import RNBootSplash from "react-native-bootsplash";
+import {Dimensions} from 'react-native';
 
 import {
   SafeAreaView,
@@ -20,6 +21,9 @@ const Stack: any = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
 
+  let deviceHeight = Dimensions.get('screen').height;
+  let windowHeight = Dimensions.get('window').height;
+  
   // useEffect(() => {
   //   const init = async () => {
   //     // …do multiple sync or async tasks
@@ -37,6 +41,10 @@ function App(): React.JSX.Element {
   // }, [])
 
   // <NavigationContainer onReady={() => RNBootSplash.hide({ fade: true })}>
+  // different === navigationBar Enabled
+
+  console.log("deviceHeight", deviceHeight, "windowHeight", windowHeight)
+  //console.log(Dimensions)
 
   return (
 
@@ -55,16 +63,16 @@ function App(): React.JSX.Element {
           component={Home}
           options={{ animation: 'slide_from_right' }}
         /> */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="About"
           component={About}
           options={{ animation: 'slide_from_right' }}
-        />
-        {/* <Stack.Screen
+        /> */}
+        <Stack.Screen
           name="KnowMore"
           component={KnowMore}
           options={{ animation: 'slide_from_right' }}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
 
