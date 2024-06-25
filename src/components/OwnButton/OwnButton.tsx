@@ -202,6 +202,7 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, arr1, arr
       activeOpacity={1}
       style={[ smaller ? s.ownButtonSmaller : s.ownButton ]}
       onPress={() => handlePress()}
+      //onLoad={() => console.log("ASDASD")}
     >
       <Text style={[ smaller ? s.ownButtonSmallerT : s.ownButtonT ]}>
         {

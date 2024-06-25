@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { opw } from '../constants';
+import { opw, ins, dH, wH, aB } from '../constants';
+
+
 
 export const s = StyleSheet.create({
   linearGradient: {
@@ -84,7 +86,8 @@ export const s = StyleSheet.create({
     lineHeight: 13
   },
   last: {
-    marginBottom: 20,
+    //marginBottom: 20,
+    marginBottom: aB + 20, // additionalBottom + 40
   },
   imageWrapper: {
     marginTop: 20,
@@ -144,7 +147,8 @@ export const s = StyleSheet.create({
     width: 60,
     height: 40,
     // zIndex: 600000,
-    bottom: 10,
+    bottom: aB + 10, // additionalBottom + 10
+    //bottom: ins.bottom + 10, // additionalBottom + 10
     right: 10,
     color: 'white',
 

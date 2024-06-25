@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { opw } from '../constants'
+//import { opw } from '../constants'
 
 export const s = StyleSheet.create({
   background: {
@@ -12,34 +12,34 @@ export const s = StyleSheet.create({
   },
   contour: {
     backgroundColor: 'silver',
-    width: opw * 90,
+    //width: opw * 90,
+    //height: opw * 129.6,
     borderColor: 'darkblue',
     borderWidth: 2,
-    height: opw * 129.6,
     maxWidth: '100%',
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignContent: 'space-between',
-    paddingTop: opw * 1.5,
-    paddingBottom: opw * 1.5
+    /* paddingTop: opw * 1.5,
+    paddingBottom: opw * 1.5 */
   },
   displayContainer: {
     backgroundColor: 'antiquewhite',
-    width: opw * 86,
-    height: opw * 20,
+    //width: opw * 86,
+    //height: opw * 20,
     borderColor: 'darkblue',
     fontSize: 30,
     alignItems: 'flex-end',
     justifyContent: 'center',
-    paddingLeft: opw * 2,
-    paddingRight: opw * 2,
+    //paddingLeft: opw * 2,
+    //paddingRight: opw * 2,
     borderWidth: .5
   },
   mainResult: {
     //backgroundColor: 'burlywood', /* DEV */
-    height: opw * 8,
-    lineHeight: opw * 8,
+    //height: opw * 8,
+    //lineHeight: opw * 8,
     borderColor: 'darkblue',
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
@@ -49,8 +49,8 @@ export const s = StyleSheet.create({
   },
   secondaryResult: {
     /* backgroundColor: 'lightgreen', */ /* DEV */
-    height: opw * 6,
-    lineHeight: opw * 6,
+    //height: opw * 6,
+    //lineHeight: opw * 6,
     borderColor: 'darkblue',
     fontWeight: '500',
     fontSize: 17,
@@ -59,14 +59,14 @@ export const s = StyleSheet.create({
   },
   mid: {
     backgroundColor: 'aqua',
-    width: opw * 20,
-    height: opw * 20,
+    //width: opw * 20,
+    //height: opw * 20,
     borderColor: 'darkblue'
   },
   text: {
     backgroundColor: 'red',
-    width: opw * 20,
-    height: opw * 20,
+    //width: opw * 20,
+    //height: opw * 20,
     borderColor: 'darkblue',
     fontSize: 40,
     textAlign: 'center',
@@ -76,7 +76,7 @@ export const s = StyleSheet.create({
     position: 'absolute',
     height: 40,
     top: -40,
-    width: opw * 86,
+    //width: opw * 86,
     color: 'red',
     fontSize: 17,
     textAlign: 'center',
@@ -90,7 +90,7 @@ export const s = StyleSheet.create({
     bottom: -54,
     width: 42,
     height: 42,
-    borderRadius: (opw * 50) / 2,
-    left: ((opw * 90) / 2) - 23
+    //borderRadius: (opw * 50) / 2,
+    //left: ((opw * 90) / 2) - 23
   },
 });

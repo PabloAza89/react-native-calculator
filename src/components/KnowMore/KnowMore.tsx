@@ -11,11 +11,11 @@ import { s } from './KnowMoreCSS';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 //import ReactLinearGradient from 'react-native-linear-gradient';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+//import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
-import { hph } from '../constants';
+import { hph, ins } from '../constants';
 import {Dimensions} from 'react-native';
 // import { Dimensions } from 'react-native';
 
@@ -23,18 +23,27 @@ import {Dimensions} from 'react-native';
 
 function KnowMore({ navigation }: any): React.JSX.Element {
 
-  let deviceHeight = Dimensions.get('screen').height;
-  let windowHeight = Dimensions.get('window').height;
+  // let deviceHeight = Dimensions.get('screen').height;
+  // let windowHeight = Dimensions.get('window').height;
   
+  //console.log("navigation", navigation)
 
   const scrollRef = useRef<any>();
 
   const onFabPress = () => {
     scrollRef.current?.scrollTo({
       y: 0,
-      animated: true,
+      animated: true
     });
   }
+
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     navigationBarColor: 'rgba(0, 0, 0, 0.5)'
+  //   });
+
+  // }, [navigation])
+    
 
   /* const handleScroll = (e: any) => {
     console.log(e.nativeEvent.contentOffset.y)
@@ -65,7 +74,24 @@ function KnowMore({ navigation }: any): React.JSX.Element {
     return () => clearInterval(interval);
   }, [counterA, currIdxA, goUpA])
 
-  let insets = useSafeAreaInsets();
+  //let insets = useSafeAreaInsets();
+
+  // useEffect(() => {
+  //   let dH = Dimensions.get('screen').height; // deviceHeight
+  //   let wH = Dimensions.get('window').height; // windowHeight
+  //   // insets.top // statusBar
+
+  //   console.log("deviceHeight", dH, "windowHeight", wH)
+
+  //   if ((dH - ins.top) === wH) console.log("NAVBAR NOT PRESENT")
+  //   else {
+  //     console.log("NAVBAR PRESENT")
+  //     console.log("ins.bottom", ins.bottom)
+  //   }
+
+  // }, [])
+
+  //console.log("INSETS", insets)
 
   //console.log("KM deviceHeight", deviceHeight, "KM windowHeight", windowHeight)
 
@@ -94,9 +120,9 @@ function KnowMore({ navigation }: any): React.JSX.Element {
           //  `red`,
           //  `rgba(255, 255, 255, 1)`
         ]}
-        style={[ s.linearGradientStatus, { height: insets.top } ]}
+        style={[ s.linearGradientStatus, { height: ins.top } ]}
           //start={{ x: 0, y: ((oph / insets.top) / 2) + insets.top }} // x = from left // y = from top
-          start={{ x: 0, y: (hph / (insets.top / 2)) - insets.top }} // x = from left // y = from top
+          start={{ x: 0, y: (hph / (ins.top / 2)) - ins.top }} // x = from left // y = from top
           end={{x: 1, y: 0}} // x = from left // y = from bottom
       >
       </LinearGradient>

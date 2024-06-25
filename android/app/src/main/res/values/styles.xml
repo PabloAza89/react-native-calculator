@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- <style name="Theme.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/test</item>
@@ -43,7 +43,8 @@
         <!-- <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item> --> <!-- TEST -->
     </style>
 
-    <style name="Start" parent="Theme.BootSplash.EdgeToEdge">
+    <style name="Start" parent="Theme.BootSplash">
+        <!-- .EdgeToEdge -->
         <!-- <item name="windowSplashScreenBackground">@color/splashscreen_background</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
         <item name="postSplashScreenTheme">@style/AppTheme</item> -->
@@ -54,7 +55,33 @@
 
         <item name="windowSplashScreenBackground">@color/test</item>
 
-        <!-- <item name="android:statusBarColor">#9D1CED</item> --> <!-- VIOLET --> <!-- 2: STATUS BAR -->
+        <!-- <item name="android:windowLightStatusBar" tools:targetApi="m">false</item> -->
+        <!-- <item name="android:windowLightStatusBar">true</item> -->
+        <!-- <item name="android:windowLightNavigationBar">false</item> -->
+
+        <!-- <item name="android:windowLightStatusBar">true</item> -->
+        <!-- <item name="android:windowBackground">#9D1CED</item>    -->
+
+        <!-- <item name="android:statusBarColor">#9D1CED</item> --> <!-- VIOLET --> <!-- TEST -->
+        <!-- <item name="android:navigationBarColor">#DEFA8C</item> --> <!-- VERY LIGHT YELLOW GREEN --> <!-- TEST -->
+
+        <item name="android:statusBarColor">#3737A8</item> <!-- DARK BLUE --> <!-- TEST -->
+        <item name="android:navigationBarColor">#3737A8</item> <!-- DARK BLUE --> <!-- TEST -->
+        <!-- <item name="android:windowLightNavigationBar">true</item> -->
+        <!-- <item name="android:navigationBarColor">#000000</item> -->
+
+
+        <!-- <item name="android:navigationBarColor">#00FFFFFF</item> -->
+        <!-- <item name="android:windowLightNavigationBar">true</item> -->
+
+
+
+
+
+        <!-- <item name="android:navigationBarColor">#7AFA73</item> --> <!-- LIGHT GREEN --> <!-- TEST -->
+
+
+
         <!-- <item name="android:statusBarColor" >@color/bootsplash_background</item> -->
         <!-- <item name="android:navigationBarColor">#1703FC</item> --> <!-- BLUE --> <!-- 2: NAVIGATION BAR -->
         <!-- <item name="android:navigationBarColor">#1703FC</item> --> <!-- TRANSPARENT --> <!-- 2: NAVIGATION BAR -->
