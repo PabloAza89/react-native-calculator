@@ -43,7 +43,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
     // super.onCreate(savedInstanceState)
     // setContentView(R.style.Start)
     RNBootSplash.init(this, R.style.Start); // ⬅️ initialize the splash screen
-    super.onCreate(savedInstanceState); // super.onCreate(null) with react-native-screens
+    // savedInstanceState = App crash when size changes
+    // null = App dont crash when size changes
+    super.onCreate(null); // super.onCreate(null) with react-native-screens
   }
 
 
