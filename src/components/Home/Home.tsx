@@ -4,6 +4,7 @@ import {
   StatusBar,
   Text,
   View,
+  Button,
   TouchableHighlight,
   Dimensions, AppState
 } from 'react-native';
@@ -11,10 +12,10 @@ import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import {useWindowDimensions} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
-import { opw, ins, /* dH, wH, */ aB/* , nB */ } from '../constants';
+import { opw, /* ins, */ /* dH, wH, */ aB/* , nB */ } from '../constants';
 
 
 function Home({ navigation }: any): React.JSX.Element {
@@ -69,7 +70,7 @@ function Home({ navigation }: any): React.JSX.Element {
         appState.current.match(/inactive|background/) &&
         nextAppState === 'active'
       ) {
-        console.log('App has come to the foreground!');
+        //console.log('App has come to the foreground!');
 
         //if ((dH - ins.top) === wH) setNb(false) // navBar NOT PRESENT
         //else setNb(true) // navBar PRESENT
@@ -81,8 +82,8 @@ function Home({ navigation }: any): React.JSX.Element {
 
         setOpw(width / 100)
 
-        console.log("dH", dH)
-        console.log("wH", wH)
+        //console.log("dH", dH)
+        //console.log("wH", wH)
 
       }
 
@@ -94,14 +95,53 @@ function Home({ navigation }: any): React.JSX.Element {
     return () => focusCheck.remove()
   }, [width]);
 
+  const saveData = async (key: any, value:any) => {
+    try {
+      await AsyncStorage.setItem(`${key}`, value);
+      console.log("aca save 1")
+    } catch (e) {
+      console.log("aca save 2")
+      // saving error
+    }
+  };
+
+  const readData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('testKey');
+      console.log("aca read 1")
+      return jsonValue !== null ? JSON.parse(jsonValue) : null;
+      
+      //return jsonValue != null ? JSON.parse(jsonValue) : null;
+      
+    } catch (e) {
+      console.log("E:", e)
+      console.log("aca read 2")
+      // error reading value
+    }
+  };
+
+  const getAllKeys = async () => {
+    let keys = []
+    try {
+      //keys = await AsyncStorage.getAllKeys()
+      console.log(await AsyncStorage.getAllKeys())
+    } catch(e) {
+      // read key error
+    }
+  
+    //console.log(keys)
+    // example console.log result:
+    // ['@MyApp_user', '@MyApp_key']
+  }
+
   return (
 
         <View style={[s.background]}>
           <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
           {/* <StatusBar barStyle={'light-content'} translucent={true} backgroundColor={'transparent'}/> */}
-          <View style={[s.contour, { width: opw * 90, height: opw * 129.6 }] }>
+          <View style={[s.contour/* , { width: opw * 90, height: opw * 129.6 } */] }>
             { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
-            {/* <View style={[s.displayContainer]}>
+            <View style={[s.displayContainer]}>
               <ScrollView
                 overScrollMode="never"
                 ref={scrollRefUpper}
@@ -121,8 +161,8 @@ function Home({ navigation }: any): React.JSX.Element {
                 <Text style={[s.mainResult]}>{ input.replaceAll(/N/g,"-") }</Text>
               </ScrollView>
               <Text style={[s.secondaryResult]} />
-            </View> */}
-            {/* <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="(" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
+            </View>
+            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="(" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value=")" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="C" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="N" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
@@ -142,15 +182,54 @@ function Home({ navigation }: any): React.JSX.Element {
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="/" setParErr={setParErr} setSecInput={setSecInput} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="0" setParErr={setParErr} setSecInput={setSecInput} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="." setParErr={setParErr} setSecInput={setSecInput} />
-            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="=" setParErr={setParErr} setSecInput={setSecInput} parErr={parErr} /> */}
+            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="=" setParErr={setParErr} setSecInput={setSecInput} parErr={parErr} />
 
-            <TouchableHighlight
+            {/* <TouchableHighlight
               underlayColor="#8aaeba"
               activeOpacity={1}
               style={s.question}
               onPress={() => navigation.navigate('About')}
             >
               <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
+            </TouchableHighlight> */}
+            <TouchableHighlight
+              //underlayColor="#8aaeba"
+              //activeOpacity={1}
+              //style={s.question}
+              style={{ position: 'absolute', left: 10, bottom: -30 }}
+              
+              onPress={() => saveData("testKey", "testData")}
+              //onPress={() => navigation.navigate('About')}
+            >
+              <Text>SAVE</Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              //underlayColor="#8aaeba"
+              //activeOpacity={1}
+              //style={s.question}
+              style={{ position: 'absolute', left: 150, bottom: -30 }}
+              //onPress={ () => { console.log(readData()) } }
+              onPress={ () => {  getAllKeys() } }
+              
+              //onPress={() => console.log("PRESSED")}
+              //onPress={() => navigation.navigate('About')}
+            >
+              <Text>ALL KEYS</Text>
+            </TouchableHighlight>
+            
+            <TouchableHighlight
+              //underlayColor="#8aaeba"
+              //activeOpacity={1}
+              //style={s.question}
+              style={{ position: 'absolute', right: 10, bottom: -30 }}
+              //onPress={ () => { console.log(readData()) } }
+              onPress={ () => {  getAllKeys() } }
+              
+              //onPress={() => console.log("PRESSED")}
+              //onPress={() => navigation.navigate('About')}
+            >
+              <Text>READ</Text>
             </TouchableHighlight>
           </View>
         </View>

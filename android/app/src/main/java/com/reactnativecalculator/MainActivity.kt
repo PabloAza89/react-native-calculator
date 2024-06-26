@@ -22,6 +22,9 @@ import android.content.DialogInterface;
 import android.view.Window;
 import android.view.WindowManager;
 
+
+import android.util.Log
+
 // import androidx.core.splashscreen.SplashScreen
 
 class MainActivity : ReactActivity() {
@@ -45,7 +48,11 @@ override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // ⬅️ initialize the splash screen
     // savedInstanceState = App crash when size changes
     // null = App dont crash when size changes
+    //super.onCreate(savedInstanceState)
+    //console.log("SAVED INSTANCE", savedInstanceState)
+    //Log.d("SAVED INSTANCE", savedInstanceState)
     super.onCreate(null); // super.onCreate(null) with react-native-screens
+    //super.onCreate(); // super.onCreate(null) with react-native-screens
   }
 
 
