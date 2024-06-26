@@ -11,7 +11,7 @@ import {
 import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-import {useWindowDimensions} from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -50,6 +50,11 @@ function Home({ navigation }: any): React.JSX.Element {
   const [ opw, setOpw ] = useState(width / 100)
 
   // useEffect(() => {
+  //   console.log("TEST TEST", appState)
+  // }, [appState])
+  
+
+  // useEffect(() => {
   //   setOpw(width / 100)
   // }, [height, width])
 
@@ -59,41 +64,84 @@ function Home({ navigation }: any): React.JSX.Element {
 
   // },[])
 
+  // useEffect(() => {
+  //   console.log("OLY FIRST TIME")
+  // }, [])
+
+  // useEffect(() => {
+
+  //   //console.log("AppState AppState", AppState)
+
+  //   //const focus = AppState.addEventListener('focus', () => { console.log("FOCUS") })
+
+  //   //AppState.addEventListener('focus', () => { console.log("FOCUS") })
+    
+
+  //   const focusCheck = AppState.addEventListener('change', nextAppState => {
+
+  //     //console.log("appState.current", appState.current)
+
+  //     if (
+  //       // appState.current.match(/inactive|background/) &&
+  //       // nextAppState === 'active'
+  //       appState.current === 'active' &&
+  //       nextAppState.match(/inactive|background/)
+  //     ) {
+  //       //console.log('VISIBLE APP');
+  //       console.log('HIDDEN APP');
+  //       //removeData("testKey")
+
+  //       //if ((dH - ins.top) === wH) setNb(false) // navBar NOT PRESENT
+  //       //else setNb(true) // navBar PRESENT
+
+  //       //dH = Dimensions.get('screen').height; // deviceHeight
+  //       //wH = Dimensions.get('window').height; // windowHeight
+  //       //opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
+  //       //setOpw(Dimensions.get('window').width / 100)
+
+  //       //setOpw(width / 100)
+
+  //       //console.log("dH", dH)
+  //       //console.log("wH", wH)
+
+  //     } /* else {
+  //       console.log('HIDDEN APP');
+  //     } */
+
+  //     appState.current = nextAppState;
+  //     setAppStateVisible(appState.current);
+  //     //console.log('AppState', appState.current);
+  //   });
+
+  //   return () => focusCheck.remove();
+  // }, []);
+
   useEffect(() => {
 
+    //console.log("AppState AppState", AppState)
+
+    //const focus = AppState.addEventListener('focus', () => { console.log("FOCUS")})
+
+    const focus = AppState.addEventListener('focus', () => { console.log("FOCUS") })
     
+    return () => focus.remove();
+    //return focus.remove()
+  }, []);
 
+  useEffect(() => {
+
+    //console.log("AppState AppState", AppState)
+
+    //const focus = AppState.addEventListener('focus', () => { console.log("FOCUS")})
+
+    const blur = AppState.addEventListener('blur', () => { 
+      console.log("BLUR")
+      saveData("savedInput", input)
+    })
     
-
-    const focusCheck = AppState.addEventListener('change', nextAppState => {
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === 'active'
-      ) {
-        //console.log('App has come to the foreground!');
-
-        //if ((dH - ins.top) === wH) setNb(false) // navBar NOT PRESENT
-        //else setNb(true) // navBar PRESENT
-
-        //dH = Dimensions.get('screen').height; // deviceHeight
-        //wH = Dimensions.get('window').height; // windowHeight
-        //opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
-        //setOpw(Dimensions.get('window').width / 100)
-
-        setOpw(width / 100)
-
-        //console.log("dH", dH)
-        //console.log("wH", wH)
-
-      }
-
-      appState.current = nextAppState;
-      setAppStateVisible(appState.current);
-      //console.log('AppState', appState.current);
-    });
-
-    return () => focusCheck.remove()
-  }, [width]);
+    return () => blur.remove();
+    //return focus.remove()
+  }, [input]);
 
   const saveData = async (key: any, value:any) => {
     try {
@@ -105,11 +153,14 @@ function Home({ navigation }: any): React.JSX.Element {
     }
   };
 
-  const readData = async () => {
+  const readData = async (key: string) => {
     try {
-      const jsonValue = await AsyncStorage.getItem('testKey');
-      console.log("aca read 1")
-      return jsonValue !== null ? JSON.parse(jsonValue) : null;
+      // const jsonValue = await AsyncStorage.getItem('testKey');
+      // console.log("aca read 1")
+      // return jsonValue !== null ? JSON.parse(jsonValue) : null;
+
+      //return await AsyncStorage.getItem('@key')
+      return console.log(await AsyncStorage.getItem(key))
       
       //return jsonValue != null ? JSON.parse(jsonValue) : null;
       
@@ -132,6 +183,16 @@ function Home({ navigation }: any): React.JSX.Element {
     //console.log(keys)
     // example console.log result:
     // ['@MyApp_user', '@MyApp_key']
+  }
+
+  const removeData = async (key: any) => {
+    try {
+      await AsyncStorage.removeItem(key)
+    } catch(e) {
+      // remove error
+    }
+  
+    console.log('Done.')
   }
 
   return (
@@ -198,7 +259,7 @@ function Home({ navigation }: any): React.JSX.Element {
               //style={s.question}
               style={{ position: 'absolute', left: 10, bottom: -30 }}
               
-              onPress={() => saveData("testKey", "testData")}
+              onPress={() => saveData("savedInput", "111")}
               //onPress={() => navigation.navigate('About')}
             >
               <Text>SAVE</Text>
@@ -224,13 +285,26 @@ function Home({ navigation }: any): React.JSX.Element {
               //style={s.question}
               style={{ position: 'absolute', right: 10, bottom: -30 }}
               //onPress={ () => { console.log(readData()) } }
-              onPress={ () => {  getAllKeys() } }
+              onPress={ () => {  readData("savedInput") } }
               
               //onPress={() => console.log("PRESSED")}
               //onPress={() => navigation.navigate('About')}
             >
               <Text>READ</Text>
             </TouchableHighlight>
+
+            <TouchableHighlight
+              //underlayColor="#8aaeba"
+              //activeOpacity={1}
+              //style={s.question}
+              style={{ position: 'absolute', left: 10, bottom: -60 }}
+              
+              onPress={() => removeData("savedInput")}
+              //onPress={() => navigation.navigate('About')}
+            >
+              <Text>REMOVE</Text>
+            </TouchableHighlight>
+
           </View>
         </View>
   );
