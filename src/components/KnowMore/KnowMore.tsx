@@ -15,13 +15,48 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
-import { hph, ins } from '../constants';
-import {Dimensions} from 'react-native';
+import { hph/* , ins */, dH, wH } from '../constants';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+//import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+// export let ins = useSafeAreaInsets(); // insets
+
+
+
+//import {Dimensions} from 'react-native';
 // import { Dimensions } from 'react-native';
 
 // const oph = Dimensions.get('window').height
 
 function KnowMore({ navigation }: any): React.JSX.Element {
+
+  let ins = useSafeAreaInsets(); // insets
+
+  // let aB: number // additionalBottom
+  // let nB: boolean // navBar present ?
+
+  // if ((dH - ins.top) === wH) { nB = false, aB = 0 } // navBar NOT PRESENT
+  // else { nB = true, aB = ins.bottom } // navBar PRESENT
+
+  //let aB: number // additionalBottom
+  let aB: number = (dH - ins.top) === wH ? 0 : ins.bottom // additionalBottom
+
+  // useEffect(() => {
+  //   if ((dH - ins.top) === wH) aB = 0 // navBar NOT PRESENT
+  //   else aB = ins.bottom // navBar PRESENT
+
+  //   console.log("INS", ins)
+
+  // },[ins])
+
+  // if ((dH - ins.top) === wH) aB = 0 // navBar NOT PRESENT
+  //   else aB = ins.bottom // navBar PRESENT
+
+    console.log("INS", ins)
+  
+
+  //let ins = useSafeAreaInsets(); // insets
 
   // let deviceHeight = Dimensions.get('screen').height;
   // let windowHeight = Dimensions.get('window').height;
@@ -131,7 +166,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
       <ScrollView
         ref={scrollRef}
         //onScroll={(e) => handleScroll(e)}
-        overScrollMode="never"
+        //overScrollMode="never"
       >
         <View style={s.background}>
 
@@ -316,7 +351,8 @@ function KnowMore({ navigation }: any): React.JSX.Element {
             </Text>
           </View>
 
-          <View style={[s.eachItem, s.last]}>
+          {/* <View style={[s.eachItem, s.last]}> */}
+          <View style={[s.eachItem, {marginBottom: aB + 20} ]}>
             <MaterialIcons
               name='phonelink-erase'
               size={30}
@@ -333,7 +369,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
         
       </ScrollView>
       <Pressable
-        style={s.floatButton}
+        style={[s.floatButton,{ bottom: aB + 10 }]}
         onPress={() => onFabPress()}
       >
         <Text style={s.floatButtonText}> UP </Text>

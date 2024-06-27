@@ -22,9 +22,9 @@ function Home({ navigation }: any): React.JSX.Element {
 
   const {height, width} = useWindowDimensions();
 
-  const [ input, setInput ] = useState("");
-  const [ secInput, setSecInput ] = useState("");
   const [ parErr, setParErr ] = useState(false);
+  const [ secInput, setSecInput ] = useState("");
+  const [ input, setInput ] = useState("");
 
   useEffect(() => {
     scrollEnd()
@@ -116,32 +116,61 @@ function Home({ navigation }: any): React.JSX.Element {
   //   return () => focusCheck.remove();
   // }, []);
 
-  useEffect(() => {
+  useEffect(() => { // ON APP FOCUS
 
     //console.log("AppState AppState", AppState)
 
     //const focus = AppState.addEventListener('focus', () => { console.log("FOCUS")})
 
-    const focus = AppState.addEventListener('focus', () => { console.log("FOCUS") })
+    const focus = AppState.addEventListener('focus', async () => {
+      console.log("FOCUS")
+
+      //readData("savedInput")
+      //if (readData("savedInput") === null) console.log("MEMORY IS EMPTY")
+      //return async () => console.log("RES", await readData("savedInput"))
+      //async () => console.log("RES", await readData("savedInput"))
+      // onPress={ async () => {  console.log(await readData("savedInput")) } }
+      //let qq = async () => { return await readData("savedInput") }
+      //console.log("QQ", (async () => { return await readData("savedInput") }) === null)
+
+      //let qq = async () => { return await readData("savedInput") }
+      //console.log("QQ", qq)
+
+      //return async () => {  console.log(await readData("savedInput")) }
+
+      //async () => {  console.log(await readData("savedInput")) }
+      //console.log(readData("savedInput")) 
+      //console.log(await readData("savedInput"))
+      let resInput = await readData("savedInput") // RESPONSE INPUT
+      let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
+      //console.log("QQ", qq === null)
+      console.log("QQ resInput", resInput)
+      console.log("QQ resSecInput", resSecInput)
+      if (resInput !== null && resInput !== undefined) setInput(resInput)
+      if (resSecInput !== null && resSecInput !== undefined) setSecInput(resSecInput)
+
+
+    })
     
     return () => focus.remove();
     //return focus.remove()
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { // ON APP BLUR
 
     //console.log("AppState AppState", AppState)
 
     //const focus = AppState.addEventListener('focus', () => { console.log("FOCUS")})
 
-    const blur = AppState.addEventListener('blur', () => { 
+    const blur = AppState.addEventListener('blur', () => {
       console.log("BLUR")
       saveData("savedInput", input)
+      saveData("savedSecInput", secInput)
     })
     
     return () => blur.remove();
     //return focus.remove()
-  }, [input]);
+  }, [input, secInput]);
 
   const saveData = async (key: any, value:any) => {
     try {
@@ -160,7 +189,8 @@ function Home({ navigation }: any): React.JSX.Element {
       // return jsonValue !== null ? JSON.parse(jsonValue) : null;
 
       //return await AsyncStorage.getItem('@key')
-      return console.log(await AsyncStorage.getItem(key))
+      //return console.log(await AsyncStorage.getItem(key))
+      return await AsyncStorage.getItem(key)
       
       //return jsonValue != null ? JSON.parse(jsonValue) : null;
       
@@ -245,14 +275,16 @@ function Home({ navigation }: any): React.JSX.Element {
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="." setParErr={setParErr} setSecInput={setSecInput} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="=" setParErr={setParErr} setSecInput={setSecInput} parErr={parErr} />
 
-            {/* <TouchableHighlight
+            <TouchableHighlight
               underlayColor="#8aaeba"
               activeOpacity={1}
               style={s.question}
               onPress={() => navigation.navigate('About')}
             >
               <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
-            </TouchableHighlight> */}
+            </TouchableHighlight>
+
+
             <TouchableHighlight
               //underlayColor="#8aaeba"
               //activeOpacity={1}
@@ -285,7 +317,11 @@ function Home({ navigation }: any): React.JSX.Element {
               //style={s.question}
               style={{ position: 'absolute', right: 10, bottom: -30 }}
               //onPress={ () => { console.log(readData()) } }
-              onPress={ () => {  readData("savedInput") } }
+              //onPress={ () => { readData("savedInput") } }
+              onPress={ async () => {  
+                console.log("SAVED INPUT", await readData("savedInput"))
+                console.log("SAVED SEC INPUT",await readData("savedSecInput"))
+              } }
               
               //onPress={() => console.log("PRESSED")}
               //onPress={() => navigation.navigate('About')}

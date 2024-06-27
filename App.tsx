@@ -6,7 +6,7 @@ import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
 import RNBootSplash from "react-native-bootsplash";
 import {Dimensions, AppState} from 'react-native';
-import { opw, ins, /* dH, wH, */ aB/* , nB */ } from './src/components/constants';
+import { opw, /* ins, */ /* dH, wH, */ aB/* , nB */ } from './src/components/constants';
 
 import {
   SafeAreaView,
@@ -145,7 +145,7 @@ function App(): React.JSX.Element {
           component={ Home }
           options={{ animation: 'slide_from_right' }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="About"
           component={ About }
           options={{ animation: 'slide_from_right' }}
@@ -154,7 +154,7 @@ function App(): React.JSX.Element {
           name="KnowMore"
           component={ KnowMore }
           options={{ animation: 'slide_from_right' }}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
