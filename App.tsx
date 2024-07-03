@@ -1,15 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useRoute, useNavigationContainerRef, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/components/Home/Home';
 import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
-import RNBootSplash from "react-native-bootsplash";
+import BootSplash from "react-native-bootsplash";
 import {Dimensions, AppState} from 'react-native';
 import { opw, /* ins, */ /* dH, wH, */ aB/* , nB */ } from './src/components/constants';
 
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+//let ins = useSafeAreaInsets(); // insets
+//import { SafeAreaView } from 'react-native-safe-area-context';
+
 import {
-  SafeAreaView,
+  //SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -17,75 +21,13 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack: any = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
 
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const [ nB, setNb ] = useState(false)
-
-  // useEffect(() => {
-
-  //   let dH = Dimensions.get('screen').height; // deviceHeight
-  //   let wH = Dimensions.get('window').height; // windowHeight
-
-    
-
-  //   const focusCheck = AppState.addEventListener('change', nextAppState => {
-  //     if (
-  //       appState.current.match(/inactive|background/) &&
-  //       nextAppState === 'active'
-  //     ) {
-  //       console.log('App has come to the foreground!');
-
-  //       if ((dH - ins.top) === wH) setNb(false) // navBar NOT PRESENT
-  //       else setNb(true) // navBar PRESENT
-
-  //       console.log("dH", dH)
-  //       console.log("wH", wH)
-
-  //     }
-
-  //     appState.current = nextAppState;
-  //     setAppStateVisible(appState.current);
-  //     //console.log('AppState', appState.current);
-  //   });
-
-  //   return () => focusCheck.remove()
-  // }, []);
-
-  // useEffect(() => {
-  //   let deviceHeight = Dimensions.get('screen').height;
-  //   let windowHeight = Dimensions.get('window').height;
-
-  //   console.log("deviceHeight", deviceHeight, "windowHeight", windowHeight)
-
-  // }, [])
-
-  //let nB: boolean = false // navBar present ?
-
-  //const [ nB, setNb ] = useState(false)
-
-  //let nB = useRef<any>() // navBar present ?
-
-  // useEffect(() => {
-  //   let dH = Dimensions.get('screen').height; // deviceHeight
-  //   let wH = Dimensions.get('window').height; // windowHeight
-
-  //   //console.log("deviceHeight", deviceHeight, "windowHeight", windowHeight)
-
-  //   // if ((dH - ins.top) === wH) nB.current = false // navBar NOT PRESENT
-  //   // else nB.current = true // navBar PRESENT
-
-  //   // if ((dH - ins.top) === wH) setNb(false) // navBar NOT PRESENT
-  //   // else setNb(true) // navBar PRESENT
-
-  //   // console.log("ENTER")
-
-  // }, [])
-
+  const navigationRef = useNavigationContainerRef();
 
 
   
@@ -108,22 +50,118 @@ function App(): React.JSX.Element {
   // <NavigationContainer onReady={() => RNBootSplash.hide({ fade: true })}>
   // different === navigationBar Enabled
 
+  //let res = await readData("savedRoute") // RESPONSE ROUTE
+
+  //const [ routeGo, setRouteGo ] = useState('KnowMore')
+  //let routeGo = useRef('KnowMore')
+  let routeGo = useRef('Home')
+  //routeGo.current = 'KnowMore'
+  const [ finished, setFinished ] = useState(false)
+  //let resRoute = useRef<any>("Home")
+ 
+  useEffect(() => {
+    
+    const qq = async () => {
+      
+      let response = await readData("savedRoute") // RESPONSE ROUTE
+
+      if (response !== undefined && response !== null) {
+        //setRouteGo(response)
+        //setRouteGo(response)
+        //setRouteGo({ name : 'About'})
+        console.log("ENTRO ACA", response)
+        console.log("ENTRO ACA typeof", typeof response)
+        //routeGo.current = response.toString()
+      }
+ 
+
+      await new Promise<void>((resolve) => {
+        
+        console.log("A VER 2222 routeGo", routeGo)
+        //setFinished(true)
+        //navigation.navigate(resRoute)
+          //navigation.navigate("About")
+          //BootSplash.hide()
+          resolve();
+        
+      }).then(() => {
+        //navigation.navigate("About")
+        BootSplash.hide()
+      })
+
+    }
+
+    qq()
+
+
+  }, []);
+
+  const readData = async (key: string) => {
+    try { return await AsyncStorage.getItem(key) }
+    catch(e) { }
+  };
+
+  //routeGo.current = "About"
   
-  //console.log(Dimensions)
+  // useEffect(() => {
+  //   routeGo.current = "About"
+  // },[])
+
+  
+
+  let rrr = async () => {
+    routeGo.current = "About"
+    //routeGo.current = "KnowMore"
+    //routeGo.current = "Home"
+  }
+
+  rrr()
+
+  let initialState = {
+    index: 0, // to load the second screen which is LastNameView
+    routes: [
+      { name: 'Home' },
+      /* { name: 'About' }, */
+      /* { name: 'KnowMore' }, */
+    ],
+  };
 
   return (
-
-    
-    <NavigationContainer onReady={() => RNBootSplash.hide()}>
+    <NavigationContainer
+      ref={navigationRef}
+      initialState={initialState}
+      //onReady={() => BootSplash.hide()}
+    >
       <Stack.Navigator
-        initialRouteName="Home"
+        //initialRouteName="Home"
+        //initialRouteName={routeGo}
+        //initialRouteName={routeGo.name}
+        //initialRouteName={routeGo.current}
+        //initialRouteName="About"
+        //initialRouteName={""}
+        //</NavigationContainer>initialRouteName={routeGo.current}
+        //initialRouteName={"About"}
+       //initialRouteName={finished ? routeGo : "Home"}
+        //routeGo
+        //initialRouteName={resRoute.current}
         screenOptions={{
+          //gestureDirection: "horizontal-inverted",
           headerShown: false,
+          // animationDuration: 1500,
+          // animation: 'slide_from_right',
+          // animationEnabled:false,
+          // transitionConfig: () => ({
+          //   transitionSpec: {
+          //     duration:0,
+          //     timing: 0,
+          //   },
+          // }),
           //headerTintColor: 'red',
           // headerStyle: {
           //   backgroundColor: 'red'
           // }
           navigationBarColor: 'rgba(0, 0, 0, 0.2)', // BOTTOM
+          animation: 'slide_from_right',
           //navigationBarColor: nB ? 'rgba(0, 0, 0, 0.2)' : 'transparent', // BOTTOM
           // tabBarOptions: {
           //   activeTintColor: 'red'
@@ -140,20 +178,40 @@ function App(): React.JSX.Element {
           //navigationBarHidden: true, // BOTTOM
         }}
       >
+      
         <Stack.Screen
           name="Home"
           component={ Home }
-          options={{ animation: 'slide_from_right' }}
+          options={{
+            //animation: 'slide_from_left',
+            //animation: 'slide_from_right',
+            //animationDuration: 3500,
+            //animation: 'slide_from_right',
+            //animationDuration: 4000
+            //animationTypeForReplace: 'pop',
+          }}
         />
         <Stack.Screen
           name="About"
           component={ About }
-          options={{ animation: 'slide_from_right' }}
+          options={{
+            //animation: 'slide_from_left',
+            //animation: 'slide_from_right',
+            //animationDuration: 3500,
+            //animationDuration: 4000
+            //animationTypeForReplace: 'pop',
+          }}
         />
         <Stack.Screen
           name="KnowMore"
           component={ KnowMore }
-          options={{ animation: 'slide_from_right' }}
+          options={{
+            //animation: 'slide_from_left',
+            //animation: 'slide_from_right',
+            //animationDuration: 3500,
+            //animationDuration: 4000
+            //animationTypeForReplace: 'pop',
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native';
  import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export let ins = useSafeAreaInsets(); // insets
-// console.log("INS", ins)
+
 
 //const {height, width, scale, fontScale} = useWindowDimensions();
 
