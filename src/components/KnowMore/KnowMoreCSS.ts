@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { opw, /* ins, dH, wH, */ aB } from '../constants';
+//import { opw, /* ins, dH, wH, */ aB } from '../constants';
 
 
 
@@ -28,11 +28,11 @@ export const s = StyleSheet.create({
     height: '100%',
     alignItems: 'center'
   },
-  profile: {
-    width: opw * 30,
-    height: opw * 30,
-    borderRadius: (opw * 30) / 2 // 50%
-  },
+  // profile: {
+  //   width: opw * 30,
+  //   height: opw * 30,
+  //   borderRadius: (opw * 30) / 2 // 50%
+  // },
   centerText: {
     marginTop: 20,
     fontWeight: '500',
@@ -85,19 +85,19 @@ export const s = StyleSheet.create({
   dot: {
     lineHeight: 13
   },
-  last: {
+  //last: {
     ////marginBottom: 20,
     //marginBottom: aB + 20, // additionalBottom + 40
-  },
+  //},
   imageWrapper: {
     marginTop: 20,
     marginBottom: 25
   },
-  iconStyle: {
-    position: 'absolute',
-    right: (opw * -30) / 2,
-    top: (opw * 30) / 3
-  },
+  // iconStyle: {
+  //   position: 'absolute',
+  //   right: (opw * -30) / 2,
+  //   top: (opw * 30) / 3
+  // },
   textInButton: {
     color: 'white',
     fontWeight: '600',
@@ -119,7 +119,7 @@ export const s = StyleSheet.create({
   },
   eachItemInner: {
     //backgroundColor: 'lightgreen', // DEV
-    width: (opw * 95) - 40, // 95% - 40
+    //width: (opw * 95) - 40, // 95% - 40
     paddingLeft: 25,
   },
   leftItemInner: {
@@ -151,7 +151,6 @@ export const s = StyleSheet.create({
     ////bottom: ins.bottom + 10, // additionalBottom + 10
     right: 10,
     color: 'white',
-
     alignItems: 'center',
     justifyContent: 'center',
     // paddingVertical: 12,

@@ -5,7 +5,8 @@ import {
   StatusBar,
   ScrollView,
   Button,
-  Pressable
+  Pressable,
+  Dimensions
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -15,7 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
-import { hph/* , ins */, dH, wH } from '../constants';
+//import { /* hph, ins, dH, wH */ } from '../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 //import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -29,8 +30,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // const oph = Dimensions.get('window').height
 
-function KnowMore({ navigation }: any): React.JSX.Element {
+function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Element {
 
+  let opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
+  let hph = Dimensions.get('window').height; // hundredPercentHeight = 100%vh
+  let dH = Dimensions.get('screen').height; // deviceHeight
+  let wH = Dimensions.get('window').height; // windowHeight
+
+  // useEffect(() => {
+  //   console.log("CCCCCCC MORE", getState())
+  // }, [])
+ 
   let ins = useSafeAreaInsets(); // insets
 
   // let aB: number // additionalBottom
@@ -53,7 +63,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
   // if ((dH - ins.top) === wH) aB = 0 // navBar NOT PRESENT
   //   else aB = ins.bottom // navBar PRESENT
 
-    console.log("INS", ins)
+    //console.log("INS", ins)
   
 
   //let ins = useSafeAreaInsets(); // insets
@@ -111,24 +121,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
 
   //let insets = useSafeAreaInsets();
 
-  // useEffect(() => {
-  //   let dH = Dimensions.get('screen').height; // deviceHeight
-  //   let wH = Dimensions.get('window').height; // windowHeight
-  //   // insets.top // statusBar
 
-  //   console.log("deviceHeight", dH, "windowHeight", wH)
-
-  //   if ((dH - ins.top) === wH) console.log("NAVBAR NOT PRESENT")
-  //   else {
-  //     console.log("NAVBAR PRESENT")
-  //     console.log("ins.bottom", ins.bottom)
-  //   }
-
-  // }, [])
-
-  //console.log("INSETS", insets)
-
-  //console.log("KM deviceHeight", deviceHeight, "KM windowHeight", windowHeight)
 
   return (
     <View>
@@ -175,7 +168,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
               name='chevron-back-circle-sharp'
               size={30}
               color='rgba(0, 0, 0, .7)'
-              onPress={() => navigation.navigate('About')}
+              onPress={() => navigate('About')}
             >
               <Text style={s.textInButton}>BACK</Text>
             </Ionicons.Button>
@@ -184,7 +177,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
               name='home'
               size={30}
               color='rgba(0, 0, 0, .7)'
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => navigate('Home')}
             >
               <Text style={s.textInButton}>HOME</Text>
             </Ionicons.Button>
@@ -216,7 +209,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
               Chain any amount of parenthesis and
               calculator will parse the result,
               following the next rules:{"\n"}
-              <View style={s.eachItemInner}>
+              <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
                 <Text style={s.leftItemInner}>
                   •
                 </Text>
@@ -224,7 +217,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
                   Innermost parentheses calc will be done.
                 </Text>
               </View>
-              <View style={s.eachItemInner}>
+              <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
                 <Text style={s.leftItemInner}>
                   •
                 </Text>
@@ -250,7 +243,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
               is more than 12 digits (e.g.: 1000000000001.23 + 1.23),
               it will be converted to scientific notation.{"\n"}
               Results in scientific notation are parsed as follows:
-              <View style={s.eachItemInner}>
+              <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
                 <Text style={s.leftItemInner}>
                   •
                 </Text>
@@ -258,7 +251,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
                   If exponent have 1 digits, decimal part are 8 places.
                 </Text>
               </View>
-              <View style={s.eachItemInner}>
+              <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
                 <Text style={s.leftItemInner}>
                   •
                 </Text>
@@ -266,7 +259,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
                   If exponent have 2 digits, decimal part are 7 places. And so..
                 </Text>
               </View>
-              <View style={s.eachItemInner}>
+              <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
                 <Text style={s.leftItemInner}>
                   •
                 </Text>
@@ -282,7 +275,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
               name='infinity'
               size={30}
               color='rgba(0, 0, 0, .7)'
-              onPress={() => navigation.navigate('KnowMore')}
+              onPress={() => navigate('KnowMore')}
               //style={s.buttonAndIconLower}
               style={s.leftItem}
             />
@@ -298,7 +291,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
               name='new'
               size={30}
               color='rgba(0, 0, 0, .7)'
-              onPress={() => navigation.navigate('KnowMore')}
+              onPress={() => navigate('KnowMore')}
               style={s.leftItem}
             />
             <Text style={s.rightItem}>
@@ -357,7 +350,7 @@ function KnowMore({ navigation }: any): React.JSX.Element {
               name='phonelink-erase'
               size={30}
               color='rgba(0, 0, 0, .7)'
-              onPress={() => navigation.navigate('KnowMore')}
+              onPress={() => navigate('KnowMore')}
               style={s.leftItem}
             />
             <Text style={s.rightItem}>

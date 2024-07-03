@@ -6,19 +6,39 @@ import {
   View,
   Button,
   TouchableHighlight,
-  Dimensions, AppState
+  Dimensions,
+  AppState
 } from 'react-native';
 import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+//import { useIsFocused } from '@react-navigation/native';
+import { useRoute, getFocusedRouteNameFromRoute, CommonActions } from '@react-navigation/native';
 
 
-import { opw, /* ins, */ /* dH, wH, */ aB/* , nB */ } from '../constants';
+//import { opw, dH, wH,/* ins, */ /* dH, wH, */ aB/* , nB */ } from '../constants';
+import { opw, /* dH, wH, */aB } from '../constants';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
+//import BootSplash from "react-native-bootsplash";
 
 
-function Home({ navigation }: any): React.JSX.Element {
+
+function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
+
+  //console.log("INS", ins)
+  //const isFocused = useIsFocused();
+  //console.log("TEST TEST TEST", isFocused)
+
+  //console.log("CCCCCCC HOME", getState())
+
+  let ins = useSafeAreaInsets(); // insets
+
+ 
+  const dH = Dimensions.get('screen').height; // deviceHeight
+  const wH = Dimensions.get('window').height; // windowHeight
 
   const {height, width} = useWindowDimensions();
 
@@ -42,191 +62,173 @@ function Home({ navigation }: any): React.JSX.Element {
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [ nB, setNb ] = useState(false)
 
-  let dH:any //= Dimensions.get('screen').height; // deviceHeight
-  let wH:any //= Dimensions.get('window').height; // windowHeight
+  // const route = useRoute();
+  // const routeName = getFocusedRouteNameFromRoute(route);
+
+  // console.log("A VERRRRRRRRR", routeName)
+
+  //let dH:any //= Dimensions.get('screen').height; // deviceHeight
+  //let wH:any //= Dimensions.get('window').height; // windowHeight
 
   //const [ opw, setOpw ] = useState(Dimensions.get('window').width / 100)
 
-  const [ opw, setOpw ] = useState(width / 100)
+  //const [ opw, setOpw ] = useState(width / 100)
 
-  // useEffect(() => {
-  //   console.log("TEST TEST", appState)
-  // }, [appState])
+  //const route = useRoute();
+
+  //console.log("A VERRR", navigation)
   
 
-  // useEffect(() => {
-  //   setOpw(width / 100)
-  // }, [height, width])
-
-  //let opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
-
-  // useEffect(() => {
-
-  // },[])
-
-  // useEffect(() => {
-  //   console.log("OLY FIRST TIME")
-  // }, [])
-
-  // useEffect(() => {
-
-  //   //console.log("AppState AppState", AppState)
-
-  //   //const focus = AppState.addEventListener('focus', () => { console.log("FOCUS") })
-
-  //   //AppState.addEventListener('focus', () => { console.log("FOCUS") })
-    
-
-  //   const focusCheck = AppState.addEventListener('change', nextAppState => {
-
-  //     //console.log("appState.current", appState.current)
-
-  //     if (
-  //       // appState.current.match(/inactive|background/) &&
-  //       // nextAppState === 'active'
-  //       appState.current === 'active' &&
-  //       nextAppState.match(/inactive|background/)
-  //     ) {
-  //       //console.log('VISIBLE APP');
-  //       console.log('HIDDEN APP');
-  //       //removeData("testKey")
-
-  //       //if ((dH - ins.top) === wH) setNb(false) // navBar NOT PRESENT
-  //       //else setNb(true) // navBar PRESENT
-
-  //       //dH = Dimensions.get('screen').height; // deviceHeight
-  //       //wH = Dimensions.get('window').height; // windowHeight
-  //       //opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
-  //       //setOpw(Dimensions.get('window').width / 100)
-
-  //       //setOpw(width / 100)
-
-  //       //console.log("dH", dH)
-  //       //console.log("wH", wH)
-
-  //     } /* else {
-  //       console.log('HIDDEN APP');
-  //     } */
-
-  //     appState.current = nextAppState;
-  //     setAppStateVisible(appState.current);
-  //     //console.log('AppState', appState.current);
-  //   });
-
-  //   return () => focusCheck.remove();
-  // }, []);
-
   useEffect(() => { // ON APP FOCUS
-
-    //console.log("AppState AppState", AppState)
-
-    //const focus = AppState.addEventListener('focus', () => { console.log("FOCUS")})
-
     const focus = AppState.addEventListener('focus', async () => {
-      console.log("FOCUS")
+      //console.log("FOCUS")
 
-      //readData("savedInput")
-      //if (readData("savedInput") === null) console.log("MEMORY IS EMPTY")
-      //return async () => console.log("RES", await readData("savedInput"))
-      //async () => console.log("RES", await readData("savedInput"))
-      // onPress={ async () => {  console.log(await readData("savedInput")) } }
-      //let qq = async () => { return await readData("savedInput") }
-      //console.log("QQ", (async () => { return await readData("savedInput") }) === null)
-
-      //let qq = async () => { return await readData("savedInput") }
-      //console.log("QQ", qq)
-
-      //return async () => {  console.log(await readData("savedInput")) }
-
-      //async () => {  console.log(await readData("savedInput")) }
-      //console.log(readData("savedInput")) 
-      //console.log(await readData("savedInput"))
       let resInput = await readData("savedInput") // RESPONSE INPUT
       let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
+      //saveData("savedDate", Date.now())
+      let resDate = await readData("savedDate") // RESPONSE DATE
+      let resHeight = await readData("savedHeight") // RESPONSE HEIGHT
+
+      let resRoute = await readData("savedRoute") // RESPONSE ROUTE
+
+      
+
       //console.log("QQ", qq === null)
-      console.log("QQ resInput", resInput)
-      console.log("QQ resSecInput", resSecInput)
-      if (resInput !== null && resInput !== undefined) setInput(resInput)
-      if (resSecInput !== null && resSecInput !== undefined) setSecInput(resSecInput)
+      //console.log("QQ resInput", resInput)
+      //console.log("QQ resSecInput", resSecInput)
+      //console.log("QQ resDate", resDate)
+      
+      if (resInput !== undefined && resInput !== null) setInput(resInput)
+      if (resSecInput !== undefined && resSecInput !== null) setSecInput(resSecInput)
+
+      if (resDate !== undefined && resDate !== null) console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
+      if (resHeight !== undefined && resHeight !== null) console.log("QQ SAVED HEIGHT", resHeight)
+
+      if (resRoute !== undefined && resRoute !== null) console.log("QQ SAVED ROUTE", resRoute)
 
 
-    })
+      if (resDate !== undefined && resDate !== null && resHeight !== undefined && resHeight !== null) {
+      //   console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
+          if (Date.now() - parseInt(resDate) < 60000 && resHeight !== wH.toString()) {
+      //     //console.log("typeof parseInt(resHeight)", typeof resHeight)
+      //     //console.log("typeof wH", wH)
+            console.log("WINDOWS HAS CHANGED !")
+
+            //navigation.navigate('About')
+            //navigation.navigate(resRoute)
+            
+              //await BootSplash.hide()
+            
+
+          } else {
+            console.log("WINDOWS NOT HAS CHANGED.")
+            
+              //await BootSplash.hide()
+            
+            
+
+            // let array = navigation.getState().routes
+            // //saveData("savedRoute", array[array.length - 1].name)
+            // console.log("FUNC CURR ROUTE", array[array.length - 1].name)
+            // console.log("FUNC SAVED ROUTE", resRoute)
+            
+
+            //console.log("A VERRR", navigation.getState())
+            //console.log("A VERRR", navigation.getState().routes[0].name)
+            //console.log("A VERRR", navigation.getState())
+
+            //onPress={() => navigation.navigate('About')}
+
+
+            // let array = navigation.getState().routes
+            // console.log("A VERRR", array[array.length - 1].name)
+
+
+         }
+        
+       }
+
+
+    }
+  
+  )
+
+    
     
     return () => focus.remove();
-    //return focus.remove()
-  }, []);
+  }, [ins]);
+  
 
   useEffect(() => { // ON APP BLUR
 
-    //console.log("AppState AppState", AppState)
-
-    //const focus = AppState.addEventListener('focus', () => { console.log("FOCUS")})
+    
 
     const blur = AppState.addEventListener('blur', () => {
-      console.log("BLUR")
+      //console.log("BLUR")
       saveData("savedInput", input)
       saveData("savedSecInput", secInput)
+      saveData("savedDate", Date.now().toString())
+      saveData("savedHeight", wH.toString())
+      
+      //console.log("CURRENT ROUTE", route.name);
+      //console.log("CURRENT ROUTE", navigation.state);
+
+      let array = getState().routes
+      //console.log("A VERRR", array[array.length - 1].name)
+      saveData("savedRoute", array[array.length - 1].name)
+
     })
+
     
+
     return () => blur.remove();
-    //return focus.remove()
-  }, [input, secInput]);
+  }, [ins]);
 
   const saveData = async (key: any, value:any) => {
-    try {
-      await AsyncStorage.setItem(`${key}`, value);
-      console.log("aca save 1")
-    } catch (e) {
-      console.log("aca save 2")
-      // saving error
-    }
+    try { await AsyncStorage.setItem(`${key}`, value) }
+    catch(e) { }
   };
 
   const readData = async (key: string) => {
-    try {
-      // const jsonValue = await AsyncStorage.getItem('testKey');
-      // console.log("aca read 1")
-      // return jsonValue !== null ? JSON.parse(jsonValue) : null;
-
-      //return await AsyncStorage.getItem('@key')
-      //return console.log(await AsyncStorage.getItem(key))
-      return await AsyncStorage.getItem(key)
-      
-      //return jsonValue != null ? JSON.parse(jsonValue) : null;
-      
-    } catch (e) {
-      console.log("E:", e)
-      console.log("aca read 2")
-      // error reading value
-    }
+    try { return await AsyncStorage.getItem(key) }
+    catch(e) { }
   };
 
   const getAllKeys = async () => {
     let keys = []
-    try {
-      //keys = await AsyncStorage.getAllKeys()
-      console.log(await AsyncStorage.getAllKeys())
-    } catch(e) {
-      // read key error
-    }
-  
-    //console.log(keys)
-    // example console.log result:
-    // ['@MyApp_user', '@MyApp_key']
+    try { console.log(await AsyncStorage.getAllKeys()) }
+    catch(e) { }
   }
 
   const removeData = async (key: any) => {
-    try {
-      await AsyncStorage.removeItem(key)
-    } catch(e) {
-      // remove error
-    }
-  
-    console.log('Done.')
+    try { await AsyncStorage.removeItem(key) }
+    catch(e) { }
   }
 
-  return (
+  // navigation.reset({
+  //   index: 1,
+  //   routes: [{ name: 'Home'}, { name: 'About'}],
+  // });
 
+  // navigation.reset({
+  //   index: 0,
+  //   routes: [{ name: 'About'}]
+  // });
+
+  // navigation.navigate('About')
+
+  // navigation.dispatch(
+  //   CommonActions.reset({
+  //     index: 0,
+  //     routes: [
+  //       { name: 'Home' }
+  //     ],
+  //   })
+  // );
+
+
+
+  return (
         <View style={[s.background]}>
           <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
           {/* <StatusBar barStyle={'light-content'} translucent={true} backgroundColor={'transparent'}/> */}
@@ -279,7 +281,8 @@ function Home({ navigation }: any): React.JSX.Element {
               underlayColor="#8aaeba"
               activeOpacity={1}
               style={s.question}
-              onPress={() => navigation.navigate('About')}
+              //onPress={() => navigation.navigate('About')}
+              onPress={() => navigate('About')}
             >
               <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
             </TouchableHighlight>
@@ -321,6 +324,7 @@ function Home({ navigation }: any): React.JSX.Element {
               onPress={ async () => {  
                 console.log("SAVED INPUT", await readData("savedInput"))
                 console.log("SAVED SEC INPUT",await readData("savedSecInput"))
+                console.log("SAVED DATE",await readData("savedDate"))
               } }
               
               //onPress={() => console.log("PRESSED")}
@@ -343,6 +347,7 @@ function Home({ navigation }: any): React.JSX.Element {
 
           </View>
         </View>
+
   );
 }
 

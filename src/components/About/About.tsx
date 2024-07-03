@@ -11,8 +11,12 @@ import { s } from './AboutCSS';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { LinearGradient } from 'expo-linear-gradient';
+import { CommonActions } from '@react-navigation/native';
 
-function About({ navigation }: any): React.JSX.Element {
+function About({ navigation: { navigate, getState } }: any): React.JSX.Element {
+
+  //console.log("CCCCCCC ABOUT", getState())
+
   return (
     <View style={s.background}>
       <LinearGradient
@@ -44,7 +48,7 @@ function About({ navigation }: any): React.JSX.Element {
         name='chevron-back-circle-sharp'
         size={30}
         color='rgba(0, 0, 0, .7)'
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigate('Home')}
       >
         <Text style={s.textInButtonUpper}>BACK</Text>
       </Ionicons.Button>
@@ -53,7 +57,7 @@ function About({ navigation }: any): React.JSX.Element {
         name='chevron-back-circle-sharp'
         size={30}
         color='rgba(0, 0, 0, .7)'
-        onPress={() => navigation.navigate('KnowMore')}
+        onPress={() => navigate('KnowMore')}
         style={s.buttonAndIconLower}
       >
         <Text style={s.textInButtonLower}>HOW DOES IT WORK ?</Text>
