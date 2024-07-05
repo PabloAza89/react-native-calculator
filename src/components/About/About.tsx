@@ -1,21 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState, useRef,  } from 'react';
 import {
   Text,
   View,
   Image,
   Linking,
-  StatusBar
+  StatusBar,
+  InteractionManager
 } from 'react-native';
 import profile from '../../images/profile.png';
+//import profile = require('../../images/profile.png');
 import { s } from './AboutCSS';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { LinearGradient } from 'expo-linear-gradient';
 import { CommonActions } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image'
 
-function About({ navigation: { navigate, getState } }: any): React.JSX.Element {
+function About({ navigation: { navigate, getState }, /* imageLink */ }: any): React.JSX.Element {
 
   //console.log("CCCCCCC ABOUT", getState())
+
+  // let data = 
+  //   {
+  //     id: "1",
+  //     text: "blablabla1",
+  //     imageLink: require('../../images/profile.png')
+  //   }
+
+  // const YourImage = () => (
+  //   <FastImage
+  //     style={{ width: 200, height: 200 }}
+  //     source={{
+  //         uri: '../../images/profile.png',
+  //         //headers: { Authorization: 'someAuthToken' },
+  //         priority: FastImage.priority.normal,
+  //     }}
+  //     resizeMode={FastImage.resizeMode.contain}
+  //   />
+  // )
 
   return (
     <View style={s.background}>
@@ -32,9 +54,27 @@ function About({ navigation: { navigate, getState } }: any): React.JSX.Element {
         Juan Pablo Azambuyo
       </Text>
       <View style={s.imageWrapper}>
-        <Image
+        {/* <Image
           style={s.profile}
-          source={profile}
+           //source={{uri: `${response}`}}
+          //source={data.imageLink}
+          //source={imageLink[0]}
+          //source={{uri: imageLink[0]}}
+          //source={{ uri: `${profile}` }}
+          //source={require('../../images/profile.png')}
+          //source={Image.prefetch(require('../../images/profile.png'))}
+          
+          //source={{uri: DEFAULT_IMAGE}}
+          //source={test}
+          //onLoadEnd={() => setLoaded(true)}
+          //onShown={() => console.log("DONEEEEEEEEEEEEEEEEEEEE")}
+         
+         /> */}
+       
+        <FastImage
+          style={s.profile}
+          source={ require('../../images/profile.png') }
+          resizeMode={FastImage.resizeMode.contain}
         />
         <AntDesign
           style={s.iconStyle}

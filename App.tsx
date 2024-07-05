@@ -18,10 +18,12 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  Image,
   useColorScheme,
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FastImage from 'react-native-fast-image'
 
 const Stack: any = createNativeStackNavigator();
 
@@ -125,6 +127,42 @@ function App(): React.JSX.Element {
       /* { name: 'KnowMore' }, */
     ],
   };
+  //let imageLink = require('./src/images/profile.png')
+  //let imageLink = Image.prefetch('./src/images/profile.png')
+
+  // let imageLink = ['./src/images/profile.png']
+
+  // let preFetchTasks:any = []; 
+
+  // imageLink.forEach((p)=>{
+  //     preFetchTasks.push(Image.prefetch(p));
+  // });
+
+  // Promise.all(preFetchTasks).then((results)=>{
+  //     let downloadedAll = true;
+  //     results.forEach((result)=>{
+  //         if(!result){
+  //             //error occurred downloading a pic
+  //             downloadedAll = false;
+  //         }
+  //     })
+
+  //     // if(downloadedAll){
+  //     //     Actions.someScene({ downloadedPics: urlOfImages})
+  //     // }
+  // })
+
+  // let qq = async () => {
+  //    await FastImage.preload([
+      
+  //       require('./src/images/profile.png')
+      
+  //   ])
+  // }
+
+  // qq()
+  
+  FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
   return (
     <NavigationContainer
@@ -147,6 +185,8 @@ function App(): React.JSX.Element {
         screenOptions={{
           //gestureDirection: "horizontal-inverted",
           headerShown: false,
+          gestureEnabled: false,
+          //lazy: false,
           // animationDuration: 1500,
           // animation: 'slide_from_right',
           // animationEnabled:false,
@@ -182,36 +222,16 @@ function App(): React.JSX.Element {
         <Stack.Screen
           name="Home"
           component={ Home }
-          options={{
-            //animation: 'slide_from_left',
-            //animation: 'slide_from_right',
-            //animationDuration: 3500,
-            //animation: 'slide_from_right',
-            //animationDuration: 4000
-            //animationTypeForReplace: 'pop',
-          }}
         />
         <Stack.Screen
           name="About"
-          component={ About }
-          options={{
-            //animation: 'slide_from_left',
-            //animation: 'slide_from_right',
-            //animationDuration: 3500,
-            //animationDuration: 4000
-            //animationTypeForReplace: 'pop',
-          }}
-        />
+          //component={ About }
+        >
+          {(props: any) => <About {...props} /* imageLink={imageLink} *//>}
+        </Stack.Screen>
         <Stack.Screen
           name="KnowMore"
           component={ KnowMore }
-          options={{
-            //animation: 'slide_from_left',
-            //animation: 'slide_from_right',
-            //animationDuration: 3500,
-            //animationDuration: 4000
-            //animationTypeForReplace: 'pop',
-          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
