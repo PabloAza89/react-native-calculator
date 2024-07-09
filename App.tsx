@@ -6,7 +6,9 @@ import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
 import BootSplash from "react-native-bootsplash";
 import {Dimensions, AppState} from 'react-native';
+import * as Font from 'expo-font';
 //import { Font } from 'expo';
+//import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { opw, /* ins, */ /* dH, wH, */ aB/* , nB */ } from './src/components/constants';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -25,7 +27,8 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
-import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+//import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 const Stack: any = createNativeStackNavigator();
 
@@ -119,48 +122,69 @@ function App(): React.JSX.Element {
  //icon
 
  
-  useEffect(() => {
+  // useEffect(() => {
     
-    const qq = async () => {
+  //   const qq = async () => {
       
-      let response = await readData("savedRoute") // RESPONSE ROUTE
+  //     let response = await readData("savedRoute") // RESPONSE ROUTE
 
-      if (response !== undefined && response !== null) {
-        //setRouteGo(response)
-        //setRouteGo(response)
-        //setRouteGo({ name : 'About'})
-        console.log("ENTRO ACA", response)
-        console.log("ENTRO ACA typeof", typeof response)
-        //routeGo.current = response.toString()
-      }
+  //     if (response !== undefined && response !== null) {
+  //       //setRouteGo(response)
+  //       //setRouteGo(response)
+  //       //setRouteGo({ name : 'About'})
+  //       console.log("ENTRO ACA", response)
+  //       console.log("ENTRO ACA typeof", typeof response)
+  //       //routeGo.current = response.toString()
+  //     }
+ 
+  //     await Font.loadAsync({
+  //       //...SimpleLineIcons.font
+  //       //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+  //     }).then(() => {
+  //       //navigation.navigate("About")
+  //       //setLoadingComplete(true);
+  //       BootSplash.hide()
+  //     })
+  //   }
+
+  //   qq()
+
+
+  // }, []);
+
  
 
-      await new Promise<void>((resolve) => {
-        
-        console.log("A VER 2222 routeGo", routeGo)
-        //setFinished(true)
-        //navigation.navigate(resRoute)
-          //navigation.navigate("About")
-          //BootSplash.hide()
+  // useEffect(() => {
+  //   async function loadResourcesAndDataAsync() {
+  //     try {
+  //       let response = await readData("savedRoute") // RESPONSE ROUTE
 
-          //loadIcon("question")
+  //     if (response !== undefined && response !== null) {
+  //       //setRouteGo(response)
+  //       //setRouteGo(response)
+  //       //setRouteGo({ name : 'About'})
+  //       console.log("ENTRO ACA", response)
+  //       console.log("ENTRO ACA typeof", typeof response)
+  //       //routeGo.current = response.toString()
+  //     }
 
-          loadIcons(['question'])
-          //loadIcons()
+  //       // Load fonts
+  //       await Font.loadAsync({
+  //         ...SimpleLineIcons.font
+  //         //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+  //       });
+  //     } catch (e) {
+  //       // We might want to provide this error information to an error reporting service
+  //       console.warn(e);
+  //     } finally {
+  //       //setLoadingComplete(true);
+  //       //SplashScreen.hide();
+  //       BootSplash.hide()
+  //     }
+  //   }
 
-          resolve();
-        
-      }).then(() => {
-        //navigation.navigate("About")
-        BootSplash.hide()
-      })
-
-    }
-
-    qq()
-
-
-  }, []);
+  //   loadResourcesAndDataAsync();
+  // }, []);
 
   const readData = async (key: string) => {
     try { return await AsyncStorage.getItem(key) }
@@ -228,6 +252,14 @@ function App(): React.JSX.Element {
   
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
+  const [ loadingComplete, setLoadingComplete] = useState(false);
+
+  useEffect(() => {
+
+    if (loadingComplete) BootSplash.hide()
+
+  }, [loadingComplete])
+
   return (
     <NavigationContainer
       ref={navigationRef}
@@ -287,7 +319,7 @@ function App(): React.JSX.Element {
           name="Home"
           //component={ Home }
         >
-          {(props: any) => <Home {...props} /* getIcon={getIcon} testReturn={testReturn} */ />}
+          {(props: any) => <Home {...props} loadingComplete={loadingComplete} setLoadingComplete={setLoadingComplete} />}
         </Stack.Screen>
         <Stack.Screen
           name="About"
