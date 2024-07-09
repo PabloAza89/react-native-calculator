@@ -6,6 +6,7 @@ import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
 import BootSplash from "react-native-bootsplash";
 import {Dimensions, AppState} from 'react-native';
+//import { Font } from 'expo';
 import { opw, /* ins, */ /* dH, wH, */ aB/* , nB */ } from './src/components/constants';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -24,6 +25,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
 const Stack: any = createNativeStackNavigator();
 
@@ -60,6 +62,62 @@ function App(): React.JSX.Element {
   //routeGo.current = 'KnowMore'
   const [ finished, setFinished ] = useState(false)
   //let resRoute = useRef<any>("Home")
+
+  // let preloadIcon1 = () => {
+  //   return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
+  // }
+
+  // function preloadIcon() {
+  //   return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
+
+  //let iconSet: any = {}
+
+  function loadIcon(name: any) {
+    return <SimpleLineIcons name={name} size={40} color='rgba(0, 0, 0, .7)' />
+ }
+
+  
+  //const icons: any = [<SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />];
+  //const icons: any = {};
+  const icons: any = {
+    question: async function () { return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />}
+    //question: <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
+  };
+
+  let loadIcons = async (names: any) => {
+    //return <SimpleLineIcons name={name} size={40} color='rgba(0, 0, 0, .7)' />
+    //Object.assign(iconSet, ...preloadIcon1);
+
+    // const tasks = names.map((name: any) => loadIcon(name));
+    // const results = await Promise.all(tasks);
+    // const set = results.map((item, index) => ({ [names[index]]: item }));
+    // //return Object.assign(icons, ...set);
+    // return Object.assign(icons, <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />);
+    //await icons.push(<SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />)
+    //const set = results.map((item, index) => ({ [names[index]]: item }));
+
+    const tasks = names.map((name: any) => loadIcon(name));
+    const results = await Promise.all(tasks);
+    const set = results.map((item, index) => ({ [names[index]]: item }));
+    return Object.assign(icons, ...set);
+
+  }
+
+  // const testReturn = () => {
+  //   return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
+  // }
+
+  const testReturn = (name: any) => {
+    //return icons[0]
+    return icons.question()
+  }
+
+  function getIcon(name: any) {
+    return icons[name];
+ }
+
+ //icon
+
  
   useEffect(() => {
     
@@ -84,6 +142,12 @@ function App(): React.JSX.Element {
         //navigation.navigate(resRoute)
           //navigation.navigate("About")
           //BootSplash.hide()
+
+          //loadIcon("question")
+
+          loadIcons(['question'])
+          //loadIcons()
+
           resolve();
         
       }).then(() => {
@@ -221,8 +285,10 @@ function App(): React.JSX.Element {
       
         <Stack.Screen
           name="Home"
-          component={ Home }
-        />
+          //component={ Home }
+        >
+          {(props: any) => <Home {...props} /* getIcon={getIcon} testReturn={testReturn} */ />}
+        </Stack.Screen>
         <Stack.Screen
           name="About"
           //component={ About }

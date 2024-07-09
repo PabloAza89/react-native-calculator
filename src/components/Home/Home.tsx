@@ -144,9 +144,9 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
             // console.log("A VERRR", array[array.length - 1].name)
 
 
-         }
+          }
         
-       }
+        }
 
 
     }
@@ -226,6 +226,9 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
   //   })
   // );
 
+  // const testReturn = () => {
+  //   return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
+  // }
 
 
   return (
@@ -281,10 +284,11 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
               underlayColor="#8aaeba"
               activeOpacity={1}
               style={s.question}
-              //onPress={() => navigation.navigate('About')}
               onPress={() => navigate('About')}
             >
               <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
+              {/* { testReturn() } */}
+              {/* { testReturn('question') } */}
             </TouchableHighlight>
 
 
@@ -321,7 +325,7 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
               style={{ position: 'absolute', right: 10, bottom: -30 }}
               //onPress={ () => { console.log(readData()) } }
               //onPress={ () => { readData("savedInput") } }
-              onPress={ async () => {  
+              onPress={ async () => {
                 console.log("SAVED INPUT", await readData("savedInput"))
                 console.log("SAVED SEC INPUT",await readData("savedSecInput"))
                 console.log("SAVED DATE",await readData("savedDate"))
