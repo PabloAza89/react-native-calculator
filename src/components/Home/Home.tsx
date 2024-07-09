@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
-import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import { SimpleLineIcons } from '@expo/vector-icons';
 import { useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //import { useIsFocused } from '@react-navigation/native';
@@ -22,11 +22,12 @@ import { useRoute, getFocusedRouteNameFromRoute, CommonActions } from '@react-na
 import { opw, /* dH, wH, */aB } from '../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Font from 'expo-font';
 //import BootSplash from "react-native-bootsplash";
 
 
 
-function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
+function Home({ loadingComplete, setLoadingComplete, navigation: { navigate, getState } }: any): React.JSX.Element {
 
   //console.log("INS", ins)
   //const isFocused = useIsFocused();
@@ -77,6 +78,8 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
   //const route = useRoute();
 
   //console.log("A VERRR", navigation)
+
+
   
 
   useEffect(() => { // ON APP FOCUS
@@ -229,6 +232,38 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
   // const testReturn = () => {
   //   return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
   // }
+
+  useEffect(() => {
+    
+    const qq = async () => {
+      
+      // let response = await readData("savedRoute") // RESPONSE ROUTE
+
+      // if (response !== undefined && response !== null) {
+      //   //setRouteGo(response)
+      //   //setRouteGo(response)
+      //   //setRouteGo({ name : 'About'})
+      //   console.log("ENTRO ACA", response)
+      //   console.log("ENTRO ACA typeof", typeof response)
+      //   //routeGo.current = response.toString()
+      // }
+ 
+      await Font.loadAsync({
+        ...SimpleLineIcons.font
+        //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+      }).then(() => {
+        //navigation.navigate("About")
+        //setLoadingComplete(true);
+        //BootSplash.hide()
+        setTimeout(() => setLoadingComplete(true), 0)
+        //setLoadingComplete(true)
+      })
+    }
+
+    qq()
+
+
+  }, []);
 
 
   return (
