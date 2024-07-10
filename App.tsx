@@ -5,7 +5,7 @@ import Home from './src/components/Home/Home';
 import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
 import BootSplash from "react-native-bootsplash";
-import {Dimensions, AppState} from 'react-native';
+import { Dimensions, AppState } from 'react-native';
 import * as Font from 'expo-font';
 //import { Font } from 'expo';
 //import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
@@ -28,7 +28,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 //import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 
 const Stack: any = createNativeStackNavigator();
 
@@ -66,138 +66,49 @@ function App(): React.JSX.Element {
   const [ finished, setFinished ] = useState(false)
   //let resRoute = useRef<any>("Home")
 
-  // let preloadIcon1 = () => {
-  //   return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
-  // }
-
-  // function preloadIcon() {
-  //   return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
-
-  //let iconSet: any = {}
-
-  function loadIcon(name: any) {
-    return <SimpleLineIcons name={name} size={40} color='rgba(0, 0, 0, .7)' />
- }
-
-  
-  //const icons: any = [<SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />];
-  //const icons: any = {};
-  const icons: any = {
-    question: async function () { return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />}
-    //question: <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
-  };
-
-  let loadIcons = async (names: any) => {
-    //return <SimpleLineIcons name={name} size={40} color='rgba(0, 0, 0, .7)' />
-    //Object.assign(iconSet, ...preloadIcon1);
-
-    // const tasks = names.map((name: any) => loadIcon(name));
-    // const results = await Promise.all(tasks);
-    // const set = results.map((item, index) => ({ [names[index]]: item }));
-    // //return Object.assign(icons, ...set);
-    // return Object.assign(icons, <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />);
-    //await icons.push(<SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />)
-    //const set = results.map((item, index) => ({ [names[index]]: item }));
-
-    const tasks = names.map((name: any) => loadIcon(name));
-    const results = await Promise.all(tasks);
-    const set = results.map((item, index) => ({ [names[index]]: item }));
-    return Object.assign(icons, ...set);
-
-  }
-
-  // const testReturn = () => {
-  //   return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
-  // }
-
-  const testReturn = (name: any) => {
-    //return icons[0]
-    return icons.question()
-  }
-
-  function getIcon(name: any) {
-    return icons[name];
- }
-
- //icon
-
- 
-  // useEffect(() => {
+  useEffect(() => {
     
-  //   const qq = async () => {
+    const qq = async () => {
       
-  //     let response = await readData("savedRoute") // RESPONSE ROUTE
+      let response = await readData("savedRoute") // RESPONSE ROUTE
 
-  //     if (response !== undefined && response !== null) {
-  //       //setRouteGo(response)
-  //       //setRouteGo(response)
-  //       //setRouteGo({ name : 'About'})
-  //       console.log("ENTRO ACA", response)
-  //       console.log("ENTRO ACA typeof", typeof response)
-  //       //routeGo.current = response.toString()
-  //     }
+      if (response !== undefined && response !== null) {
+        //setRouteGo(response)
+        //setRouteGo(response)
+        //setRouteGo({ name : 'About'})
+        console.log("ENTRO ACA", response)
+        console.log("ENTRO ACA typeof", typeof response)
+        //routeGo.current = response.toString()
+      }
  
-  //     await Font.loadAsync({
-  //       //...SimpleLineIcons.font
-  //       //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-  //     }).then(() => {
-  //       //navigation.navigate("About")
-  //       //setLoadingComplete(true);
-  //       BootSplash.hide()
-  //     })
-  //   }
+      await Font.loadAsync({
+        ...AntDesign.font,
+        ...Entypo.font,
+        ...FontAwesome5.font,
+        ...Ionicons.font,
+        ...MaterialIcons.font,
+        ...SimpleLineIcons.font,
+        //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+      }).then(() => {
+        //navigation.navigate("About")
+        //setLoadingComplete(true);
+        //BootSplash.hide()
+        setTimeout(() => BootSplash.hide(), 200) // AVOID ICON BLINKING
+      })
+    }
 
-  //   qq()
+    qq()
 
 
-  // }, []);
+  }, []);
 
- 
-
-  // useEffect(() => {
-  //   async function loadResourcesAndDataAsync() {
-  //     try {
-  //       let response = await readData("savedRoute") // RESPONSE ROUTE
-
-  //     if (response !== undefined && response !== null) {
-  //       //setRouteGo(response)
-  //       //setRouteGo(response)
-  //       //setRouteGo({ name : 'About'})
-  //       console.log("ENTRO ACA", response)
-  //       console.log("ENTRO ACA typeof", typeof response)
-  //       //routeGo.current = response.toString()
-  //     }
-
-  //       // Load fonts
-  //       await Font.loadAsync({
-  //         ...SimpleLineIcons.font
-  //         //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-  //       });
-  //     } catch (e) {
-  //       // We might want to provide this error information to an error reporting service
-  //       console.warn(e);
-  //     } finally {
-  //       //setLoadingComplete(true);
-  //       //SplashScreen.hide();
-  //       BootSplash.hide()
-  //     }
-  //   }
-
-  //   loadResourcesAndDataAsync();
-  // }, []);
 
   const readData = async (key: string) => {
     try { return await AsyncStorage.getItem(key) }
     catch(e) { }
   };
 
-  //routeGo.current = "About"
-  
-  // useEffect(() => {
-  //   routeGo.current = "About"
-  // },[])
 
-  
 
   let rrr = async () => {
     routeGo.current = "About"
@@ -215,50 +126,8 @@ function App(): React.JSX.Element {
       /* { name: 'KnowMore' }, */
     ],
   };
-  //let imageLink = require('./src/images/profile.png')
-  //let imageLink = Image.prefetch('./src/images/profile.png')
 
-  // let imageLink = ['./src/images/profile.png']
-
-  // let preFetchTasks:any = []; 
-
-  // imageLink.forEach((p)=>{
-  //     preFetchTasks.push(Image.prefetch(p));
-  // });
-
-  // Promise.all(preFetchTasks).then((results)=>{
-  //     let downloadedAll = true;
-  //     results.forEach((result)=>{
-  //         if(!result){
-  //             //error occurred downloading a pic
-  //             downloadedAll = false;
-  //         }
-  //     })
-
-  //     // if(downloadedAll){
-  //     //     Actions.someScene({ downloadedPics: urlOfImages})
-  //     // }
-  // })
-
-  // let qq = async () => {
-  //    await FastImage.preload([
-      
-  //       require('./src/images/profile.png')
-      
-  //   ])
-  // }
-
-  // qq()
-  
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
-
-  const [ loadingComplete, setLoadingComplete] = useState(false);
-
-  useEffect(() => {
-
-    if (loadingComplete) BootSplash.hide()
-
-  }, [loadingComplete])
 
   return (
     <NavigationContainer
@@ -317,16 +186,12 @@ function App(): React.JSX.Element {
       
         <Stack.Screen
           name="Home"
-          //component={ Home }
-        >
-          {(props: any) => <Home {...props} loadingComplete={loadingComplete} setLoadingComplete={setLoadingComplete} />}
-        </Stack.Screen>
+          component={ Home }
+        />
         <Stack.Screen
           name="About"
-          //component={ About }
-        >
-          {(props: any) => <About {...props} /* imageLink={imageLink} *//>}
-        </Stack.Screen>
+          component={ About }
+        />
         <Stack.Screen
           name="KnowMore"
           component={ KnowMore }

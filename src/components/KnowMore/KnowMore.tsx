@@ -9,26 +9,9 @@ import {
   Dimensions
 } from 'react-native';
 import { s } from './KnowMoreCSS';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-//import ReactLinearGradient from 'react-native-linear-gradient';
-//import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import Entypo from '@expo/vector-icons/Entypo';
-//import { /* hph, ins, dH, wH */ } from '../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-//import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-// export let ins = useSafeAreaInsets(); // insets
-
-
-
-//import {Dimensions} from 'react-native';
-// import { Dimensions } from 'react-native';
-
-// const oph = Dimensions.get('window').height
 
 function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Element {
 
@@ -156,11 +139,7 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
       </LinearGradient>
 
 
-      <ScrollView
-        ref={scrollRef}
-        //onScroll={(e) => handleScroll(e)}
-        //overScrollMode="never"
-      >
+      <ScrollView ref={scrollRef}>
         <View style={s.background}>
 
           <View style={s.buttonContainer}>
@@ -344,7 +323,6 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
             </Text>
           </View>
 
-          {/* <View style={[s.eachItem, s.last]}> */}
           <View style={[s.eachItem, {marginBottom: aB + 20} ]}>
             <MaterialIcons
               name='phonelink-erase'
@@ -361,6 +339,7 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
         </View>
         
       </ScrollView>
+
       <Pressable
         style={[s.floatButton,{ bottom: aB + 10 }]}
         onPress={() => onFabPress()}

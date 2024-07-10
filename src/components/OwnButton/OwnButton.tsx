@@ -7,7 +7,7 @@ import {
   View
 } from 'react-native';
 import { s } from './OwnButtonCSS';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import { Adder } from '../../functions/adder';
 
 interface OwnButtonI {
