@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef,  } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Text,
   View,
@@ -8,10 +8,9 @@ import {
   InteractionManager
 } from 'react-native';
 import profile from '../../images/profile.png';
-//import profile = require('../../images/profile.png');
 import { s } from './AboutCSS';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
+//import AntDesign from '@expo/vector-icons/AntDesign';
 import { LinearGradient } from 'expo-linear-gradient';
 import { CommonActions } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image'

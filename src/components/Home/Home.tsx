@@ -27,7 +27,7 @@ import * as Font from 'expo-font';
 
 
 
-function Home({ loadingComplete, setLoadingComplete, navigation: { navigate, getState } }: any): React.JSX.Element {
+function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
 
   //console.log("INS", ins)
   //const isFocused = useIsFocused();
@@ -233,37 +233,37 @@ function Home({ loadingComplete, setLoadingComplete, navigation: { navigate, get
   //   return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
   // }
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    const qq = async () => {
+  //   const qq = async () => {
       
-      // let response = await readData("savedRoute") // RESPONSE ROUTE
+  //     // let response = await readData("savedRoute") // RESPONSE ROUTE
 
-      // if (response !== undefined && response !== null) {
-      //   //setRouteGo(response)
-      //   //setRouteGo(response)
-      //   //setRouteGo({ name : 'About'})
-      //   console.log("ENTRO ACA", response)
-      //   console.log("ENTRO ACA typeof", typeof response)
-      //   //routeGo.current = response.toString()
-      // }
+  //     // if (response !== undefined && response !== null) {
+  //     //   //setRouteGo(response)
+  //     //   //setRouteGo(response)
+  //     //   //setRouteGo({ name : 'About'})
+  //     //   console.log("ENTRO ACA", response)
+  //     //   console.log("ENTRO ACA typeof", typeof response)
+  //     //   //routeGo.current = response.toString()
+  //     // }
  
-      await Font.loadAsync({
-        ...SimpleLineIcons.font
-        //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-      }).then(() => {
-        //navigation.navigate("About")
-        //setLoadingComplete(true);
-        //BootSplash.hide()
-        setTimeout(() => setLoadingComplete(true), 0)
-        //setLoadingComplete(true)
-      })
-    }
+  //     await Font.loadAsync({
+  //       ...SimpleLineIcons.font
+  //       //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+  //     }).then(() => {
+  //       //navigation.navigate("About")
+  //       //setLoadingComplete(true);
+  //       //BootSplash.hide()
+  //       setTimeout(() => setLoadingComplete(true), 0)
+  //       //setLoadingComplete(true)
+  //     })
+  //   }
 
-    qq()
+  //   qq()
 
 
-  }, []);
+  // }, []);
 
 
   return (
