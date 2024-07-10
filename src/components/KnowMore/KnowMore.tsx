@@ -4,7 +4,6 @@ import {
   View,
   StatusBar,
   ScrollView,
-  Button,
   Pressable,
   Dimensions
 } from 'react-native';
@@ -13,7 +12,7 @@ import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icon
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Element {
+function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
 
   let opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
   let hph = Dimensions.get('window').height; // hundredPercentHeight = 100%vh
@@ -26,35 +25,7 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
  
   let ins = useSafeAreaInsets(); // insets
 
-  // let aB: number // additionalBottom
-  // let nB: boolean // navBar present ?
-
-  // if ((dH - ins.top) === wH) { nB = false, aB = 0 } // navBar NOT PRESENT
-  // else { nB = true, aB = ins.bottom } // navBar PRESENT
-
-  //let aB: number // additionalBottom
   let aB: number = (dH - ins.top) === wH ? 0 : ins.bottom // additionalBottom
-
-  // useEffect(() => {
-  //   if ((dH - ins.top) === wH) aB = 0 // navBar NOT PRESENT
-  //   else aB = ins.bottom // navBar PRESENT
-
-  //   console.log("INS", ins)
-
-  // },[ins])
-
-  // if ((dH - ins.top) === wH) aB = 0 // navBar NOT PRESENT
-  //   else aB = ins.bottom // navBar PRESENT
-
-    //console.log("INS", ins)
-  
-
-  //let ins = useSafeAreaInsets(); // insets
-
-  // let deviceHeight = Dimensions.get('screen').height;
-  // let windowHeight = Dimensions.get('window').height;
-  
-  //console.log("navigation", navigation)
 
   const scrollRef = useRef<any>();
 
@@ -64,22 +35,6 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
       animated: true
     });
   }
-
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     navigationBarColor: 'rgba(0, 0, 0, 0.5)'
-  //   });
-
-  // }, [navigation])
-    
-
-  /* const handleScroll = (e: any) => {
-    console.log(e.nativeEvent.contentOffset.y)
-  } */
-
-  /* const onViewableItemsChanged = (e: any) => {
-    console.log(e)
-  } */
 
   interface counterI {
     [index: string]: number
@@ -102,39 +57,30 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
     return () => clearInterval(interval);
   }, [counterA, currIdxA, goUpA])
 
-  //let insets = useSafeAreaInsets();
-
-
+  let targetWidth = (opw * 95) - 40
 
   return (
     <View>
       <LinearGradient
         colors={[
-          `rgba(${counterA["0"]}, ${counterA["1"]}, ${counterA["2"]}, 0.7)`,
-          `rgba(255, 255, 255, 1)`
+          `rgba(${counterA["0"]}, ${counterA["1"]}, ${counterA["2"]}, 0.9)`,
+          `rgba(255, 255, 255, 0.9)`
         ]}
         style={s.linearGradient}
-          start={{ x: 0, y: 1}} // x = from left // y = from top
-          end={{x: 1, y: 0}} // x = from left // y = from bottom
-      > 
-      
-        
+        start={{ x: 0, y: 1}} // x = from left // y = from top
+        end={{x: 1, y: 0}} // x = from left // y = from bottom
+      >
         <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
-        
-        
       </LinearGradient>
 
       <LinearGradient
         colors={[
           `rgba(${counterA["0"]}, ${counterA["1"]}, ${counterA["2"]}, 0.9)`,
           `rgba(255, 255, 255, 0.9)`
-          //  `red`,
-          //  `rgba(255, 255, 255, 1)`
         ]}
         style={[ s.linearGradientStatus, { height: ins.top } ]}
-          //start={{ x: 0, y: ((oph / insets.top) / 2) + insets.top }} // x = from left // y = from top
-          start={{ x: 0, y: (hph / (ins.top / 2)) - ins.top }} // x = from left // y = from top
-          end={{x: 1, y: 0}} // x = from left // y = from bottom
+        start={{ x: 0, y: (hph / (ins.top / 2)) - ins.top }} // x = from left // y = from top
+        end={{x: 1, y: 0}} // x = from left // y = from bottom
       >
       </LinearGradient>
 
@@ -188,7 +134,7 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
               Chain any amount of parenthesis and
               calculator will parse the result,
               following the next rules:{"\n"}
-              <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
+              <View style={[s.eachItemInner,{ width: targetWidth }]}>
                 <Text style={s.leftItemInner}>
                   •
                 </Text>
@@ -196,7 +142,7 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
                   Innermost parentheses calc will be done.
                 </Text>
               </View>
-              <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
+              <View style={[s.eachItemInner,{ width: targetWidth }]}>
                 <Text style={s.leftItemInner}>
                   •
                 </Text>
@@ -222,7 +168,7 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
               is more than 12 digits (e.g.: 1000000000001.23 + 1.23),
               it will be converted to scientific notation.{"\n"}
               Results in scientific notation are parsed as follows:
-              <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
+              <View style={[s.eachItemInner,{ width: targetWidth }]}>
                 <Text style={s.leftItemInner}>
                   •
                 </Text>
@@ -230,7 +176,7 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
                   If exponent have 1 digits, decimal part are 8 places.
                 </Text>
               </View>
-              <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
+              <View style={[s.eachItemInner,{ width: targetWidth }]}>
                 <Text style={s.leftItemInner}>
                   •
                 </Text>
@@ -238,7 +184,7 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
                   If exponent have 2 digits, decimal part are 7 places. And so..
                 </Text>
               </View>
-              <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
+              <View style={[s.eachItemInner,{ width: targetWidth }]}>
                 <Text style={s.leftItemInner}>
                   •
                 </Text>
@@ -254,8 +200,6 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
               name='infinity'
               size={30}
               color='rgba(0, 0, 0, .7)'
-              onPress={() => navigate('KnowMore')}
-              //style={s.buttonAndIconLower}
               style={s.leftItem}
             />
             <Text style={s.rightItem}>
@@ -270,7 +214,6 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
               name='new'
               size={30}
               color='rgba(0, 0, 0, .7)'
-              onPress={() => navigate('KnowMore')}
               style={s.leftItem}
             />
             <Text style={s.rightItem}>
@@ -328,7 +271,6 @@ function KnowMore({ navigation: { navigate, getState } }: any): React.JSX.Elemen
               name='phonelink-erase'
               size={30}
               color='rgba(0, 0, 0, .7)'
-              onPress={() => navigate('KnowMore')}
               style={s.leftItem}
             />
             <Text style={s.rightItem}>
