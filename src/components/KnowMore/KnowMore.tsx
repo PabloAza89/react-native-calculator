@@ -5,25 +5,35 @@ import {
   StatusBar,
   ScrollView,
   Pressable,
-  Dimensions
+  Dimensions,
+  SafeAreaView,
+  ViewProps,
+  InteractionManager,
+  ActivityIndicator
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+//import Animated, { FadeIn } from 'react-native-reanimated';
 
-function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
+function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: any): React.JSX.Element {
 
   let opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
   let hph = Dimensions.get('window').height; // hundredPercentHeight = 100%vh
   let dH = Dimensions.get('screen').height; // deviceHeight
   let wH = Dimensions.get('window').height; // windowHeight
 
+
+  //let ops = Dimensions.get('screen').width / 100; // onePercentWidth = 1%vw
+
   // useEffect(() => {
   //   console.log("CCCCCCC MORE", getState())
   // }, [])
  
   let ins = useSafeAreaInsets(); // insets
+  //const [ ins, setIns ] = useState(useSafeAreaInsets())
+  //setIns(useSafeAreaInsets())
 
   let aB: number = (dH - ins.top) === wH ? 0 : ins.bottom // additionalBottom
 
@@ -59,13 +69,147 @@ function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
 
   let targetWidth = (opw * 95) - 40
 
+  let colors = [
+    `rgba(${counterA["0"]}, ${counterA["1"]}, ${counterA["2"]}, 0.9)`,
+    `rgba(255, 255, 255, 0.9)`
+  ]
+
+  let qq = [
+    <View key={2} style={s.eachItem}>
+      <Text style={[s.leftItem, s.sn]}>
+        1e+12
+      </Text>
+      <Text style={s.rightItem}>
+        If the integer side, in the result,
+        is more than 12 digits (e.g.: 1000000000001.23 + 1.23),
+        it will be converted to scientific notation.{"\n"}
+        Results in scientific notation are parsed as follows:
+        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+          <Text style={s.leftItemInner}>
+            •
+          </Text>
+          <Text style={s.rightItemInner}>
+            If exponent have 1 digits, decimal part are 8 places.
+          </Text>
+        </View>
+        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+          <Text style={s.leftItemInner}>
+            •
+          </Text>
+          <Text style={s.rightItemInner}>
+            If exponent have 2 digits, decimal part are 7 places. And so..
+          </Text>
+        </View>
+        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+          <Text style={s.leftItemInner}>
+            •
+          </Text>
+          <Text style={s.rightItemInner}>
+            If decimal part have trailing zeros, they will be removed.
+          </Text>
+        </View>
+      </Text>
+    </View>,
+    
+
+    <View key={3} style={s.eachItem}>
+      <FontAwesome5
+        name='infinity'
+        size={30}
+        color='rgba(0, 0, 0, .7)'
+        style={s.leftItem}
+      />
+      <Text style={s.rightItem}>
+        Numbers largers than 1.797693e+307 (positive or negative)
+        are treated as Infinity. After that,
+        every calc will output Infinity, or -Infinity, as applicable.
+      </Text>
+    </View>,
+
+    <View key={4} style={s.eachItem}>
+      <Entypo
+        name='new'
+        size={30}
+        color='rgba(0, 0, 0, .7)'
+        style={s.leftItem}
+      />
+      <Text style={s.rightItem}>
+        All new input characters are placed to the right.
+      </Text>
+    </View>,
+
+    <View key={5} style={s.eachItem}>
+      <Ionicons
+        name='backspace'
+        size={40}
+        color='rgba(0, 0, 0, .7)'
+        style={s.leftItem}
+      />
+      <Text style={s.rightItem}>
+        Erase the last character.
+      </Text>
+    </View>,
+
+    <View key={6} style={s.eachItem}>
+      <Text style={s.leftItem}>
+        C
+      </Text>
+      <Text style={s.rightItem}>
+        Delete the entire input.
+      </Text>
+    </View>,
+
+    <View key={7} style={s.eachItem}>
+      <Text style={[s.leftItem, s.dot]}>
+        .
+      </Text>
+      <Text style={s.rightItem}>
+        Decimal numbers can have up to two digits maximum.
+        But decimal results can be more than 2 digits long !
+      </Text>
+    </View>,
+
+    <View key={8} style={s.eachItem}>
+      <Text style={s.leftItem}>
+        =
+      </Text>
+      <Text style={s.rightItem}>
+        If there is no calc to do ('x', '/', '+' or '-')
+        '=' will not work.{"\n"}
+        If calc is valid, result will be shown and,
+        in a smaller upper place, the current calc will be shown.{"\n"}
+        If result or current calc is larger than screen,
+        you can scroll to see entire result/calc.
+      </Text>
+    </View>,
+
+    <View key={9} style={[s.eachItem, { marginBottom: aB + 20 } ]}>
+      <MaterialIcons
+        name='phonelink-erase'
+        size={30}
+        color='rgba(0, 0, 0, .7)'
+        style={s.leftItem}
+      />
+      <Text style={s.rightItem}>
+        This App does not have access to your device.
+      </Text>
+    </View>
+    ]
+
+  const [ test, setTest ] = useState(false)
+
+    useEffect(() => {
+      const interactionPromise = InteractionManager.runAfterInteractions(() =>
+        //onShown(),
+        {setTest(true); console.log("DONEEEE 123123")}
+      );
+      return () => interactionPromise.cancel();
+    }, []);
+
   return (
-    <View>
+    <View style={{ height: '100%' }}>
       <LinearGradient
-        colors={[
-          `rgba(${counterA["0"]}, ${counterA["1"]}, ${counterA["2"]}, 0.9)`,
-          `rgba(255, 255, 255, 0.9)`
-        ]}
+        colors={colors}
         style={s.linearGradient}
         start={{ x: 0, y: 1}} // x = from left // y = from top
         end={{x: 1, y: 0}} // x = from left // y = from bottom
@@ -74,16 +218,11 @@ function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
       </LinearGradient>
 
       <LinearGradient
-        colors={[
-          `rgba(${counterA["0"]}, ${counterA["1"]}, ${counterA["2"]}, 0.9)`,
-          `rgba(255, 255, 255, 0.9)`
-        ]}
+        colors={colors}
         style={[ s.linearGradientStatus, { height: ins.top } ]}
         start={{ x: 0, y: (hph / (ins.top / 2)) - ins.top }} // x = from left // y = from top
         end={{x: 1, y: 0}} // x = from left // y = from bottom
-      >
-      </LinearGradient>
-
+      />
 
       <ScrollView ref={scrollRef}>
         <View style={s.background}>
@@ -117,166 +256,54 @@ function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
             Below I will give you some tips if you have any doubt:
           </Text>
 
-          <View style={s.eachItem}>
-            <Text style={s.leftItem}>
-              -X
-            </Text>
-            <Text style={s.rightItem}>
-              Negative number. Press it before your number.
-            </Text>
-          </View>
+          <View key={0} style={s.eachItem}>
+      <Text style={s.leftItem}>
+        -X
+      </Text>
+      <Text style={s.rightItem}>
+        Negative number. Press it before your number.
+      </Text>
+    </View>
 
-          <View style={s.eachItem}>
-            <Text style={s.leftItem}>
-              ( )
-            </Text>
-            <Text style={s.rightItem}>
-              Chain any amount of parenthesis and
-              calculator will parse the result,
-              following the next rules:{"\n"}
-              <View style={[s.eachItemInner,{ width: targetWidth }]}>
-                <Text style={s.leftItemInner}>
-                  •
-                </Text>
-                <Text style={s.rightItemInner}>
-                  Innermost parentheses calc will be done.
-                </Text>
-              </View>
-              <View style={[s.eachItemInner,{ width: targetWidth }]}>
-                <Text style={s.leftItemInner}>
-                  •
-                </Text>
-                <Text style={s.rightItemInner}>
-                  Inside that parentheses, or if not present, will do the next,
-                  from left to right, in this order:
-                  All 'x', then all '/', then all '+' and finally all '-'.
-                </Text>
-              </View>
-            </Text>
-            <Text style={s.rightItem}>
-              Then will quit that parenthesis, if exists,
-              and do the same as above.
-            </Text>
-          </View>
+    <View key={1} style={s.eachItem}>
+      <Text style={s.leftItem}>
+        ( )
+      </Text>
+      <Text style={s.rightItem}>
+        Chain any amount of parenthesis and
+        calculator will parse the result,
+        following the next rules:{"\n"}
+        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+          <Text style={s.leftItemInner}>
+            •
+          </Text>
+          <Text style={s.rightItemInner}>
+            Innermost parentheses calc will be done.
+          </Text>
+        </View>
+        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+          <Text style={s.leftItemInner}>
+            •
+          </Text>
+          <Text style={s.rightItemInner}>
+            Inside that parentheses, or if not present, will do the next,
+            from left to right, in this order:
+            All 'x', then all '/', then all '+' and finally all '-'.
+          </Text>
+        </View>
+      </Text>
+      <Text style={s.rightItem}>
+        Then will quit that parenthesis, if exists,
+        and do the same as above.
+      </Text>
+    </View>
 
-          <View style={s.eachItem}>
-            <Text style={[s.leftItem, s.sn]}>
-              1e+12
-            </Text>
-            <Text style={s.rightItem}>
-              If the integer side, in the result,
-              is more than 12 digits (e.g.: 1000000000001.23 + 1.23),
-              it will be converted to scientific notation.{"\n"}
-              Results in scientific notation are parsed as follows:
-              <View style={[s.eachItemInner,{ width: targetWidth }]}>
-                <Text style={s.leftItemInner}>
-                  •
-                </Text>
-                <Text style={s.rightItemInner}>
-                  If exponent have 1 digits, decimal part are 8 places.
-                </Text>
-              </View>
-              <View style={[s.eachItemInner,{ width: targetWidth }]}>
-                <Text style={s.leftItemInner}>
-                  •
-                </Text>
-                <Text style={s.rightItemInner}>
-                  If exponent have 2 digits, decimal part are 7 places. And so..
-                </Text>
-              </View>
-              <View style={[s.eachItemInner,{ width: targetWidth }]}>
-                <Text style={s.leftItemInner}>
-                  •
-                </Text>
-                <Text style={s.rightItemInner}>
-                  If decimal part have trailing zeros, they will be removed.
-                </Text>
-              </View>
-            </Text>
-          </View>
+    
 
-          <View style={s.eachItem}>
-            <FontAwesome5
-              name='infinity'
-              size={30}
-              color='rgba(0, 0, 0, .7)'
-              style={s.leftItem}
-            />
-            <Text style={s.rightItem}>
-              Numbers largers than 1.797693e+307 (positive or negative)
-              are treated as Infinity. After that,
-              every calc will output Infinity, or -Infinity, as applicable.
-            </Text>
-          </View>
-
-          <View style={s.eachItem}>
-            <Entypo
-              name='new'
-              size={30}
-              color='rgba(0, 0, 0, .7)'
-              style={s.leftItem}
-            />
-            <Text style={s.rightItem}>
-              All new input characters are placed to the right.
-            </Text>
-          </View>
-
-          <View style={s.eachItem}>
-            <Ionicons
-              name='backspace'
-              size={40}
-              color='rgba(0, 0, 0, .7)'
-              style={s.leftItem}
-            />
-            <Text style={s.rightItem}>
-              Erase the last character.
-            </Text>
-          </View>
-
-          <View style={s.eachItem}>
-            <Text style={s.leftItem}>
-              C
-            </Text>
-            <Text style={s.rightItem}>
-              Delete the entire input.
-            </Text>
-          </View>
-
-          <View style={s.eachItem}>
-            <Text style={[s.leftItem, s.dot]}>
-              .
-            </Text>
-            <Text style={s.rightItem}>
-              Decimal numbers can have up to two digits maximum.
-              But decimal results can be more than 2 digits long !
-            </Text>
-          </View>
-
-          <View style={s.eachItem}>
-            <Text style={s.leftItem}>
-              =
-            </Text>
-            <Text style={s.rightItem}>
-              If there is no calc to do ('x', '/', '+' or '-')
-              '=' will not work.{"\n"}
-              If calc is valid, result will be shown and,
-              in a smaller upper place, the current calc will be shown.{"\n"}
-              If result or current calc is larger than screen,
-              you can scroll to see entire result/calc.
-            </Text>
-          </View>
-
-          <View style={[s.eachItem, {marginBottom: aB + 20} ]}>
-            <MaterialIcons
-              name='phonelink-erase'
-              size={30}
-              color='rgba(0, 0, 0, .7)'
-              style={s.leftItem}
-            />
-            <Text style={s.rightItem}>
-              This App does not have access to your device.
-            </Text>
-          </View>
+          {/* { qq.map(e => e) } */}
+          {/* { test && qq.map(e => e) } */}
+          {/* <ActivityIndicator size="large" color="#0000ff"/> */}
+          { test ? qq.map(e => e) : <ActivityIndicator size="large" color="#0000ff"/> }
 
         </View>
         
@@ -284,6 +311,7 @@ function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
 
       <Pressable
         style={[s.floatButton,{ bottom: aB + 10 }]}
+        //style={[s.floatButton,{ bottom: 0 }]}
         onPress={() => onFabPress()}
       >
         <Text style={s.floatButtonText}> UP </Text>

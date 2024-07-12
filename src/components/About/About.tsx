@@ -15,7 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { CommonActions } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image'
 
-function About({ navigation: { navigate, getState }, /* imageLink */ }: any): React.JSX.Element {
+function About({ navigation: { navigate, getState, push }, /* imageLink */ }: any): React.JSX.Element {
 
   //console.log("CCCCCCC ABOUT", getState())
 
@@ -96,7 +96,8 @@ function About({ navigation: { navigate, getState }, /* imageLink */ }: any): Re
         name='chevron-back-circle-sharp'
         size={30}
         color='rgba(0, 0, 0, .7)'
-        onPress={() => navigate('KnowMore')}
+        //onPress={() => navigate('KnowMore')}
+        onPress={() => push('KnowMore')}
         style={s.buttonAndIconLower}
       >
         <Text style={s.textInButtonLower}>HOW DOES IT WORK ?</Text>
