@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { useEffect, useRef, useState } from "react";
 import { NavigationContainer, useRoute, useNavigationContainerRef, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -5,18 +6,19 @@ import Home from './src/components/Home/Home';
 import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
 import BootSplash from "react-native-bootsplash";
-import { Dimensions, AppState } from 'react-native';
+//import { Dimensions, AppState } from 'react-native';
 import * as Font from 'expo-font';
 //import { Font } from 'expo';
 //import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { opw, /* ins, */ /* dH, wH, */ aB/* , nB */ } from './src/components/constants';
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
 //let ins = useSafeAreaInsets(); // insets
 //import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
   //SafeAreaView,
+  //SafeAreaProvider,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -24,15 +26,21 @@ import {
   Image,
   useColorScheme,
   View,
+  Dimensions
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 //import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { s } from './src/components/KnowMore/KnowMoreCSS';
+//import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Stack: any = createNativeStackNavigator();
 
+
 function App(): React.JSX.Element {
+
+
 
   const navigationRef = useNavigationContainerRef();
 
@@ -80,7 +88,7 @@ function App(): React.JSX.Element {
         console.log("ENTRO ACA typeof", typeof response)
         //routeGo.current = response.toString()
       }
- 
+
       await Font.loadAsync({
         ...AntDesign.font,
         ...Entypo.font,
@@ -128,6 +136,7 @@ function App(): React.JSX.Element {
   };
 
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
+
 
   return (
     <NavigationContainer
@@ -194,8 +203,10 @@ function App(): React.JSX.Element {
         />
         <Stack.Screen
           name="KnowMore"
-          component={ KnowMore }
-        />
+          //component={ KnowMore }
+        >
+          {(props: any) => <KnowMore {...props} /* qqq={qqq} ins={ins} setIns={setIns} */ />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
