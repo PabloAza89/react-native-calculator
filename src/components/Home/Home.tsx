@@ -4,7 +4,6 @@ import {
   StatusBar,
   Text,
   View,
-  Button,
   TouchableHighlight,
   Dimensions,
   AppState
@@ -14,30 +13,13 @@ import OwnButton from '../OwnButton/OwnButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-//import { useIsFocused } from '@react-navigation/native';
-import { useRoute, getFocusedRouteNameFromRoute, CommonActions } from '@react-navigation/native';
-
-
-//import { opw, dH, wH,/* ins, */ /* dH, wH, */ aB/* , nB */ } from '../constants';
-import { opw, /* dH, wH, */aB } from '../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import * as Font from 'expo-font';
-//import BootSplash from "react-native-bootsplash";
-
-
 
 function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
 
-  //console.log("INS", ins)
-  //const isFocused = useIsFocused();
-  //console.log("TEST TEST TEST", isFocused)
-
-  //console.log("CCCCCCC HOME", getState())
 
   let ins = useSafeAreaInsets(); // insets
 
- 
   const dH = Dimensions.get('screen').height; // deviceHeight
   const wH = Dimensions.get('window').height; // windowHeight
 
@@ -63,25 +45,6 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [ nB, setNb ] = useState(false)
 
-  // const route = useRoute();
-  // const routeName = getFocusedRouteNameFromRoute(route);
-
-  // console.log("A VERRRRRRRRR", routeName)
-
-  //let dH:any //= Dimensions.get('screen').height; // deviceHeight
-  //let wH:any //= Dimensions.get('window').height; // windowHeight
-
-  //const [ opw, setOpw ] = useState(Dimensions.get('window').width / 100)
-
-  //const [ opw, setOpw ] = useState(width / 100)
-
-  //const route = useRoute();
-
-  //console.log("A VERRR", navigation)
-
-
-  
-
   useEffect(() => { // ON APP FOCUS
     const focus = AppState.addEventListener('focus', async () => {
       //console.log("FOCUS")
@@ -94,13 +57,6 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
 
       let resRoute = await readData("savedRoute") // RESPONSE ROUTE
 
-      
-
-      //console.log("QQ", qq === null)
-      //console.log("QQ resInput", resInput)
-      //console.log("QQ resSecInput", resSecInput)
-      //console.log("QQ resDate", resDate)
-      
       if (resInput !== undefined && resInput !== null) setInput(resInput)
       if (resSecInput !== undefined && resSecInput !== null) setSecInput(resSecInput)
 

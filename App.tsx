@@ -137,62 +137,19 @@ function App(): React.JSX.Element {
 
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
-
   return (
     <NavigationContainer
       ref={navigationRef}
       initialState={initialState}
-      //onReady={() => BootSplash.hide()}
     >
       <Stack.Navigator
-        //initialRouteName="Home"
-        //initialRouteName={routeGo}
-        //initialRouteName={routeGo.name}
-        //initialRouteName={routeGo.current}
-        //initialRouteName="About"
-        //initialRouteName={""}
-        //</NavigationContainer>initialRouteName={routeGo.current}
-        //initialRouteName={"About"}
-       //initialRouteName={finished ? routeGo : "Home"}
-        //routeGo
-        //initialRouteName={resRoute.current}
         screenOptions={{
-          //gestureDirection: "horizontal-inverted",
           headerShown: false,
           gestureEnabled: false,
-          //lazy: false,
-          // animationDuration: 1500,
-          // animation: 'slide_from_right',
-          // animationEnabled:false,
-          // transitionConfig: () => ({
-          //   transitionSpec: {
-          //     duration:0,
-          //     timing: 0,
-          //   },
-          // }),
-          //headerTintColor: 'red',
-          // headerStyle: {
-          //   backgroundColor: 'red'
-          // }
-          navigationBarColor: 'rgba(0, 0, 0, 0.2)', // BOTTOM
+          navigationBarColor: 'rgba(0, 0, 0, 0.2)',
           animation: 'slide_from_right',
-          //navigationBarColor: nB ? 'rgba(0, 0, 0, 0.2)' : 'transparent', // BOTTOM
-          // tabBarOptions: {
-          //   activeTintColor: 'red'
-          // },
-          // activeTintColor: 'red',
-          // inactiveTintColor: 'gray',
-          //headerTransparent: true
-          //tabBarActiveTintColor: 'red',
-          //tabBarInactiveTintColor: 'red',
-          //windowLightStatusBar: true
-          //navigationBarColor: nB ? 'rgba(0, 0, 0, 0.1)' : 'transparent', // BOTTOM
-          //navigationBarColor: nB ? 'rgba(0, 0, 0, 0.2)' : 'transparent', // BOTTOM
-          //navigationBarColor: 'red', // BOTTOM
-          //navigationBarHidden: true, // BOTTOM
         }}
       >
-      
         <Stack.Screen
           name="Home"
           component={ Home }
@@ -203,10 +160,8 @@ function App(): React.JSX.Element {
         />
         <Stack.Screen
           name="KnowMore"
-          //component={ KnowMore }
-        >
-          {(props: any) => <KnowMore {...props} /* qqq={qqq} ins={ins} setIns={setIns} */ />}
-        </Stack.Screen>
+          component={ KnowMore }
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
