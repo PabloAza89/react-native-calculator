@@ -6,8 +6,6 @@ import {
   ScrollView,
   Pressable,
   Dimensions,
-  SafeAreaView,
-  ViewProps,
   InteractionManager,
   ActivityIndicator
 } from 'react-native';
@@ -15,25 +13,15 @@ import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-//import Animated, { FadeIn } from 'react-native-reanimated';
 
-function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: any): React.JSX.Element {
+function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
 
   let opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
   let hph = Dimensions.get('window').height; // hundredPercentHeight = 100%vh
   let dH = Dimensions.get('screen').height; // deviceHeight
   let wH = Dimensions.get('window').height; // windowHeight
-
-
-  //let ops = Dimensions.get('screen').width / 100; // onePercentWidth = 1%vw
-
-  // useEffect(() => {
-  //   console.log("CCCCCCC MORE", getState())
-  // }, [])
  
   let ins = useSafeAreaInsets(); // insets
-  //const [ ins, setIns ] = useState(useSafeAreaInsets())
-  //setIns(useSafeAreaInsets())
 
   let aB: number = (dH - ins.top) === wH ? 0 : ins.bottom // additionalBottom
 
@@ -50,31 +38,71 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
     [index: string]: number
   }
 
-  const [ counterA, setCounterA ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
-  const [ currIdxA, setCurrIdxA ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
-  const goUpA: any = useRef({ "0": true, "1": false, "2": true });
+  const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
+  const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
+  const goUp: any = useRef({ "0": true, "1": false, "2": true });
 
   useEffect(() => {
     const interval = setInterval(() => {
-      let newANum = () => setCurrIdxA(Math.floor(Math.random() * 3)) // BETWEEN 0 AND 2
+      let newANum = () => setCurrIdx(Math.floor(Math.random() * 3)) // BETWEEN 0 AND 2
 
-      if (counterA[currIdxA] > 250) { goUpA.current[currIdxA] = false; newANum() }
-      else if (counterA[currIdxA] < 5) { goUpA.current[currIdxA] = true; newANum() }
-      if (goUpA.current[currIdxA]) setCounterA({ ...counterA, [currIdxA]: counterA[currIdxA] + 5 })
-      else setCounterA({ ...counterA, [currIdxA]: counterA[currIdxA] - 5 })
+      if (counter[currIdx] > 250) { goUp.current[currIdx] = false; newANum() }
+      else if (counter[currIdx] < 5) { goUp.current[currIdx] = true; newANum() }
+      if (goUp.current[currIdx]) setCounter({ ...counter, [currIdx]: counter[currIdx] + 5 })
+      else setCounter({ ...counter, [currIdx]: counter[currIdx] - 5 })
     }, 100);
 
     return () => clearInterval(interval);
-  }, [counterA, currIdxA, goUpA])
+  }, [counter, currIdx, goUp])
 
   let targetWidth = (opw * 95) - 40
 
   let colors = [
-    `rgba(${counterA["0"]}, ${counterA["1"]}, ${counterA["2"]}, 0.9)`,
+    `rgba(${counter["0"]}, ${counter["1"]}, ${counter["2"]}, 0.9)`,
     `rgba(255, 255, 255, 0.9)`
   ]
 
-  let qq = [
+  let lazyLoad = [
+    <View key={0} style={s.eachItem}>
+      <Text style={s.leftItem}>
+        -X
+      </Text>
+      <Text style={s.rightItem}>
+        Negative number. Press it before your number.
+      </Text>
+    </View>,
+    <View key={1} style={s.eachItem}>
+      <Text style={s.leftItem}>
+        ( )
+      </Text>
+      <Text style={s.rightItem}>
+        Chain any amount of parenthesis and
+        calculator will parse the result,
+        following the next rules:{"\n"}
+        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+          <Text style={s.leftItemInner}>
+            •
+          </Text>
+          <Text style={s.rightItemInner}>
+            Innermost parentheses calc will be done.
+          </Text>
+        </View>
+        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+          <Text style={s.leftItemInner}>
+            •
+          </Text>
+          <Text style={s.rightItemInner}>
+            Inside that parentheses, or if not present, will do the next,
+            from left to right, in this order:
+            All 'x', then all '/', then all '+' and finally all '-'.
+          </Text>
+        </View>
+      </Text>
+      <Text style={s.rightItem}>
+        Then will quit that parenthesis, if exists,
+        and do the same as above.
+      </Text>
+    </View>,
     <View key={2} style={s.eachItem}>
       <Text style={[s.leftItem, s.sn]}>
         1e+12
@@ -110,8 +138,6 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
         </View>
       </Text>
     </View>,
-    
-
     <View key={3} style={s.eachItem}>
       <FontAwesome5
         name='infinity'
@@ -125,7 +151,6 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
         every calc will output Infinity, or -Infinity, as applicable.
       </Text>
     </View>,
-
     <View key={4} style={s.eachItem}>
       <Entypo
         name='new'
@@ -137,7 +162,6 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
         All new input characters are placed to the right.
       </Text>
     </View>,
-
     <View key={5} style={s.eachItem}>
       <Ionicons
         name='backspace'
@@ -149,7 +173,6 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
         Erase the last character.
       </Text>
     </View>,
-
     <View key={6} style={s.eachItem}>
       <Text style={s.leftItem}>
         C
@@ -158,7 +181,6 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
         Delete the entire input.
       </Text>
     </View>,
-
     <View key={7} style={s.eachItem}>
       <Text style={[s.leftItem, s.dot]}>
         .
@@ -168,7 +190,6 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
         But decimal results can be more than 2 digits long !
       </Text>
     </View>,
-
     <View key={8} style={s.eachItem}>
       <Text style={s.leftItem}>
         =
@@ -182,7 +203,6 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
         you can scroll to see entire result/calc.
       </Text>
     </View>,
-
     <View key={9} style={[s.eachItem, { marginBottom: aB + 20 } ]}>
       <MaterialIcons
         name='phonelink-erase'
@@ -194,22 +214,27 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
         This App does not have access to your device.
       </Text>
     </View>
-    ]
+  ]
 
-  const [ test, setTest ] = useState(false)
+  const [ loaded, setLoaded ] = useState(false)
 
-    useEffect(() => {
-      const interactionPromise = InteractionManager.runAfterInteractions(() =>
-        //onShown(),
-        {setTest(true); console.log("DONEEEE 123123")}
-      );
-      return () => interactionPromise.cancel();
-    }, []);
+  useEffect(() => {
+    const interactionPromise = InteractionManager.runAfterInteractions(() =>  setLoaded(true));
+    return () => interactionPromise.cancel();
+  }, []);
+
+  function handleScroll (event: any) {
+    event.nativeEvent.contentOffset.y > 100 ? setShowButton(true) : setShowButton(false)
+  }
+
+  const [ showButton, setShowButton ] = useState(false)
+
+  let colorVariables = `${counter["0"]}, ${counter["1"]}, ${counter["2"]}`
 
   return (
     <View style={{ height: '100%' }}>
       <LinearGradient
-        colors={colors}
+        colors={[ `rgba(${colorVariables}, 0.7)`, `rgba(255, 255, 255, 1)` ]}
         style={s.linearGradient}
         start={{ x: 0, y: 1}} // x = from left // y = from top
         end={{x: 1, y: 0}} // x = from left // y = from bottom
@@ -218,13 +243,13 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
       </LinearGradient>
 
       <LinearGradient
-        colors={colors}
+        colors={[ `rgba(${colorVariables}, 0.9)`, `rgba(255, 255, 255, 0.9)` ]}
         style={[ s.linearGradientStatus, { height: ins.top } ]}
         start={{ x: 0, y: (hph / (ins.top / 2)) - ins.top }} // x = from left // y = from top
         end={{x: 1, y: 0}} // x = from left // y = from bottom
       />
 
-      <ScrollView ref={scrollRef}>
+      <ScrollView ref={scrollRef} onScroll={handleScroll}>
         <View style={s.background}>
 
           <View style={s.buttonContainer}>
@@ -256,66 +281,20 @@ function KnowMore({ /* qqq, */ /* ins, setIns, */ navigation: { navigate } }: an
             Below I will give you some tips if you have any doubt:
           </Text>
 
-          <View key={0} style={s.eachItem}>
-      <Text style={s.leftItem}>
-        -X
-      </Text>
-      <Text style={s.rightItem}>
-        Negative number. Press it before your number.
-      </Text>
-    </View>
-
-    <View key={1} style={s.eachItem}>
-      <Text style={s.leftItem}>
-        ( )
-      </Text>
-      <Text style={s.rightItem}>
-        Chain any amount of parenthesis and
-        calculator will parse the result,
-        following the next rules:{"\n"}
-        <View style={[s.eachItemInner,{ width: targetWidth }]}>
-          <Text style={s.leftItemInner}>
-            •
-          </Text>
-          <Text style={s.rightItemInner}>
-            Innermost parentheses calc will be done.
-          </Text>
-        </View>
-        <View style={[s.eachItemInner,{ width: targetWidth }]}>
-          <Text style={s.leftItemInner}>
-            •
-          </Text>
-          <Text style={s.rightItemInner}>
-            Inside that parentheses, or if not present, will do the next,
-            from left to right, in this order:
-            All 'x', then all '/', then all '+' and finally all '-'.
-          </Text>
-        </View>
-      </Text>
-      <Text style={s.rightItem}>
-        Then will quit that parenthesis, if exists,
-        and do the same as above.
-      </Text>
-    </View>
-
-    
-
-          {/* { qq.map(e => e) } */}
-          {/* { test && qq.map(e => e) } */}
-          {/* <ActivityIndicator size="large" color="#0000ff"/> */}
-          { test ? qq.map(e => e) : <ActivityIndicator size="large" color="#0000ff"/> }
+          { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3"/> }
 
         </View>
-        
       </ScrollView>
 
-      <Pressable
-        style={[s.floatButton,{ bottom: aB + 10 }]}
-        //style={[s.floatButton,{ bottom: 0 }]}
-        onPress={() => onFabPress()}
-      >
-        <Text style={s.floatButtonText}> UP </Text>
-      </Pressable>
+      {
+        showButton &&
+        <Pressable
+          style={[s.floatButton,{ bottom: aB + 10 }]}
+          onPress={() => onFabPress()}
+        >
+          <Text style={s.floatButtonText}> UP </Text>
+        </Pressable>
+      }
     </View>
   );
 }

@@ -1,11 +1,5 @@
 import React from 'react';
-import type { PropsWithChildren } from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  TouchableHighlight,
-  View
-} from 'react-native';
+import { Text, TouchableHighlight } from 'react-native';
 import { s } from './OwnButtonCSS';
 import { Ionicons } from '@expo/vector-icons';
 import { Adder } from '../../functions/adder';
@@ -202,7 +196,6 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, arr1, arr
       activeOpacity={1}
       style={[ smaller ? s.ownButtonSmaller : s.ownButton ]}
       onPress={() => handlePress()}
-      //onLoad={() => console.log("ASDASD")}
     >
       <Text style={[ smaller ? s.ownButtonSmallerT : s.ownButtonT ]}>
         {
