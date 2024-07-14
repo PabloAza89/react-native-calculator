@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useRef, useState } from "react";
-import { NavigationContainer, useRoute, useNavigationContainerRef, getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { useNavigationState, CommonActions, NavigationContainer, useRoute, useNavigationContainerRef, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/components/Home/Home';
 import About from './src/components/About/About';
@@ -12,21 +12,15 @@ import * as Font from 'expo-font';
 //import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { opw, /* ins, */ /* dH, wH, */ aB/* , nB */ } from './src/components/constants';
 
-import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaInsetsContext, useSafeAreaInsets, SafeAreaProvider  } from 'react-native-safe-area-context';
 //let ins = useSafeAreaInsets(); // insets
 //import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
-  //SafeAreaView,
-  //SafeAreaProvider,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
   Image,
-  useColorScheme,
-  View,
-  Dimensions
+  AppState,
+  Dimensions,
+  SafeAreaView
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
@@ -75,9 +69,7 @@ function App(): React.JSX.Element {
   //let resRoute = useRef<any>("Home")
 
   useEffect(() => {
-    
-    const qq = async () => {
-      
+    const allPreloads = async () => {
       let response = await readData("savedRoute") // RESPONSE ROUTE
 
       if (response !== undefined && response !== null) {
@@ -104,11 +96,144 @@ function App(): React.JSX.Element {
         setTimeout(() => BootSplash.hide(), 200) // AVOID ICON BLINKING
       })
     }
-
-    qq()
-
-
+    allPreloads()
   }, []);
+
+  //const state = useNavigationState((state) => state);
+  //const index = useNavigationState((state) => state.index);
+
+  
+
+  //const state = useNavigationState((state) => state)
+
+  //let wH = Dimensions.get('window').height; // windowHeight
+
+  //console.log("HOME OUTSIDE CURRENT HEIGHT", wH.toString())
+
+  // useEffect(() => {
+  //   wH = Dimensions.get('window').height; // windowHeight
+  // }, [Dimensions])
+
+  // let [ wH,  ]
+
+  const [ secInput, setSecInput ] = useState("");
+  const [ input, setInput ] = useState("");
+
+  //let ins = useSafeAreaInsets(); // insets
+  //let ins = SafeAreaInsetsContext(); // insets
+  
+
+  // useEffect(() => {
+  //   let ins = useSafeAreaInsets(); // insets
+  // }, [])
+
+  // useEffect(() => { // ON APP FOCUS
+  //   const focus = AppState.addEventListener('focus', async () => {
+  //     let resInput = await readData("savedInput") // RESPONSE INPUT
+  //     let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
+  //     let resDate = await readData("savedDate") // RESPONSE DATE
+  //     let resHeight = await readData("savedHeight") // RESPONSE HEIGHT
+  //     let resRoute = await readData("savedRoute") // RESPONSE ROUTE
+
+  //     if (resInput !== undefined && resInput !== null) setInput(resInput)
+  //     if (resSecInput !== undefined && resSecInput !== null) setSecInput(resSecInput)
+  //     if (resDate !== undefined && resDate !== null) console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
+  //     if (resHeight !== undefined && resHeight !== null) console.log("QQ SAVED HEIGHT", resHeight)
+  //     if (resRoute !== undefined && resRoute !== null) console.log("QQ SAVED ROUTE", resRoute)
+
+  //     if (resDate !== undefined && resDate !== null && resHeight !== undefined && resHeight !== null) {
+  //     //   console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
+  //         if (Date.now() - parseInt(resDate) < 60000 && resHeight !== wH.toString()) {
+  //     //     //console.log("typeof parseInt(resHeight)", typeof resHeight)
+  //     //     //console.log("typeof wH", wH)
+  //           console.log("WINDOWS HAS CHANGED !")
+
+  //           //navigation.navigate('About')
+  //           //navigation.navigate(resRoute)
+            
+  //             //await BootSplash.hide()
+            
+
+  //         } else {
+  //           console.log("WINDOWS NOT HAS CHANGED.")
+            
+  //             //await BootSplash.hide()
+            
+            
+
+  //           // let array = navigation.getState().routes
+  //           // //saveData("savedRoute", array[array.length - 1].name)
+  //           // console.log("FUNC CURR ROUTE", array[array.length - 1].name)
+  //           // console.log("FUNC SAVED ROUTE", resRoute)
+            
+
+  //           //console.log("A VERRR", navigation.getState())
+  //           //console.log("A VERRR", navigation.getState().routes[0].name)
+  //           //console.log("A VERRR", navigation.getState())
+
+  //           //onPress={() => navigation.navigate('About')}
+
+
+  //           // let array = navigation.getState().routes
+  //           // console.log("A VERRR", array[array.length - 1].name)
+
+
+  //         }
+        
+  //       }
+
+
+  //   }
+  
+  // )
+
+    
+    
+  //   return () => focus.remove();
+  // }, []);
+
+  // useEffect(() => { // ON APP BLUR
+  //   const blur = AppState.addEventListener('blur', () => {
+  //     saveData("savedInput", input)
+  //     saveData("savedSecInput", secInput)
+  //     saveData("savedDate", Date.now().toString())
+  //     saveData("savedHeight", wH.toString())
+  //     console.log("APP CURRENT HEIGHT", wH.toString())
+
+  //     //let array = getState().routes
+  //     let array = navigationRef.current?.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
+  //     //let array = state.routes
+  //     if (array !== undefined) {
+  //       console.log("BLUR SAVE ROUTE", array[array.length - 1].name)
+  //       saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+  //     }
+      
+  //   })
+  //   return () => blur.remove();
+  // }, [AppState, wH]);
+
+  useEffect(() => { // ON APP BLUR
+    const blur = AppState.addEventListener('blur', () => {
+      saveData("savedInput", input)
+      saveData("savedSecInput", secInput)
+      saveData("savedDate", Date.now().toString())
+      saveData("savedHeight", Dimensions.get('window').height.toString())
+      console.log("APP CURRENT HEIGHT", Dimensions.get('window').height.toString())
+
+      let array = navigationRef.current?.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
+      if (array !== undefined) {
+        console.log("BLUR SAVE ROUTE", array[array.length - 1].name)
+        saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+      }
+      
+    })
+    return () => blur.remove();
+  }, []);
+
+  const saveData = async (key: any, value:any) => {
+    try { await AsyncStorage.setItem(`${key}`, value) }
+    catch(e) { }
+  };
 
 
   const readData = async (key: string) => {
@@ -137,7 +262,10 @@ function App(): React.JSX.Element {
 
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
+  //const testRef = useNavigationContainerRef();
+
   return (
+    <SafeAreaProvider>
     <NavigationContainer
       ref={navigationRef}
       initialState={initialState}
@@ -152,8 +280,10 @@ function App(): React.JSX.Element {
       >
         <Stack.Screen
           name="Home"
-          component={ Home }
-        />
+          //component={ Home }
+        >
+          {(props: any) => <Home {...props} input={input} setInput={setInput} secInput={secInput} setSecInput={setSecInput} />}
+        </Stack.Screen>
         <Stack.Screen
           name="About"
           component={ About }
@@ -164,6 +294,8 @@ function App(): React.JSX.Element {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
+
   );
 }
 
