@@ -20,7 +20,7 @@ function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
   let hph = Dimensions.get('window').height; // hundredPercentHeight = 100%vh
   let dH = Dimensions.get('screen').height; // deviceHeight
   let wH = Dimensions.get('window').height; // windowHeight
- 
+
   let ins = useSafeAreaInsets(); // insets
 
   let aB: number = (dH - ins.top) === wH ? 0 : ins.bottom // additionalBottom

@@ -15,7 +15,7 @@ import { useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
+function Home({ navigation: { navigate, getState }, input, setInput, secInput, setSecInput }: any): React.JSX.Element {
 
 
   let ins = useSafeAreaInsets(); // insets
@@ -23,11 +23,9 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
   const dH = Dimensions.get('screen').height; // deviceHeight
   const wH = Dimensions.get('window').height; // windowHeight
 
-  const {height, width} = useWindowDimensions();
-
   const [ parErr, setParErr ] = useState(false);
-  const [ secInput, setSecInput ] = useState("");
-  const [ input, setInput ] = useState("");
+  // const [ secInput, setSecInput ] = useState("");
+  // const [ input, setInput ] = useState("");
 
   useEffect(() => {
     scrollEnd()
@@ -60,10 +58,10 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
       if (resInput !== undefined && resInput !== null) setInput(resInput)
       if (resSecInput !== undefined && resSecInput !== null) setSecInput(resSecInput)
 
-      if (resDate !== undefined && resDate !== null) console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
-      if (resHeight !== undefined && resHeight !== null) console.log("QQ SAVED HEIGHT", resHeight)
+      if (resDate !== undefined && resDate !== null) console.log("HOME DIFFERENCE", Date.now() - parseInt(resDate))
+      if (resHeight !== undefined && resHeight !== null) console.log("HOME RETRIEVE SAVED HEIGHT", resHeight)
 
-      if (resRoute !== undefined && resRoute !== null) console.log("QQ SAVED ROUTE", resRoute)
+      if (resRoute !== undefined && resRoute !== null) console.log("HOME SAVED ROUTE", resRoute)
 
 
       if (resDate !== undefined && resDate !== null && resHeight !== undefined && resHeight !== null) {
@@ -115,33 +113,22 @@ function Home({ navigation: { navigate, getState } }: any): React.JSX.Element {
     
     
     return () => focus.remove();
-  }, [ins]);
-  
+  }, []);
 
-  useEffect(() => { // ON APP BLUR
+  // useEffect(() => { // ON APP BLUR
+  //   const blur = AppState.addEventListener('blur', () => {
+  //     saveData("savedInput", input)
+  //     saveData("savedSecInput", secInput)
+  //     saveData("savedDate", Date.now().toString())
+  //     saveData("savedHeight", wH.toString())
+  //     console.log("HOME CURRENT HEIGHT", wH.toString())
 
-    
-
-    const blur = AppState.addEventListener('blur', () => {
-      //console.log("BLUR")
-      saveData("savedInput", input)
-      saveData("savedSecInput", secInput)
-      saveData("savedDate", Date.now().toString())
-      saveData("savedHeight", wH.toString())
-      
-      //console.log("CURRENT ROUTE", route.name);
-      //console.log("CURRENT ROUTE", navigation.state);
-
-      let array = getState().routes
-      //console.log("A VERRR", array[array.length - 1].name)
-      saveData("savedRoute", array[array.length - 1].name)
-
-    })
-
-    
-
-    return () => blur.remove();
-  }, [ins]);
+  //     let array = getState().routes
+  //     console.log("BLUR SAVE ROUTE", array[array.length - 1].name)
+  //     saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+  //   })
+  //   return () => blur.remove();
+  // }, []);
 
   const saveData = async (key: any, value:any) => {
     try { await AsyncStorage.setItem(`${key}`, value) }
