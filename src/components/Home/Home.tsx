@@ -43,92 +43,7 @@ function Home({ navigation: { navigate, getState }, input, setInput, secInput, s
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [ nB, setNb ] = useState(false)
 
-  useEffect(() => { // ON APP FOCUS
-    const focus = AppState.addEventListener('focus', async () => {
-      //console.log("FOCUS")
 
-      let resInput = await readData("savedInput") // RESPONSE INPUT
-      let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
-      //saveData("savedDate", Date.now())
-      let resDate = await readData("savedDate") // RESPONSE DATE
-      let resHeight = await readData("savedHeight") // RESPONSE HEIGHT
-
-      let resRoute = await readData("savedRoute") // RESPONSE ROUTE
-
-      if (resInput !== undefined && resInput !== null) setInput(resInput)
-      if (resSecInput !== undefined && resSecInput !== null) setSecInput(resSecInput)
-
-      if (resDate !== undefined && resDate !== null) console.log("HOME DIFFERENCE", Date.now() - parseInt(resDate))
-      if (resHeight !== undefined && resHeight !== null) console.log("HOME RETRIEVE SAVED HEIGHT", resHeight)
-
-      if (resRoute !== undefined && resRoute !== null) console.log("HOME SAVED ROUTE", resRoute)
-
-
-      if (resDate !== undefined && resDate !== null && resHeight !== undefined && resHeight !== null) {
-      //   console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
-          if (Date.now() - parseInt(resDate) < 60000 && resHeight !== wH.toString()) {
-      //     //console.log("typeof parseInt(resHeight)", typeof resHeight)
-      //     //console.log("typeof wH", wH)
-            console.log("WINDOWS HAS CHANGED !")
-
-            //navigation.navigate('About')
-            //navigation.navigate(resRoute)
-            
-              //await BootSplash.hide()
-            
-
-          } else {
-            console.log("WINDOWS NOT HAS CHANGED.")
-            
-              //await BootSplash.hide()
-            
-            
-
-            // let array = navigation.getState().routes
-            // //saveData("savedRoute", array[array.length - 1].name)
-            // console.log("FUNC CURR ROUTE", array[array.length - 1].name)
-            // console.log("FUNC SAVED ROUTE", resRoute)
-            
-
-            //console.log("A VERRR", navigation.getState())
-            //console.log("A VERRR", navigation.getState().routes[0].name)
-            //console.log("A VERRR", navigation.getState())
-
-            //onPress={() => navigation.navigate('About')}
-
-
-            // let array = navigation.getState().routes
-            // console.log("A VERRR", array[array.length - 1].name)
-
-
-          }
-        
-        }
-
-
-    }
-  
-  )
-
-    
-    
-    return () => focus.remove();
-  }, []);
-
-  // useEffect(() => { // ON APP BLUR
-  //   const blur = AppState.addEventListener('blur', () => {
-  //     saveData("savedInput", input)
-  //     saveData("savedSecInput", secInput)
-  //     saveData("savedDate", Date.now().toString())
-  //     saveData("savedHeight", wH.toString())
-  //     console.log("HOME CURRENT HEIGHT", wH.toString())
-
-  //     let array = getState().routes
-  //     console.log("BLUR SAVE ROUTE", array[array.length - 1].name)
-  //     saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
-  //   })
-  //   return () => blur.remove();
-  // }, []);
 
   const saveData = async (key: any, value:any) => {
     try { await AsyncStorage.setItem(`${key}`, value) }
@@ -151,30 +66,7 @@ function Home({ navigation: { navigate, getState }, input, setInput, secInput, s
     catch(e) { }
   }
 
-  // navigation.reset({
-  //   index: 1,
-  //   routes: [{ name: 'Home'}, { name: 'About'}],
-  // });
 
-  // navigation.reset({
-  //   index: 0,
-  //   routes: [{ name: 'About'}]
-  // });
-
-  // navigation.navigate('About')
-
-  // navigation.dispatch(
-  //   CommonActions.reset({
-  //     index: 0,
-  //     routes: [
-  //       { name: 'Home' }
-  //     ],
-  //   })
-  // );
-
-  // const testReturn = () => {
-  //   return <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
-  // }
 
   // useEffect(() => {
     
