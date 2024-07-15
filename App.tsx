@@ -36,7 +36,7 @@ function App(): React.JSX.Element {
 
 
 
-  const navigationRef = useNavigationContainerRef();
+  const navigationRef: any = useNavigationContainerRef();
 
 
   
@@ -70,16 +70,17 @@ function App(): React.JSX.Element {
 
   useEffect(() => {
     const allPreloads = async () => {
-      let response = await readData("savedRoute") // RESPONSE ROUTE
 
-      if (response !== undefined && response !== null) {
-        //setRouteGo(response)
-        //setRouteGo(response)
-        //setRouteGo({ name : 'About'})
-        console.log("ENTRO ACA", response)
-        console.log("ENTRO ACA typeof", typeof response)
-        //routeGo.current = response.toString()
-      }
+      let resInput = await readData("savedInput") // RESPONSE INPUT
+      let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
+      let resDate = await readData("savedDate") // RESPONSE DATE
+      let resHeight = await readData("savedHeight") // RESPONSE HEIGHT
+      let resRoute = await readData("savedRoute") // RESPONSE ROUTE
+
+      if (resInput !== undefined && resInput !== null) setInput(resInput)
+      if (resSecInput !== undefined && resSecInput !== null) setSecInput(resSecInput)
+ 
+
 
       await Font.loadAsync({
         ...AntDesign.font,
@@ -89,128 +90,103 @@ function App(): React.JSX.Element {
         ...MaterialIcons.font,
         ...SimpleLineIcons.font,
         //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-      }).then(() => {
-        //navigation.navigate("About")
-        //setLoadingComplete(true);
-        //BootSplash.hide()
-        setTimeout(() => BootSplash.hide(), 200) // AVOID ICON BLINKING
+      })
+
+      async function qq() {
+        if (resDate !== undefined && resDate !== null && resHeight !== undefined && resHeight !== null && resRoute !== undefined && resRoute !== null) {
+          //   console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
+          if (Date.now() - parseInt(resDate) < 60000 && resHeight !== Dimensions.get('window').height.toString()) {
+            console.log("WINDOWS HAS CHANGED !")
+            navigationRef.current?.navigate(resRoute)
+            //navigationRef.current?.navigate('About') // INSIDE ANY COMPONENT: navigation.navigate(resRoute)
+            //await BootSplash.hide()
+          } else console.log("WINDOWS NOT HAS CHANGED.")
+        } 
+
+        //console.log("resDate !== undefined", resDate !== undefined)
+        //console.log("resDate !== null", resDate !== null)
+        // console.log("resHeight !== undefined", resHeight !== undefined)
+        // console.log("resHeight !== null", resHeight !== null)
+        // console.log("resRoute !== null", resRoute !== undefined)
+        // console.log("resRoute !== null", resRoute !== null)
+
+      }
+
+      await qq()
+      
+      
+      .then(() => {
+
+        
+
+        //setTimeout(() => BootSplash.hide(), 200) // AVOID ICON BLINKING
+        setTimeout(() => {
+          //                                                             la primera vez y
+          console.log("ENTRO ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // cuando cambia el height
+          BootSplash.hide()
+        }, 200) // AVOID ICON BLINKING
       })
     }
     allPreloads()
   }, []);
 
-  //const state = useNavigationState((state) => state);
-  //const index = useNavigationState((state) => state.index);
-
-  
-
-  //const state = useNavigationState((state) => state)
-
-  //let wH = Dimensions.get('window').height; // windowHeight
-
-  //console.log("HOME OUTSIDE CURRENT HEIGHT", wH.toString())
-
-  // useEffect(() => {
-  //   wH = Dimensions.get('window').height; // windowHeight
-  // }, [Dimensions])
-
-  // let [ wH,  ]
-
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
 
-  //let ins = useSafeAreaInsets(); // insets
-  //let ins = SafeAreaInsetsContext(); // insets
-  
+  useEffect(() => { // ON APP FOCUS
+    const focus = AppState.addEventListener('focus', async () => {
+      //console.log("FOCUS")
 
-  // useEffect(() => {
-  //   let ins = useSafeAreaInsets(); // insets
-  // }, [])
+      // let resInput = await readData("savedInput") // RESPONSE INPUT
+      // let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
+      // let resDate = await readData("savedDate") // RESPONSE DATE
+      // let resHeight = await readData("savedHeight") // RESPONSE HEIGHT
+      // let resRoute = await readData("savedRoute") // RESPONSE ROUTE
 
-  // useEffect(() => { // ON APP FOCUS
-  //   const focus = AppState.addEventListener('focus', async () => {
-  //     let resInput = await readData("savedInput") // RESPONSE INPUT
-  //     let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
-  //     let resDate = await readData("savedDate") // RESPONSE DATE
-  //     let resHeight = await readData("savedHeight") // RESPONSE HEIGHT
-  //     let resRoute = await readData("savedRoute") // RESPONSE ROUTE
+      // if (resInput !== undefined && resInput !== null) setInput(resInput)
+      // if (resSecInput !== undefined && resSecInput !== null) setSecInput(resSecInput)
 
-  //     if (resInput !== undefined && resInput !== null) setInput(resInput)
-  //     if (resSecInput !== undefined && resSecInput !== null) setSecInput(resSecInput)
-  //     if (resDate !== undefined && resDate !== null) console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
-  //     if (resHeight !== undefined && resHeight !== null) console.log("QQ SAVED HEIGHT", resHeight)
-  //     if (resRoute !== undefined && resRoute !== null) console.log("QQ SAVED ROUTE", resRoute)
+      //if (resDate !== undefined && resDate !== null) console.log("HOME DIFFERENCE", Date.now() - parseInt(resDate))
+      //if (resHeight !== undefined && resHeight !== null) console.log("HOME RETRIEVE SAVED HEIGHT", resHeight)
 
-  //     if (resDate !== undefined && resDate !== null && resHeight !== undefined && resHeight !== null) {
-  //     //   console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
-  //         if (Date.now() - parseInt(resDate) < 60000 && resHeight !== wH.toString()) {
-  //     //     //console.log("typeof parseInt(resHeight)", typeof resHeight)
-  //     //     //console.log("typeof wH", wH)
-  //           console.log("WINDOWS HAS CHANGED !")
-
-  //           //navigation.navigate('About')
-  //           //navigation.navigate(resRoute)
-            
-  //             //await BootSplash.hide()
-            
-
-  //         } else {
-  //           console.log("WINDOWS NOT HAS CHANGED.")
-            
-  //             //await BootSplash.hide()
-            
-            
-
-  //           // let array = navigation.getState().routes
-  //           // //saveData("savedRoute", array[array.length - 1].name)
-  //           // console.log("FUNC CURR ROUTE", array[array.length - 1].name)
-  //           // console.log("FUNC SAVED ROUTE", resRoute)
-            
-
-  //           //console.log("A VERRR", navigation.getState())
-  //           //console.log("A VERRR", navigation.getState().routes[0].name)
-  //           //console.log("A VERRR", navigation.getState())
-
-  //           //onPress={() => navigation.navigate('About')}
+      //if (resRoute !== undefined && resRoute !== null) console.log("HOME SAVED ROUTE", resRoute)
 
 
-  //           // let array = navigation.getState().routes
-  //           // console.log("A VERRR", array[array.length - 1].name)
+      // if (resDate !== undefined && resDate !== null && resHeight !== undefined && resHeight !== null && resRoute !== undefined && resRoute !== null) {
+      // //   console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
+      //     if (Date.now() - parseInt(resDate) < 60000 && resHeight !== Dimensions.get('window').height.toString()) {
+      // //     //console.log("typeof parseInt(resHeight)", typeof resHeight)
+      // //     //console.log("typeof wH", wH)
+      //       console.log("WINDOWS HAS CHANGED !")
 
+      //       //navigation.navigate('About')
+      //       //navigation.navigate(resRoute)
+      //       //navigationRef.current?.navigate(resRoute) // INSIDE ANY COMPONENT: navigation.navigate(resRoute)
+      //       await navigationRef.current?.navigate(resRoute).then(() => {
+      //         //setTimeout(() => BootSplash.hide(), 200) // AVOID ICON BLINKING
+      //         setTimeout(() => {
+      //           //                                                             la primera vez y
+      //           console.log("ENTRO ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // cuando cambia el height
+      //           BootSplash.hide()
+      //         }, 200) // AVOID ICON BLINKING
+      //       })
+      //       //navigationRef.current?.navigate('About') // INSIDE ANY COMPONENT: navigation.navigate(resRoute)
+      //       //await BootSplash.hide()
 
-  //         }
-        
-  //       }
-
-
-  //   }
-  
-  // )
-
-    
-    
-  //   return () => focus.remove();
-  // }, []);
-
-  // useEffect(() => { // ON APP BLUR
-  //   const blur = AppState.addEventListener('blur', () => {
-  //     saveData("savedInput", input)
-  //     saveData("savedSecInput", secInput)
-  //     saveData("savedDate", Date.now().toString())
-  //     saveData("savedHeight", wH.toString())
-  //     console.log("APP CURRENT HEIGHT", wH.toString())
-
-  //     //let array = getState().routes
-  //     let array = navigationRef.current?.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
-  //     //let array = state.routes
-  //     if (array !== undefined) {
-  //       console.log("BLUR SAVE ROUTE", array[array.length - 1].name)
-  //       saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
-  //     }
-      
-  //   })
-  //   return () => blur.remove();
-  // }, [AppState, wH]);
+      //     } /* else {
+      //       console.log("WINDOWS NOT HAS CHANGED.")
+      //       setTimeout(() => {
+      //         //                                                             la primera vez y
+      //         console.log("ENTRO ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // cuando cambia el height
+      //         BootSplash.hide()
+      //       }, 200) // AVOID ICON BLINKING
+      //         //await BootSplash.hide()
+      //     } */
+      //   }
+    }
+  )
+    return () => focus.remove();
+  }, []);
 
   useEffect(() => { // ON APP BLUR
     const blur = AppState.addEventListener('blur', () => {
@@ -218,11 +194,11 @@ function App(): React.JSX.Element {
       saveData("savedSecInput", secInput)
       saveData("savedDate", Date.now().toString())
       saveData("savedHeight", Dimensions.get('window').height.toString())
-      console.log("APP CURRENT HEIGHT", Dimensions.get('window').height.toString())
+      //console.log("APP CURRENT HEIGHT", Dimensions.get('window').height.toString())
 
       let array = navigationRef.current?.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
       if (array !== undefined) {
-        console.log("BLUR SAVE ROUTE", array[array.length - 1].name)
+        //console.log("BLUR SAVE ROUTE", array[array.length - 1].name)
         saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
       }
       
@@ -265,7 +241,6 @@ function App(): React.JSX.Element {
   //const testRef = useNavigationContainerRef();
 
   return (
-    <SafeAreaProvider>
     <NavigationContainer
       ref={navigationRef}
       initialState={initialState}
@@ -280,9 +255,14 @@ function App(): React.JSX.Element {
       >
         <Stack.Screen
           name="Home"
-          //component={ Home }
         >
-          {(props: any) => <Home {...props} input={input} setInput={setInput} secInput={secInput} setSecInput={setSecInput} />}
+          {
+            (props: any) =>
+              <Home
+                {...props} input={input} setInput={setInput}
+                secInput={secInput} setSecInput={setSecInput}
+              />
+          }
         </Stack.Screen>
         <Stack.Screen
           name="About"
@@ -294,8 +274,6 @@ function App(): React.JSX.Element {
         />
       </Stack.Navigator>
     </NavigationContainer>
-    </SafeAreaProvider>
-
   );
 }
 
