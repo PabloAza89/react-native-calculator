@@ -14,8 +14,9 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import { useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+//import { AboutScreen } from '../../../App';
 
-function Home({ navigation: { navigate, getState }, input, setInput, secInput, setSecInput }: any): React.JSX.Element {
+function Home({ navigation: { navigate, getState, replace }, input, setInput, secInput, setSecInput }: any): React.JSX.Element {
 
 
   let ins = useSafeAreaInsets(); // insets
@@ -154,11 +155,21 @@ function Home({ navigation: { navigate, getState }, input, setInput, secInput, s
               underlayColor="#8aaeba"
               activeOpacity={1}
               style={s.question}
-              onPress={() => navigate('About')}
+              //onPress={() => navigate('About')}
+              //onPress={() => replace('About', { animationEnabled: true, animation: 'slide_from_right' })}
+              onPress={() => {
+                //AboutScreen.props.options.animationEnabled = true;
+                //AboutScreen.props.options.animation = 'slide_from_right';
+                //replace('About');
+                navigate('About')
+                // AboutScreen.props.options.animationEnabled = false;
+                // AboutScreen.props.options.animation = 'none'
+                // replace('About');
+                // AboutScreen.props.options.animationEnabled = true;
+                // AboutScreen.props.options.animation = 'none'
+              }}
             >
               <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
-              {/* { testReturn() } */}
-              {/* { testReturn('question') } */}
             </TouchableHighlight>
 
 

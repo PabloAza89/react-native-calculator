@@ -31,6 +31,17 @@ import { s } from './src/components/KnowMore/KnowMoreCSS';
 
 const Stack: any = createNativeStackNavigator();
 
+export const Screens =
+  <Stack.Screen
+    name="About"
+    component={ About }
+    options={{
+      animationEnabled: false,
+      //animation: 'slide_from_right'
+      animation: 'none'
+    }}
+  />
+
 
 function App(): React.JSX.Element {
 
@@ -93,22 +104,22 @@ function App(): React.JSX.Element {
       })
 
       async function qq() {
-        if (resDate !== undefined && resDate !== null && resHeight !== undefined && resHeight !== null && resRoute !== undefined && resRoute !== null) {
-          //   console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
-          if (Date.now() - parseInt(resDate) < 60000 && resHeight !== Dimensions.get('window').height.toString()) {
+        if (
+          resDate !== undefined && resDate !== null &&
+          resHeight !== undefined && resHeight !== null &&
+          resRoute !== undefined && resRoute !== null
+        ) {
+          if (
+            Date.now() - parseInt(resDate) < 60000 &&
+            resHeight !== Dimensions.get('window').height.toString()
+          ) {
             console.log("WINDOWS HAS CHANGED !")
+            //testRef.current = 'slide_from_right';
+            //setTestRef('slide_from_right')
+            setTestRef('none')
             navigationRef.current?.navigate(resRoute)
-            //navigationRef.current?.navigate('About') // INSIDE ANY COMPONENT: navigation.navigate(resRoute)
-            //await BootSplash.hide()
           } else console.log("WINDOWS NOT HAS CHANGED.")
-        } 
-
-        //console.log("resDate !== undefined", resDate !== undefined)
-        //console.log("resDate !== null", resDate !== null)
-        // console.log("resHeight !== undefined", resHeight !== undefined)
-        // console.log("resHeight !== null", resHeight !== null)
-        // console.log("resRoute !== null", resRoute !== undefined)
-        // console.log("resRoute !== null", resRoute !== null)
+        }
 
       }
 
@@ -122,71 +133,19 @@ function App(): React.JSX.Element {
         //setTimeout(() => BootSplash.hide(), 200) // AVOID ICON BLINKING
         setTimeout(() => {
           //                                                             la primera vez y
-          console.log("ENTRO ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // cuando cambia el height
+          //console.log("ENTRO ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // cuando cambia el height
+          //setTestRef('slide_from_right')
           BootSplash.hide()
+          
         }, 200) // AVOID ICON BLINKING
       })
+      //.then(() => { setTestRef('slide_from_right') })
     }
     allPreloads()
   }, []);
 
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
-
-  useEffect(() => { // ON APP FOCUS
-    const focus = AppState.addEventListener('focus', async () => {
-      //console.log("FOCUS")
-
-      // let resInput = await readData("savedInput") // RESPONSE INPUT
-      // let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
-      // let resDate = await readData("savedDate") // RESPONSE DATE
-      // let resHeight = await readData("savedHeight") // RESPONSE HEIGHT
-      // let resRoute = await readData("savedRoute") // RESPONSE ROUTE
-
-      // if (resInput !== undefined && resInput !== null) setInput(resInput)
-      // if (resSecInput !== undefined && resSecInput !== null) setSecInput(resSecInput)
-
-      //if (resDate !== undefined && resDate !== null) console.log("HOME DIFFERENCE", Date.now() - parseInt(resDate))
-      //if (resHeight !== undefined && resHeight !== null) console.log("HOME RETRIEVE SAVED HEIGHT", resHeight)
-
-      //if (resRoute !== undefined && resRoute !== null) console.log("HOME SAVED ROUTE", resRoute)
-
-
-      // if (resDate !== undefined && resDate !== null && resHeight !== undefined && resHeight !== null && resRoute !== undefined && resRoute !== null) {
-      // //   console.log("QQ DIFFERENCE", Date.now() - parseInt(resDate))
-      //     if (Date.now() - parseInt(resDate) < 60000 && resHeight !== Dimensions.get('window').height.toString()) {
-      // //     //console.log("typeof parseInt(resHeight)", typeof resHeight)
-      // //     //console.log("typeof wH", wH)
-      //       console.log("WINDOWS HAS CHANGED !")
-
-      //       //navigation.navigate('About')
-      //       //navigation.navigate(resRoute)
-      //       //navigationRef.current?.navigate(resRoute) // INSIDE ANY COMPONENT: navigation.navigate(resRoute)
-      //       await navigationRef.current?.navigate(resRoute).then(() => {
-      //         //setTimeout(() => BootSplash.hide(), 200) // AVOID ICON BLINKING
-      //         setTimeout(() => {
-      //           //                                                             la primera vez y
-      //           console.log("ENTRO ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // cuando cambia el height
-      //           BootSplash.hide()
-      //         }, 200) // AVOID ICON BLINKING
-      //       })
-      //       //navigationRef.current?.navigate('About') // INSIDE ANY COMPONENT: navigation.navigate(resRoute)
-      //       //await BootSplash.hide()
-
-      //     } /* else {
-      //       console.log("WINDOWS NOT HAS CHANGED.")
-      //       setTimeout(() => {
-      //         //                                                             la primera vez y
-      //         console.log("ENTRO ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // cuando cambia el height
-      //         BootSplash.hide()
-      //       }, 200) // AVOID ICON BLINKING
-      //         //await BootSplash.hide()
-      //     } */
-      //   }
-    }
-  )
-    return () => focus.remove();
-  }, []);
 
   useEffect(() => { // ON APP BLUR
     const blur = AppState.addEventListener('blur', () => {
@@ -195,16 +154,17 @@ function App(): React.JSX.Element {
       saveData("savedDate", Date.now().toString())
       saveData("savedHeight", Dimensions.get('window').height.toString())
       //console.log("APP CURRENT HEIGHT", Dimensions.get('window').height.toString())
+      //console.log("savedInput", input)
+      //console.log("savedSecInput", secInput)
 
       let array = navigationRef.current?.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
       if (array !== undefined) {
         //console.log("BLUR SAVE ROUTE", array[array.length - 1].name)
         saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
       }
-      
     })
     return () => blur.remove();
-  }, []);
+  }, [input, secInput]);
 
   const saveData = async (key: any, value:any) => {
     try { await AsyncStorage.setItem(`${key}`, value) }
@@ -239,6 +199,9 @@ function App(): React.JSX.Element {
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
   //const testRef = useNavigationContainerRef();
+  //const testRef = useRef('none');
+  //const [ testRef, setTestRef ] = useState('none');
+  const [ testRef, setTestRef ] = useState('slide_from_right');
 
   return (
     <NavigationContainer
@@ -250,7 +213,9 @@ function App(): React.JSX.Element {
           headerShown: false,
           gestureEnabled: false,
           navigationBarColor: 'rgba(0, 0, 0, 0.2)',
-          animation: 'slide_from_right',
+          //animation: 'slide_from_right',
+          //animation: testRef.current
+          animation: testRef
         }}
       >
         <Stack.Screen
@@ -258,20 +223,32 @@ function App(): React.JSX.Element {
         >
           {
             (props: any) =>
-              <Home
-                {...props} input={input} setInput={setInput}
-                secInput={secInput} setSecInput={setSecInput}
-              />
+            <Home
+              {...props} input={input} setInput={setInput}
+              secInput={secInput} setSecInput={setSecInput}
+            />
           }
         </Stack.Screen>
         <Stack.Screen
           name="About"
           component={ About }
+          // options={{
+          //   animationEnabled: false,
+          //   //animation: 'slide_from_right'
+          //   animation: 'none'
+          // }}
         />
         <Stack.Screen
           name="KnowMore"
-          component={ KnowMore }
-        />
+          //component={ KnowMore }
+        >
+          {
+            (props: any) =>
+            <KnowMore
+              {...props} setTestRef={setTestRef}
+            />
+          }
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
