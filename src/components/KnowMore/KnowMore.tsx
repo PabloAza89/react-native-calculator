@@ -14,7 +14,7 @@ import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icon
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
+function KnowMore({ navigation: { navigate }, setTestRef }: any): React.JSX.Element {
 
   let opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
   let hph = Dimensions.get('window').height; // hundredPercentHeight = 100%vh
@@ -41,6 +41,8 @@ function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
   const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
   const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
   const goUp: any = useRef({ "0": true, "1": false, "2": true });
+
+  useEffect(() => { setTestRef('slide_from_right') }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
