@@ -42,6 +42,22 @@ export const Screens =
     }}
   />
 
+export const NavigatorTest = (children: any[]) => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: false,
+        navigationBarColor: 'rgba(0, 0, 0, 0.2)',
+        //animation: 'slide_from_right',
+        //animation: testRef.current
+        animation: 'none'
+      }}
+    >
+      { children.map((e: any) => e) }
+    </Stack.Navigator>
+  )
+}
 
 function App(): React.JSX.Element {
 
@@ -116,7 +132,7 @@ function App(): React.JSX.Element {
             console.log("WINDOWS HAS CHANGED !")
             //testRef.current = 'slide_from_right';
             //setTestRef('slide_from_right')
-            setTestRef('none')
+            //setTestRef('none')
             navigationRef.current?.navigate(resRoute)
           } else console.log("WINDOWS NOT HAS CHANGED.")
         }
@@ -208,48 +224,45 @@ function App(): React.JSX.Element {
       ref={navigationRef}
       initialState={initialState}
     >
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: false,
-          navigationBarColor: 'rgba(0, 0, 0, 0.2)',
-          //animation: 'slide_from_right',
-          //animation: testRef.current
-          animation: testRef
-        }}
-      >
-        <Stack.Screen
-          name="Home"
-        >
-          {
-            (props: any) =>
-            <Home
-              {...props} input={input} setInput={setInput}
-              secInput={secInput} setSecInput={setSecInput}
-            />
-          }
-        </Stack.Screen>
-        <Stack.Screen
-          name="About"
-          component={ About }
-          // options={{
-          //   animationEnabled: false,
-          //   //animation: 'slide_from_right'
-          //   animation: 'none'
-          // }}
-        />
-        <Stack.Screen
-          name="KnowMore"
-          //component={ KnowMore }
-        >
-          {
-            (props: any) =>
-            <KnowMore
-              {...props} setTestRef={setTestRef}
-            />
-          }
-        </Stack.Screen>
-      </Stack.Navigator>
+      {
+        NavigatorTest(
+          [<Stack.Screen
+            name="Home"
+            key={"Home"}
+          >
+            {
+              (props: any) =>
+              <Home
+                {...props} input={input} setInput={setInput}
+                secInput={secInput} setSecInput={setSecInput}
+              />
+            }
+          </Stack.Screen>,
+          <Stack.Screen
+            name="About"
+            key={"About"}
+            component={ About }
+            // options={{
+            //   animationEnabled: false,
+            //   //animation: 'slide_from_right'
+            //   animation: 'none'
+            // }}
+          />,
+          <Stack.Screen
+            name="KnowMore"
+            key={"KnowMore"}
+            //component={ KnowMore }
+          >
+            {
+              (props: any) =>
+              <KnowMore
+                {...props} setTestRef={setTestRef}
+              />
+            }
+          </Stack.Screen>]
+
+        )
+      }
     </NavigationContainer>
   );
 }
