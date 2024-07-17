@@ -42,7 +42,7 @@ export const Screens =
     }}
   />
 
-export const NavigatorTest = (children: any[]) => {
+export const NavigatorTest = (testRef: any, children: any[]) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -50,8 +50,9 @@ export const NavigatorTest = (children: any[]) => {
         gestureEnabled: false,
         navigationBarColor: 'rgba(0, 0, 0, 0.2)',
         //animation: 'slide_from_right',
-        //animation: testRef.current
-        animation: 'none'
+        animation: 'slide_from_right',
+        //animation: testRef
+        //animation: 'none'
       }}
     >
       { children.map((e: any) => e) }
@@ -61,12 +62,8 @@ export const NavigatorTest = (children: any[]) => {
 
 function App(): React.JSX.Element {
 
-
-
   const navigationRef: any = useNavigationContainerRef();
 
-
-  
   // useEffect(() => {
   //   const init = async () => {
   //     // …do multiple sync or async tasks
@@ -94,6 +91,30 @@ function App(): React.JSX.Element {
   //routeGo.current = 'KnowMore'
   const [ finished, setFinished ] = useState(false)
   //let resRoute = useRef<any>("Home")
+
+  //const testRef = useNavigationContainerRef();
+  //const testRef = useRef('slide_from_right');
+  //const testRef = useRef('none');
+  const [ testRef, setTestRef ] = useState('none');
+  //const [ testRef, setTestRef ] = useState('slide_from_right');
+
+  // const [ initialState, setInitialState ] = useState({
+  //   index: 0, // to load the second screen which is LastNameView
+  //   routes: [
+  //     { name: 'Home' },
+  //     /* { name: 'About' }, */
+  //     //{ name: 'KnowMore' },
+  //   ],
+  // })
+
+  let initialState = useRef({
+    index: 0, // to load the second screen which is LastNameView
+    routes: [
+      { name: 'Home' },
+      /* { name: 'About' }, */
+      //{ name: 'KnowMore' },
+    ],
+  })
 
   useEffect(() => {
     const allPreloads = async () => {
@@ -133,7 +154,39 @@ function App(): React.JSX.Element {
             //testRef.current = 'slide_from_right';
             //setTestRef('slide_from_right')
             //setTestRef('none')
-            navigationRef.current?.navigate(resRoute)
+            //navigationRef.current?.navigate(resRoute)
+            console.log("typeof resRoute", typeof resRoute)
+            console.log("resRoute", resRoute)
+            // resRoute === "KnowMore" ? initialState.current = {
+            //   index: 2, // to load the second screen which is LastNameView
+            //   routes: [
+            //     { name: 'Home' },
+            //     { name: 'About' },
+            //     { name: 'KnowMore' },
+            //   ],
+            // } :
+            // resRoute === "About" ? initialState.current = {
+            //   index: 1, // to load the second screen which is LastNameView
+            //   routes: [
+            //     { name: 'Home' },
+            //     { name: 'About' },
+            //     //{ name: 'KnowMore' },
+            //   ],
+            // } :
+            // initialState.current = {
+            //   index: 0, // to load the second screen which is LastNameView
+            //   routes: [
+            //     { name: 'Home' },
+            //     /* { name: 'About' }, */
+            //     //{ name: 'KnowMore' },
+            //   ],
+            // }
+
+            resRoute === "KnowMore" ? console.log("AAAAAAAAAAAAAAAAAAAAAAA") :
+            resRoute === "About" ? console.log("BBBBBBBBBBBBBBBBBBBBBBB") :
+            console.log("CCCCCCCCCCCCCCCCCCCCCC")
+
+
           } else console.log("WINDOWS NOT HAS CHANGED.")
         }
 
@@ -156,9 +209,11 @@ function App(): React.JSX.Element {
         }, 200) // AVOID ICON BLINKING
       })
       //.then(() => { setTestRef('slide_from_right') })
+      //.then(() => { testRef.current = 'slide_from_right' })
+      //.then(() => { setTestRef('slide_from_right') })
     }
     allPreloads()
-  }, []);
+  }, [initialState.current]);
 
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
@@ -203,29 +258,65 @@ function App(): React.JSX.Element {
 
   rrr()
 
-  let initialState = {
-    index: 0, // to load the second screen which is LastNameView
-    routes: [
-      { name: 'Home' },
-      /* { name: 'About' }, */
-      /* { name: 'KnowMore' }, */
-    ],
-  };
+  
+
+  // let initialState = {
+  //   index: 0, // to load the second screen which is LastNameView
+  //   routes: [
+  //     { name: 'Home' },
+  //     { name: 'About' },
+  //     //{ name: 'KnowMore' },
+  //   ],
+  // };
+
+
 
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
-  //const testRef = useNavigationContainerRef();
-  //const testRef = useRef('none');
-  //const [ testRef, setTestRef ] = useState('none');
-  const [ testRef, setTestRef ] = useState('slide_from_right');
+  // useEffect(() => {
+  //   // setInitialState({
+  //   //   index: 1, // to load the second screen which is LastNameView
+  //   //   routes: [
+  //   //     { name: 'Home' },
+  //   //     { name: 'About' },
+  //   //     //{ name: 'KnowMore' },
+  //   //   ],
+  //   // })
+
+  //   // initialState.current = {
+  //   //   index: 1, // to load the second screen which is LastNameView
+  //   //   routes: [
+  //   //     { name: 'Home' },
+  //   //     { name: 'About' },
+  //   //     //{ name: 'KnowMore' },
+  //   //   ],
+  //   // }
+
+  // }, [])
+
+  // initialState.current = {
+  //   // index: 1, // to load the second screen which is LastNameView
+  //   // routes: [
+  //   //   { name: 'Home' },
+  //   //   { name: 'About' },
+  //   //   //{ name: 'KnowMore' },
+  //   // ],
+  //   index: 2, // to load the second screen which is LastNameView
+  //   routes: [
+  //     { name: 'Home' },
+  //     { name: 'About' },
+  //     { name: 'KnowMore' },
+  //   ],
+  // }
+  
 
   return (
     <NavigationContainer
       ref={navigationRef}
-      initialState={initialState}
+      initialState={initialState.current}
     >
       {
-        NavigatorTest(
+        NavigatorTest(testRef, 
           [<Stack.Screen
             name="Home"
             key={"Home"}
@@ -256,7 +347,7 @@ function App(): React.JSX.Element {
             {
               (props: any) =>
               <KnowMore
-                {...props} setTestRef={setTestRef}
+                {...props} //setTestRef={setTestRef}
               />
             }
           </Stack.Screen>]
