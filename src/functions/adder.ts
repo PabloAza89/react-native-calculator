@@ -1,11 +1,4 @@
-
-interface AdderI {
-  scrollEnd?: any,
-  input?: any,
-  setInput?: any,
-  setSecInput?: any,
-  setParErr?: any
-}
+import { AdderI } from '../interfaces/interfaces';
 
 export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) {
 

@@ -13,6 +13,7 @@ import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { counterI } from '../../interfaces/interfaces';
 
 function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
 
@@ -32,10 +33,6 @@ function KnowMore({ navigation: { navigate } }: any): React.JSX.Element {
       y: 0,
       animated: true
     });
-  }
-
-  interface counterI {
-    [index: string]: number
   }
 
   const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
