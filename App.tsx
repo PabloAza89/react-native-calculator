@@ -173,18 +173,29 @@ function App(): React.JSX.Element {
             //     //{ name: 'KnowMore' },
             //   ],
             // } :
-            // initialState.current = {
-            //   index: 0, // to load the second screen which is LastNameView
-            //   routes: [
-            //     { name: 'Home' },
-            //     /* { name: 'About' }, */
-            //     //{ name: 'KnowMore' },
-            //   ],
-            // }
+            initialState.current = {
+              index: 2, // to load the second screen which is LastNameView
+              routes: [
+                { name: 'Home' },
+                { name: 'About' },
+                { name: 'KnowMore' },
+              ],
+            }
 
-            resRoute === "KnowMore" ? console.log("AAAAAAAAAAAAAAAAAAAAAAA") :
-            resRoute === "About" ? console.log("BBBBBBBBBBBBBBBBBBBBBBB") :
-            console.log("CCCCCCCCCCCCCCCCCCCCCC")
+            const resetAction = CommonActions.reset({
+              index: 2, // to load the second screen which is LastNameView
+              routes: [
+                { name: 'Home' },
+                { name: 'About' },
+                { name: 'KnowMore' },
+              ],
+            });
+            navigationRef.current?.dispatch(resetAction);
+            //navigation.dispatch(resetAction);
+
+            // resRoute === "KnowMore" ? console.log("AAAAAAAAAAAAAAAAAAAAAAA") :
+            // resRoute === "About" ? console.log("BBBBBBBBBBBBBBBBBBBBBBB") :
+            // console.log("CCCCCCCCCCCCCCCCCCCCCC")
 
 
           } else console.log("WINDOWS NOT HAS CHANGED.")
