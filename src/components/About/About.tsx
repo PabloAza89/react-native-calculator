@@ -12,8 +12,6 @@ import FastImage from 'react-native-fast-image'
 
 function About({ navigation: { navigate } }: any): React.JSX.Element {
 
-  //console.log("CCCCCCC ABOUT", getState())
-
   return (
     <View style={s.background}>
       <LinearGradient

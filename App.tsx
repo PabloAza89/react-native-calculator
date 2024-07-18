@@ -34,10 +34,12 @@ function App(): React.JSX.Element {
 
   const [ animation, setAnimation ] = useState('none'); // NO SCREEN ANIMATION
 
+  let allRoutes = [{ name: 'Home' }, { name: 'About' }, { name: 'KnowMore' }]
+
   let routes = [
-    { index: 2, routes: [{ name: 'Home' }, { name: 'About' }, { name: 'KnowMore' }] },
-    { index: 1, routes: [{ name: 'Home' }, { name: 'About' }] },
-    { index: 0, routes: [{ name: 'Home' }] }
+    { index: 2, routes: allRoutes },
+    { index: 1, routes: allRoutes.slice(0, 2) },
+    { index: 0, routes: allRoutes.slice(0, 1) }
   ]
 
   useEffect(() => {
@@ -61,7 +63,7 @@ function App(): React.JSX.Element {
         ...SimpleLineIcons.font
       })
 
-      async function qq() {
+      async function windowSizeHasChanged() {
         if (
           resDate !== undefined && resDate !== null &&
           resHeight !== undefined && resHeight !== null &&
@@ -77,7 +79,7 @@ function App(): React.JSX.Element {
           } // else console.log("WINDOWS NOT HAS CHANGED.")
         }
       }
-      await qq()
+      await windowSizeHasChanged()
       .then(() => {
         setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW HEIGHT CHANGES
           setAnimation('slide_from_right') // SLIDE SCREEN ANIMATION
@@ -116,35 +118,34 @@ function App(): React.JSX.Element {
 
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
+  let stackScreens = [
+    <Stack.Screen
+      name="Home"
+      key={"Home"}
+    >
+      {
+        (props: any) =>
+        <Home
+          {...props} input={input} setInput={setInput}
+          secInput={secInput} setSecInput={setSecInput}
+        />
+      }
+    </Stack.Screen>,
+    <Stack.Screen
+      name="About"
+      key={"About"}
+      component={ About }
+    />,
+    <Stack.Screen
+      name="KnowMore"
+      key={"KnowMore"}
+      component={ KnowMore }
+    />
+  ]
+
   return (
     <NavigationContainer ref={navigationRef}>
-      {
-        NavigatorMapper(animation,
-          [<Stack.Screen
-            name="Home"
-            key={"Home"}
-          >
-            {
-              (props: any) =>
-              <Home
-                {...props} input={input} setInput={setInput}
-                secInput={secInput} setSecInput={setSecInput}
-              />
-            }
-          </Stack.Screen>,
-          <Stack.Screen
-            name="About"
-            key={"About"}
-            component={ About }
-          />,
-          <Stack.Screen
-            name="KnowMore"
-            key={"KnowMore"}
-            component={ KnowMore }
-          />]
-
-        )
-      }
+      { NavigatorMapper(animation, stackScreens) }
     </NavigationContainer>
   );
 }
