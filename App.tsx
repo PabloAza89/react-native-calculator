@@ -42,7 +42,7 @@ export const Screens =
     }}
   />
 
-export const NavigatorTest = (testRef: any, children: any[]) => {
+export const NavigatorMapper = (testRef: any, screens: any[]) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -50,12 +50,12 @@ export const NavigatorTest = (testRef: any, children: any[]) => {
         gestureEnabled: false,
         navigationBarColor: 'rgba(0, 0, 0, 0.2)',
         //animation: 'slide_from_right',
-        animation: 'slide_from_right',
-        //animation: testRef
+        //animation: 'slide_from_right',
+        animation: testRef
         //animation: 'none'
       }}
     >
-      { children.map((e: any) => e) }
+      { screens.map((e: any) => e) }
     </Stack.Navigator>
   )
 }
@@ -107,14 +107,20 @@ function App(): React.JSX.Element {
   //   ],
   // })
 
-  let initialState = useRef({
+  let initialState = {
     index: 0, // to load the second screen which is LastNameView
     routes: [
       { name: 'Home' },
       /* { name: 'About' }, */
       //{ name: 'KnowMore' },
     ],
-  })
+  }
+
+  let routes = [
+    { index: 2, routes: [{ name: 'Home' }, { name: 'About' }, { name: 'KnowMore' }] },
+    { index: 1, routes: [{ name: 'Home' }, { name: 'About' }] },
+    { index: 0, routes: [{ name: 'Home' }] }
+  ]
 
   useEffect(() => {
     const allPreloads = async () => {
@@ -151,54 +157,11 @@ function App(): React.JSX.Element {
             resHeight !== Dimensions.get('window').height.toString()
           ) {
             console.log("WINDOWS HAS CHANGED !")
-            //testRef.current = 'slide_from_right';
-            //setTestRef('slide_from_right')
             //setTestRef('none')
-            //navigationRef.current?.navigate(resRoute)
-            console.log("typeof resRoute", typeof resRoute)
-            console.log("resRoute", resRoute)
-            // resRoute === "KnowMore" ? initialState.current = {
-            //   index: 2, // to load the second screen which is LastNameView
-            //   routes: [
-            //     { name: 'Home' },
-            //     { name: 'About' },
-            //     { name: 'KnowMore' },
-            //   ],
-            // } :
-            // resRoute === "About" ? initialState.current = {
-            //   index: 1, // to load the second screen which is LastNameView
-            //   routes: [
-            //     { name: 'Home' },
-            //     { name: 'About' },
-            //     //{ name: 'KnowMore' },
-            //   ],
-            // } :
-            initialState.current = {
-              index: 2, // to load the second screen which is LastNameView
-              routes: [
-                { name: 'Home' },
-                { name: 'About' },
-                { name: 'KnowMore' },
-              ],
-            }
-
-            const resetAction = CommonActions.reset({
-              index: 2, // to load the second screen which is LastNameView
-              routes: [
-                { name: 'Home' },
-                { name: 'About' },
-                { name: 'KnowMore' },
-              ],
-            });
-            navigationRef.current?.dispatch(resetAction);
-            //navigation.dispatch(resetAction);
-
-            // resRoute === "KnowMore" ? console.log("AAAAAAAAAAAAAAAAAAAAAAA") :
-            // resRoute === "About" ? console.log("BBBBBBBBBBBBBBBBBBBBBBB") :
-            // console.log("CCCCCCCCCCCCCCCCCCCCCC")
-
-
-          } else console.log("WINDOWS NOT HAS CHANGED.")
+            resRoute === "KnowMore" ? navigationRef.current?.dispatch(CommonActions.reset(routes[0])) :
+            resRoute === "About" ? navigationRef.current?.dispatch(CommonActions.reset(routes[1])) :
+            navigationRef.current?.dispatch(CommonActions.reset(routes[2]))
+          } // else console.log("WINDOWS NOT HAS CHANGED.")
         }
 
       }
@@ -214,7 +177,7 @@ function App(): React.JSX.Element {
         setTimeout(() => {
           //                                                             la primera vez y
           //console.log("ENTRO ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // cuando cambia el height
-          //setTestRef('slide_from_right')
+          setTestRef('slide_from_right')
           BootSplash.hide()
           
         }, 200) // AVOID ICON BLINKING
@@ -224,7 +187,7 @@ function App(): React.JSX.Element {
       //.then(() => { setTestRef('slide_from_right') })
     }
     allPreloads()
-  }, [initialState.current]);
+  }, []);
 
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
@@ -259,75 +222,15 @@ function App(): React.JSX.Element {
     catch(e) { }
   };
 
-
-
-  let rrr = async () => {
-    routeGo.current = "About"
-    //routeGo.current = "KnowMore"
-    //routeGo.current = "Home"
-  }
-
-  rrr()
-
-  
-
-  // let initialState = {
-  //   index: 0, // to load the second screen which is LastNameView
-  //   routes: [
-  //     { name: 'Home' },
-  //     { name: 'About' },
-  //     //{ name: 'KnowMore' },
-  //   ],
-  // };
-
-
-
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
-
-  // useEffect(() => {
-  //   // setInitialState({
-  //   //   index: 1, // to load the second screen which is LastNameView
-  //   //   routes: [
-  //   //     { name: 'Home' },
-  //   //     { name: 'About' },
-  //   //     //{ name: 'KnowMore' },
-  //   //   ],
-  //   // })
-
-  //   // initialState.current = {
-  //   //   index: 1, // to load the second screen which is LastNameView
-  //   //   routes: [
-  //   //     { name: 'Home' },
-  //   //     { name: 'About' },
-  //   //     //{ name: 'KnowMore' },
-  //   //   ],
-  //   // }
-
-  // }, [])
-
-  // initialState.current = {
-  //   // index: 1, // to load the second screen which is LastNameView
-  //   // routes: [
-  //   //   { name: 'Home' },
-  //   //   { name: 'About' },
-  //   //   //{ name: 'KnowMore' },
-  //   // ],
-  //   index: 2, // to load the second screen which is LastNameView
-  //   routes: [
-  //     { name: 'Home' },
-  //     { name: 'About' },
-  //     { name: 'KnowMore' },
-  //   ],
-  // }
-  
 
   return (
     <NavigationContainer
       ref={navigationRef}
-      initialState={initialState.current}
+      //initialState={initialState.current}
     >
       {
-        NavigatorTest(testRef, 
+        NavigatorMapper(testRef,
           [<Stack.Screen
             name="Home"
             key={"Home"}
