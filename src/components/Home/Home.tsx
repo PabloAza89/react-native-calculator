@@ -11,22 +11,16 @@ import {
 import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-//import { AboutScreen } from '../../../App';
 
-function Home({ navigation: { navigate, getState, replace }, input, setInput, secInput, setSecInput }: any): React.JSX.Element {
+function Home({ navigation: { navigate }, input, setInput, secInput, setSecInput }: any): React.JSX.Element {
 
 
   let ins = useSafeAreaInsets(); // insets
-
   const dH = Dimensions.get('screen').height; // deviceHeight
   const wH = Dimensions.get('window').height; // windowHeight
-
   const [ parErr, setParErr ] = useState(false);
-  // const [ secInput, setSecInput ] = useState("");
-  // const [ input, setInput ] = useState("");
 
   useEffect(() => {
     scrollEnd()
@@ -43,8 +37,6 @@ function Home({ navigation: { navigate, getState, replace }, input, setInput, se
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [ nB, setNb ] = useState(false)
-
-
 
   const saveData = async (key: any, value:any) => {
     try { await AsyncStorage.setItem(`${key}`, value) }
@@ -67,46 +59,10 @@ function Home({ navigation: { navigate, getState, replace }, input, setInput, se
     catch(e) { }
   }
 
-
-
-  // useEffect(() => {
-    
-  //   const qq = async () => {
-      
-  //     // let response = await readData("savedRoute") // RESPONSE ROUTE
-
-  //     // if (response !== undefined && response !== null) {
-  //     //   //setRouteGo(response)
-  //     //   //setRouteGo(response)
-  //     //   //setRouteGo({ name : 'About'})
-  //     //   console.log("ENTRO ACA", response)
-  //     //   console.log("ENTRO ACA typeof", typeof response)
-  //     //   //routeGo.current = response.toString()
-  //     // }
- 
-  //     await Font.loadAsync({
-  //       ...SimpleLineIcons.font
-  //       //'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-  //     }).then(() => {
-  //       //navigation.navigate("About")
-  //       //setLoadingComplete(true);
-  //       //BootSplash.hide()
-  //       setTimeout(() => setLoadingComplete(true), 0)
-  //       //setLoadingComplete(true)
-  //     })
-  //   }
-
-  //   qq()
-
-
-  // }, []);
-
-
   return (
         <View style={[s.background]}>
           <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
-          {/* <StatusBar barStyle={'light-content'} translucent={true} backgroundColor={'transparent'}/> */}
-          <View style={[s.contour/* , { width: opw * 90, height: opw * 129.6 } */] }>
+          <View style={s.contour}>
             { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
             <View style={[s.displayContainer]}>
               <ScrollView
@@ -155,77 +111,40 @@ function Home({ navigation: { navigate, getState, replace }, input, setInput, se
               underlayColor="#8aaeba"
               activeOpacity={1}
               style={s.question}
-              //onPress={() => navigate('About')}
-              //onPress={() => replace('About', { animationEnabled: true, animation: 'slide_from_right' })}
-              onPress={() => {
-                //AboutScreen.props.options.animationEnabled = true;
-                //AboutScreen.props.options.animation = 'slide_from_right';
-                //replace('About');
-                navigate('About')
-                // AboutScreen.props.options.animationEnabled = false;
-                // AboutScreen.props.options.animation = 'none'
-                // replace('About');
-                // AboutScreen.props.options.animationEnabled = true;
-                // AboutScreen.props.options.animation = 'none'
-              }}
+              onPress={() => navigate('About')}
             >
               <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
             </TouchableHighlight>
 
 
             <TouchableHighlight
-              //underlayColor="#8aaeba"
-              //activeOpacity={1}
-              //style={s.question}
               style={{ position: 'absolute', left: 10, bottom: -30 }}
-              
               onPress={() => saveData("savedInput", "111")}
-              //onPress={() => navigation.navigate('About')}
             >
               <Text>SAVE</Text>
             </TouchableHighlight>
 
             <TouchableHighlight
-              //underlayColor="#8aaeba"
-              //activeOpacity={1}
-              //style={s.question}
               style={{ position: 'absolute', left: 150, bottom: -30 }}
-              //onPress={ () => { console.log(readData()) } }
               onPress={ () => {  getAllKeys() } }
-              
-              //onPress={() => console.log("PRESSED")}
-              //onPress={() => navigation.navigate('About')}
             >
               <Text>ALL KEYS</Text>
             </TouchableHighlight>
-            
+
             <TouchableHighlight
-              //underlayColor="#8aaeba"
-              //activeOpacity={1}
-              //style={s.question}
               style={{ position: 'absolute', right: 10, bottom: -30 }}
-              //onPress={ () => { console.log(readData()) } }
-              //onPress={ () => { readData("savedInput") } }
               onPress={ async () => {
                 console.log("SAVED INPUT", await readData("savedInput"))
                 console.log("SAVED SEC INPUT",await readData("savedSecInput"))
                 console.log("SAVED DATE",await readData("savedDate"))
               } }
-              
-              //onPress={() => console.log("PRESSED")}
-              //onPress={() => navigation.navigate('About')}
             >
               <Text>READ</Text>
             </TouchableHighlight>
 
             <TouchableHighlight
-              //underlayColor="#8aaeba"
-              //activeOpacity={1}
-              //style={s.question}
               style={{ position: 'absolute', left: 10, bottom: -60 }}
-              
               onPress={() => removeData("savedInput")}
-              //onPress={() => navigation.navigate('About')}
             >
               <Text>REMOVE</Text>
             </TouchableHighlight>

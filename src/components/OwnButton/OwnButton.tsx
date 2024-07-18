@@ -189,7 +189,6 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, arr1, arr
 
   }
 
-
   return (
     <TouchableHighlight
       underlayColor="#dddddd"
