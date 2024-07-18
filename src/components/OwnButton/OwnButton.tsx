@@ -3,21 +3,9 @@ import { Text, TouchableHighlight } from 'react-native';
 import { s } from './OwnButtonCSS';
 import { Ionicons } from '@expo/vector-icons';
 import { Adder } from '../../functions/adder';
+import { OwnButtonI } from '../../interfaces/interfaces';
 
-interface OwnButtonI {
-  scrollEnd?: any,
-  parErr?: any,
-  value?: any,
-  input?: any,
-  setInput?: any,
-  arr1?: any,
-  arr5?: any,
-  smaller?: boolean,
-  setParErr?: any,
-  setSecInput?: any,
-};
-
-export function OwnButton({ scrollEnd, parErr, value, input, setInput, arr1, arr5, smaller, setParErr, setSecInput }: OwnButtonI): React.JSX.Element {
+export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput }: OwnButtonI): React.JSX.Element {
   async function handlePress() {
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS

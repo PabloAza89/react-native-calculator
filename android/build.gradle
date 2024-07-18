@@ -5,16 +5,12 @@ buildscript {
         compileSdkVersion = 34
         targetSdkVersion = 34
         ndkVersion = "25.1.8937393"
-        //ndkVersion = "22.1.7171670"
         kotlinVersion = "1.8.0"
     }
     repositories {
         google()
         mavenCentral()
     }
-    // configurations.all {
-    //     resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
-    // }
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
