@@ -84,73 +84,65 @@ function Home({ navigation: { navigate }, vmax, vmin, opw, oph, port, input, set
   }
 
   return (
-
-      
-    
-    <View style={[s.background, { height: oph * 100 + ins.bottom, backgroundColor: 'lightblue', }]}>
-      {/* <View style={{ height: oph * 100, alignSelf: 'center' }}> */}
-        
-          {/* <View style={[s.background, { height: vmax * 100 + ins.bottom }]}> */}
-          
-
-          <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
-          <View
-            style={[
-              s.contour,
-              port ?
-              { width: vmin * 90, height: vmin * 129.6, paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5 } :
-              { width: vmin * 156, height: vmin * 85.6, paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5 }
-            ]}
+    <View style={[s.background, { height: oph * 100 + ins.bottom, backgroundColor: 'lightblue' }]}>
+      <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
+      <View
+        style={[
+          s.contour,
+          port ?
+          { width: vmin * 90, height: vmin * 129.6, paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, borderWidth: vmin * 0.5 } :
+          { width: vmin * 156, height: vmin * 90, paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, borderWidth: vmin * 0.5, marginTop: vmin * 4 }
+        ]}
+      >
+        { parErr && <Text style={[ s.parErr, { width: vmin * 86, } ]}>CHECK PARENTHESIS</Text> }
+        <View
+          style={[
+            s.displayContainer,
+            port ?
+            { width: vmin * 86, height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2, } :
+            { width: vmin * 152, height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2, }
+          ]}
+        >
+          <ScrollView
+            overScrollMode="never"
+            ref={scrollRefUpper}
+            horizontal={true}
+            contentContainerStyle={{ alignItems: 'center' }}
+            showsHorizontalScrollIndicator={false}
           >
-            { parErr && <Text style={[ s.parErr, { width: vmin * 86, } ]}>CHECK PARENTHESIS</Text> }
-            <View
-              style={[
-                s.displayContainer,
-                port ?
-                { width: vmin * 86, height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2, } :
-                { width: vmin * 152, height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2, }
-              ]}
-            >
-              <ScrollView
-                overScrollMode="never"
-                ref={scrollRefUpper}
-                horizontal={true}
-                contentContainerStyle={{ alignItems: 'center' }}
-                showsHorizontalScrollIndicator={false}
-              >
-                <Text style={[ s.secondaryResult, { height: vmin * 6, lineHeight: vmin * 6, } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
-              </ScrollView>
-              <ScrollView
-                overScrollMode="never"
-                ref={scrollRefCenter}
-                horizontal={true}
-                contentContainerStyle={{ alignItems: 'center' }}
-                showsHorizontalScrollIndicator={false}
-              >
-                <Text style={[ s.mainResult, { height: vmin * 8, lineHeight: vmin * 8 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
-              </ScrollView>
-              <Text style={[s.secondaryResult]} />
-            </View>
-            { buttonsMapper() }
-            <TouchableHighlight
-              underlayColor="#8aaeba"
-              activeOpacity={1}
-              style={[ s.question, { borderRadius: (vmin * 50) / 2, left: ((vmin * 90) / 2) - 23 } ]}
-              onPress={() => navigate('About')}
-            >
-              <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
-            </TouchableHighlight>
-
-          </View>
-          
-          
-          {/* </View> */}
-          </View>
-      
-          
-        
-
-
+            <Text style={[ s.secondaryResult, { height: vmin * 6, lineHeight: vmin * 6, } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
+          </ScrollView>
+          <ScrollView
+            overScrollMode="never"
+            ref={scrollRefCenter}
+            horizontal={true}
+            contentContainerStyle={{ alignItems: 'center' }}
+            showsHorizontalScrollIndicator={false}
+          >
+            <Text style={[ s.mainResult, { height: vmin * 8, lineHeight: vmin * 8 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
+          </ScrollView>
+          <Text style={[s.secondaryResult]} />
+        </View>
+        { buttonsMapper() }
+        <TouchableHighlight
+          underlayColor="#8aaeba"
+          activeOpacity={1}
+          style={[
+            s.question,
+            { borderRadius: (vmin * 50) / 2 },
+            port ?
+            { left: ((vmin * 90) / 2) - 23, bottom: -54 } :
+            { top: ((vmin * 90) / 2) - 23 },
+            ins.right > 0 ?
+            { left: -54 } :
+            { right: -54 }
+          ]}
+          onPress={() => navigate('About')}
+        >
+          <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
+        </TouchableHighlight>
+      </View>
+    </View>
   );
 }
 
