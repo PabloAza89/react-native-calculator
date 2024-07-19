@@ -12,6 +12,7 @@ export const s = StyleSheet.create({
   },
   linearGradientStatus: {
     position: 'absolute',
+    //position: 'relative',
     left: 0,
     right: 0,
     /* height: '10%', */

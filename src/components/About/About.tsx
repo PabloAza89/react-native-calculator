@@ -4,16 +4,22 @@ import {
   View,
   Linking,
   StatusBar,
+  ScrollView
 } from 'react-native';
 import { s } from './AboutCSS';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-function About({ navigation: { navigate } }: any): React.JSX.Element {
+function About({ navigation: { navigate }, oph, vmax }: any): React.JSX.Element {
+
+  let ins = useSafeAreaInsets(); // insets
 
   return (
-    <View style={s.background}>
+    <ScrollView style={{  } }>
+    {/* <View style={[s.background, { height: vmax * 100 + ins.bottom } ]}> */}
+    <View style={[s.background, { height: oph * 100 } ]}>
       <LinearGradient
         colors={['rgba(18, 56, 117, 0.7)', 'yellow']} // #123875
         style={s.linearGradient}
@@ -59,6 +65,7 @@ function About({ navigation: { navigate } }: any): React.JSX.Element {
         <Text style={s.textInButtonLower}>HOW DOES IT WORK ?</Text>
       </Ionicons.Button>
     </View>
+    </ScrollView>
   );
 }
 
