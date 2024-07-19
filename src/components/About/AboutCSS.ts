@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { opw } from '../constants';
 
 export const s = StyleSheet.create({
   linearGradient: {
@@ -9,15 +8,8 @@ export const s = StyleSheet.create({
     height: '100%',
   },
   background: {
-    /* width: '100%', */
-    /* height: '100%', */
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  profile: {
-    width: opw * 30,
-    height: opw * 30,
-    borderRadius: (opw * 30) / 2 // 50%
   },
   text: {
     fontWeight: '500',
@@ -29,9 +21,7 @@ export const s = StyleSheet.create({
     marginBottom: 25
   },
   iconStyle: {
-    position: 'absolute',
-    right: (opw * -30) / 2,
-    top: (opw * 30) / 3,
+    position: 'absolute'
   },
   textInButtonUpper: {
     color: 'white',

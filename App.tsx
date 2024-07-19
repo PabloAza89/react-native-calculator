@@ -43,11 +43,11 @@ function App(): React.JSX.Element {
 
   let opw = width / 100
   let oph = height / 100
-  let vmax// = width > height ? opw : oph
+  let vmax
   let vmin
-  //width > height ? vmax = opw; vmin = oph : vmax = opw; vmin = oph
-  if (width > height) {vmax = opw; vmin = oph }
-  else {vmax = oph; vmin = opw }
+  let port // PORTRAIT
+  if (width > height) {vmax = opw; vmin = oph, port = false }
+  else {vmax = oph; vmin = opw, port = true }
 
   const navigationRef: any = useNavigationContainerRef();
 
@@ -166,7 +166,7 @@ function App(): React.JSX.Element {
         <Home
           {...props} input={input} setInput={setInput}
           secInput={secInput} setSecInput={setSecInput}
-          opw={opw} oph={oph} vmax={vmax} vmin={vmin}
+          opw={opw} oph={oph} vmax={vmax} vmin={vmin} port={port}
         />
       }
     </Stack.Screen>,
@@ -179,7 +179,7 @@ function App(): React.JSX.Element {
         (props: any) =>
         <About
           {...props}
-          opw={opw} oph={oph} vmax={vmax} oph={oph}
+          opw={opw} oph={oph} vmax={vmax} vmin={vmin}
         />
       }
     </Stack.Screen>,
