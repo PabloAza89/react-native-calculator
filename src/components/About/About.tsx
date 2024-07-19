@@ -12,14 +12,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-function About({ navigation: { navigate }, oph, vmax }: any): React.JSX.Element {
+function About({ navigation: { navigate }, oph, vmax, vmin }: any): React.JSX.Element {
 
   let ins = useSafeAreaInsets(); // insets
 
   return (
-    <ScrollView style={{  } }>
-    {/* <View style={[s.background, { height: vmax * 100 + ins.bottom } ]}> */}
-    <View style={[s.background, { height: oph * 100 } ]}>
+ 
+ 
+    <View style={[s.background, { height: oph * 100 + ins.bottom } ]}>
       <LinearGradient
         colors={['rgba(18, 56, 117, 0.7)', 'yellow']} // #123875
         style={s.linearGradient}
@@ -34,12 +34,12 @@ function About({ navigation: { navigate }, oph, vmax }: any): React.JSX.Element 
       </Text>
       <View style={s.imageWrapper}>
         <FastImage
-          style={s.profile}
+          style={{ width: vmin * 30, height: vmin * 30, borderRadius: (vmin * 30) / 2 /* 50% */ }}
           source={ require('../../images/profile.png') }
           resizeMode={FastImage.resizeMode.contain}
         />
         <AntDesign
-          style={s.iconStyle}
+          style={[ s.iconStyle, { right: (vmin * -30) / 2, top: (vmin * 30) / 3 } ]}
           name='linkedin-square'
           size={40}
           color='rgba(0, 0, 0, .7)'
@@ -65,7 +65,7 @@ function About({ navigation: { navigate }, oph, vmax }: any): React.JSX.Element 
         <Text style={s.textInButtonLower}>HOW DOES IT WORK ?</Text>
       </Ionicons.Button>
     </View>
-    </ScrollView>
+ 
   );
 }
 

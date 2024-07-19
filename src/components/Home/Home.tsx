@@ -14,7 +14,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-function Home({ navigation: { navigate }, vmax, vmin, opw, oph, input, setInput, secInput, setSecInput }: any): React.JSX.Element {
+function Home({ navigation: { navigate }, vmax, vmin, opw, oph, port, input, setInput, secInput, setSecInput }: any): React.JSX.Element {
 
 
   let ins = useSafeAreaInsets(); // insets
@@ -63,20 +63,36 @@ function Home({ navigation: { navigate }, vmax, vmin, opw, oph, input, setInput,
     catch(e) { }
   }
 
+  //export let asd = 0
+
   return (
 
       
     
-    <View style={[s.background, { height: oph * 100 + ins.bottom, backgroundColor: 'red', }]}>
+    <View style={[s.background, { height: oph * 100 + ins.bottom, backgroundColor: 'lightblue', }]}>
       {/* <View style={{ height: oph * 100, alignSelf: 'center' }}> */}
         
           {/* <View style={[s.background, { height: vmax * 100 + ins.bottom }]}> */}
           
 
           <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
-          <View style={[ s.contour, { width: vmin * 90, height: vmin * 129.6, paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, } ]}>
-            { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
-            <View style={[s.displayContainer]}>
+          <View
+            style={[
+              s.contour,
+              port ?
+              { width: vmin * 90, height: vmin * 129.6, paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5 } :
+              { width: vmin * 156, height: vmin * 85.6, paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5 }
+            ]}
+          >
+            { parErr && <Text style={[ s.parErr, { width: vmin * 86, } ]}>CHECK PARENTHESIS</Text> }
+            <View
+              style={[
+                s.displayContainer,
+                port ?
+                { width: vmin * 86, height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2, } :
+                { width: vmin * 152, height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2, }
+              ]}
+            >
               <ScrollView
                 overScrollMode="never"
                 ref={scrollRefUpper}
@@ -84,7 +100,7 @@ function Home({ navigation: { navigate }, vmax, vmin, opw, oph, input, setInput,
                 contentContainerStyle={{ alignItems: 'center' }}
                 showsHorizontalScrollIndicator={false}
               >
-                <Text style={[s.secondaryResult]}>{ secInput.replaceAll(/N/g,"-") }</Text>
+                <Text style={[ s.secondaryResult, { height: vmin * 6, lineHeight: vmin * 6, } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
               </ScrollView>
               <ScrollView
                 overScrollMode="never"
@@ -93,15 +109,15 @@ function Home({ navigation: { navigate }, vmax, vmin, opw, oph, input, setInput,
                 contentContainerStyle={{ alignItems: 'center' }}
                 showsHorizontalScrollIndicator={false}
               >
-                <Text style={[s.mainResult]}>{ input.replaceAll(/N/g,"-") }</Text>
+                <Text style={[ s.mainResult, { height: vmin * 8, lineHeight: vmin * 8 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
               </ScrollView>
               <Text style={[s.secondaryResult]} />
             </View>
-            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="(" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
-            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value=")" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
-            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="C" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
-            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="N" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
-            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="B" setParErr={setParErr} setSecInput={setSecInput} smaller={true} />
+            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="(" setParErr={setParErr} setSecInput={setSecInput} smaller={ port ? true : false } />
+            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value=")" setParErr={setParErr} setSecInput={setSecInput} smaller={ port ? true : false } />
+            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="C" setParErr={setParErr} setSecInput={setSecInput} smaller={ port ? true : false } />
+            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="N" setParErr={setParErr} setSecInput={setSecInput} smaller={ port ? true : false } />
+            <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="B" setParErr={setParErr} setSecInput={setSecInput} smaller={ port ? true : false } />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="7" setParErr={setParErr} setSecInput={setSecInput} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="8" setParErr={setParErr} setSecInput={setSecInput} />
             <OwnButton scrollEnd={scrollEnd} input={input} setInput={setInput} value="9" setParErr={setParErr} setSecInput={setSecInput} />
@@ -122,7 +138,7 @@ function Home({ navigation: { navigate }, vmax, vmin, opw, oph, input, setInput,
             <TouchableHighlight
               underlayColor="#8aaeba"
               activeOpacity={1}
-              style={s.question}
+              style={[ s.question, { borderRadius: (vmin * 50) / 2, left: ((vmin * 90) / 2) - 23 } ]}
               onPress={() => navigate('About')}
             >
               <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
