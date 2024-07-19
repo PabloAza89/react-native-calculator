@@ -25,8 +25,9 @@ export const s = StyleSheet.create({
     zIndex: 4,
   },
   background: {
-    width: '100%',
-    height: '100%',
+    //backgroundColor: 'red',
+    //width: '90%',
+    //height: '100%',
     alignItems: 'center'
   },
   // profile: {
@@ -52,7 +53,7 @@ export const s = StyleSheet.create({
     width: '95%'
   },
   eachItem: {
-    //backgroundColor: 'green', // DEV
+    backgroundColor: 'green', // DEV
     width: '95%',
     paddingLeft: 40,
     borderBottomWidth: 1,
@@ -61,6 +62,7 @@ export const s = StyleSheet.create({
     paddingBottom: 6
   },
   leftItem: {
+    backgroundColor: 'red', // DEV
     fontWeight: '700',
     position: 'absolute',
     color: 'rgba(0, 0, 0, .7)',
@@ -70,14 +72,19 @@ export const s = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     verticalAlign: 'middle',
-    //backgroundColor: 'red', // DEV
     width: 40,
     height: 28
   },
   rightItem: {
+    backgroundColor: 'lightblue', // DEV
     fontSize: 20,
     textAlign: 'left',
+    fontWeight: "bold"
+  },
+  rightItemText: {
     //backgroundColor: 'lightblue', // DEV
+    fontSize: 20,
+    textAlign: 'left',
     fontWeight: "bold"
   },
   sn: {
@@ -119,8 +126,9 @@ export const s = StyleSheet.create({
     flexDirection: 'row'
   },
   eachItemInner: {
-    //backgroundColor: 'lightgreen', // DEV
+    backgroundColor: 'lightgreen', // DEV
     //width: (opw * 95) - 40, // 95% - 40
+    //width: '600%',
     paddingLeft: 25,
   },
   leftItemInner: {
@@ -136,6 +144,8 @@ export const s = StyleSheet.create({
     width: 25,
   },
   rightItemInner: {
+    //height: 'auto',
+    //height: '50%',
     fontSize: 20,
     textAlign: 'left',
     //backgroundColor: 'lightyellow', // DEV
