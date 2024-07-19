@@ -14,7 +14,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-function Home({ navigation: { navigate }, input, setInput, secInput, setSecInput }: any): React.JSX.Element {
+function Home({ navigation: { navigate }, vmax, vmin, opw, oph, input, setInput, secInput, setSecInput }: any): React.JSX.Element {
 
 
   let ins = useSafeAreaInsets(); // insets
@@ -22,9 +22,13 @@ function Home({ navigation: { navigate }, input, setInput, secInput, setSecInput
   const wH = Dimensions.get('window').height; // windowHeight
   const [ parErr, setParErr ] = useState(false);
 
+  console.log("INS", ins, "OPW", opw, "OPH", oph)
+
   useEffect(() => {
     scrollEnd()
   }, [input])
+
+  //console.log("WIDTH WIDTH", width, "HEIGHT HEIGHT",height)
 
   const scrollRefUpper = React.createRef<ScrollView>();
   const scrollRefCenter = React.createRef<ScrollView>();
@@ -60,9 +64,17 @@ function Home({ navigation: { navigate }, input, setInput, secInput, setSecInput
   }
 
   return (
-        <View style={[s.background]}>
+
+      
+    
+    <View style={[s.background, { height: oph * 100 + ins.bottom, backgroundColor: 'red', }]}>
+      {/* <View style={{ height: oph * 100, alignSelf: 'center' }}> */}
+        
+          {/* <View style={[s.background, { height: vmax * 100 + ins.bottom }]}> */}
+          
+
           <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
-          <View style={s.contour}>
+          <View style={[ s.contour, { width: vmin * 90, height: vmin * 129.6, paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, } ]}>
             { parErr && <Text style={s.parErr}>CHECK PARENTHESIS</Text> }
             <View style={[s.displayContainer]}>
               <ScrollView
@@ -116,41 +128,15 @@ function Home({ navigation: { navigate }, input, setInput, secInput, setSecInput
               <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
             </TouchableHighlight>
 
-
-            <TouchableHighlight
-              style={{ position: 'absolute', left: 10, bottom: -30 }}
-              onPress={() => saveData("savedInput", "111")}
-            >
-              <Text>SAVE</Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight
-              style={{ position: 'absolute', left: 150, bottom: -30 }}
-              onPress={ () => {  getAllKeys() } }
-            >
-              <Text>ALL KEYS</Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight
-              style={{ position: 'absolute', right: 10, bottom: -30 }}
-              onPress={ async () => {
-                console.log("SAVED INPUT", await readData("savedInput"))
-                console.log("SAVED SEC INPUT",await readData("savedSecInput"))
-                console.log("SAVED DATE",await readData("savedDate"))
-              } }
-            >
-              <Text>READ</Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight
-              style={{ position: 'absolute', left: 10, bottom: -60 }}
-              onPress={() => removeData("savedInput")}
-            >
-              <Text>REMOVE</Text>
-            </TouchableHighlight>
-
           </View>
-        </View>
+          
+          
+          {/* </View> */}
+          </View>
+      
+          
+        
+
 
   );
 }

@@ -6,10 +6,14 @@ import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
 import BootSplash from "react-native-bootsplash";
 import * as Font from 'expo-font';
-import { Image, AppState, Dimensions } from 'react-native';
+import { Image, AppState, Dimensions, useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
+// import {
+//   Dimensions
+// } from 'react-native';
 
 const Stack: any = createNativeStackNavigator();
 
@@ -29,6 +33,21 @@ export const NavigatorMapper = (animation: any, screens: any[]) => {
 }
 
 function App(): React.JSX.Element {
+
+  const { width, height } = useWindowDimensions();
+
+  //let ins = useSafeAreaInsets(); // insets
+  //const qq = useWindowDimensions();
+
+  //console.log("QQ", qq)
+
+  let opw = width / 100
+  let oph = height / 100
+  let vmax// = width > height ? opw : oph
+  let vmin
+  //width > height ? vmax = opw; vmin = oph : vmax = opw; vmin = oph
+  if (width > height) {vmax = opw; vmin = oph }
+  else {vmax = oph; vmin = opw }
 
   const navigationRef: any = useNavigationContainerRef();
 
@@ -100,8 +119,8 @@ function App(): React.JSX.Element {
       saveData("savedDate", Date.now().toString())
       saveData("savedHeight", Dimensions.get('window').height.toString())
 
-      let array = navigationRef.current?.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
-      if (array !== undefined) saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+      //let array = navigationRef.current?.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
+      //if (array !== undefined) saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
     })
     return () => blur.remove();
   }, [input, secInput]);
@@ -118,6 +137,25 @@ function App(): React.JSX.Element {
 
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
+  // const [orientation, setOrientation] = useState('port');
+
+  // const determineOrientation = () => {
+  //   let width = Dimensions.get('window').width;
+  //   let height = Dimensions.get('window').height;
+
+  //   if (width < height) setOrientation('port');
+  //   else setOrientation('land');
+  // }
+
+  // useEffect(() => {
+  //   determineOrientation();
+  //   let dimensionsHandler = Dimensions.addEventListener('change', determineOrientation);
+
+  //   return () => dimensionsHandler.remove()
+  // }, []);
+
+  // console.log("ORIENTATION", orientation)
+
   let stackScreens = [
     <Stack.Screen
       name="Home"
@@ -128,14 +166,23 @@ function App(): React.JSX.Element {
         <Home
           {...props} input={input} setInput={setInput}
           secInput={secInput} setSecInput={setSecInput}
+          opw={opw} oph={oph} vmax={vmax} vmin={vmin}
         />
       }
     </Stack.Screen>,
     <Stack.Screen
       name="About"
       key={"About"}
-      component={ About }
-    />,
+      //component={ About }
+    >
+      {
+        (props: any) =>
+        <About
+          {...props}
+          opw={opw} oph={oph} vmax={vmax} oph={oph}
+        />
+      }
+    </Stack.Screen>,
     <Stack.Screen
       name="KnowMore"
       key={"KnowMore"}
@@ -144,9 +191,11 @@ function App(): React.JSX.Element {
   ]
 
   return (
+    
     <NavigationContainer ref={navigationRef}>
       { NavigatorMapper(animation, stackScreens) }
     </NavigationContainer>
+    
   );
 }
 

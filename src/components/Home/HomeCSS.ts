@@ -1,19 +1,41 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { opw } from '../constants'
 
+//const { width, height } = useWindowDimensions();
+
+// console.log("A VER", height)
+// console.log("A VER", width)
+
 export const s = StyleSheet.create({
-  background: {
-    backgroundColor: 'lightblue',
-    width: '100%',
-    paddingTop:10,
-    height: '100%',
+  scroll: {
+    //position: 'relative',
+    // height: opw * 100,
+    // width: opw * 100,
+    //width: '100%',
+    //height: '100%',
+    /* backgroundColor: 'lightblue', */
+    /* justifyContent: 'center',
+    alignItems: 'center' */
+    //justifyContent: 'center'
     justifyContent: 'center',
     alignItems: 'center'
   },
+  background: {
+    position: 'relative',
+    //backgroundColor: 'lightblue',
+    width: '100%',
+    /* paddingTop:10, */
+    /* height: 830, */
+    //height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    //verticalAlign: 'middle'
+  },
   contour: {
     backgroundColor: 'silver',
-    width: opw * 90,
-    height: opw * 129.6,
+    //width: opw * 90,
+    //height: opw * 129.6,
+    /* height: '150%', */
     borderColor: 'darkblue',
     borderWidth: 2,
     maxWidth: '100%',
@@ -21,8 +43,9 @@ export const s = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignContent: 'space-between',
-    paddingTop: opw * 1.5,
-    paddingBottom: opw * 1.5
+    //paddingTop: opw * 1.5,
+    //paddingBottom: opw * 1.5,
+    
   },
   displayContainer: {
     backgroundColor: 'antiquewhite',
