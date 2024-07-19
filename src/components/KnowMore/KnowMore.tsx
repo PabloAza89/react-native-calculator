@@ -16,7 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI } from '../../interfaces/interfaces';
 
-function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
+function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX.Element {
 
   const {height, width, scale, fontScale} = useWindowDimensions()
 
@@ -26,12 +26,14 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
   //   console.log("test HEIGHT", height, "test WIDTH", width)
   // }, [width])
 
-  let opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
+  //let opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
   let hph = Dimensions.get('window').height; // hundredPercentHeight = 100%vh
   let dH = Dimensions.get('screen').height; // deviceHeight
   let wH = Dimensions.get('window').height; // windowHeight
 
   let ins = useSafeAreaInsets(); // insets
+
+  console.log("INS", ins)
 
   // useEffect(() => {
   //   console.log("INS", ins);
@@ -80,7 +82,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
   let targetWidth = (opw * 95) - 40
 
   let lazyLoad = [
-    <View key={0} style={s.eachItem}>
+    <View key={0} style={[ s.eachItem/* , { width: '95%' } */ ]}>
       <Text style={s.leftItem}>
         -X
       </Text>
@@ -88,15 +90,17 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
         Negative number. Press it before your number.
       </Text>
     </View>,
-    <View key={1} style={s.eachItem}>
+    <View key={1} style={[ s.eachItem ]}>
       <Text style={s.leftItem}>
         ( )
       </Text>
-      <Text style={s.rightItem}>
-        Chain any amount of parenthesis and
-        calculator will parse the result,
-        following the next rules:{"\n"}
-        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+      <View style={s.rightItem}>
+        <Text style={s.rightItemText}>
+          Chain any amount of parenthesis and
+          calculator will parse the result,
+          following the next rules:
+        </Text>
+        <View style={s.eachItemInner}>
           <Text style={s.leftItemInner}>
             •
           </Text>
@@ -104,7 +108,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
             Innermost parentheses calc will be done.
           </Text>
         </View>
-        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+        <View style={[s.eachItemInner]}>
           <Text style={s.leftItemInner}>
             •
           </Text>
@@ -114,22 +118,24 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
             All 'x', then all '/', then all '+' and finally all '-'.
           </Text>
         </View>
-      </Text>
+      </View>
       <Text style={s.rightItem}>
         Then will quit that parenthesis, if exists,
         and do the same as above.
       </Text>
     </View>,
-    <View key={2} style={s.eachItem}>
+    <View key={2} style={[ s.eachItem ]}>
       <Text style={[s.leftItem, s.sn]}>
         1e+12
       </Text>
-      <Text style={s.rightItem}>
-        If the integer side, in the result,
-        is more than 12 digits (e.g.: 1000000000001.23 + 1.23),
-        it will be converted to scientific notation.{"\n"}
-        Results in scientific notation are parsed as follows:
-        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+      <View style={s.rightItem}>
+        <Text style={s.rightItemText}>
+          If the integer side, in the result,
+          is more than 12 digits (e.g.: 1000000000001.23 + 1.23),
+          it will be converted to scientific notation.{"\n"}
+          Results in scientific notation are parsed as follows:
+        </Text>
+        <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
           <Text style={s.leftItemInner}>
             •
           </Text>
@@ -137,7 +143,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
             If exponent have 1 digits, decimal part are 8 places.
           </Text>
         </View>
-        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+        <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
           <Text style={s.leftItemInner}>
             •
           </Text>
@@ -145,7 +151,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
             If exponent have 2 digits, decimal part are 7 places. And so..
           </Text>
         </View>
-        <View style={[s.eachItemInner,{ width: targetWidth }]}>
+        <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
           <Text style={s.leftItemInner}>
             •
           </Text>
@@ -153,9 +159,9 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
             If decimal part have trailing zeros, they will be removed.
           </Text>
         </View>
-      </Text>
+      </View>
     </View>,
-    <View key={3} style={s.eachItem}>
+    <View key={3} style={[ s.eachItem ]}>
       <FontAwesome5
         name='infinity'
         size={30}
@@ -168,7 +174,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
         every calc will output Infinity, or -Infinity, as applicable.
       </Text>
     </View>,
-    <View key={4} style={s.eachItem}>
+    <View key={4} style={[ s.eachItem ]}>
       <Entypo
         name='new'
         size={30}
@@ -179,7 +185,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
         All new input characters are placed to the right.
       </Text>
     </View>,
-    <View key={5} style={s.eachItem}>
+    <View key={5} style={[ s.eachItem ]}>
       <Ionicons
         name='backspace'
         size={40}
@@ -190,7 +196,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
         Erase the last character.
       </Text>
     </View>,
-    <View key={6} style={s.eachItem}>
+    <View key={6} style={[ s.eachItem ]}>
       <Text style={s.leftItem}>
         C
       </Text>
@@ -198,7 +204,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
         Delete the entire input.
       </Text>
     </View>,
-    <View key={7} style={s.eachItem}>
+    <View key={7} style={[ s.eachItem ]}>
       <Text style={[s.leftItem, s.dot]}>
         .
       </Text>
@@ -207,7 +213,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
         But decimal results can be more than 2 digits long !
       </Text>
     </View>,
-    <View key={8} style={s.eachItem}>
+    <View key={8} style={[ s.eachItem ]}>
       <Text style={s.leftItem}>
         =
       </Text>
@@ -220,7 +226,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
         you can scroll to see entire result/calc.
       </Text>
     </View>,
-    <View key={9} style={[s.eachItem, { marginBottom: aB + 20 } ]}>
+    <View key={9} style={[ s.eachItem, { marginBottom: aB + 20 } ]}>
       <MaterialIcons
         name='phonelink-erase'
         size={30}
@@ -267,7 +273,7 @@ function KnowMore({ navigation: { navigate }, port }: any): React.JSX.Element {
       />
 
       <ScrollView ref={scrollRef} onScroll={handleScroll}>
-        <View style={s.background}>
+        <View style={[ s.background, { width: opw * 100 } ]}>
 
           <View style={s.buttonContainer}>
             <Ionicons.Button
