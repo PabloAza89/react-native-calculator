@@ -26,7 +26,7 @@ export const s = StyleSheet.create({
   contour: {
     backgroundColor: 'silver',
     borderColor: 'darkblue',
-    borderWidth: 2,
+    //borderWidth: 2,
     maxWidth: '100%',
     flexWrap: 'wrap',
     flexDirection: 'row',
@@ -72,7 +72,7 @@ export const s = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     //backgroundColor: 'green', // DEV
-    bottom: -54,
+    //bottom: -54,
     width: 42,
     height: 42,
   },
