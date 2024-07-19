@@ -186,8 +186,16 @@ function App(): React.JSX.Element {
     <Stack.Screen
       name="KnowMore"
       key={"KnowMore"}
-      component={ KnowMore }
-    />
+      //component={ KnowMore }
+    >
+      {
+        (props: any) =>
+        <KnowMore
+          {...props}
+          opw={opw} oph={oph} vmax={vmax} vmin={vmin} port={port}
+        />
+      }
+    </Stack.Screen>
   ]
 
   return (
