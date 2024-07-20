@@ -1,59 +1,34 @@
 import { StyleSheet } from 'react-native';
-//import { opw, /* ins, dH, wH, */ aB } from '../constants';
-
-
 
 export const s = StyleSheet.create({
   linearGradient: {
     position: 'absolute',
     left: 0,
-    right: 0,
-    height: '100%',
-  },
-  linearGradientStatus: {
-    position: 'absolute',
-    //position: 'relative',
-    left: 0,
-    right: 0,
-    /* height: '10%', */
-    //height: '100%',
-    //height: 392 * 2,
-    //marginBottom: 392 * 2,
-    //marginTop: 392 / 3,
-    //marginBottom: 5000,
-    //height: 70,
-    zIndex: 4,
+    right: 0
   },
   background: {
-    //backgroundColor: 'red',
-    //width: '90%',
-    //height: '100%',
+    //backgroundColor: 'red', // DEV
     alignItems: 'center'
   },
-  // profile: {
-  //   width: opw * 30,
-  //   height: opw * 30,
-  //   borderRadius: (opw * 30) / 2 // 50%
-  // },
   centerText: {
+    //backgroundColor: 'blue', // DEV
     marginTop: 20,
     fontWeight: '500',
     fontSize: 24,
     textAlign: 'center',
-    //backgroundColor: 'blue', // DEV
     width: '95%'
   },
   leftText: {
+    //backgroundColor: 'blue', // DEV
     marginTop: 20,
     marginBottom: 20,
     fontWeight: '500',
     fontSize: 24,
     textAlign: 'left',
-    //backgroundColor: 'blue', // DEV
     width: '95%'
   },
   eachItem: {
-    backgroundColor: 'green', // DEV
+    //backgroundColor: 'green', // DEV
     width: '95%',
     paddingLeft: 40,
     borderBottomWidth: 1,
@@ -62,7 +37,7 @@ export const s = StyleSheet.create({
     paddingBottom: 6
   },
   leftItem: {
-    backgroundColor: 'red', // DEV
+    //backgroundColor: 'red', // DEV
     fontWeight: '700',
     position: 'absolute',
     color: 'rgba(0, 0, 0, .7)',
@@ -76,36 +51,17 @@ export const s = StyleSheet.create({
     height: 28
   },
   rightItem: {
-    backgroundColor: 'lightblue', // DEV
-    fontSize: 20,
-    textAlign: 'left',
-    fontWeight: "bold"
-  },
-  rightItemText: {
     //backgroundColor: 'lightblue', // DEV
     fontSize: 20,
     textAlign: 'left',
     fontWeight: "bold"
   },
   sn: {
-    fontSize: 13,
+    fontSize: 13
   },
   dot: {
     lineHeight: 13
   },
-  //last: {
-    ////marginBottom: 20,
-    //marginBottom: aB + 20, // additionalBottom + 40
-  //},
-  imageWrapper: {
-    marginTop: 20,
-    marginBottom: 25
-  },
-  // iconStyle: {
-  //   position: 'absolute',
-  //   right: (opw * -30) / 2,
-  //   top: (opw * 30) / 3
-  // },
   textInButton: {
     color: 'white',
     fontWeight: '600',
@@ -118,21 +74,16 @@ export const s = StyleSheet.create({
     width: 25,
     height: 25
   },
-  buttonAndIconLower: {
-    transform: [{ rotate: '180deg' }]
-  },
   buttonContainer: {
     marginTop: 35,
     flexDirection: 'row'
   },
   eachItemInner: {
-    backgroundColor: 'lightgreen', // DEV
-    //width: (opw * 95) - 40, // 95% - 40
-    //width: '600%',
-    paddingLeft: 25,
+    //backgroundColor: 'lightgreen', // DEV
+    paddingLeft: 25
   },
   leftItemInner: {
-    //fontWeight: '700',
+    //backgroundColor: 'red', // DEV
     position: 'absolute',
     color: 'rgba(0, 0, 0, .7)',
     paddingLeft: 0,
@@ -140,42 +91,31 @@ export const s = StyleSheet.create({
     top: 0,
     fontSize: 20,
     textAlign: 'center',
-    //backgroundColor: 'red', // DEV
-    width: 25,
+    width: 25
   },
   rightItemInner: {
-    //height: 'auto',
-    //height: '50%',
+    //backgroundColor: 'lightyellow', // DEV
     fontSize: 20,
     textAlign: 'left',
-    //backgroundColor: 'lightyellow', // DEV
     fontWeight: "bold"
   },
   floatButton: {
-    //backgroundColor: 'red',
+    //backgroundColor: 'red', // DEV
     backgroundColor: 'rgba(66, 72, 245, 0.5)',
     position: 'absolute',
     width: 60,
     height: 40,
-    // zIndex: 600000,
-    //bottom: aB + 10, // additionalBottom + 10
-    ////bottom: ins.bottom + 10, // additionalBottom + 10
     right: 10,
     color: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    // paddingVertical: 12,
-    // paddingHorizontal: 32,
-    borderRadius: 4,
-    //elevation: 11,
-    //shadowColor: 'red',
-    //backgroundColor: 'black',
+    borderRadius: 4
   },
   floatButtonText: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: 'white',
+    color: 'white'
   }
 });

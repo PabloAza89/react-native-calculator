@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { ReactElement, useState, useEffect, useRef } from 'react';
 import {
   Text,
   View,
@@ -7,8 +7,7 @@ import {
   Pressable,
   Dimensions,
   InteractionManager,
-  ActivityIndicator,
-  useWindowDimensions
+  ActivityIndicator
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -16,17 +15,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI } from '../../interfaces/interfaces';
 
-function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX.Element {
+function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): ReactElement {
 
-  const {height, width, scale, fontScale} = useWindowDimensions()
-
-  //console.log("test HEIGHT", height, "test WIDTH", width)
-
-  // useEffect(() => {
-  //   console.log("test HEIGHT", height, "test WIDTH", width)
-  // }, [width])
-
-  //let opw = Dimensions.get('window').width / 100; // onePercentWidth = 1%vw
   let hph = Dimensions.get('window').height; // hundredPercentHeight = 100%vh
   let dH = Dimensions.get('screen').height; // deviceHeight
   let wH = Dimensions.get('window').height; // windowHeight
@@ -35,23 +25,14 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
 
   console.log("INS", ins)
 
-  // useEffect(() => {
-  //   console.log("INS", ins);
-  //   console.log("window height", hph)
-  //   console.log("device height", dH)
-  // }, [])
-
   useEffect(() => {
     //console.log("INS", ins);
     console.log("window height", hph)
     console.log("device height", dH)
   }, [hph])
 
-//   console.log("INS", ins);
-//   console.log("window height", hph)
-// console.log("device height", dH)
-
   let aB: number = (dH - ins.top) === wH ? 0 : ins.bottom // additionalBottom
+  let add: number = ins.left + ins.bottom + ins.right // additional Bottom or Left or Right
 
   const scrollRef = useRef<any>();
 
@@ -82,7 +63,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
   let targetWidth = (opw * 95) - 40
 
   let lazyLoad = [
-    <View key={0} style={[ s.eachItem/* , { width: '95%' } */ ]}>
+    <View key={0} style={s.eachItem}>
       <Text style={s.leftItem}>
         -X
       </Text>
@@ -90,12 +71,12 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
         Negative number. Press it before your number.
       </Text>
     </View>,
-    <View key={1} style={[ s.eachItem ]}>
+    <View key={1} style={s.eachItem}>
       <Text style={s.leftItem}>
         ( )
       </Text>
-      <View style={s.rightItem}>
-        <Text style={s.rightItemText}>
+      <View>
+        <Text style={s.rightItem}>
           Chain any amount of parenthesis and
           calculator will parse the result,
           following the next rules:
@@ -108,7 +89,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
             Innermost parentheses calc will be done.
           </Text>
         </View>
-        <View style={[s.eachItemInner]}>
+        <View style={s.eachItemInner}>
           <Text style={s.leftItemInner}>
             •
           </Text>
@@ -124,18 +105,18 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
         and do the same as above.
       </Text>
     </View>,
-    <View key={2} style={[ s.eachItem ]}>
-      <Text style={[s.leftItem, s.sn]}>
+    <View key={2} style={s.eachItem}>
+      <Text style={[ s.leftItem, s.sn ]}>
         1e+12
       </Text>
-      <View style={s.rightItem}>
-        <Text style={s.rightItemText}>
+      <View>
+        <Text style={s.rightItem}>
           If the integer side, in the result,
           is more than 12 digits (e.g.: 1000000000001.23 + 1.23),
           it will be converted to scientific notation.{"\n"}
           Results in scientific notation are parsed as follows:
         </Text>
-        <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
+        <View style={[ s.eachItemInner, { width: targetWidth } ]}>
           <Text style={s.leftItemInner}>
             •
           </Text>
@@ -143,7 +124,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
             If exponent have 1 digits, decimal part are 8 places.
           </Text>
         </View>
-        <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
+        <View style={[ s.eachItemInner, { width: targetWidth } ]}>
           <Text style={s.leftItemInner}>
             •
           </Text>
@@ -151,7 +132,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
             If exponent have 2 digits, decimal part are 7 places. And so..
           </Text>
         </View>
-        <View style={[s.eachItemInner,{ width: (opw * 95) - 40 }]}>
+        <View style={[ s.eachItemInner, { width: targetWidth } ]}>
           <Text style={s.leftItemInner}>
             •
           </Text>
@@ -161,7 +142,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
         </View>
       </View>
     </View>,
-    <View key={3} style={[ s.eachItem ]}>
+    <View key={3} style={s.eachItem}>
       <FontAwesome5
         name='infinity'
         size={30}
@@ -174,7 +155,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
         every calc will output Infinity, or -Infinity, as applicable.
       </Text>
     </View>,
-    <View key={4} style={[ s.eachItem ]}>
+    <View key={4} style={s.eachItem}>
       <Entypo
         name='new'
         size={30}
@@ -185,7 +166,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
         All new input characters are placed to the right.
       </Text>
     </View>,
-    <View key={5} style={[ s.eachItem ]}>
+    <View key={5} style={s.eachItem}>
       <Ionicons
         name='backspace'
         size={40}
@@ -196,7 +177,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
         Erase the last character.
       </Text>
     </View>,
-    <View key={6} style={[ s.eachItem ]}>
+    <View key={6} style={s.eachItem}>
       <Text style={s.leftItem}>
         C
       </Text>
@@ -204,8 +185,8 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
         Delete the entire input.
       </Text>
     </View>,
-    <View key={7} style={[ s.eachItem ]}>
-      <Text style={[s.leftItem, s.dot]}>
+    <View key={7} style={s.eachItem}>
+      <Text style={[ s.leftItem, s.dot ]}>
         .
       </Text>
       <Text style={s.rightItem}>
@@ -213,7 +194,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
         But decimal results can be more than 2 digits long !
       </Text>
     </View>,
-    <View key={8} style={[ s.eachItem ]}>
+    <View key={8} style={s.eachItem}>
       <Text style={s.leftItem}>
         =
       </Text>
@@ -226,7 +207,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
         you can scroll to see entire result/calc.
       </Text>
     </View>,
-    <View key={9} style={[ s.eachItem, { marginBottom: aB + 20 } ]}>
+    <View key={9} style={[ s.eachItem, { marginBottom: ins.bottom + 20 } ]}>
       <MaterialIcons
         name='phonelink-erase'
         size={30}
@@ -258,7 +239,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
     <View style={{ height: '100%' }}>
       <LinearGradient
         colors={[ `rgba(${colorVariables}, 0.7)`, `rgba(255, 255, 255, 1)` ]}
-        style={s.linearGradient}
+        style={[ s.linearGradient, { height: '100%' } ]}
         start={{ x: 0, y: 1}} //  x0__x1/y0
         end={{x: 1, y: 0}}    //      |y1
       >
@@ -266,14 +247,14 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
       </LinearGradient>
       <LinearGradient
         colors={[ `rgba(${colorVariables}, 0.9)`, `rgba(255, 255, 255, 0.9)` ]}
-        style={[ s.linearGradientStatus, { height: ins.top }]}
+        style={[ s.linearGradient, { height: ins.top, zIndex: 4 }]}
 
         start={{ x: 0, y: port ? 39.25 : 29.5 }} //  x0__x1/y0
         end={{ x: 1, y: 0 }}                     //      |y1
       />
 
       <ScrollView ref={scrollRef} onScroll={handleScroll}>
-        <View style={[ s.background, { width: opw * 100 } ]}>
+        <View style={[ s.background, { width: opw * 100, marginLeft: ins.left } ]}>
 
           <View style={s.buttonContainer}>
             <Ionicons.Button
@@ -312,7 +293,7 @@ function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): React.JSX
       {
         showButton &&
         <Pressable
-          style={[s.floatButton,{ bottom: aB + 10 }]}
+          style={[s.floatButton,{ bottom: ins.bottom + 10, right: ins.right + 10 }]}
           onPress={() => onFabPress()}
         >
           <Text style={s.floatButtonText}> UP </Text>

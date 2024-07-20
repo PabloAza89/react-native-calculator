@@ -1,69 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { ReactElement, useState, useRef, useEffect } from 'react';
 import {
   ScrollView,
   StatusBar,
   Text,
   View,
-  TouchableHighlight,
-  Dimensions,
-  AppState
+  TouchableHighlight
 } from 'react-native';
 import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-function Home({ navigation: { navigate }, vmax, vmin, opw, oph, port, input, setInput, secInput, setSecInput }: any): React.JSX.Element {
-
+function Home({ navigation: { navigate }, vmin, oph, port, input, setInput, secInput, setSecInput }: any): ReactElement {
 
   let ins = useSafeAreaInsets(); // insets
-  const dH = Dimensions.get('screen').height; // deviceHeight
-  const wH = Dimensions.get('window').height; // windowHeight
   const [ parErr, setParErr ] = useState(false);
-
-  console.log("INS", ins, "OPW", opw, "OPH", oph)
 
   useEffect(() => {
     scrollEnd()
   }, [input])
 
-  //console.log("WIDTH WIDTH", width, "HEIGHT HEIGHT",height)
-
-  const scrollRefUpper = React.createRef<ScrollView>();
-  const scrollRefCenter = React.createRef<ScrollView>();
+  const scrollRefUpper = useRef<ScrollView>(null);
+  const scrollRefCenter = useRef<ScrollView>(null);
 
   const scrollEnd = () => {
     scrollRefUpper.current?.scrollToEnd({ animated: false })
     scrollRefCenter.current?.scrollToEnd({ animated: false })
   }
-
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const [ nB, setNb ] = useState(false)
-
-  const saveData = async (key: any, value:any) => {
-    try { await AsyncStorage.setItem(`${key}`, value) }
-    catch(e) { }
-  };
-
-  const readData = async (key: string) => {
-    try { return await AsyncStorage.getItem(key) }
-    catch(e) { }
-  };
-
-  const getAllKeys = async () => {
-    let keys = []
-    try { console.log(await AsyncStorage.getAllKeys()) }
-    catch(e) { }
-  }
-
-  const removeData = async (key: any) => {
-    try { await AsyncStorage.removeItem(key) }
-    catch(e) { }
-  }
-
-  //export let asd = 0
 
   let buttonsMapper = () => {
     let values = [
@@ -79,6 +42,7 @@ function Home({ navigation: { navigate }, vmax, vmin, opw, oph, port, input, set
       <OwnButton
         key={e.value} scrollEnd={scrollEnd} input={input} setInput={setInput} value={e.value}
         setParErr={setParErr} setSecInput={setSecInput} smaller={ e.smaller } parErr={e.parErr}
+        vmin={vmin}
       />
     )
   }
