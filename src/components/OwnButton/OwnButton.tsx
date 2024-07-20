@@ -1,11 +1,11 @@
-import React from 'react';
+import { ReactElement } from 'react';
 import { Text, TouchableHighlight } from 'react-native';
 import { s } from './OwnButtonCSS';
 import { Ionicons } from '@expo/vector-icons';
 import { Adder } from '../../functions/adder';
 import { OwnButtonI } from '../../interfaces/interfaces';
 
-export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput }: OwnButtonI): React.JSX.Element {
+export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin }: OwnButtonI): ReactElement {
   async function handlePress() {
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
@@ -181,10 +181,10 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, 
     <TouchableHighlight
       underlayColor="#dddddd"
       activeOpacity={1}
-      style={[ smaller ? s.ownButtonSmaller : s.ownButton ]}
+      style={[ s.ownButton, smaller ? { width: vmin * 15.6, height: vmin * 15.6 } : { width: vmin * 20, height: vmin * 20 } ]}
       onPress={() => handlePress()}
     >
-      <Text style={[ smaller ? s.ownButtonSmallerT : s.ownButtonT ]}>
+      <Text style={[ s.text, smaller ? { fontSize: 32 } : { fontSize: 40 } ]}>
         {
           value === "B" ?
           <Ionicons name='backspace' size={40} color='rgba(0, 0, 0, .5)' /> :

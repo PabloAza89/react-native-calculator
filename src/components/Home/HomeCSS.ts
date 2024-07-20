@@ -1,37 +1,21 @@
 import { StyleSheet } from 'react-native';
 
 export const s = StyleSheet.create({
-  scroll: {
-    //position: 'relative',
-    //width: '100%',
-    //height: '100%',
-    /* backgroundColor: 'lightblue', */
-    /* justifyContent: 'center',
-    alignItems: 'center' */
-    //justifyContent: 'center'
+  background: {
+    //backgroundColor: 'lightblue',
+    position: 'relative',
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  background: {
-    position: 'relative',
-    //backgroundColor: 'lightblue',
-    width: '100%',
-    /* paddingTop:10, */
-    /* height: 830, */
-    //height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    //verticalAlign: 'middle'
   },
   contour: {
     backgroundColor: 'silver',
     borderColor: 'darkblue',
-    //borderWidth: 2,
     maxWidth: '100%',
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignContent: 'space-between',
+    alignContent: 'space-between'
   },
   displayContainer: {
     backgroundColor: 'antiquewhite',
@@ -68,12 +52,11 @@ export const s = StyleSheet.create({
     textAlignVertical: 'center'
   },
   question: {
+    //backgroundColor: 'green', // DEV
     position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'center',
-    //backgroundColor: 'green', // DEV
-    //bottom: -54,
     width: 42,
-    height: 42,
+    height: 42
   },
 });

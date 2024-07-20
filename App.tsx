@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/components/Home/Home';
@@ -32,7 +32,7 @@ export const NavigatorMapper = (animation: any, screens: any[]) => {
   )
 }
 
-function App(): React.JSX.Element {
+function App(): ReactElement {
 
   const { width, height } = useWindowDimensions();
 

@@ -9,6 +9,7 @@ export interface OwnButtonI {
   smaller?: boolean,
   setParErr?: any,
   setSecInput?: any,
+  vmin?: any
 };
 
 export interface counterI {
