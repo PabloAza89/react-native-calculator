@@ -53,18 +53,20 @@ function Home({ navigation: { navigate }, vmin, oph, port, input, setInput, secI
       <View
         style={[
           s.contour,
+          { paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, borderWidth: vmin * 0.5, marginRight: ins.right, marginLeft: ins.left, marginBottom: ins.bottom },
           port ?
-          { width: vmin * 90, height: vmin * 129.6, paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, borderWidth: vmin * 0.5 } :
-          { width: vmin * 156, height: vmin * 90, paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, borderWidth: vmin * 0.5, marginTop: vmin * 4 }
+          { width: vmin * 90, height: vmin * 129.6 } :
+          { width: vmin * 156, height: vmin * 90, marginTop: vmin * 4 }
         ]}
       >
         { parErr && <Text style={[ s.parErr, { width: vmin * 86, } ]}>CHECK PARENTHESIS</Text> }
         <View
           style={[
             s.displayContainer,
+            { height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2 },
             port ?
-            { width: vmin * 86, height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2, } :
-            { width: vmin * 152, height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2, }
+            { width: vmin * 86 } :
+            { width: vmin * 152 }
           ]}
         >
           <ScrollView
@@ -96,10 +98,7 @@ function Home({ navigation: { navigate }, vmin, oph, port, input, setInput, secI
             { borderRadius: (vmin * 50) / 2 },
             port ?
             { left: ((vmin * 90) / 2) - 23, bottom: -54 } :
-            { top: ((vmin * 90) / 2) - 23 },
-            ins.right > 0 ?
-            { left: -54 } :
-            { right: -54 }
+            { top: ((vmin * 90) / 2) - 23, right: -54 },
           ]}
           onPress={() => navigate('About')}
         >
