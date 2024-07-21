@@ -6,24 +6,27 @@ import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
 import BootSplash from "react-native-bootsplash";
 import * as Font from 'expo-font';
-import { Image, AppState, Dimensions, useWindowDimensions } from 'react-native';
+import { Image, AppState, Dimensions, useWindowDimensions, StatusBar, ViewProps } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
-import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
-// import {
-//   Dimensions
-// } from 'react-native';
+import { useSafeAreaInsets, SafeAreaProvider, SafeAreaInsetsContext } from 'react-native-safe-area-context';
+import { TurboModule } from 'react-native/Libraries/TurboModule/RCTExport';
 
 const Stack: any = createNativeStackNavigator();
 
-export const NavigatorMapper = (animation: any, screens: any[]) => {
+export const NavigatorMapper = (animation: any, navBarColor: any, screens: any[]) => {
+  // let ins = useSafeAreaInsets()
+  // console.log("INS", ins)
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
-        navigationBarColor: 'rgba(0, 0, 0, 0.2)',
+        //navigationBarColor: 'rgba(0, 0, 0, 0.2)',
+        //navigationBarColor: 'red',
+        navigationBarColor: navBarColor,
+        //navigationBarColor: 'transparent',
         animation: animation
       }}
     >
@@ -35,14 +38,45 @@ export const NavigatorMapper = (animation: any, screens: any[]) => {
 function App(): ReactElement {
 
   const { width, height } = useWindowDimensions();
+  //console.log("APP WIDTH", width)
+  //console.log("APP HEIGHT", height)
+  //let heightScreen = Dimensions.get('screen').height
+  let statusBar = StatusBar.currentHeight
 
-  //let ins = useSafeAreaInsets(); // insets
-  //const qq = useWindowDimensions();
+  //console.log("HEIGHT SCREEN", heightScreen)
+  let dim = Dimensions.get('screen').height
+  console.log("SCREEN HEIGHT", dim)
+  console.log("WINDOW HEIGHT", height)
+  console.log("STATUS BAR", statusBar)
 
-  //console.log("QQ", qq)
+  let navBarColor = 'transparent' // DEFAULT NAVIGATION BAR COLOR
 
-  let opw = width / 100
-  let oph = height / 100
+  if (Dimensions.get('screen').height - height > 47) {
+    navBarColor = 'rgba(0, 0, 0, 0.2)'
+    console.log("NAVBAR PRESENT")
+  }
+  else {
+    navBarColor = 'transparent'
+    console.log("NAVBAR NOT PRESENT")
+  }
+
+  //console.log("TurboModule", TurboModule)
+
+  //let qq = useSafeArea()
+  
+  //console.log("ViewProps", ViewProps)
+  // if (withSafeAreaInsets !== null) {
+  //   console.log("withSafeAreaInsets", withSafeAreaInsets)
+  // }
+  
+
+  // <SafeAreaProvider>
+  //   return (let ins = useSafeAreaInsets(); // insets)
+  
+  // </SafeAreaProvider>
+
+  let opw = width / 100 // one percent window width
+  let oph = height / 100 // one percent window height
   let vmax
   let vmin
   let port // PORTRAIT
@@ -51,7 +85,7 @@ function App(): ReactElement {
 
   const navigationRef: any = useNavigationContainerRef();
 
-  const [ animation, setAnimation ] = useState('none'); // NO SCREEN ANIMATION
+  const [ animation, setAnimation ] = useState('none'); // NO INITIAL SCREEN ANIMATION
 
   let allRoutes = [{ name: 'Home' }, { name: 'About' }, { name: 'KnowMore' }]
 
@@ -90,7 +124,7 @@ function App(): ReactElement {
         ) {
           if (
             Date.now() - parseInt(resDate) < 60000 &&
-            resHeight !== Dimensions.get('window').height.toString()
+            resHeight !== height.toString()
           ) {
             resRoute === "KnowMore" ? navigationRef.current?.dispatch(CommonActions.reset(routes[0])) :
             resRoute === "About" ? navigationRef.current?.dispatch(CommonActions.reset(routes[1])) :
@@ -117,7 +151,7 @@ function App(): ReactElement {
       saveData("savedInput", input)
       saveData("savedSecInput", secInput)
       saveData("savedDate", Date.now().toString())
-      saveData("savedHeight", Dimensions.get('window').height.toString())
+      saveData("savedHeight", height.toString())
 
       //let array = navigationRef.current?.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
       //if (array !== undefined) saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
@@ -137,25 +171,6 @@ function App(): ReactElement {
 
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
-  // const [orientation, setOrientation] = useState('port');
-
-  // const determineOrientation = () => {
-  //   let width = Dimensions.get('window').width;
-  //   let height = Dimensions.get('window').height;
-
-  //   if (width < height) setOrientation('port');
-  //   else setOrientation('land');
-  // }
-
-  // useEffect(() => {
-  //   determineOrientation();
-  //   let dimensionsHandler = Dimensions.addEventListener('change', determineOrientation);
-
-  //   return () => dimensionsHandler.remove()
-  // }, []);
-
-  // console.log("ORIENTATION", orientation)
-
   let stackScreens = [
     <Stack.Screen
       name="Home"
@@ -173,37 +188,22 @@ function App(): ReactElement {
     <Stack.Screen
       name="About"
       key={"About"}
-      //component={ About }
     >
-      {
-        (props: any) =>
-        <About
-          {...props}
-          opw={opw} oph={oph} vmax={vmax} vmin={vmin}
-        />
-      }
+      { (props: any) => <About {...props} opw={opw} oph={oph} vmax={vmax} vmin={vmin} /> }
     </Stack.Screen>,
     <Stack.Screen
       name="KnowMore"
       key={"KnowMore"}
-      //component={ KnowMore }
     >
-      {
-        (props: any) =>
-        <KnowMore
-          {...props}
-          opw={opw} oph={oph} vmax={vmax} vmin={vmin} port={port}
-        />
-      }
+      { (props: any) => <KnowMore {...props} opw={opw} oph={oph} vmax={vmax} vmin={vmin} port={port} /> }
     </Stack.Screen>
   ]
 
   return (
-    
     <NavigationContainer ref={navigationRef}>
-      { NavigatorMapper(animation, stackScreens) }
+      { NavigatorMapper(animation, navBarColor, stackScreens) }
     </NavigationContainer>
-    
+
   );
 }
 
