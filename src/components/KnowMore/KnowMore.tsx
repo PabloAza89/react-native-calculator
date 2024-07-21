@@ -1,13 +1,7 @@
 import { ReactElement, useState, useEffect, useRef } from 'react';
 import {
-  Text,
-  View,
-  StatusBar,
-  ScrollView,
-  Pressable,
-  Dimensions,
-  InteractionManager,
-  ActivityIndicator
+  Text, View, StatusBar, ScrollView,
+  Pressable, InteractionManager, ActivityIndicator
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -15,24 +9,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI } from '../../interfaces/interfaces';
 
-function KnowMore({ navigation: { navigate }, opw, port, vmin }: any): ReactElement {
-
-  let hph = Dimensions.get('window').height; // hundredPercentHeight = 100%vh
-  let dH = Dimensions.get('screen').height; // deviceHeight
-  let wH = Dimensions.get('window').height; // windowHeight
+function KnowMore({ navigation: { navigate }, opw, port }: any): ReactElement {
 
   let ins = useSafeAreaInsets(); // insets
 
-  console.log("INS", ins)
-
-  useEffect(() => {
-    //console.log("INS", ins);
-    console.log("window height", hph)
-    console.log("device height", dH)
-  }, [hph])
-
-  let aB: number = (dH - ins.top) === wH ? 0 : ins.bottom // additionalBottom
-  let add: number = ins.left + ins.bottom + ins.right // additional Bottom or Left or Right
+  //console.log("INS", ins)
 
   const scrollRef = useRef<any>();
 
