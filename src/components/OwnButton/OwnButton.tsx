@@ -6,7 +6,7 @@ import { Adder } from '../../functions/adder';
 import { OwnButtonI } from '../../interfaces/interfaces';
 
 export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin }: OwnButtonI): ReactElement {
-  async function handlePress() {
+  function handlePress() {
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
 

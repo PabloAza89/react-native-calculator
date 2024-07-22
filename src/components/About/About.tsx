@@ -15,8 +15,8 @@ function About({ navigation: { navigate }, oph, vmin }: any): ReactElement {
       <LinearGradient
         colors={['rgba(18, 56, 117, 0.7)', 'yellow']} // #123875
         style={s.linearGradient}
-        start={{ x: 0, y: 1}} // x = from left // y = from top
-        end={{x: 1, y: 0}} // x = from left // y = from top
+        start={{ x: 0, y: 1}} //  x0__x1/y0
+        end={{x: 1, y: 0}}    //      |y1
       >
         <StatusBar translucent={true} backgroundColor={'transparent'}/>
       </LinearGradient>

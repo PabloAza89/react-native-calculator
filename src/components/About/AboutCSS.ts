@@ -5,11 +5,11 @@ export const s = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    height: '100%',
+    height: '100%'
   },
   background: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   text: {
     fontWeight: '500',
@@ -38,7 +38,7 @@ export const s = StyleSheet.create({
     lineHeight: 15,
     marginRight: 4,
     marginLeft: -4,
-    transform: [{ rotate: '180deg' }],
+    transform: [{ rotate: '180deg' }]
   },
   space: {
     width: 25,
