@@ -11,7 +11,8 @@ function About({ navigation: { navigate }, oph, vmin }: any): ReactElement {
   let ins = useSafeAreaInsets(); // insets
 
   return (
-    <View style={[s.background, { height: oph * 100 + ins.bottom } ]}>
+    <View style={[s.background, { height: '100%' } ]}>
+    {/* <View style={[s.background, { height: oph * 100 + ins.bottom } ]}> */}
       <LinearGradient
         colors={['rgba(18, 56, 117, 0.7)', 'yellow']} // #123875
         style={s.linearGradient}
