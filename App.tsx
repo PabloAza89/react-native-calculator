@@ -10,23 +10,16 @@ import { Image, AppState, Dimensions, useWindowDimensions, StatusBar, ViewProps 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
-import { useSafeAreaInsets, SafeAreaProvider, SafeAreaInsetsContext } from 'react-native-safe-area-context';
-import { TurboModule } from 'react-native/Libraries/TurboModule/RCTExport';
 
 const Stack: any = createNativeStackNavigator();
 
 export const NavigatorMapper = (animation: any, navBarColor: any, screens: any[]) => {
-  // let ins = useSafeAreaInsets()
-  // console.log("INS", ins)
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
-        //navigationBarColor: 'rgba(0, 0, 0, 0.2)',
-        //navigationBarColor: 'red',
         navigationBarColor: navBarColor,
-        //navigationBarColor: 'transparent',
         animation: animation
       }}
     >
@@ -38,42 +31,11 @@ export const NavigatorMapper = (animation: any, navBarColor: any, screens: any[]
 function App(): ReactElement {
 
   const { width, height } = useWindowDimensions();
-  //console.log("APP WIDTH", width)
-  //console.log("APP HEIGHT", height)
-  //let heightScreen = Dimensions.get('screen').height
-  let statusBar = StatusBar.currentHeight
-
-  //console.log("HEIGHT SCREEN", heightScreen)
-  let dim = Dimensions.get('screen').height
-  console.log("SCREEN HEIGHT", dim)
-  console.log("WINDOW HEIGHT", height)
-  console.log("STATUS BAR", statusBar)
 
   let navBarColor = 'transparent' // DEFAULT NAVIGATION BAR COLOR
 
-  if (Dimensions.get('screen').height - height > 47) {
-    navBarColor = 'rgba(0, 0, 0, 0.2)'
-    console.log("NAVBAR PRESENT")
-  }
-  else {
-    navBarColor = 'transparent'
-    console.log("NAVBAR NOT PRESENT")
-  }
-
-  //console.log("TurboModule", TurboModule)
-
-  //let qq = useSafeArea()
-  
-  //console.log("ViewProps", ViewProps)
-  // if (withSafeAreaInsets !== null) {
-  //   console.log("withSafeAreaInsets", withSafeAreaInsets)
-  // }
-  
-
-  // <SafeAreaProvider>
-  //   return (let ins = useSafeAreaInsets(); // insets)
-  
-  // </SafeAreaProvider>
+  if (Dimensions.get('screen').height - height > 47) navBarColor = 'rgba(0, 0, 0, 0.2)' // > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP (Density-independent Pixels)
+  else navBarColor = 'transparent' // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
 
   let opw = width / 100 // one percent window width
   let oph = height / 100 // one percent window height
@@ -124,11 +86,11 @@ function App(): ReactElement {
         ) {
           if (
             Date.now() - parseInt(resDate) < 60000 &&
-            resHeight !== height.toString()
+            resHeight !== Dimensions.get('window').height.toString()
           ) {
-            resRoute === "KnowMore" ? navigationRef.current?.dispatch(CommonActions.reset(routes[0])) :
-            resRoute === "About" ? navigationRef.current?.dispatch(CommonActions.reset(routes[1])) :
-            navigationRef.current?.dispatch(CommonActions.reset(routes[2]))
+            resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
+            resRoute === "About" ? navigationRef.dispatch(CommonActions.reset(routes[1])) :
+            navigationRef.dispatch(CommonActions.reset(routes[2]))
           } // else console.log("WINDOWS NOT HAS CHANGED.")
         }
       }
@@ -153,8 +115,8 @@ function App(): ReactElement {
       saveData("savedDate", Date.now().toString())
       saveData("savedHeight", height.toString())
 
-      //let array = navigationRef.current?.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
-      //if (array !== undefined) saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+      let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
+      saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
     })
     return () => blur.remove();
   }, [input, secInput]);
@@ -199,8 +161,10 @@ function App(): ReactElement {
     </Stack.Screen>
   ]
 
+  let initialState = { index: 0, routes: [ { name: 'Home' } ] }; // SET NAVIGATOR INITIAL STATE TO AVOID "UNDEFINED" ON "APP BLUR SAVE LAST ROUTE" (WITHOUT NAVIGATE ANY SCREEN)
+
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer ref={navigationRef} initialState={initialState}>
       { NavigatorMapper(animation, navBarColor, stackScreens) }
     </NavigationContainer>
 
