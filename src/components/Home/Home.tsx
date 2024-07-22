@@ -5,7 +5,7 @@ import OwnButton from '../OwnButton/OwnButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-function Home({ navigation: { navigate }, vmin, oph, port, input, setInput, secInput, setSecInput }: any): ReactElement {
+function Home({ navigation: { navigate }, vmin, port, input, setInput, secInput, setSecInput }: any): ReactElement {
 
   let ins = useSafeAreaInsets(); // insets
 
@@ -35,15 +35,15 @@ function Home({ navigation: { navigate }, vmin, oph, port, input, setInput, secI
     ].sort((a, b) => port ? a.port - b.port : a.land - b.land)
     return values.map(e =>
       <OwnButton
-        key={e.value} scrollEnd={scrollEnd} input={input} setInput={setInput} value={e.value}
-        setParErr={setParErr} setSecInput={setSecInput} smaller={ e.smaller } parErr={e.parErr}
+        key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
+        setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
         vmin={vmin}
       />
     )
   }
 
   return (
-    <View style={[s.background, { height: oph * 100 + ins.bottom, backgroundColor: 'lightblue' }]}>
+    <View style={[s.background, { height: '100%', backgroundColor: 'lightblue' }]}>
       <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
       <View
         style={[

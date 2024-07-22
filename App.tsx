@@ -39,11 +39,10 @@ function App(): ReactElement {
 
   let opw = width / 100 // one percent window width
   let oph = height / 100 // one percent window height
-  let vmax
   let vmin
   let port // PORTRAIT
-  if (width > height) {vmax = opw; vmin = oph, port = false }
-  else {vmax = oph; vmin = opw, port = true }
+  if (width > height) { vmin = oph, port = false }
+  else { vmin = opw, port = true }
 
   const navigationRef: any = useNavigationContainerRef();
 
@@ -141,9 +140,8 @@ function App(): ReactElement {
       {
         (props: any) =>
         <Home
-          {...props} input={input} setInput={setInput}
-          secInput={secInput} setSecInput={setSecInput}
-          opw={opw} oph={oph} vmax={vmax} vmin={vmin} port={port}
+          {...props} input={input} setInput={setInput} secInput={secInput}
+          setSecInput={setSecInput} vmin={vmin} port={port}
         />
       }
     </Stack.Screen>,
@@ -151,13 +149,13 @@ function App(): ReactElement {
       name="About"
       key={"About"}
     >
-      { (props: any) => <About {...props} opw={opw} oph={oph} vmax={vmax} vmin={vmin} /> }
+      { (props: any) => <About {...props} vmin={vmin} /> }
     </Stack.Screen>,
     <Stack.Screen
       name="KnowMore"
       key={"KnowMore"}
     >
-      { (props: any) => <KnowMore {...props} opw={opw} oph={oph} vmax={vmax} vmin={vmin} port={port} /> }
+      { (props: any) => <KnowMore {...props} opw={opw} port={port} /> }
     </Stack.Screen>
   ]
 
