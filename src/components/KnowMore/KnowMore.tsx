@@ -13,8 +13,6 @@ function KnowMore({ navigation: { navigate }, opw, port }: any): ReactElement {
 
   let ins = useSafeAreaInsets(); // insets
 
-  //console.log("INS", ins)
-
   const scrollRef = useRef<any>();
 
   const onFabPress = () => {
