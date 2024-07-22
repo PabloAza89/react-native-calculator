@@ -1,8 +1,5 @@
 import { ReactElement, useState, useRef, useEffect } from 'react';
-import {
-  ScrollView, StatusBar, Text,
-  View, TouchableHighlight
-} from 'react-native';
+import { ScrollView, StatusBar, Text, View, TouchableHighlight } from 'react-native';
 import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
@@ -51,13 +48,23 @@ function Home({ navigation: { navigate }, vmin, oph, port, input, setInput, secI
       <View
         style={[
           s.contour,
-          { paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, borderWidth: vmin * 0.5, marginRight: ins.right, marginLeft: ins.left, marginBottom: ins.bottom },
+          { paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, borderWidth: vmin * 0.5, marginRight: ins.right, marginLeft: ins.left, marginBottom: port ? ins.bottom : 0 },
           port ?
           { width: vmin * 90, height: vmin * 129.6 } :
           { width: vmin * 156, height: vmin * 90, marginTop: vmin * 4 }
         ]}
       >
-        { parErr && <Text style={[ s.parErr, { width: vmin * 86, } ]}>CHECK PARENTHESIS</Text> }
+        {
+          parErr &&
+          <Text
+            style={[
+              s.parErr,
+              port ?
+              { width: vmin * 86, height: 40, top: -40 } :
+              { width: vmin * 152, height: 30, top: -30 }
+            ]}
+          >CHECK PARENTHESIS</Text>
+        }
         <View
           style={[
             s.displayContainer,
