@@ -4,9 +4,6 @@ export const s = StyleSheet.create({
   text: {
     textAlign: 'center'
   },
-  lineHeight: {
-    lineHeight: 34 // ALIGN PARENTHESIS
-  },
   ownButton: {
     backgroundColor: '#ababab',
     borderColor: 'darkblue',

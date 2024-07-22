@@ -6,7 +6,7 @@ import { Adder } from '../../functions/adder';
 import { OwnButtonI } from '../../interfaces/interfaces';
 
 export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin }: OwnButtonI): ReactElement {
-  function handlePress() {
+  async function handlePress() {
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
 
@@ -191,7 +191,7 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, 
           value === "N" ?
           "-X" :
           value === "(" || value === ")" ?
-          <Text style={[ s.lineHeight ]}>{ value }</Text> :
+          <Text style={ smaller ? { lineHeight: 34 } : { lineHeight: 40 } }>{ value }</Text> :
           value
         }
       </Text>

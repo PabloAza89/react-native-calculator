@@ -43,9 +43,8 @@ export const s = StyleSheet.create({
     textAlignVertical: 'center'
   },
   parErr: {
+    //backgroundColor: 'green', // DEV
     position: 'absolute',
-    height: 40,
-    top: -40,
     color: 'red',
     fontSize: 17,
     textAlign: 'center',
