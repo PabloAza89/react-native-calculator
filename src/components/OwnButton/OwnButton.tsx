@@ -88,7 +88,7 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, 
       input[input.length - 3] === "." &&
       !isNaN(parseInt(input[input.length - 4]))) &&
       (!isNaN(parseInt(value)) || value === ".")
-    ) { scrollEnd(); console.log("ABC"); return } // STOP IF ATTEMPT 3.999 or 3.77. (floating point number > 2)
+    ) { scrollEnd(); return } // STOP IF ATTEMPT 3.999 or 3.77. (floating point number > 2)
 
     if (
       (!isNaN(parseInt(input[input.length - 1])) &&
