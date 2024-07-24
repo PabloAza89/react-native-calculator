@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState, useRef } from "react";
 import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/components/Home/Home';
@@ -76,13 +76,52 @@ function App(): ReactElement {
   //console.log("TEST TTTTTTTTTTTTTTTTTTTTTTT", Dimensions.get('window'))
 
   //let navBar = true // NAVIGATION BAR (ON-SCREEN) BUTTONS
-  const [ navBar, setNavBar ] = useState(Dimensions.get('screen').height - height > 47 || Dimensions.get('screen').width - width > 47 ? true : false)
 
-  useEffect(() => {
-    console.log("TEST EXECUTED ONCE")
-    let dim = ['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return {[`${e}Width`]:width} })
-    console.log("DIM", dim)
-  }, [])
+  //let navBar: any
+  let navBar: any = useRef()
+
+  let updateNavBar = async() => {
+    //const [ navBar, setNavBar ] = useState(true)
+    let dim = Object.assign({}, ...['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } }))
+    //console.log("DIM", dim)
+
+    if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) {
+      //console.log("NAVBAR PRESENT")
+      //navBar = true// > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP (Density-independent Pixels)
+      //setNavBar(true)
+      //return true
+      //navBar = true
+      navBar.current = true
+    }
+    else {
+      //console.log("NAVBAR NOT PRESENT.")
+      //navBar = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
+      //setNavBar(false)
+      //return false
+      //navBar = false
+      navBar.current = false
+    }
+    //return navBar
+  }
+
+  //const [ navBar, setNavBar ] = useState<any>()
+
+  
+
+  // useEffect(() => {
+  //   navBar = updateNavBar()
+  // }, [])
+
+  // useEffect(() => {
+  //   console.log("TEST EXECUTED ONCE")
+  //   let dim = Object.assign({}, ...['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } }))
+  //   console.log("DIM", dim)
+
+  //   updateNavBar()
+
+
+
+  // }, [])
 
   //console.log("Dimensions.get('screen').height - height > 47", Dimensions.get('screen').height - height > 47)
   //console.log("Dimensions.get('screen').width - width > 47", Dimensions.get('screen').width - width > 47)
@@ -157,6 +196,9 @@ function App(): ReactElement {
 
           console.log("ONLY EXECUTED THE FIRST TIME & WHEN SIZE CHANGES")
 
+          //setNavBar(updateNavBar)
+          await updateNavBar()
+
           //console.log("TEST TTTTTTTTTTTTTTTTTTTTTTT", Dimensions.get('window'))
           //console.log("TEST 2 TTTTTTTTTTTTTTTTTTTTTTT", ['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return { width, height } }))
           //console.log("TEST TTTTTTTTTTTTTTTTTTTTTTT", Dimensions)
@@ -184,14 +226,13 @@ function App(): ReactElement {
 
           //console.log("TEST TEST HEIGHT", height)
           //console.log("TEST TEST WIDTH", width)
-          //console.log("resNavBar", resNavBar)
-          //console.log("navBar.toString()", navBar.toString())
+          console.log("resNavBar", resNavBar)
+          console.log("navBar.toString()", navBar.current.toString())
+          console.log("comparisson", resNavBar !== navBar.current.toString())
+          console.log("Date.now() - parseInt(resDate) < 60000", Date.now() - parseInt(resDate) < 60000)
           if (
             Date.now() - parseInt(resDate) < 60000 &&
-            resNavBar !== navBar.toString()
-            /* &&
-            resHeight !== Dimensions.get('window').height.toString() &&
-            resHeight !== Dimensions.get('window').width.toString() */
+            resNavBar !== navBar.current.toString()
           ) {
             console.log("WINDOWS HAS CHANGED !!")
             resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
@@ -209,7 +250,7 @@ function App(): ReactElement {
       })
     }
     allPreloads()
-  }, [/* width, height,  */navBar]);
+  }, [/* width, height, navBar */]);
 
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
@@ -220,14 +261,14 @@ function App(): ReactElement {
       saveData("savedSecInput", secInput)
       saveData("savedDate", Date.now().toString())
       //saveData("savedHeight", height.toString())
-      saveData("savedNavBar", navBar.toString())
-      console.log("SAVED LAST NAVBAR === ", navBar.toString())
+      saveData("savedNavBar", navBar.current.toString())
+      console.log("SAVED LAST NAVBAR === ", navBar.current.toString())
 
       let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
       saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
     })
     return () => blur.remove();
-  }, [input, secInput, navBar]);
+  }, [input, secInput/* , navBar */]);
 
   const saveData = async (key: any, value:any) => {
     try { await AsyncStorage.setItem(`${key}`, value) }
@@ -275,7 +316,7 @@ function App(): ReactElement {
 
   return (
     <NavigationContainer ref={navigationRef} initialState={initialState}>
-      { NavigatorMapper(animation, navBar, stackScreens) }
+      { NavigatorMapper(animation, navBar.current, stackScreens) }
     </NavigationContainer>
 
   );
