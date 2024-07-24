@@ -11,30 +11,17 @@ function waitDevice() { # PERFECTO // ESTO PRIMERO
   cd /c/Users/pablo/AppData/Local/Android/Sdk/platform-tools
 
   if [ $(./adb -s emulator-5554 shell getprop init.svc.bootanim 2> /dev/null | grep "stopped") ]; then # 2> /dev/null --> HIDE ERRORS
-    echo -e "${bG}*****  EMU SUCCESSFULLY LOADED   ||  EMU SUCCESSFULLY LOADED   ||  EMU SUCCESSFULLY LOADED   *****${nC}" && IncreaseBuffer
+    echo -e "${bG}*****  EMU SUCCESSFULLY LOADED   ||  EMU SUCCESSFULLY LOADED   *****${nC}" && IncreaseBuffer
   else
-    echo -e "${bY}*****  LAUNCHING EMULATOR..      ||  LAUNCHING EMULATOR..      ||  LAUNCHING EMULATOR..      *****${nC}"
+    echo -e "${bY}*****  LAUNCHING EMULATOR..      ||  LAUNCHING EMULATOR..      *****${nC}"
     sleep 1s
     waitDevice
   fi
-}
-
-function launchExpo() {
-  cd /c/Users/pablo/Desktop/GITHUB/react-native-calculator/
-  echo -e "${bY}*****  LAUNCHING EXPO..          ||  LAUNCHING EXPO..          ||  LAUNCHING EXPO..          *****${nC}"
-  expo start --android
-}
-
-function killQemu() {
-  cd /c/Users/pablo/AppData/Local/Android/Sdk/platform-tools/ && ./adb -s emulator-5554 emu kill
 }
 
 function IncreaseBuffer() {
   cd /c/Users/pablo/AppData/Local/Android/Sdk/platform-tools/ &&
   ./adb logcat -G 16M
 }
-
-# launchQuickEmulator &
-# waitDevice && launchExpo && killQemu
 
 launchQuickEmulator & waitDevice
