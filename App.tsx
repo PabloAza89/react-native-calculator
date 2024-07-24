@@ -9,7 +9,7 @@ import * as Font from 'expo-font';
 import { Image, AppState, Dimensions, useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
-import { AntDesign, createIconSetFromFontello, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 
 const Stack: any = createNativeStackNavigator();
 
@@ -19,8 +19,7 @@ export const NavigatorMapper = (animation: any, navBar: any, screens: any[]) => 
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
-        //navigationBarColor: navBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
-        navigationBarColor: navBar ? 'green' : 'black',
+        navigationBarColor: navBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
         animation: animation
       }}
     >
@@ -33,121 +32,19 @@ function App(): ReactElement {
 
   const { width, height } = useWindowDimensions();
 
-  const [dimensions, setDimensions] = useState(() => Dimensions.get('window'));
-
-  type DisplayMetrics = {
-    width: number;
-    height: number;
-    scale: number;
-    fontScale: number;
-  };
-
-  //const [dimensionss, setDimensionss] = useState(() => Dimensions.get('window'));
-  let dimensionss;
-  
-
-  // useEffect(() => {
-  //   dimensionss = Dimensions.get('window').height
-
-  // }, [])
-
-  // useEffect(() => {
-  //   function handleChange({ window }: { window: DisplayMetrics }) {
-  //     if (
-  //       dimensionss.width !== window.width ||
-  //       dimensionss.height !== window.height /* ||
-  //       dimensions.scale !== window.scale ||
-  //       dimensions.fontScale !== window.fontScale */
-  //     ) {
-  //       setDimensionss(window);
-  //     }
-  //   }
-  //   let qq = Dimensions.addEventListener('change', handleChange);
-  //   // We might have missed an update between calling `get` in render and
-  //   // `addEventListener` in this handler, so we set it here. If there was
-  //   // no change, React will filter out this update as a no-op.
-  //   handleChange({ window: Dimensions.get('window') });
-  //   return () => {
-  //     //Dimensions.removeEventListener('change', handleChange);
-  //     qq.remove()
-  //   };
-  // }, [dimensions]);
-
-  //console.log("TEST TTTTTTTTTTTTTTTTTTTTTTT", Dimensions.get('window'))
-
-  //let navBar = true // NAVIGATION BAR (ON-SCREEN) BUTTONS
-
-  //let navBar: any
-  let navBar: any = useRef()
+  let navBar = useRef<boolean>(true)
 
   let updateNavBar = async() => {
-    //const [ navBar, setNavBar ] = useState(true)
     let dim = Object.assign({}, ...['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } }))
-    //console.log("DIM", dim)
 
-    if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) {
-      //console.log("NAVBAR PRESENT")
-      //navBar = true// > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP (Density-independent Pixels)
-      //setNavBar(true)
-      //return true
-      //navBar = true
-      navBar.current = true
-    }
-    else {
-      //console.log("NAVBAR NOT PRESENT.")
-      //navBar = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
-      //setNavBar(false)
-      //return false
-      //navBar = false
-      navBar.current = false
-    }
-    //return navBar
+    if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) navBar.current = true // > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP (Density-independent Pixels)
+    else navBar.current = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
   }
 
-  //const [ navBar, setNavBar ] = useState<any>()
-
-  
-
-  // useEffect(() => {
-  //   navBar = updateNavBar()
-  // }, [])
-
-  // useEffect(() => {
-  //   console.log("TEST EXECUTED ONCE")
-  //   let dim = Object.assign({}, ...['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } }))
-  //   console.log("DIM", dim)
-
-  //   updateNavBar()
-
-
-
-  // }, [])
-
-  //console.log("Dimensions.get('screen').height - height > 47", Dimensions.get('screen').height - height > 47)
-  //console.log("Dimensions.get('screen').width - width > 47", Dimensions.get('screen').width - width > 47)
-
-  
-
-  
-
-  // useEffect(() => {
-  //   if (Dimensions.get('screen').height - height > 47 || Dimensions.get('screen').width - width > 47) {
-  //     //console.log("NAVBAR PRESENT")
-  //     //navBar = true// > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP (Density-independent Pixels)
-  //     setNavBar(true)
-  //   }
-  //   else {
-  //     //console.log("NAVBAR NOT PRESENT.")
-  //     //navBar = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
-  //     setNavBar(false)
-  //   }
-
-  // }, [width, height])
-
-  let opw = width / 100 // one percent window width
-  let oph = height / 100 // one percent window height
-  let vmin
-  let port // PORTRAIT
+  let opw: number = width / 100 // one percent window width
+  let oph: number = height / 100 // one percent window height
+  let vmin: number
+  let port: boolean // PORTRAIT
   if (width > height) { vmin = oph, port = false }
   else { vmin = opw, port = true }
 
@@ -169,7 +66,6 @@ function App(): ReactElement {
       let resInput = await readData("savedInput") // RESPONSE INPUT
       let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
       let resDate = await readData("savedDate") // RESPONSE DATE
-      //let resHeight = await readData("savedHeight") // RESPONSE HEIGHT
       let resNavBar = await readData("savedNavBar") // RESPONSE HEIGHT
       let resRoute = await readData("savedRoute") // RESPONSE ROUTE
 
@@ -191,54 +87,12 @@ function App(): ReactElement {
           resNavBar !== undefined && resNavBar !== null &&
           resRoute !== undefined && resRoute !== null
         ) {
-          //console.log("resHeight", resHeight)
-          //console.log("resNavBar", resNavBar)
-
-          console.log("ONLY EXECUTED THE FIRST TIME & WHEN SIZE CHANGES")
-
-          //setNavBar(updateNavBar)
           await updateNavBar()
-
-          //console.log("TEST TTTTTTTTTTTTTTTTTTTTTTT", Dimensions.get('window'))
-          //console.log("TEST 2 TTTTTTTTTTTTTTTTTTTTTTT", ['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return { width, height } }))
-          //console.log("TEST TTTTTTTTTTTTTTTTTTTTTTT", Dimensions)
-
-          //let dim = ['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return { width, height } })
-
-          //console.log("DIM", dim)
-
-          // if (Dimensions.get('screen').height - height > 47 || Dimensions.get('screen').width - width > 47) {
-          //   //console.log("NAVBAR PRESENT")
-          //   //navBar = true// > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP (Density-independent Pixels)
-          //   setNavBar(true)
-          // }
-          // else {
-          //   //console.log("NAVBAR NOT PRESENT.")
-          //   //navBar = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
-          //   setNavBar(false)
-          // }
-
-          // console.log("screen height", Dimensions.get('screen').height.toString())
-          // console.log("screen width", Dimensions.get('screen').width.toString())
-          // console.log("window height", Dimensions.get('window').height.toString())
-          // console.log("window width", Dimensions.get('window').width.toString())
-
-
-          //console.log("TEST TEST HEIGHT", height)
-          //console.log("TEST TEST WIDTH", width)
-          console.log("resNavBar", resNavBar)
-          console.log("navBar.toString()", navBar.current.toString())
-          console.log("comparisson", resNavBar !== navBar.current.toString())
-          console.log("Date.now() - parseInt(resDate) < 60000", Date.now() - parseInt(resDate) < 60000)
-          if (
-            Date.now() - parseInt(resDate) < 60000 &&
-            resNavBar !== navBar.current.toString()
-          ) {
-            console.log("WINDOWS HAS CHANGED !!")
+          if (Date.now() - parseInt(resDate) < 60000 && resNavBar !== navBar.current.toString()) {
             resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
             resRoute === "About" ? navigationRef.dispatch(CommonActions.reset(routes[1])) :
             navigationRef.dispatch(CommonActions.reset(routes[2]))
-          }  else console.log("WINDOWS NOT HAS CHANGED.")
+          } // else console.log("WINDOWS NOT HAS CHANGED.")
         }
       }
       windowSizeHasChanged()
@@ -250,7 +104,7 @@ function App(): ReactElement {
       })
     }
     allPreloads()
-  }, [/* width, height, navBar */]);
+  }, []);
 
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
@@ -260,15 +114,13 @@ function App(): ReactElement {
       saveData("savedInput", input)
       saveData("savedSecInput", secInput)
       saveData("savedDate", Date.now().toString())
-      //saveData("savedHeight", height.toString())
       saveData("savedNavBar", navBar.current.toString())
-      console.log("SAVED LAST NAVBAR === ", navBar.current.toString())
 
       let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
       saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
     })
     return () => blur.remove();
-  }, [input, secInput/* , navBar */]);
+  }, [input, secInput]);
 
   const saveData = async (key: any, value:any) => {
     try { await AsyncStorage.setItem(`${key}`, value) }
@@ -311,14 +163,10 @@ function App(): ReactElement {
 
   let initialState = { index: 0, routes: [ { name: 'Home' } ] }; // SET NAVIGATOR INITIAL STATE TO AVOID "UNDEFINED" ON "APP BLUR SAVE LAST ROUTE" (WITHOUT NAVIGATE ANY SCREEN)
 
-  //console.log("navBar de arriba", navBar.toString())
-  //console.log("NAVBAR TEST", navBar)
-
   return (
     <NavigationContainer ref={navigationRef} initialState={initialState}>
       { NavigatorMapper(animation, navBar.current, stackScreens) }
     </NavigationContainer>
-
   );
 }
 
