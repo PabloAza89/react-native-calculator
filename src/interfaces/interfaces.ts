@@ -1,30 +1,8 @@
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { SetStateAction, Dispatch } from 'react';
 
-export interface OwnButtonI {
-  scrollEnd?: any,
-  parErr?: any,
-  value?: any,
-  input?: any,
-  setInput?: any,
-  arr1?: any,
-  arr5?: any,
-  smaller?: boolean,
-  setParErr?: any,
-  setSecInput?: any,
-  vmin?: any
-};
-
 export interface counterI {
   [index: string]: number
-}
-
-export interface AdderI {
-  scrollEnd?: any,
-  input?: any,
-  setInput?: any,
-  setSecInput?: any,
-  setParErr?: any
 }
 
 export interface dimI {
@@ -56,8 +34,27 @@ export interface KnowMoreI extends navigationI {
   port: boolean
 }
 
+export interface AdderI {
+  input: string,
+  scrollEnd(): void,
+  setParErr: Dispatch<SetStateAction<boolean>>,
+  setInput: Dispatch<SetStateAction<string>>,
+  setSecInput: Dispatch<SetStateAction<string>>
+}
+
+export interface OwnButtonI extends AdderI {
+  vmin: number,
+  parErr: boolean | undefined,
+  smaller: boolean | undefined,
+  value: string
+};
+
 export interface goUpI {
   "0": boolean,
   "1": boolean,
   "2": boolean
+}
+
+export interface operationI {
+  [key: string] : (a: string, b: string) => number,
 }

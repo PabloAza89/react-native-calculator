@@ -18,12 +18,12 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, 
 
     if (value === "C") { setInput(""); setSecInput(""); return } // CLEAR INPUT AND STOP
 
-    let splitted = input.replace(/ /g,'').split("") // OK
+    let splitted: string[] = input.replace(/ /g,'').split("") // OK
 
     if (
       value === "=" &&
-      splitted.filter((e: any) => e === "(").length !== // STOP IF ((( AND ))) AMOUNT ARE UNEQUAL
-      splitted.filter((e: any) => e === ")").length
+      splitted.filter((e: string) => e === "(").length !== // STOP IF ((( AND ))) AMOUNT ARE UNEQUAL
+      splitted.filter((e: string) => e === ")").length
     ) { setParErr(true); scrollEnd(); return }
 
     if (
@@ -167,11 +167,11 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, 
 
     /// -----------> BEGIN INPUT UPDATE <----------- ///
 
-    if (value === "X") { setInput((prev: any) => prev + " x "); setSecInput("") } // set operator with spaces
-    else if (value === "/") { setInput((prev: any) => prev + " / "); setSecInput("") } // set operator with spaces
-    else if (value === "+") { setInput((prev: any) => prev + " + "); setSecInput("") } // set operator with spaces
-    else if (value === "-") { setInput((prev: any) => prev + " - "); setSecInput("") } // set operator with spaces
-    else { setInput((prev: any) => prev + value); setSecInput("") }
+    if (value === "X") { setInput((prev: string) => prev + " x "); setSecInput("") } // set operator with spaces
+    else if (value === "/") { setInput((prev: string) => prev + " / "); setSecInput("") } // set operator with spaces
+    else if (value === "+") { setInput((prev: string) => prev + " + "); setSecInput("") } // set operator with spaces
+    else if (value === "-") { setInput((prev: string) => prev + " - "); setSecInput("") } // set operator with spaces
+    else { setInput((prev: string) => prev + value); setSecInput("") }
 
     /// -----------> END INPUT UPDATE <----------- ///
 
