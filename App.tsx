@@ -6,7 +6,7 @@ import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
 import BootSplash from "react-native-bootsplash";
 import * as Font from 'expo-font';
-import { Image, AppState, Dimensions, useWindowDimensions } from 'react-native';
+import { Image, AppState, Dimensions, useWindowDimensions, type ScaledSize } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -53,15 +53,17 @@ function App(): ReactElement {
   //   screen: string
   // }
 
-  // type DisplayMetrics = {
-  //   width: number;
-  //   height: number;
-  //   scale: number;
-  //   fontScale: number;
-  // };
+
+
+  interface dimI {
+    screenHeight: number,
+    screenWidth: number,
+    windowHeight: number,
+    windowWidth: number
+  }
 
   let updateNavBar = async() => {
-    const dim = Object.assign({}, ...['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } }))
+    const dim = Object.assign({}, ...(["screen", "window"] as "screen"[] | "window"[]).map((e) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } })) as dimI
 
     if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) navBar.current = true // > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP (Density-independent Pixels)
     else navBar.current = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
