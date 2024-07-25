@@ -56,8 +56,6 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       setParErr(true); return
       //console.log("ERROR PARENTHESIS")
     }
-    console.log("toDo", toDo)
-    console.log("innerToDo", innerToDo)
   }
 
   updateParenthesis()
@@ -116,8 +114,6 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       let secSign = toDo[index + 1].toString().slice(0,1) === '-' ? -1 : 1
 
       if (innerToDo.toString() === "NaN") innerToDo = firSign * secSign * Infinity
-
-      console.log("innerToDo", innerToDo)
 
       toDo.splice(index - 1, 3)
       toDo.splice(index - 1, 0, innerToDo.toString())
