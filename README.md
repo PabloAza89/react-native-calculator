@@ -1,79 +1,109 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+<div id="user-content-toc" align="left">
+  <ul>
+    <summary><h2 style="display: inline-block">Welcome to React Native Calculator ! (Demo APP)</h2></summary>
+  </ul>
+</div>
+<div id="user-content-toc" align="left">
+  <ul>
+    <h3 style="display: inline-block">○ What's React Native Calculator ?</h3>
+  </ul>
+</div>
+<ul>
+  <summary>
+    React Native Calculator is a Android App that works like Google search built-in calculator.<br />
+    The App will be available soon on Google Play.
+  </summary>
+</ul>
+<div id="user-content-toc" align="left">
+  <ul>
+    <h3 style="display: inline-block">○ Where can I test the App ?</h3>
+  </ul>
+</div>
+<ul><summary>On Google Play soon</summary></ul>
+<div id="user-content-toc" align="left">
+  <ul>
+    <h3 style="display: inline-block">○ What functions are implemented on ?</h3>
+  </ul>
+</div>
+<ul>
+  <summary>
+    Chain any amount of parenthesis and calculator will parse the result.
+  </summary>
+  <summary>
+    Also will parse large integers: If the integer side, in the result, is more than 12 digits (e.g.: 1000000000001.23 + 1.23), it will be converted to scientific notation.
+  </summary>
+  <summary>
+    Numbers largers than 1.797693e+307 (positive or negative) are treated as Infinity. After that, every calc will output Infinity, or -Infinity, as applicable.
+  </summary>
+  <summary>
+    All new input characters are placed to the right.
+  </summary>
+  <summary>
+    Decimal numbers can have up to two digits maximum. But decimal results can be more than 2 digits long !
+  </summary>
+  <summary>
+    If there is no calc to do ('x', '/', '+' or '-') '=' will not work.
+    <br />If calc is valid, result will be shown and, in a smaller upper place, the current calc will be shown.
+    <br />If result or current calc is larger than screen, you can scroll to see entire result/calc.
+  </summary>
+  <summary>
+    The App does not have access to your device.
+  </summary>
+</ul>
+<div id="user-content-toc" align="left">
+  <ul>
+    <h3 style="display: inline-block">○ Where can I see how App was made ?</h3>
+  </ul>
+</div>
+<ul><summary>https://github.com/PabloAza89/react-native-calculator</summary></ul>
+<div id="user-content-toc" align="left">
+  <ul>
+    <h3 style="display: inline-block">○ Connect with me:</h3>
+  </ul>
+</div>
+<ul>
+  <summary>
+    <a href="https://linkedin.com/in/juan-pablo-azambuyo" target="blank">
+      <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="juan-pablo-azambuyo" height="30" width="40" />
+    </a>
+    &#8203;&nbsp;&nbsp;&nbsp;&#8203;
+    <a href="mailto:juanpabloazambuyo@gmail.com" target="blank">
+      <img align="center" src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="juan-pablo-azambuyo" height="30" width="40" />
+    </a>
+    &#8203;&nbsp;&#8203;
+    <a href="https://wa.me/5491124688005?text=Hi,%20I'm%20interested%20in%20your%20web%20projects" target="blank">
+      <img align="center" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="juan-pablo-azambuyo" height="42" width="56" />
+    </a>
+  </summary>
+</ul>
+<div id="user-content-toc" align="left">
+  <ul>
+    <h3 style="display: inline-block">○ What languages and tools are used on this App ?</h3>
+  </ul>
+</div>
+<ul>
+  <summary>
+    <a href="https://typescriptlang.org/">
+      <img align="center" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/>
+    </a>
+    &#8203;&nbsp;&nbsp;&#8203;Typescript
+  </summary>
+</ul>
+<ul>
+  <summary>
+    <a href="https://reactjs.org/">
+      <img align="center" src="https://cdn.worldvectorlogo.com/logos/react-native-1.svg" alt="react-native" width="40" height="40"/>
+    </a>
+    &#8203;&nbsp;&nbsp;&#8203;React Native
+  </summary>
+</ul>
+<ul>
+  <summary>
+    <a href="https://reactjs.org/">
+      <img align="center" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Android_Studio_icon_%282023%29.svg" alt="android-studio-emulator" width="40" height="40"/>
+    </a>
+    &#8203;&nbsp;&nbsp;&#8203;Android Studio Emulator
+  </summary>
+</ul>
 
-# Getting Started
-
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
-
-## Step 1: Start the Metro Server
-
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _root_ of your React Native project:
-
-```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+<b>Last Update: 25 July '24</b>
