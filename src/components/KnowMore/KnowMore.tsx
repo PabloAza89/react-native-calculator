@@ -1,19 +1,19 @@
-import { ReactElement, useState, useEffect, useRef } from 'react';
+import { ReactElement, useState, useEffect, useRef, MutableRefObject } from 'react';
 import {
   Text, View, StatusBar, ScrollView,
-  Pressable, InteractionManager, ActivityIndicator
+  Pressable, InteractionManager, ActivityIndicator, NativeSyntheticEvent, NativeScrollEvent
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { counterI } from '../../interfaces/interfaces';
+import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
-function KnowMore({ navigation: { navigate }, opw, port }: any): ReactElement {
+function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
 
   let ins = useSafeAreaInsets(); // insets
 
-  const scrollRef = useRef<any>();
+  const scrollRef = useRef<ScrollView>(null);
 
   const onFabPress = () => {
     scrollRef.current?.scrollTo({
@@ -24,15 +24,15 @@ function KnowMore({ navigation: { navigate }, opw, port }: any): ReactElement {
 
   const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
   const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
-  const goUp: any = useRef({ "0": true, "1": false, "2": true });
+  const goUp: MutableRefObject<goUpI> = useRef({ "0": true, "1": false, "2": true });
 
   useEffect(() => {
     const interval = setInterval(() => {
       let newANum = () => setCurrIdx(Math.floor(Math.random() * 3)) // BETWEEN 0 AND 2
 
-      if (counter[currIdx] > 250) { goUp.current[currIdx] = false; newANum() }
-      else if (counter[currIdx] < 5) { goUp.current[currIdx] = true; newANum() }
-      if (goUp.current[currIdx]) setCounter({ ...counter, [currIdx]: counter[currIdx] + 5 })
+      if (counter[currIdx] > 250) { goUp.current[currIdx.toString() as keyof goUpI] = false; newANum() }
+      else if (counter[currIdx] < 5) { goUp.current[currIdx.toString() as keyof goUpI] = true; newANum() }
+      if (goUp.current[currIdx.toString() as keyof goUpI]) setCounter({ ...counter, [currIdx]: counter[currIdx] + 5 })
       else setCounter({ ...counter, [currIdx]: counter[currIdx] - 5 })
     }, 100);
 
@@ -206,7 +206,7 @@ function KnowMore({ navigation: { navigate }, opw, port }: any): ReactElement {
     return () => interactionPromise.cancel();
   }, []);
 
-  function handleScroll (event: any) {
+  function handleScroll(event: NativeSyntheticEvent<NativeScrollEvent>) {
     event.nativeEvent.contentOffset.y > 100 ? setShowButton(true) : setShowButton(false)
   }
 

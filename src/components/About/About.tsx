@@ -5,8 +5,9 @@ import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AboutI } from '../../interfaces/interfaces';
 
-function About({ navigation: { navigate }, vmin }: any): ReactElement {
+function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
 
   let ins = useSafeAreaInsets(); // insets
 

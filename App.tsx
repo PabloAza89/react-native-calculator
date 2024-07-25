@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState, useRef } from "react";
 import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import { createNativeStackNavigator, type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/components/Home/Home';
 import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
@@ -11,16 +11,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { StackAnimationTypes } from "react-native-screens";
+import { dimI } from './src/interfaces/interfaces'
 
 const Stack = createNativeStackNavigator();
-
-type RootStackParamList = {
-  Home: { input: string, setInput: string, secInput: string, setSecInput: string, vmin: number, port: boolean }
-  About: { vmin: number },
-  KnowMore: { opw: number, port: boolean }
-};
-
-type ScreenT = NativeStackScreenProps<RootStackParamList>;
 
 export const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screens: ReactElement[]) => {
   return (
@@ -42,25 +35,6 @@ function App(): ReactElement {
   const { width, height } = useWindowDimensions();
 
   let navBar = useRef<boolean>(true)
-
-  type dim = {
-    screen: 'screen'
-    window: 'window'
-  }
-
-  // interface dim {
-  //   e: string
-  //   screen: string
-  // }
-
-
-
-  interface dimI {
-    screenHeight: number,
-    screenWidth: number,
-    windowHeight: number,
-    windowWidth: number
-  }
 
   let updateNavBar = async() => {
     const dim = Object.assign({}, ...(["screen", "window"] as "screen"[] | "window"[]).map((e) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } })) as dimI
@@ -168,10 +142,10 @@ function App(): ReactElement {
       key={"Home"}
     >
       {
-        (props: ScreenT) =>
+        (props) =>
         <Home
-          {...props} input={input} setInput={setInput} secInput={secInput}
-          setSecInput={setSecInput} vmin={vmin} port={port}
+          {...props} input={input} setInput={setInput} port={port}
+          setSecInput={setSecInput} vmin={vmin} secInput={secInput}
         />
       }
     </Stack.Screen>,
@@ -179,13 +153,13 @@ function App(): ReactElement {
       name="About"
       key={"About"}
     >
-      { (props: ScreenT) => <About {...props} vmin={vmin} /> }
+      { (props) => <About {...props} vmin={vmin} /> }
     </Stack.Screen>,
     <Stack.Screen
       name="KnowMore"
       key={"KnowMore"}
     >
-      { (props: ScreenT) => <KnowMore {...props} opw={opw} port={port} /> }
+      { (props) => <KnowMore {...props} opw={opw} port={port} /> }
     </Stack.Screen>
   ]
 

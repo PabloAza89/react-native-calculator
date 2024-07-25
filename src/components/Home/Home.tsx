@@ -4,8 +4,9 @@ import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { HomeI } from '../../interfaces/interfaces';
 
-function Home({ navigation: { navigate }, vmin, port, input, setInput, secInput, setSecInput }: any): ReactElement {
+function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput }: HomeI): ReactElement {
 
   let ins = useSafeAreaInsets(); // insets
 
