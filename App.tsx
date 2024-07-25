@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState, useRef } from "react";
 import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, type NativeStackScreenProps } from '@react-navigation/native-stack';
 import Home from './src/components/Home/Home';
 import About from './src/components/About/About';
 import KnowMore from './src/components/KnowMore/KnowMore';
@@ -10,10 +10,19 @@ import { Image, AppState, Dimensions, useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { StackAnimationTypes } from "react-native-screens";
 
-const Stack: any = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
-export const NavigatorMapper = (animation: any, navBar: any, screens: any[]) => {
+type RootStackParamList = {
+  Home: { input: string, setInput: string, secInput: string, setSecInput: string, vmin: number, port: boolean }
+  About: { vmin: number },
+  KnowMore: { opw: number, port: boolean }
+};
+
+type ScreenT = NativeStackScreenProps<RootStackParamList>;
+
+export const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screens: ReactElement[]) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -23,7 +32,7 @@ export const NavigatorMapper = (animation: any, navBar: any, screens: any[]) => 
         animation: animation
       }}
     >
-      { screens.map((e: any) => e) }
+      { screens.map((e: ReactElement) => e) }
     </Stack.Navigator>
   )
 }
@@ -34,8 +43,25 @@ function App(): ReactElement {
 
   let navBar = useRef<boolean>(true)
 
+  type dim = {
+    screen: 'screen'
+    window: 'window'
+  }
+
+  // interface dim {
+  //   e: string
+  //   screen: string
+  // }
+
+  // type DisplayMetrics = {
+  //   width: number;
+  //   height: number;
+  //   scale: number;
+  //   fontScale: number;
+  // };
+
   let updateNavBar = async() => {
-    let dim = Object.assign({}, ...['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } }))
+    const dim = Object.assign({}, ...['screen', 'window'].map((e: any) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } }))
 
     if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) navBar.current = true // > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP (Density-independent Pixels)
     else navBar.current = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
@@ -48,9 +74,9 @@ function App(): ReactElement {
   if (width > height) { vmin = oph, port = false }
   else { vmin = opw, port = true }
 
-  const navigationRef: any = useNavigationContainerRef();
+  const navigationRef = useNavigationContainerRef();
 
-  const [ animation, setAnimation ] = useState('none'); // NO INITIAL SCREEN ANIMATION
+  const [ animation, setAnimation ] = useState<StackAnimationTypes>('none'); // NO INITIAL SCREEN ANIMATION
 
   let allRoutes = [{ name: 'Home' }, { name: 'About' }, { name: 'KnowMore' }]
 
@@ -122,7 +148,7 @@ function App(): ReactElement {
     return () => blur.remove();
   }, [input, secInput]);
 
-  const saveData = async (key: any, value:any) => {
+  const saveData = async (key: string, value: string) => {
     try { await AsyncStorage.setItem(`${key}`, value) }
     catch(e) { }
   };
@@ -134,13 +160,13 @@ function App(): ReactElement {
 
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
-  let stackScreens = [
+  let stackScreens: ReactElement[] = [
     <Stack.Screen
       name="Home"
       key={"Home"}
     >
       {
-        (props: any) =>
+        (props: ScreenT) =>
         <Home
           {...props} input={input} setInput={setInput} secInput={secInput}
           setSecInput={setSecInput} vmin={vmin} port={port}
@@ -151,13 +177,13 @@ function App(): ReactElement {
       name="About"
       key={"About"}
     >
-      { (props: any) => <About {...props} vmin={vmin} /> }
+      { (props: ScreenT) => <About {...props} vmin={vmin} /> }
     </Stack.Screen>,
     <Stack.Screen
       name="KnowMore"
       key={"KnowMore"}
     >
-      { (props: any) => <KnowMore {...props} opw={opw} port={port} /> }
+      { (props: ScreenT) => <KnowMore {...props} opw={opw} port={port} /> }
     </Stack.Screen>
   ]
 
