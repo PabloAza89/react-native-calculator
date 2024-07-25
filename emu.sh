@@ -11,9 +11,9 @@ function waitDevice() { # PERFECTO // ESTO PRIMERO
   cd /c/Users/pablo/AppData/Local/Android/Sdk/platform-tools
 
   if [ $(./adb -s emulator-5554 shell getprop init.svc.bootanim 2> /dev/null | grep "stopped") ]; then # 2> /dev/null --> HIDE ERRORS
-    echo -e "${bG}*****  EMU SUCCESSFULLY LOADED   ||  EMU SUCCESSFULLY LOADED   *****${nC}" && IncreaseBuffer
+    echo -e "${bG}***  EMU SUCCESSFULLY LOADED  ||  EMU SUCCESSFULLY LOADED  ***${nC}" && IncreaseBuffer
   else
-    echo -e "${bY}*****  LAUNCHING EMULATOR..      ||  LAUNCHING EMULATOR..      *****${nC}"
+    echo -e "${bY}***  LAUNCHING EMULATOR..     ||  LAUNCHING EMULATOR..     ***${nC}"
     sleep 1s
     waitDevice
   fi

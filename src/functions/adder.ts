@@ -1,14 +1,14 @@
-import { AdderI } from '../interfaces/interfaces';
+import { AdderI, operationI } from '../interfaces/interfaces';
 
 export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) {
 
-  let init = input.replace(/ /g,'').split("") // OK
+  let init: string[] = input.replace(/ /g,'').split("") // OK
 
   /// -----------> BEGIN NEGATIVE & FLOATING POINT PARSER <----------- ///
 
-  let parsed: any[] = []
+  let parsed: string[] = []
 
-  init.forEach((e: any, i: any) => { // ADD 'N37' or '99' or '7.32' JOINED, ELSE PUSH x ALONE
+  init.forEach((e: string, i: number) => { // ADD 'N37' or '99' or '7.32' JOINED, ELSE PUSH x ALONE
     if (
       (init[i - 1] === "N" || init[i - 1] === "." || !isNaN(parseInt(init[i - 1])) || init[i - 1] === "e" || (init[i - 2] === "e" && init[i - 1] === "+") || (init[i - 2] === "e" && init[i - 1] === "-")) &&
       (!isNaN(parseInt(e)) || e === "." || e === "e" || (init[i - 1] === "e" && e === "+") || (init[i - 1] === "e" && e === "-"))
@@ -16,17 +16,19 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
     else parsed.push(e)
   })
 
-  parsed.forEach((e, i) => { // N95 => -1 * 95 // NEGATIVE PARSER
-    if (e.slice(0, 1) === "N") parsed[i] = -1 * parseFloat(e.slice(1, e.length))
+  parsed.forEach((e: string, i: number) => { // N95 => -1 * 95 => -95 // NEGATIVE PARSER
+    if (e.slice(0, 1) === "N") parsed[i] = (-1 * parseFloat(e.slice(1, e.length))).toString()
   })
 
   /// -----------> END NEGATIVE & FLOATING POINT PARSER <----------- ///
 
-  let openPar: any; // OPEN PARENTHESIS FOUND, MOVING INDEX
-  let closePar: any; // CLOSE PARENTHESIS FOUND
-  let toDo: any; // NEXT (OPERARION) TODO INSIDE PARENTHESIS
-  let innerToDo: any; // INNER OPERATION INSIDE toDo
-  let index: any = 1; // WHILE LOOP INDEX
+  let openPar: number = -1; // OPEN PARENTHESIS FOUND, MOVING INDEX
+  let closePar: number = -1; // CLOSE PARENTHESIS FOUND
+  let toDo: string[] = []; // NEXT (OPERARION) TODO INSIDE PARENTHESIS
+  let innerToDo: number = 0; // INNER OPERATION INSIDE toDo
+  let index: number = 1; // WHILE LOOP INDEX
+
+ 
 
   function updateParenthesis() {
 
@@ -54,6 +56,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       setParErr(true); return
       //console.log("ERROR PARENTHESIS")
     }
+    console.log("toDo", toDo)
+    console.log("innerToDo", innerToDo)
   }
 
   updateParenthesis()
@@ -63,22 +67,22 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
     //console.log("ERROR PARENTHESIS")
   }
 
-  let foundMul: any;
-  let foundDiv: any;
-  let firOp: any;
+  let foundMul: number = -1;
+  let foundDiv: number = -1;
+  let firOp: string | undefined;
 
-  let opOne: any = { // OPERATION ONE ==> x OR /
-    'x': function(a: any, b: any) { return parseFloat(a) * parseFloat(b) },
-    '/': function(a: any, b: any) { return parseFloat(a) / parseFloat(b) }
+  let opOne: operationI = { // OPERATION ONE ==> x OR /
+    'x': function(a, b) { return parseFloat(a) * parseFloat(b) },
+    '/': function(a, b) { return parseFloat(a) / parseFloat(b) }
   };
 
-  let foundPlus: any;
-  let foundMin: any;
-  let secOp: any;
+  let foundPlus: number = -1;
+  let foundMin: number = -1;
+  let secOp: string | undefined;
 
-  let opTwo: any = { // OPERATION ONE ==> + OR -
-    '+': function(a: any, b: any) { return parseFloat(a) + parseFloat(b) },
-    '-': function(a: any, b: any) { return parseFloat(a) - parseFloat(b) }
+  let opTwo: operationI = { // OPERATION TWO ==> + OR -
+    '+': function(a: string, b: string) { return parseFloat(a) + parseFloat(b) },
+    '-': function(a: string, b: string) { return parseFloat(a) - parseFloat(b) }
   };
 
   function updateOperators() { // firOp & secOp
@@ -113,8 +117,10 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
 
       if (innerToDo.toString() === "NaN") innerToDo = firSign * secSign * Infinity
 
+      console.log("innerToDo", innerToDo)
+
       toDo.splice(index - 1, 3)
-      toDo.splice(index - 1, 0, innerToDo)
+      toDo.splice(index - 1, 0, innerToDo.toString())
       index = 1
     }
     else if (toDo !== undefined && // DO ALL + OR -
@@ -135,7 +141,7 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
       }
 
       toDo.splice(index - 1, 3)
-      toDo.splice(index - 1, 0, innerToDo)
+      toDo.splice(index - 1, 0, innerToDo.toString())
       index = 1
     }
 
@@ -144,7 +150,7 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
     updateOperators() // firOp & secOp
 
     if (toDo !== undefined && parsed.length !== 1 && firOp === undefined && secOp === undefined && toDo.length !== 1) {
-      parsed.splice(openPar, 0, innerToDo)
+      parsed.splice(openPar, 0, innerToDo.toString())
       updateParenthesis()
       updateOperators()
       index = 1
@@ -175,18 +181,20 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
     !isScientific && prevMinus.indexOf(".") === -1 ?
     prevMinus.length :
     undefined
-  let spacesLeft = 12 - intLength // TO COMPLETE 12 SPACES
+    //0 // TEST
+  let spacesLeft = intLength && 12 - intLength // TO COMPLETE 12 SPACES
   let spacesAfterE =
     prevMinus.indexOf("+") !== -1 ?
     prevMinus.slice(prevMinus.indexOf("+") + 1) :
     prevMinus.indexOf("-") !== -1 ?
     prevMinus.slice(prevMinus.indexOf("-") + 1) :
-    undefined
+    //undefined
+    [] // TEST
   let result // result always as [ "A", "R", "R", "A", "Y" ] // FINAL RESULT
 
   if (prevMinus.join("") === "Infinity") result = prevMinus // RESULT IS INFINITY
 
-  else if (intLength > 12) { // LARGE INT
+  else if (intLength !== undefined && intLength > 12) { // LARGE INT
     let slice2 = prevMinus.slice(0, 8)
     let largeRefInt
     for (let i = 7; i >= 0 ; i--) {
@@ -196,7 +204,7 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   }
 
   // SMALL INT
-  else if (intLength < 13) result = parseFloat(parseFloat(prevMinus.join("")).toFixed(spacesLeft)).toString().split("")
+  else if (intLength !== undefined && intLength < 13) result = parseFloat(parseFloat(prevMinus.join("")).toFixed(spacesLeft)).toString().split("")
 
   // NUMBER IS IN SCIENTIFIC NOTATION
   else result = parseFloat(parseFloat(prevMinus.join("")).toExponential(9 - spacesAfterE.length)).toString().split("")

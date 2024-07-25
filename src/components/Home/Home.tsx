@@ -27,7 +27,7 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
   let buttonsMapper = () => {
     let values = [
       { value: "(", port: 0, land: 0, smaller: port ? true : false }, { value: ")", port: 1, land: 1, smaller: port ? true : false }, { value: "C", port: 2, land: 2, smaller: port ? true : false },
-      { value: "N", port: 3, land: 3, smaller: port ? true : false }, { value: "B", port: 4, land: 4, smaller: port ? true : false }, { value: "7", port: 5, land: 9  },
+      { value: "N", port: 3, land: 3, smaller: port ? true : false }, { value: "B", port: 4, land: 4, smaller: port ? true : false }, { value: "7", port: 5, land: 9 },
       { value: "8", port: 6, land: 10 }, { value: "9", port: 7, land: 11 }, { value: "X", port: 8, land: 6 },
       { value: "4", port: 9, land: 18 }, { value: "5", port: 10, land: 7 }, { value: "6", port: 11, land: 8 },
       { value: "-", port: 12, land: 5 }, { value: "1", port: 13, land: 15 }, { value: "2", port: 14, land: 16 },
