@@ -22,32 +22,60 @@
 <ul><summary>On Google Play soon</summary></ul>
 <div id="user-content-toc" align="left">
   <ul>
-    <h3 style="display: inline-block">○ What functions are implemented on ?</h3>
+    <h3 style="display: inline-block">○ What's implemented on ?</h3>
   </ul>
 </div>
 <ul>
   <summary>
-    Chain any amount of parenthesis and calculator will parse the result.
+    Functions:
+    <ul>
+      <summary>
+        Chain any amount of parenthesis and calculator will parse the result.
+      </summary>
+      <summary>
+        Also will parse large integers: If the integer side, in the result, is more than 12 digits (e.g.: 1000000000001.23 + 1.23), it will be converted to scientific notation.
+      </summary>
+      <summary>
+        Numbers largers than 1.797693e+307 (positive or negative) are treated as Infinity. After that, every calc will output Infinity, or -Infinity, as applicable.
+      </summary>
+      <summary>
+        All new input characters are placed to the right.
+      </summary>
+      <summary>
+        Decimal numbers can have up to two digits maximum. But decimal results can be more than 2 digits long !
+      </summary>
+      <summary>
+        If there is no calc to do ('x', '/', '+' or '-') '=' will not work.
+        <br />If calc is valid, result will be shown and, in a smaller upper place, the current calc will be shown.
+        <br />If result or current calc is larger than screen, you can scroll to see entire result/calc.
+      </summary>
+      <summary>
+        The App does not have access to your device.
+      </summary>
+    </ul>
   </summary>
   <summary>
-    Also will parse large integers: If the integer side, in the result, is more than 12 digits (e.g.: 1000000000001.23 + 1.23), it will be converted to scientific notation.
-  </summary>
-  <summary>
-    Numbers largers than 1.797693e+307 (positive or negative) are treated as Infinity. After that, every calc will output Infinity, or -Infinity, as applicable.
-  </summary>
-  <summary>
-    All new input characters are placed to the right.
-  </summary>
-  <summary>
-    Decimal numbers can have up to two digits maximum. But decimal results can be more than 2 digits long !
-  </summary>
-  <summary>
-    If there is no calc to do ('x', '/', '+' or '-') '=' will not work.
-    <br />If calc is valid, result will be shown and, in a smaller upper place, the current calc will be shown.
-    <br />If result or current calc is larger than screen, you can scroll to see entire result/calc.
-  </summary>
-  <summary>
-    The App does not have access to your device.
+    Visuals:
+    <ul>
+      <summary>
+        About Screen:
+        <br />A cool static gradient effect from blue to yellow, with a middle auto-generated green.
+      </summary>
+      <summary>
+        KnowMore Screen:
+        <br />A cool animated gradient effect from variable colors to white, with a middle variable color gradient. Done with vanilla JS.
+      </summary>
+      <summary>
+        Navigation Bar detection:
+        <br />Script that detect if device screen changes due to Navigation Bar height (between on-screen buttons and gestures), to restore the last screen and change its color, all within 60 seconds.
+      </summary>
+      <summary>
+        "Up Button" displayed on KnowMore screen when scroll down.
+      </summary>
+      <summary>
+        Totally restructured calculator shape when user rotates the device.
+      </summary>
+    </ul>
   </summary>
 </ul>
 <div id="user-content-toc" align="left">
