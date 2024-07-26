@@ -63,11 +63,11 @@
       </summary>
       <summary>
         KnowMore Screen:
-        <br />A cool animated gradient effect from variable colors to white, with a middle variable color gradient. Done with vanilla JS.
+        <br />A cool animated gradient effect from variable color to white, with a middle variable color gradient. Done with vanilla JS.
       </summary>
       <summary>
         Navigation Bar detection:
-        <br />Script that detect if device screen changes due to Navigation Bar height (between on-screen buttons and gestures), to restore the last screen and change its color, all within 60 seconds.
+        <br />Script that detect if device screen changes due to Navigation Bar height (between on-screen buttons and gestures), to restore the last screen and change its color, all within the last 60 seconds.
       </summary>
       <summary>
         "Up Button" displayed on KnowMore screen when scroll down.
