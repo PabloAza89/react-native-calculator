@@ -83,7 +83,7 @@
 </div>
 <ul>
   <summary>
-    <a href="https://typescriptlang.org/">
+    <a href="https://typescriptlang.org">
       <img align="center" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/>
     </a>
     &#8203;&nbsp;&nbsp;&#8203;Typescript
@@ -91,7 +91,7 @@
 </ul>
 <ul>
   <summary>
-    <a href="https://reactjs.org/">
+    <a href="https://reactnative.dev">
       <img align="center" src="https://cdn.worldvectorlogo.com/logos/react-native-1.svg" alt="react-native" width="40" height="40"/>
     </a>
     &#8203;&nbsp;&nbsp;&#8203;React Native
@@ -99,11 +99,11 @@
 </ul>
 <ul>
   <summary>
-    <a href="https://reactjs.org/">
+    <a href="https://developer.android.com/studio">
       <img align="center" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Android_Studio_icon_%282023%29.svg" alt="android-studio-emulator" width="40" height="40"/>
     </a>
     &#8203;&nbsp;&nbsp;&#8203;Android Studio Emulator
   </summary>
 </ul>
 
-<b>Last Update: 25 July '24</b>
+<b>Last Update: 25 Jul '24</b>
