@@ -5,6 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "debug": "sh ./debugApk.sh",
+    "release": "sh ./releaseApk.sh",
     "start": "react-native start",
     "emu": "sh ./emu.sh"
   },

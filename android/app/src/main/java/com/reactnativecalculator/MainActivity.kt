@@ -17,7 +17,7 @@ import android.util.Log
 class MainActivity : ReactActivity() {
 
 override fun onCreate(savedInstanceState: Bundle?) {
-    RNBootSplash.init(this, R.style.Start); // ⬅️ initialize the splash screen
+    RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
   }
 

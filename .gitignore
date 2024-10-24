@@ -31,8 +31,6 @@ local.properties
 *.iml
 *.hprof
 .cxx/
-*.keystore
-!debug.keystore
 
 # node.js
 #
@@ -64,4 +62,7 @@ yarn-error.log
 
 # testing
 /coverage
-debug.keystore
+
+# custom
+*.keystore
+*.config
