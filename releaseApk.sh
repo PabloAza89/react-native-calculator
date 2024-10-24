@@ -3,17 +3,18 @@
 #
 
 cd android/app/build/outputs/apk/release/                                 # GO TO RELEASE FOLDER
-start .                                                                   # OPEN FOLDER IN FILE EXPLORER
+start .                                                                   # OPEN RELEASE FOLDER IN FILE EXPLORER
 cd ..                                                                     # LEVEL DOWN TO APK FOLDER
 
 test -d ./releaseOld                                                      # FOLDER QUERY // CHECK IF RELEASEOLD FOLDER EXISTS
 testT=$(echo $?)                                                          # EXECUTE & SAVE QUERY IN VAR // 1 = NO EXISTS // 0 = EXISTS //
 
 if [ "$testT" = 1 ]; then                                                 # DIRECTORY IS 1 // NO EXISTS
-  mkdir -p ./releaseOld                                                   # IF NO EXISTS, CREATE OLD DIR
+  mkdir -p ./releaseOld                                                   # IF NOT EXISTS, CREATE OLD DIR
 fi
 
 cd releaseOld/                                                            # GO TO RELEASEOLD FOLDER
+start .                                                                   # OPEN RELEASEOLD FOLDER IN FILE EXPLORER
 
 files=$(find "./" -type f | wc -l)                                        # COUNT FILES IN RELEASEOLD FOLDER
 if [ $files -eq 0 ]; then                                                 # IF EMPTY

@@ -3,17 +3,18 @@
 #
 
 cd android/app/build/outputs/apk/debug/                               # GO TO DEBUG FOLDER
-start .                                                               # OPEN FOLDER IN FILE EXPLORER
+start .                                                               # OPEN DEBUG FOLDER IN FILE EXPLORER
 cd ..                                                                 # LEVEL DOWN TO APK FOLDER
 
 test -d ./debugOld                                                    # FOLDER QUERY // CHECK IF DEBUGOLD FOLDER EXISTS
 testT=$(echo $?)                                                      # EXECUTE & SAVE QUERY IN VAR // 1 = NO EXISTS // 0 = EXISTS //
 
 if [ "$testT" = 1 ]; then                                             # DIRECTORY IS 1 // NO EXISTS
-  mkdir -p ./debugOld                                                 # IF NO EXISTS, CREATE OLD DIR
+  mkdir -p ./debugOld                                                 # IF NOT EXISTS, CREATE OLD DIR
 fi
 
 cd debugOld/                                                          # GO TO DEBUGOLD FOLDER
+start .                                                               # OPEN DEBUGOLD FOLDER IN FILE EXPLORER
 
 files=$(find "./" -type f | wc -l)                                    # COUNT FILES IN DEBUGOLD FOLDER
 if [ $files -eq 0 ]; then                                             # IF EMPTY

@@ -272,11 +272,10 @@ function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElem
       {
         showButton &&
         <Pressable
-          style={[s.floatButton,{ bottom: ins.bottom + 10, right: ins.right + 10 }]}
+          style={[ s.floatButton, { bottom: ins.bottom + 10, right: ins.right + 10 } ]}
           onPress={() => onFabPress()}
-        >
-          <Text style={s.floatButtonText}> UP </Text>
-        </Pressable>
+          children={ <Text style={s.floatButtonText} children={'UP'} /> }
+        />
       }
     </View>
   );

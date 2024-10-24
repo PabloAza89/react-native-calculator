@@ -1,17 +1,14 @@
-import { ReactElement, useEffect, useState, useRef } from "react";
+import { ReactElement, useEffect, useState, useRef, JSX } from "react";
 import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './src/components/Home/Home';
-import About from './src/components/About/About';
-import KnowMore from './src/components/KnowMore/KnowMore';
 import BootSplash from "react-native-bootsplash";
 import * as Font from 'expo-font';
-import { Image, AppState, Dimensions, useWindowDimensions, type ScaledSize } from 'react-native';
+import { Image, AppState, Dimensions, useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { StackAnimationTypes } from "react-native-screens";
-import { dimI } from './src/interfaces/interfaces'
+import { dimI, navigationI } from './src/interfaces/interfaces'
 
 const Stack = createNativeStackNavigator();
 
@@ -136,32 +133,34 @@ function App(): ReactElement {
 
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
-  let stackScreens: ReactElement[] = [
-    <Stack.Screen
-      name="Home"
-      key={"Home"}
-    >
-      {
-        (props) =>
-        <Home
-          {...props} input={input} setInput={setInput} port={port}
-          setSecInput={setSecInput} vmin={vmin} secInput={secInput}
-        />
-      }
-    </Stack.Screen>,
-    <Stack.Screen
-      name="About"
-      key={"About"}
-    >
-      { (props) => <About {...props} vmin={vmin} /> }
-    </Stack.Screen>,
-    <Stack.Screen
-      name="KnowMore"
-      key={"KnowMore"}
-    >
-      { (props) => <KnowMore {...props} opw={opw} port={port} /> }
-    </Stack.Screen>
-  ]
+  const dynamicImport = (props: navigationI, module: any) => {
+    switch (module) {
+      case "Home":
+        const Home = require('./src/components/Home/Home').default
+        return (
+          <Home
+            {...props} input={input} setInput={setInput} port={port}
+            setSecInput={setSecInput} vmin={vmin} secInput={secInput}
+          />
+        )
+      case "About":
+        const About = require('./src/components/About/About').default
+        return <About {...props} vmin={vmin} />
+      case "KnowMore":
+        const KnowMore = require('./src/components/KnowMore/KnowMore').default
+        return <KnowMore {...props} opw={opw} port={port} />
+    }
+  }
+
+  let stackScreens: ReactElement[] = [ "Home", "About", "KnowMore" ].map((e: string) => {
+    return (
+      <Stack.Screen
+        name={e}
+        key={e}
+        children={(props) => dynamicImport(props, e)}
+      />
+    )
+  })
 
   let initialState = { index: 0, routes: [ { name: 'Home' } ] }; // SET NAVIGATOR INITIAL STATE TO AVOID "UNDEFINED" ON "APP BLUR SAVE LAST ROUTE" (WITHOUT NAVIGATE ANY SCREEN)
 

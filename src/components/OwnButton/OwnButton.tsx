@@ -183,19 +183,21 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, 
       activeOpacity={1}
       style={[ s.ownButton, smaller ? { width: vmin * 15.6, height: vmin * 15.6 } : { width: vmin * 20, height: vmin * 20 } ]}
       onPress={() => handlePress()}
-    >
-      <Text style={[ s.text, smaller ? { fontSize: 32 } : { fontSize: 40 } ]}>
-        {
-          value === "B" ?
-          <Ionicons name='backspace' size={40} color='rgba(0, 0, 0, .5)' /> :
-          value === "N" ?
-          "-X" :
-          value === "(" || value === ")" ?
-          <Text style={ smaller ? { lineHeight: 34 } : { lineHeight: 40 } }>{ value }</Text> :
-          value
-        }
-      </Text>
-    </TouchableHighlight>
+      children={
+        <Text
+          style={[ s.text, smaller ? { fontSize: 32 } : { fontSize: 40 } ]}
+          children={
+            value === "B" ?
+            <Ionicons name='backspace' size={40} color='rgba(0, 0, 0, .5)' /> :
+            value === "N" ?
+            "-X" :
+            value === "(" || value === ")" ?
+            <Text style={ smaller ? { lineHeight: 34 } : { lineHeight: 40 } } children={value} /> :
+            value
+          }
+        />
+      }
+    />
   );
 }
 

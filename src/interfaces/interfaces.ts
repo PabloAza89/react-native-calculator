@@ -12,12 +12,8 @@ export interface dimI {
   windowWidth: number
 }
 
-interface navigationI {
+export interface navigationI {
   navigation: NavigationProp<ParamListBase>
-}
-
-export interface AboutI extends navigationI {
-  vmin: number
 }
 
 export interface HomeI extends navigationI {
@@ -27,6 +23,10 @@ export interface HomeI extends navigationI {
   secInput: string,
   setInput: Dispatch<SetStateAction<string>>,
   setSecInput: Dispatch<SetStateAction<string>>
+}
+
+export interface AboutI extends navigationI {
+  vmin: number
 }
 
 export interface KnowMoreI extends navigationI {
