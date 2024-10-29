@@ -7,7 +7,9 @@
     "debug": "sh ./debugApk.sh",
     "release": "sh ./releaseApk.sh",
     "start": "react-native start",
-    "emu": "sh ./emu.sh"
+    "emu:1": "sh ./emu-5.6-34.sh",
+    "emu:2": "sh ./emu-7.58-33.sh",
+    "emu:3": "sh ./emu-10.95-34.sh"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
