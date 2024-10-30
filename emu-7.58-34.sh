@@ -4,7 +4,7 @@ bG='\e[1;32m' # BOLD GREEN
 nC='\e[0m' # NO COLOR
 
 function launchQuickEmulator() {
-  cd /c/Users/pablo/AppData/Local/Android/Sdk/emulator/ && ./emulator -avd Pixel_3a_5.6_API_34_Android_14 -no-snapshot-load -no-snapshot-save # -n-s-l = COLD BOOT
+  cd /c/Users/pablo/AppData/Local/Android/Sdk/emulator/ && ./emulator -avd Pixel_Fold_7.58_API_34_Android_14 -no-snapshot-load -no-snapshot-save # -n-s-l = COLD BOOT
 }
 
 function waitDevice() { # PERFECTO // ESTO PRIMERO
