@@ -24,8 +24,6 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     scrollRefCenter.current?.scrollToEnd({ animated: false })
   }
 
-  //console.log("PORT", port)
-
   let buttonsMapper = () => {
     let values = [
       { value: "(", port: 0, land: 0, smaller: port ? true : false }, { value: ")", port: 1, land: 1, smaller: port ? true : false }, { value: "C", port: 2, land: 2, smaller: port ? true : false },
@@ -54,7 +52,7 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
           { paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, borderWidth: vmin * 0.5, marginRight: ins.right, marginLeft: ins.left, marginBottom: port ? ins.bottom : 0 },
           port ?
           { width: vmin * 90, height: vmin * 129.6 } :
-          { width: vmin * 130, height: vmin * 90, marginTop: vmin * 4 }
+          { width: vmin * 156, height: vmin * 90, marginTop: vmin * 4 }
         ]}
       >
         {

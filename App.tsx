@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState, useRef, JSX } from "react";
+import { ReactElement, useEffect, useState, useRef } from "react";
 import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BootSplash from "react-native-bootsplash";
@@ -31,6 +31,9 @@ function App(): ReactElement {
 
   const { width, height } = useWindowDimensions();
 
+  console.log("width", width)
+  console.log("height", height)
+
   let navBar = useRef<boolean>(true)
 
   let updateNavBar = async() => {
@@ -40,12 +43,32 @@ function App(): ReactElement {
     else navBar.current = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
   }
 
+  // Dimensions.addEventListener('change', () => {
+  //   //this.setState({});
+  //   console.log("AAAAAAAAA")
+  // });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      'change',
+      ({window, screen}) => {
+        console.log("AAAAAAAAA")
+        //setDimensions({window, screen});
+      },
+    );
+    return () => subscription?.remove();
+  });
+
   let opw: number = width / 100 // one percent window width
   let oph: number = height / 100 // one percent window height
   let vmin: number
   let port: boolean // PORTRAIT
   if (width > height) { vmin = oph, port = false }
   else { vmin = opw, port = true }
+
+  //console.log("WIDTH", width)
+  //console.log("HEIGHT", height)
+  //console.log("VMIN", vmin)
 
   const navigationRef = useNavigationContainerRef();
 

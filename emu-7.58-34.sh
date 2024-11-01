@@ -20,7 +20,7 @@ function waitDevice() { # PERFECTO // ESTO PRIMERO
 }
 
 function IncreaseBuffer() {
-  cd /c/Users/pablo/AppData/Local/Android/Sdk/platform-tools/ &&
+  cd /c/Users/pablo/AppData/Local/Android/Sdk/platform-tools/ && # GO TO ADB FOLDER
   ./adb logcat -G 16M # INCREASE BUFFER SIZE
 }
 
