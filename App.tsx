@@ -31,8 +31,8 @@ function App(): ReactElement {
 
   const { width, height } = useWindowDimensions();
 
-  console.log("width", width)
-  console.log("height", height)
+  // console.log("width", width)
+  // console.log("height", height)
 
   let navBar = useRef<boolean>(true)
 

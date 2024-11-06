@@ -10,12 +10,12 @@
     "emu:1": "sh ./emu-5.6-34.sh",
     "emu:2": "sh ./emu-7.58-34.sh",
     "emu:3": "sh ./emu-10.95-34.sh",
+    "emu:4": "sh ./pixelFold.sh",
     "date": "sh ./setDate.sh",
     "uninstall": "sh ./uninstall.sh"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
-    "@logicwind/react-native-fold-detection": "^0.3.0",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
