@@ -1,5 +1,5 @@
 import { ReactElement, useState, useRef, useEffect } from 'react';
-import { ScrollView, StatusBar, Text, View, TouchableHighlight, NativeModules, Button } from 'react-native';
+import { ScrollView, StatusBar, Text, View, TouchableHighlight, NativeModules, Button, NativeEventEmitter } from 'react-native';
 import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
@@ -81,8 +81,21 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     //console.log("CLICKED", await CalendarModule)
     //console.log("CLICKED", await CalendarModule.aaa())
     //console.log("CLICKED", await typeof NativeModules)
-    console.log("CLICKED", await CalendarModule.aaa())
+    console.log("CLICKED", await CalendarModule.callFromReact())
   };
+
+  useEffect(() => {
+    const eventEmitter = new NativeEventEmitter(NativeModules.ToastExample);
+    let eventListener = eventEmitter.addListener('EventReminder', event => {
+      //console.log(event.eventProperty) // "someValue"
+      console.log("AUTO", event.eventProperty)
+    });
+
+    // Removes the listener once unmounted
+    return () => {
+      eventListener.remove();
+    };
+  }, []);
 
   return (
     <View style={[s.background, { height: '100%', backgroundColor: 'lightblue' }]}>

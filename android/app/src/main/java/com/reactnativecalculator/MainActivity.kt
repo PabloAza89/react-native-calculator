@@ -99,7 +99,7 @@ class MainActivity : ReactActivity() {
   // var variable_name: String = "abc"
   // //@ReactMethod()
   //fun getStringa(): List<DisplayFeature> {
-  fun getStringa(): String {
+  fun getString(): String {
   //fun getStringa(): WindowInfoTracker {
     
     // var variable_name : String = "abc"

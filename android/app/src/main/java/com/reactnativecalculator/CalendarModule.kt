@@ -23,20 +23,21 @@ import androidx.window.layout.WindowLayoutInfo
 //import android.MainActivity
 
 class CalendarModule(reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext) {
+
         override fun getName(): String = "CalendarModule"
 
-        @ReactMethod()
-        fun getString(promise: Promise) {
-            try {
-                var variable_name : String = "abc"
-                promise.resolve(variable_name)
-            } catch (e: Exception) {
-                promise.reject(e)
-            }
-        }
+        // @ReactMethod()
+        // fun getString(promise: Promise) {
+        //     try {
+        //         var variable_name : String = "abc"
+        //         promise.resolve(variable_name)
+        //     } catch (e: Exception) {
+        //         promise.reject(e)
+        //     }
+        // }
 
         @ReactMethod
-        fun aaa(promise: Promise) {
+        fun callFromReact(promise: Promise) {
             // val activity = currentActivity
             val activity = currentActivity
             //val activiti = MainActivity
@@ -51,16 +52,6 @@ class CalendarModule(reactContext: ReactApplicationContext): ReactContextBaseJav
 
             //pickerPromise = promise
 
-            fun updateUI(newLayoutInfo: WindowLayoutInfo) {
-                //binding.layoutChange.text = newLayoutInfo.toString()
-                if (newLayoutInfo.displayFeatures.isNotEmpty()) {
-                    promise.resolve("Spanned across displays")
-                    //binding.configurationChanged.text = "Spanned across displays"
-                } else {
-                    promise.resolve("One logic/physical display - unspanned")
-                    //binding.configurationChanged.text = "One logic/physical display - unspanned"
-                }
-            }
 
             try {
                 // val galleryIntent = Intent(Intent.ACTION_PICK).apply { type = "image\/*" }
@@ -87,7 +78,7 @@ class CalendarModule(reactContext: ReactApplicationContext): ReactContextBaseJav
                 //promise.resolve(WindowInfoTracker.getOrCreate(activity as MainActivity).toString()) // androidx.window.layout.WindowInfoTrackerImpl@f659f67
 
                 // RETURN SPANNED OR UNSPANNED
-                promise.resolve((activity as MainActivity).getStringa()) // OK
+                promise.resolve((activity as MainActivity).getString()) // OK
 
                 // // OK CURRENT WINDOW METRICS
                 // val wmc = WindowMetricsCalculator.getOrCreate()
@@ -96,17 +87,7 @@ class CalendarModule(reactContext: ReactApplicationContext): ReactContextBaseJav
                 // promise.resolve("${currentWM} ${maximumWM}") // 0 0 2208 1840
                 // //promise.resolve(maximumWM) // 0 0 2208 1840
 
-                // var windowInfoTracker = WindowInfoTracker.getOrCreate(activity as MainActivity)
 
-                // lifecycleScope.launch(Dispatchers.Main) {
-                //     lifecycleScope.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                //         windowInfoTracker.windowLayoutInfo(activity as MainActivity)
-                //             .collect { value ->
-                //                 updateUI(value)
-                //             }
-                //     }
-                // }
-                //updateUI()
 
             } catch (e: Exception) {
                 promise.reject(e)
