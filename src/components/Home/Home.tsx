@@ -85,10 +85,12 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
   };
 
   useEffect(() => {
-    const eventEmitter = new NativeEventEmitter(NativeModules.ToastExample);
+    //const eventEmitter = new NativeEventEmitter(NativeModules.CalendarModule);
+    const eventEmitter = new NativeEventEmitter(NativeModules.MainActivity);
     let eventListener = eventEmitter.addListener('EventReminder', event => {
       //console.log(event.eventProperty) // "someValue"
-      console.log("AUTO", event.eventProperty)
+      //console.log("AUTO", event.eventProperty)
+      console.log("AUTO", event)
     });
 
     // Removes the listener once unmounted

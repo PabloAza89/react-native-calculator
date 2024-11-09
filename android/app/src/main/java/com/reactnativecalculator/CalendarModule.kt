@@ -20,11 +20,89 @@ import kotlinx.coroutines.launch
 
 import androidx.window.layout.WindowLayoutInfo
 
+import com.facebook.react.bridge.WritableMap
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.modules.core.DeviceEventManagerModule
+
+import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.ReactContext
+//import androidx.window.layout.WindowMetricsCalculator
+
 //import android.MainActivity
 
-class CalendarModule(reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext) {
+class CalendarModule(reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext)/* , LifecycleEventListener */ {
 
         override fun getName(): String = "CalendarModule"
+
+        // init {
+        //     //reactContext.addActivityEventListener(activityEventListener)
+        //     reactContext.addLifecycleEventListener(this)
+        // }
+
+        // override fun onHostResume() {
+        //     // Activity `onResume`
+        // }
+
+        val params = Arguments.createMap().apply {
+            putString("eventProperty", "someValue")
+        }
+
+
+        // override fun onHostCreate() {
+        //     // Activity `onCreate`
+        //     //test()
+        //     //sendEvent("EventReminder", params)
+        // }
+
+        //override fun onHostResume(sendEvent: (reactContext: ReactContext, eventName: String, params: WritableMap?) -> Unit) {
+
+        // override fun onHostStart() {
+        //     // Activity `onCreate`
+        //     //test()
+        //     //sendEvent(reactContext, "EventReminder", params)
+        //     //sendEvent()
+        // }
+
+        // override fun onHostResume() {
+        //     // Activity `onCreate`
+        //     //test()
+        //     //sendEvent(reactContext, "EventReminder", params)
+        //     //sendEvent()
+        // }
+
+        // override fun onHostPause() {
+        //     // Activity `onCreate`
+        //     //test()
+        //     //sendEvent("EventReminder", params)
+        // }
+
+        // override fun onHostDestroy() {
+        //     // Activity `onCreate`
+        //     //test()
+        //     //sendEvent("EventReminder", params)
+        // }
+
+        // fun sendEvent(reactContext: ReactContext, eventName: String, params: WritableMap?) {
+        //     reactContext
+        //     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+        //     .emit(eventName, params)
+        // }
+
+        
+
+        
+        //sendEvent("EventReminder", params)
+
+        @ReactMethod
+        fun test(promise: Promise) {
+            try {
+                promise.resolve("123 TEST")
+
+            } catch (e: Exception) {
+                promise.reject(e)
+  
+            }
+        }
 
         // @ReactMethod()
         // fun getString(promise: Promise) {

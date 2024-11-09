@@ -18,7 +18,7 @@ import androidx.window.layout.WindowInfoTracker
 import androidx.window.layout.WindowLayoutInfo
 //import java.util.concurrent.Flow
 //import kotlinx.coroutines.flow.Flow
-//import androidx.window.layout.WindowMetricsCalculator
+import androidx.window.layout.WindowMetricsCalculator
 
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
@@ -30,11 +30,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+
+import com.facebook.react.bridge.ReactContext
+import com.facebook.react.bridge.WritableMap
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.modules.core.DeviceEventManagerModule
+
 //import androidx.window.layout.DisplayFeature
 
 lateinit var windowInfoTracker: WindowInfoTracker
 //lateinit var qqq: Flow<WindowLayoutInfo>
 //lateinit var qqq: WindowInfoTracker
+
+//val reactContext: ReactContext
 
 class MainActivity : ReactActivity() {
 
@@ -49,39 +57,81 @@ class MainActivity : ReactActivity() {
 
     // val rrr = WindowInfoTracker.getOrCreate(this@MainActivity)
     // qqq = rrr.windowLayoutInfo(this)
-    windowInfoTracker = WindowInfoTracker.getOrCreate(this@MainActivity)
-    onWindowLayoutInfoChange()
-  }
+    //windowInfoTracker = WindowInfoTracker.getOrCreate(this@MainActivity)
+    //onWindowLayoutInfoChange()
 
-  fun onWindowLayoutInfoChange() {
-    lifecycleScope.launch(Dispatchers.Main) {
+     lifecycleScope.launch(Dispatchers.Main) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            windowInfoTracker.windowLayoutInfo(this@MainActivity)
+            WindowInfoTracker.getOrCreate(this@MainActivity)
+                .windowLayoutInfo(this@MainActivity)
                 .collect { value ->
                     updateUI(value)
                 }
         }
     }
+
+    
   }
+
+  // fun onWindowLayoutInfoChange() {
+  //   lifecycleScope.launch(Dispatchers.Main) {
+  //       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+  //           windowInfoTracker.windowLayoutInfo(this@MainActivity)
+  //               .collect { value ->
+  //                   updateUI(value)
+  //               }
+  //       }
+  //   }
+  // }
 
   var variable_name: String = "abc"
   //lateinit var variable_name: List<DisplayFeature>
+
+  //val reactContext = this@MainActivity
+  //ReactContext reactContext = getReactNativeHost().getReactInstanceManager().getCurrentReactContext()
+
+  //fun sendEvent(reactContext: ReactContext, eventName: String, params: WritableMap?) {
+  // fun sendEvent(eventName: String, params: WritableMap?) {
+  //   reactContext
+  //     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+  //     .emit(eventName, params)
+  // }
+  // val params = Arguments.createMap().apply {
+  //     putString("eventProperty", "someValue")
+  // }
 
   fun updateUI(newLayoutInfo: WindowLayoutInfo) {
     //variable_name = newLayoutInfo.displayFeatures
     //variable_name = newLayoutInfo.displayFeatures.toString()
     //variable_name = newLayoutInfo.displayFeatures.flattenToString()
-    
+    val params = Arguments.createMap()
+    //params.putString("eventProperty", "someValue")
+    // reactInstanceManager.currentReactContext
+    //   ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+    //   ?.emit("EventReminder", params)
+
+    val wmc = WindowMetricsCalculator.getOrCreate()
+    val currentWM = wmc.computeCurrentWindowMetrics(this@MainActivity).bounds.flattenToString()
+    val maximumWM = wmc.computeMaximumWindowMetrics(this@MainActivity).bounds.flattenToString()
+
     //binding.layoutChange.text = newLayoutInfo.toString()
     if (newLayoutInfo.displayFeatures.isNotEmpty()) {
         variable_name = "Spanned across displays"
-        //binding.configurationChanged.text = "Spanned across displays"
-        //alignViewToFoldingFeatureBounds(newLayoutInfo)
+        params.putString("eventProperty", "Spanned across displays")
     } else {
         variable_name = "One logic/physical display - unspanned"
-        //binding.configurationChanged.text = "One logic/physical display - unspanned"
+        params.putString("eventProperty", "One logic/physical display - unspanned")
     }
-}
+
+    // reactInstanceManager.currentReactContext
+    //   ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+    //   ?.emit("EventReminder", params)
+
+    reactInstanceManager.currentReactContext
+      ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+      ?.emit("EventReminder", "${currentWM} ${maximumWM}")
+  }
+
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
