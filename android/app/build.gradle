@@ -130,9 +130,13 @@ dependencies {
     implementation("com.facebook.react:flipper-integration")
 
     implementation("androidx.window:window:1.1.0")
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
+    //implementation("androidx.window:window:1.4.0-alpha05")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     //implementation "androidx.window:window-java:1.0.0"
     //implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
+    //implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.0")
+    //implementation("org.jetbrains.kotlin:kotlin-reflect:$rootProject.ext.kotlinVersion")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

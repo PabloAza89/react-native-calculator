@@ -4,7 +4,10 @@ export const s = StyleSheet.create({
   background: {
     //backgroundColor: 'lightblue',
     position: 'relative',
-    width: '100%',
+    //width: '100%',
+    width: 835, // dp full
+    //width: 417, // dp half
+    //width: 208, // dp quarter
     justifyContent: 'center',
     alignItems: 'center'
   },

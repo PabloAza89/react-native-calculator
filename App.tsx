@@ -51,8 +51,11 @@ function App(): ReactElement {
   useEffect(() => {
     const subscription = Dimensions.addEventListener(
       'change',
-      ({window, screen}) => {
-        console.log("AAAAAAAAA")
+      //({window, screen}) => {
+      (e) => {
+        //console.log("AAAAA window", window)
+        //console.log("AAAAA screen", screen)
+        console.log("AAAAA e", e)
         //setDimensions({window, screen});
       },
     );
