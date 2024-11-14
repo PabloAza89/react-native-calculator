@@ -113,21 +113,24 @@ class MainActivity : ReactActivity() {
     //variable_name = newLayoutInfo.displayFeatures
     //variable_name = newLayoutInfo.displayFeatures.toString()
     //variable_name = newLayoutInfo.displayFeatures.flattenToString()
-    val params = Arguments.createMap()
-    val paramsInner = Arguments.createMap()
+    val mainMap = Arguments.createMap()
+    val currMap = Arguments.createMap()
+    val maxMap = Arguments.createMap()
     //params.putString("eventProperty", "someValue")
     // reactInstanceManager.currentReactContext
     //   ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
     //   ?.emit("EventReminder", params)
 
-    val windowMetrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
+    val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
+    val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
     val displayMetrics = this@MainActivity.resources.displayMetrics
     // val currentWM = wmc.computeCurrentWindowMetrics(this@MainActivity).bounds.flattenToString()
     // val maximumWM = wmc.computeMaximumWindowMetrics(this@MainActivity).bounds.flattenToString()
     //val currentWM = wmc.computeCurrentWindowMetrics(this@MainActivity).toString()
     //val currentWM = wmc.computeMaximumWindowMetrics(this@MainActivity).toString()
     //val currentWM = wmc.computeCurrentWindowMetrics(this@MainActivity).widthDp.toString()
-    val all = windowMetrics.bounds
+    val boundsCurr = windowMetricsCurr.bounds
+    val boundsMax = windowMetricsMax.bounds
     // val currentWM1 = all.left
     // val currentWM2 = all.top
     // val currentWM3 = all.right
@@ -158,52 +161,28 @@ class MainActivity : ReactActivity() {
 
     //var riversArray = arrayOf(all.left, all.top, all.right, all.bottom)
     //var riversArray = arrayOf("left", "top", "right", "bottom")
-    var riversArray = arrayOf("left", "top", "right", "bottom")
+    var boundsArr = arrayOf("left", "top", "right", "bottom")
 
     //all["left"].toFloat().toString(),
 
-    for (x in riversArray) {
-      // var test = TypedValue.deriveDimension(
-      //   TypedValue.COMPLEX_UNIT_DIP,
-      //   WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds.left.toFloat(),
-      //   displayMetrics
-      // )
+    val dotsPerInch = displayMetrics.density.toDouble() // Float --> Double
 
-      // dp = px / (dpi / 160) === px / density
-
-
-
-      // var test = TypedValue.applyDimension(
-      //   TypedValue.COMPLEX_UNIT_MM,
-      //   210.toFloat(),
-      //   displayMetrics
-      // )
-
-      //var test = all["left"]
-      //var test = all::class.declaredMemberProperties.find { it.name == "left" }!!.get(house)
-      //var testZero = all::class.declaredMemberProperties.find { it.name == "left" }
-      //var test = all["${testZero}"]
-      // var testZero = all::class.declaredMemberProperties.find { it.name == "${x}" }
-      // val test = testZero?.getter?.call(all)
-
-      val test = all::class.declaredMemberProperties.find { it.name == "${x}" }?.getter?.call(all)
-
-      // var test = all.javaClass
-      //         .getMethod("left") // to get property called `name`
-      //         .invoke(all)
-
-      //val example = Example()
-      // var field = all.javaClass.getDeclaredField("left")
-      // field.isAccessible = true
-      // var test = field.get(all) as String
-
+    for (item in boundsArr) {
+      
+      val pixelsCurr = boundsCurr::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsCurr).toString().toDouble() // Int --> Double
+      val pixelsMax = boundsMax::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsMax).toString().toDouble() // Int --> Double
+      val densityIndPixCurr = pixelsCurr / dotsPerInch // dp = px / (dpi / 160) === px / density
+      val densityIndPixMax = pixelsMax / dotsPerInch // dp = px / (dpi / 160) === px / density
 
       //WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds.left.toFloat()
       // val newItem = Dimensions("${x}", "${test}")
       // childArray.add(newItem)
       //childArray.add(newItem)
       //paramsInner.putString("${x}", "${test.toString()}")
-      paramsInner.putString("${x}", "${test}")
+      //paramsInner.putString("${item}", "${dotsPerInch!!::class.simpleName}")
+      //paramsInner.putString("${item}", "${densityIndPix}")
+      currMap.putDouble("${item}", densityIndPixCurr) // dotsPerInch!!::class.simpleName} --> RETRIEVE TYPE
+      maxMap.putDouble("${item}", densityIndPixMax) // dotsPerInch!!::class.simpleName} --> RETRIEVE TYPE
       //paramsInner.putString("${x}", "someValue1")
     }
 
@@ -219,7 +198,8 @@ class MainActivity : ReactActivity() {
     // paramsInner.putString("right", "someValue3")
     // paramsInner.putString("bottom", "someValue4")
     //paramsInner.putString("A VER", displayMetrics.toString())
-    params.putMap("curr", paramsInner)
+    mainMap.putMap("curr", currMap)
+    mainMap.putMap("max", maxMap)
     //params.putMap("curr", riversArray)
 
     //binding.layoutChange.text = newLayoutInfo.toString()
@@ -237,7 +217,7 @@ class MainActivity : ReactActivity() {
 
     reactInstanceManager.currentReactContext
       ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-      ?.emit("EventReminder", params)
+      ?.emit("EventReminder", mainMap)
       //?.emit("EventReminder", params)
       //?.emit("EventReminder", "${currentWM} ${maximumWM}")
   }

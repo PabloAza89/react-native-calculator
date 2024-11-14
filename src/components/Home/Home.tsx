@@ -87,10 +87,10 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
   useEffect(() => {
     //const eventEmitter = new NativeEventEmitter(NativeModules.CalendarModule);
     const eventEmitter = new NativeEventEmitter(NativeModules.MainActivity);
-    let eventListener = eventEmitter.addListener('EventReminder', event => {
+    let eventListener = eventEmitter.addListener('EventReminder', e => {
       //console.log(event.eventProperty) // "someValue"
       //console.log("AUTO", event.eventProperty)
-      console.log("AUTO", event)
+      console.log("AUTO", e)
       // console.log("AUTO", event.curr)
       // console.log("AUTO", event.max)
     });
