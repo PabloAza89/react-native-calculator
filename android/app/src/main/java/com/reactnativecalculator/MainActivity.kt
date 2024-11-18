@@ -16,8 +16,17 @@ import android.util.Log
 
 import androidx.window.layout.WindowInfoTracker
 import androidx.window.layout.WindowLayoutInfo
-//import java.util.concurrent.Flow
-//import kotlinx.coroutines.flow.Flow
+import androidx.window.layout.FoldingFeature
+//import androidx.window.layout.DisplayFeature
+
+import android.content.Context.SENSOR_SERVICE
+import android.hardware.SensorManager
+import android.hardware.Sensor
+import android.hardware.SensorEventListener
+import android.hardware.SensorEvent
+
+
+
 import androidx.window.layout.WindowMetricsCalculator
 
 import com.facebook.react.bridge.ReactMethod
@@ -30,21 +39,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-
-import com.facebook.react.bridge.ReactContext
-import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
-import android.util.TypedValue
-
-import kotlin.reflect.KClass
-import kotlin.reflect.KProperty1
-import kotlin.reflect.full.allSuperclasses
 import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.isSuperclassOf
-import kotlin.reflect.jvm.isAccessible
-import kotlin.reflect.full.findParameterByName
 //import androidx.window.layout.DisplayFeature
 
 lateinit var windowInfoTracker: WindowInfoTracker
@@ -55,7 +53,11 @@ lateinit var windowInfoTracker: WindowInfoTracker
 
 class MainActivity : ReactActivity() {
 
-  //private lateinit var windowInfoTracker: WindowInfoTracker
+  val HINGE_ANGLE_SENSOR_NAME = "Hinge Angle"
+  var mSensorManager: SensorManager? = null
+  var mHingeAngleSensor: Sensor? = null
+  var mSensorListener: SensorEventListener? = null
+  var mCurrentHingeAngle: Int = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
@@ -69,45 +71,39 @@ class MainActivity : ReactActivity() {
     //windowInfoTracker = WindowInfoTracker.getOrCreate(this@MainActivity)
     //onWindowLayoutInfoChange()
 
-     lifecycleScope.launch(Dispatchers.Main) {
-        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            WindowInfoTracker.getOrCreate(this@MainActivity)
-                .windowLayoutInfo(this@MainActivity)
-                .collect { value ->
-                    updateUI(value)
-                }
-        }
+    
+
+    lifecycleScope.launch(Dispatchers.Main) {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        WindowInfoTracker.getOrCreate(this@MainActivity)
+          .windowLayoutInfo(this@MainActivity)
+          .collect { value -> updateUI(value) }
+      }
     }
 
-    
   }
 
-  // fun onWindowLayoutInfoChange() {
-  //   lifecycleScope.launch(Dispatchers.Main) {
-  //       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-  //           windowInfoTracker.windowLayoutInfo(this@MainActivity)
-  //               .collect { value ->
-  //                   updateUI(value)
-  //               }
-  //       }
-  //   }
-  // }
+  //val mainTest = Arguments.createMap()
 
-  //var variable_name: String = "abc"
-  //lateinit var variable_name: List<DisplayFeature>
+  // fun setupSensors() {
+    // mSensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+    // val sensorList: List<Sensor> = mSensorManager!!.getSensorList(Sensor.TYPE_ALL)
+    // for (sensor in sensorList) {
+    //   if (sensor.getName().contains(HINGE_ANGLE_SENSOR_NAME)) { mHingeAngleSensor = sensor }
+    // }
+    // mSensorListener = object : SensorEventListener {
+    //   override fun onSensorChanged(event: SensorEvent) {
+    //     if (event.sensor == mHingeAngleSensor) {
+    //       val angle = event.values[0].toInt()
+    //       //TODO something with angle
+    //       //mainTest.putString("angle", "${angle}")
+          
+    //     }
+    //   }
 
-  //val reactContext = this@MainActivity
-  //ReactContext reactContext = getReactNativeHost().getReactInstanceManager().getCurrentReactContext()
-
-  //fun sendEvent(reactContext: ReactContext, eventName: String, params: WritableMap?) {
-  // fun sendEvent(eventName: String, params: WritableMap?) {
-  //   reactContext
-  //     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-  //     .emit(eventName, params)
-  // }
-  // val params = Arguments.createMap().apply {
-  //     putString("eventProperty", "someValue")
-  // }
+    //   override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
+    // }
+  //}
 
   fun updateUI(newLayoutInfo: WindowLayoutInfo) {
     //variable_name = newLayoutInfo.displayFeatures
@@ -116,10 +112,7 @@ class MainActivity : ReactActivity() {
     val mainMap = Arguments.createMap()
     val currMap = Arguments.createMap()
     val maxMap = Arguments.createMap()
-    //params.putString("eventProperty", "someValue")
-    // reactInstanceManager.currentReactContext
-    //   ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-    //   ?.emit("EventReminder", params)
+    val foldMap = Arguments.createMap()
 
     val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
     val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
@@ -131,36 +124,7 @@ class MainActivity : ReactActivity() {
     //val currentWM = wmc.computeCurrentWindowMetrics(this@MainActivity).widthDp.toString()
     val boundsCurr = windowMetricsCurr.bounds
     val boundsMax = windowMetricsMax.bounds
-    // val currentWM1 = all.left
-    // val currentWM2 = all.top
-    // val currentWM3 = all.right
-    // val currentWM4 = all.bottom
 
-    // val params = object {
-    //   var left = 1
-    //   var top = 2
-    //   var right = 3
-    //   var bottom = 4
-    //   // Object expressions extend the Any class, which already has a toString() function,
-    //   // so it must be overridden
-    //   //override fun toString() = "$hello $world"
-    // }
-
-    // fun asd() {
-
-    // }
-
-    //data class Dimensions(val position: String, val value: String)
-    //var childArray = emptyArray<Dim>()
-    // val childArray = mutableListOf(
-    //   Dimensions("test1", "test2")
-    // )
-
-    // val c1 = Dim("leftPos", "leftVal")
-    // val c2 = Dim("rightPos", "rightVal")
-
-    //var riversArray = arrayOf(all.left, all.top, all.right, all.bottom)
-    //var riversArray = arrayOf("left", "top", "right", "bottom")
     var boundsArr = arrayOf("left", "top", "right", "bottom")
 
     //all["left"].toFloat().toString(),
@@ -168,7 +132,7 @@ class MainActivity : ReactActivity() {
     val dotsPerInch = displayMetrics.density.toDouble() // Float --> Double
 
     for (item in boundsArr) {
-      
+
       val pixelsCurr = boundsCurr::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsCurr).toString().toDouble() // Int --> Double
       val pixelsMax = boundsMax::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsMax).toString().toDouble() // Int --> Double
       val densityIndPixCurr = pixelsCurr / dotsPerInch // dp = px / (dpi / 160) === px / density
@@ -181,10 +145,15 @@ class MainActivity : ReactActivity() {
       //paramsInner.putString("${x}", "${test.toString()}")
       //paramsInner.putString("${item}", "${dotsPerInch!!::class.simpleName}")
       //paramsInner.putString("${item}", "${densityIndPix}")
-      currMap.putDouble("${item}", densityIndPixCurr) // dotsPerInch!!::class.simpleName} --> RETRIEVE TYPE
-      maxMap.putDouble("${item}", densityIndPixMax) // dotsPerInch!!::class.simpleName} --> RETRIEVE TYPE
-      //paramsInner.putString("${x}", "someValue1")
+
+      // currMap.putDouble("${item}", densityIndPixCurr) // dotsPerInch!!::class.simpleName} --> RETRIEVE TYPE
+      // maxMap.putDouble("${item}", densityIndPixMax) // dotsPerInch!!::class.simpleName} --> RETRIEVE TYPE
+
     }
+
+    val foldingFeature = newLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
+
+    //foldMap.putString("fold", "${newLayoutInfo}") // dotsPerInch!!::class.simpleName} --> RETRIEVE TYPE
 
     //val maximumWM = wmc.computeCurrentWindowMetrics(this@MainActivity).heightDp
 
@@ -198,8 +167,18 @@ class MainActivity : ReactActivity() {
     // paramsInner.putString("right", "someValue3")
     // paramsInner.putString("bottom", "someValue4")
     //paramsInner.putString("A VER", displayMetrics.toString())
+
     mainMap.putMap("curr", currMap)
     mainMap.putMap("max", maxMap)
+
+    //mainMap.putString("fold", "${foldingFeature?.state}")
+    //mainMap.putString("fold", "${foldingFeature?.orientation}")
+    //mainMap.putString("fold", "${foldingFeature?.occlusionType}")
+    //mainMap.putString("fold", "${foldingFeature?.isSeparating}")
+    mainMap.putString("fold", "${foldingFeature?.isSeparating}")
+    //mainMap.putString("fold", "${newLayoutInfo.displayFeatures.orientation}")
+    //mainMap.putMap("fold", newLayoutInfo)
+
     //params.putMap("curr", riversArray)
 
     //binding.layoutChange.text = newLayoutInfo.toString()
@@ -211,30 +190,27 @@ class MainActivity : ReactActivity() {
     //     params.putString("eventProperty", "One logic/physical display - unspanned")
     // }
 
-    // reactInstanceManager.currentReactContext
-    //   ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-    //   ?.emit("EventReminder", params)
-
     reactInstanceManager.currentReactContext
       ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
       ?.emit("EventReminder", mainMap)
-      //?.emit("EventReminder", params)
-      //?.emit("EventReminder", "${currentWM} ${maximumWM}")
   }
 
+  // override fun onResume() {
+  //   super.onResume()
+  //   if (mHingeAngleSensor != null) { mSensorManager?.registerListener(mSensorListener, mHingeAngleSensor, SensorManager.SENSOR_DELAY_NORMAL) }
+  // }
 
-  /**
-   * Returns the name of the main component registered from JavaScript. This is used to schedule
-   * rendering of the component.
-   */
+  // override fun onPause() {
+  //   super.onPause()
+  //   if (mHingeAngleSensor != null) { mSensorManager?.unregisterListener(mSensorListener, mHingeAngleSensor) }
+  // }
+
+  // Returns the name of the main component registered from JavaScript. This is used to schedule rendering of the component.
   override fun getMainComponentName(): String = "reactNativeCalculator"
 
-  /**
-   * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
-   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
-   */
+  // Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate] which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
   override fun createReactActivityDelegate(): ReactActivityDelegate =
-      ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED, DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled))
+    ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED, DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled))
 
   // var variable_name: String = "abc"
   // //@ReactMethod()

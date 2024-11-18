@@ -66,7 +66,7 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     )
   }
 
-  const { CalendarModule, MainActivity, reactNativeCalculator } = NativeModules;
+  const { CalendarModule, MainActivity } = NativeModules;
 
   //const onPress = () => {
   const onPress = async () => {
@@ -81,24 +81,27 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     //console.log("CLICKED", await CalendarModule)
     //console.log("CLICKED", await CalendarModule.aaa())
     //console.log("CLICKED", await typeof NativeModules)
-    console.log("CLICKED", await CalendarModule.callFromReact())
+    //console.log("CLICKED", await CalendarModule.callFromReact())
   };
 
   useEffect(() => {
-    //const eventEmitter = new NativeEventEmitter(NativeModules.CalendarModule);
-    const eventEmitter = new NativeEventEmitter(NativeModules.MainActivity);
+    const eventEmitter = new NativeEventEmitter(MainActivity);
     let eventListener = eventEmitter.addListener('EventReminder', e => {
-      //console.log(event.eventProperty) // "someValue"
-      //console.log("AUTO", event.eventProperty)
       console.log("AUTO", e)
       // console.log("AUTO", event.curr)
       // console.log("AUTO", event.max)
     });
+    return () => eventListener.remove();
+  }, []);
 
-    // Removes the listener once unmounted
-    return () => {
-      eventListener.remove();
-    };
+  useEffect(() => {
+    const eventEmitter = new NativeEventEmitter(CalendarModule);
+    let eventListener = eventEmitter.addListener('Angle', e => {
+      console.log("ANGLE A VER", e)
+      // console.log("AUTO", event.curr)
+      // console.log("AUTO", event.max)
+    });
+    return () => eventListener.remove();
   }, []);
 
   return (
