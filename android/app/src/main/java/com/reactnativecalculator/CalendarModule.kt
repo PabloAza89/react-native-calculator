@@ -2,33 +2,13 @@ package com.reactnativecalculator
 
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
-import com.facebook.react.bridge.Promise
+//import com.facebook.react.bridge.ReactMethod
+//import com.facebook.react.bridge.Promise
 
-import android.app.Activity;
-import com.facebook.react.ReactActivity
-
-import androidx.window.layout.WindowInfoTracker
-import androidx.window.layout.WindowMetricsCalculator
-
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-
-import androidx.window.layout.WindowLayoutInfo
-
-import com.facebook.react.bridge.WritableMap
-import com.facebook.react.bridge.Arguments
+//import com.facebook.react.bridge.WritableMap
+//import com.facebook.react.bridge.Arguments
 import com.facebook.react.modules.core.DeviceEventManagerModule
-
 import com.facebook.react.bridge.LifecycleEventListener;
-import com.facebook.react.bridge.ReactContext
-//import androidx.window.layout.WindowMetricsCalculator
-
-//import android.MainActivity
 
 import android.content.Context.SENSOR_SERVICE
 import android.hardware.SensorManager
@@ -36,79 +16,89 @@ import android.hardware.Sensor
 import android.hardware.SensorEventListener
 import android.hardware.SensorEvent
 
-//import androidx.compose.runtime.setValue
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.Dispatchers
+//import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
+import androidx.lifecycle.LifecycleOwner
+
+import androidx.window.layout.WindowInfoTracker
+import androidx.window.layout.WindowLayoutInfo
+import androidx.window.layout.FoldingFeature
+import androidx.window.layout.WindowMetricsCalculator
+import com.facebook.react.bridge.Arguments
+import kotlin.reflect.full.declaredMemberProperties
 
 class CalendarModule(reactContext: ReactApplicationContext):
-    ReactContextBaseJavaModule(reactContext) {
+  ReactContextBaseJavaModule(reactContext) {
 
-        override fun getName(): String = "CalendarModule"
+  override fun getName(): String = "CalendarModule"
 
-        // val HINGE_ANGLE_SENSOR_NAME = "Hinge Angle"
-        // var sensorManager: SensorManager? = null
-        // var hingeAngleSensor: Sensor? = null
-        // var mSensorListener: SensorEventListener? = null
-        // var mCurrentHingeAngle: Int = 0
+  var sensorManager: SensorManager? = reactApplicationContext.getSystemService(SENSOR_SERVICE) as SensorManager
+  var hingeAngleSensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_HINGE_ANGLE)
 
-        var sensorManager: SensorManager? = reactApplicationContext.getSystemService(SENSOR_SERVICE) as SensorManager
-        var hingeAngleSensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_HINGE_ANGLE)
+  val sensorEventListener = object : SensorEventListener {
+    override fun onSensorChanged(event: SensorEvent) {
+      reactContext
+        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+        ?.emit("angle", event.values[0].toInt())
+    }
 
-        var mCurrentHingeAngle: Int = 0
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
+  }
 
-        // sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-        // val sensorList: List<Sensor> = sensorManager!!.getSensorList(Sensor.TYPE_ALL)
+  // suspend fun test() {
 
+  //   val activity = currentActivity
+     
+  //   // lifecycleScope.launch(Dispatchers.Main) {
+  //   //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+  //   //     WindowInfoTracker.getOrCreate(activity as MainActivity)
+  //   //       .windowLayoutInfo(activity as MainActivity)
+  //   //       .collect { value -> updateUI(value) }
+  //   //   }
+  //   // }
+  // }
 
-        val sensorEventListener = object : SensorEventListener {
-          override fun onSensorChanged(event: SensorEvent) {
-            
-            val angle = event.values[0].toInt()
-            //TODO something with angle
-            //mainTest.putString("angle", "${angle}")
-            reactContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                ?.emit("Angle", angle)
-            
-            
-          }
+  
 
-          override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
-        }
+  // fun updateUI(newLayoutInfo: WindowLayoutInfo) {
+  //   reactInstanceManager.currentReactContext
+  //     ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+  //     ?.emit("testFromCalendar", null)
+  // }
 
-        private val lifecycleEventListener = object: LifecycleEventListener {
-            override fun onHostResume() {
-                // hingeAngleSensor?.let{
-                //     sensorManager.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_UI)
-                // }
-                //if (hingeAngleSensor != null) { sensorManager?.registerListener(sensorEventListener, hingeAngleSensor, SensorManager.SENSOR_DELAY_NORMAL) }
-                hingeAngleSensor?.let{
-                    sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_UI)
-                }
-            }
+  // override fun onStart() {
+  //   super.onStart();
+  //   reactContext
+  //     ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+  //     ?.emit("testFromCalendar", null)
+  // }
 
-            override fun onHostPause() {
-                // hingeAngleSensor?.let{
-                //     sensorManager.unregisterListener(sensorEventListener, it)
-                // }
-                //if (hingeAngleSensor != null) { sensorManager?.unregisterListener(sensorEventListener, hingeAngleSensor) }
-                hingeAngleSensor?.let{
-                    sensorManager?.unregisterListener(sensorEventListener, it)
-                }
-                // reactContext
-                //     ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                //     ?.emit("Angle", null)
-            }
+  private val lifecycleEventListener = object: LifecycleEventListener {
+    override fun onHostResume() {
 
-            override fun onHostDestroy() { }
+    val activity = currentActivity
 
-        }
+      hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) }
 
-        init {
-            //reactContext.addActivityEventListener(activityEventListener)
-            //reactContext.addLifecycleEventListener(this)
-            reactContext.addLifecycleEventListener(lifecycleEventListener)
-        }
+      var qq = WindowInfoTracker.getOrCreate(activity as MainActivity).windowLayoutInfo(activity as MainActivity)
+
+      // reactContext
+      //   ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+      //   ?.emit("testFromCalendar", null)
 
 
+    }
 
+    override fun onHostPause() { hingeAngleSensor?.let { sensorManager?.unregisterListener(sensorEventListener, it) } }
+
+    override fun onHostDestroy() { }
+  }
+
+  init { reactContext.addLifecycleEventListener(lifecycleEventListener) }
 }

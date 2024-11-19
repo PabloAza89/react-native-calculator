@@ -87,19 +87,31 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
   useEffect(() => {
     const eventEmitter = new NativeEventEmitter(MainActivity);
     let eventListener = eventEmitter.addListener('EventReminder', e => {
-      console.log("AUTO", e)
-      // console.log("AUTO", event.curr)
-      // console.log("AUTO", event.max)
+      console.log("EventReminder", e)
     });
     return () => eventListener.remove();
   }, []);
 
+  // useEffect(() => {
+  //   const eventEmitter = new NativeEventEmitter(MainActivity);
+  //   let eventListener = eventEmitter.addListener('onStartMainActivity', e => {
+  //     console.log("onStartMainActivity", e)
+  //   });
+  //   return () => eventListener.remove();
+  // }, []);
+
+  // useEffect(() => {
+  //   const eventEmitter = new NativeEventEmitter(CalendarModule);
+  //   let eventListener = eventEmitter.addListener('testFromCalendar', e => {
+  //     console.log("TEST", e)
+  //   });
+  //   return () => eventListener.remove();
+  // }, []);
+
   useEffect(() => {
     const eventEmitter = new NativeEventEmitter(CalendarModule);
-    let eventListener = eventEmitter.addListener('Angle', e => {
+    let eventListener = eventEmitter.addListener('angle', e => {
       console.log("ANGLE A VER", e)
-      // console.log("AUTO", event.curr)
-      // console.log("AUTO", event.max)
     });
     return () => eventListener.remove();
   }, []);

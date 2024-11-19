@@ -55,7 +55,7 @@ function App(): ReactElement {
       (e) => {
         //console.log("AAAAA window", window)
         //console.log("AAAAA screen", screen)
-        console.log("AAAAA e", e)
+        //console.log("AAAAA e", e)
         //setDimensions({window, screen});
       },
     );

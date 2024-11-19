@@ -12,11 +12,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.view.Window;
 import android.view.WindowManager;
-import android.util.Log
+import android.util.Log;
 
 import androidx.window.layout.WindowInfoTracker
 import androidx.window.layout.WindowLayoutInfo
 import androidx.window.layout.FoldingFeature
+import androidx.window.layout.WindowMetricsCalculator
 //import androidx.window.layout.DisplayFeature
 
 import android.content.Context.SENSOR_SERVICE
@@ -27,8 +28,6 @@ import android.hardware.SensorEvent
 
 
 
-import androidx.window.layout.WindowMetricsCalculator
-
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
 
@@ -36,6 +35,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.Dispatchers
+//import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -43,6 +43,11 @@ import com.facebook.react.bridge.Arguments
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
 import kotlin.reflect.full.declaredMemberProperties
+
+import com.facebook.react.ReactInstanceManager
+import com.facebook.react.bridge.ReactContext
+
+
 //import androidx.window.layout.DisplayFeature
 
 lateinit var windowInfoTracker: WindowInfoTracker
@@ -51,27 +56,15 @@ lateinit var windowInfoTracker: WindowInfoTracker
 
 //val reactContext: ReactContext
 
-class MainActivity : ReactActivity() {
 
-  val HINGE_ANGLE_SENSOR_NAME = "Hinge Angle"
-  var mSensorManager: SensorManager? = null
-  var mHingeAngleSensor: Sensor? = null
-  var mSensorListener: SensorEventListener? = null
-  var mCurrentHingeAngle: Int = 0
+class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
 
-    //windowInfoTracker = WindowInfoTracker.getOrCreate(this@MainActivity)
-    //windowInfoTracker = WindowInfoTracker.windowLayoutInfo(this@MainActivity)
-
-    // val rrr = WindowInfoTracker.getOrCreate(this@MainActivity)
-    // qqq = rrr.windowLayoutInfo(this)
-    //windowInfoTracker = WindowInfoTracker.getOrCreate(this@MainActivity)
-    //onWindowLayoutInfoChange()
-
-    
+    // val qq = WindowInfoTracker.getOrCreate(this@MainActivity).windowLayoutInfo(this@MainActivity)
+    //       updateUI(qq)
 
     lifecycleScope.launch(Dispatchers.Main) {
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -83,32 +76,22 @@ class MainActivity : ReactActivity() {
 
   }
 
-  //val mainTest = Arguments.createMap()
+  // override fun onStart() {
+  //   super.onStart();
 
-  // fun setupSensors() {
-    // mSensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-    // val sensorList: List<Sensor> = mSensorManager!!.getSensorList(Sensor.TYPE_ALL)
-    // for (sensor in sensorList) {
-    //   if (sensor.getName().contains(HINGE_ANGLE_SENSOR_NAME)) { mHingeAngleSensor = sensor }
-    // }
-    // mSensorListener = object : SensorEventListener {
-    //   override fun onSensorChanged(event: SensorEvent) {
-    //     if (event.sensor == mHingeAngleSensor) {
-    //       val angle = event.values[0].toInt()
-    //       //TODO something with angle
-    //       //mainTest.putString("angle", "${angle}")
-          
-    //     }
-    //   }
-
-    //   override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
-    // }
-  //}
+  //   reactInstanceManager.currentReactContext
+  //     ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+  //     ?.emit("onStartMainActivity", "TEST")
+  // }
 
   fun updateUI(newLayoutInfo: WindowLayoutInfo) {
     //variable_name = newLayoutInfo.displayFeatures
     //variable_name = newLayoutInfo.displayFeatures.toString()
     //variable_name = newLayoutInfo.displayFeatures.flattenToString()
+
+    //Log.d("Notification", "Log from the app");
+    //Log.d("LOG", "${newLayoutInfo}");
+
     val mainMap = Arguments.createMap()
     val currMap = Arguments.createMap()
     val maxMap = Arguments.createMap()
@@ -175,9 +158,10 @@ class MainActivity : ReactActivity() {
     //mainMap.putString("fold", "${foldingFeature?.orientation}")
     //mainMap.putString("fold", "${foldingFeature?.occlusionType}")
     //mainMap.putString("fold", "${foldingFeature?.isSeparating}")
-    mainMap.putString("fold", "${foldingFeature?.isSeparating}")
+    //mainMap.putString("fold", "${foldingFeature?.isSeparating}")
     //mainMap.putString("fold", "${newLayoutInfo.displayFeatures.orientation}")
-    //mainMap.putMap("fold", newLayoutInfo)
+    mainMap.putString("fold", "${newLayoutInfo}")
+    //mainMap.putMap("fold", "${newLayoutInfo}")
 
     //params.putMap("curr", riversArray)
 
@@ -190,15 +174,46 @@ class MainActivity : ReactActivity() {
     //     params.putString("eventProperty", "One logic/physical display - unspanned")
     // }
 
+    //Log.d("LOG", "AVER ${reactInstanceManager.currentReactContext}");
+
     reactInstanceManager.currentReactContext
       ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
       ?.emit("EventReminder", mainMap)
+      //?.emit("EventReminder", null)
+      
   }
 
-  // override fun onResume() {
-  //   super.onResume()
-  //   if (mHingeAngleSensor != null) { mSensorManager?.registerListener(mSensorListener, mHingeAngleSensor, SensorManager.SENSOR_DELAY_NORMAL) }
+  // override fun onReactContextInitialized() {
+  //     //Log.d(TAG, "Here's your valid ReactContext")
+  //     Log.d("LOG", "AVER contexto valido");
   // }
+
+  // override fun onResume() {
+  //   super.onResume();
+  //    Log.d("LOG", "onResume ${reactInstanceManager.currentReactContext}");
+  //   //if (mHingeAngleSensor != null) { mSensorManager?.registerListener(mSensorListener, mHingeAngleSensor, SensorManager.SENSOR_DELAY_NORMAL) }
+  // }
+
+  override fun onResume() {
+    super.onResume()
+    reactInstanceManager.addReactInstanceEventListener(this)
+  }
+
+  override fun onPause() {
+      super.onPause()
+      reactInstanceManager.removeReactInstanceEventListener(this)
+  }
+
+  override fun onReactContextInitialized(context: ReactContext) {
+    //Log.d("LOG", "onReactContextInitialized ${reactInstanceManager.currentReactContext}");
+    Log.d("LOG", "onReactContextInitialized ${context}");
+    //Log.d(TAG, "Here's your valid ReactContext")
+    context
+      ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+      ?.emit("EventReminder", "WORKING")
+      //?.emit("EventReminder", null)
+  }
+
 
   // override fun onPause() {
   //   super.onPause()
