@@ -66,13 +66,13 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     // val qq = WindowInfoTracker.getOrCreate(this@MainActivity).windowLayoutInfo(this@MainActivity)
     //       updateUI(qq)
 
-    lifecycleScope.launch(Dispatchers.Main) {
-      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        WindowInfoTracker.getOrCreate(this@MainActivity)
-          .windowLayoutInfo(this@MainActivity)
-          .collect { value -> updateUI(value) }
-      }
-    }
+    // lifecycleScope.launch(Dispatchers.Main) {
+    //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+    //     WindowInfoTracker.getOrCreate(this@MainActivity)
+    //       .windowLayoutInfo(this@MainActivity)
+    //       .collect { value -> updateUI(value) }
+    //   }
+    // }
 
   }
 
@@ -207,6 +207,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun onReactContextInitialized(context: ReactContext) {
     //Log.d("LOG", "onReactContextInitialized ${reactInstanceManager.currentReactContext}");
     Log.d("LOG", "onReactContextInitialized ${context}");
+
+      lifecycleScope.launch(Dispatchers.Main) {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        WindowInfoTracker.getOrCreate(this@MainActivity)
+          .windowLayoutInfo(this@MainActivity)
+          .collect { value -> updateUI(value) }
+      }
+    }
     //Log.d(TAG, "Here's your valid ReactContext")
     context
       ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
