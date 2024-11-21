@@ -14,5 +14,5 @@ class CalendarPackage : ReactPackage {
 
     override fun createNativeModules(
         reactContext: ReactApplicationContext
-    ): MutableList<NativeModule> = listOf(CalendarModule(reactContext)).toMutableList()
+    ): MutableList<NativeModule> = listOf(HingeSensorModule(reactContext)).toMutableList()
 }

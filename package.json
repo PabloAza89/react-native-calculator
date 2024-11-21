@@ -6,6 +6,7 @@
     "install": "react-native run-android",
     "debug": "sh ./debugApk.sh",
     "release": "sh ./releaseApk.sh",
+    "log": "sh ./log.sh",
     "server": "react-native start",
     "emu:1": "sh ./emu-5.6-34.sh",
     "emu:2": "sh ./emu-7.58-34.sh",

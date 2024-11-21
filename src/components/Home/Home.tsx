@@ -66,7 +66,7 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     )
   }
 
-  const { CalendarModule, MainActivity } = NativeModules;
+  const { HingeSensor, MainActivity } = NativeModules;
 
   //const onPress = () => {
   const onPress = async () => {
@@ -86,8 +86,14 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
 
   useEffect(() => {
     const eventEmitter = new NativeEventEmitter(MainActivity);
-    let eventListener = eventEmitter.addListener('EventReminder', e => {
-      console.log("EventReminder", e)
+    let eventListener = eventEmitter.addListener('LayoutInfo', e => {
+      console.log("curr", e.curr)
+      console.log("max", e.max)
+      console.log("state", e.state)
+      console.log("orientation", e.orientation)
+      console.log("occlusionType", e.occlusionType)
+      console.log("isSeparating", e.isSeparating)
+      console.log("hinge", e.hinge)
     });
     return () => eventListener.remove();
   }, []);
@@ -109,9 +115,9 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
   // }, []);
 
   useEffect(() => {
-    const eventEmitter = new NativeEventEmitter(CalendarModule);
-    let eventListener = eventEmitter.addListener('angle', e => {
-      console.log("ANGLE A VER", e)
+    const nativeEvent = new NativeEventEmitter(HingeSensor);
+    let eventListener = nativeEvent.addListener('angle', e => {
+      console.log("angle", e)
     });
     return () => eventListener.remove();
   }, []);
