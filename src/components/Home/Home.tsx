@@ -1,5 +1,5 @@
 import { ReactElement, useState, useRef, useEffect } from 'react';
-import { ScrollView, StatusBar, Text, View, TouchableHighlight, NativeModules, Button, NativeEventEmitter } from 'react-native';
+import { ScrollView, StatusBar, Text, View, TouchableHighlight, NativeModules, NativeEventEmitter } from 'react-native';
 import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
@@ -7,27 +7,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeI } from '../../interfaces/interfaces';
 
 function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput }: HomeI): ReactElement {
-
-  //const { MainActivity } = NativeModules;
-  //const { MainActivity } = NativeModules;
-  //const { test } = NativeModules;
-  
-  
-  //CalendarModule.createCalendarEvent()
-
-  //console.log("AA", )
-  //console.log("AA", CalendarModule.createCalendarEvent())
-
-  //console.log("MAIN ACTIVITY", MainActivity.getActivity())
-  //console.log("MAIN ACTIVITY", MainActivity.bbb !== null ? MainActivity.bbb : undefined)
-  //console.log("MAIN ACTIVITY", MainActivity.bbb)
-  //console.log("MAIN ACTIVITY", NativeModules)
-  //console.log("MAIN ACTIVITY", CalendarModule.getName())
-  //console.log("MAIN ACTIVITY", MainActivity.ReactActivity().ccc())
-  //console.log("MAIN ACTIVITY", MainActivity.ccc)
-  //console.log("NativeModules", NativeModules)
-  //console.log("NativeModules", MainActivity.ccc())
-  //console.log("MAIN ACTIVITY", MainActivity.obtainWindowMetrics())
 
   let ins = useSafeAreaInsets(); // insets
 
@@ -44,8 +23,6 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     scrollRefUpper.current?.scrollToEnd({ animated: false })
     scrollRefCenter.current?.scrollToEnd({ animated: false })
   }
-
-  //console.log("PORT", port)
 
   let buttonsMapper = () => {
     let values = [
@@ -68,52 +45,6 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
 
   const { HingeSensor, MainActivity } = NativeModules;
 
-  //const onPress = () => {
-  const onPress = async () => {
-    //console.log("CLICKED", await CalendarModule.getString())
-    //console.log("CLICKED", await MainActivity.aaa)
-    //console.log("CLICKED", await NativeModules.reactNativeCalculator.aaa())
-    //console.log("CLICKED", await MainActivity.aaa())
-    //console.log("CLICKED", await CalendarModule.getString())
-    //console.log("CLICKED", await CalendarModule.getStringa())
-    //console.log("CLICKED", await CalendarModule.getStringa())
-    //console.log("CLICKED", await CalendarModule.aaa())
-    //console.log("CLICKED", await CalendarModule)
-    //console.log("CLICKED", await CalendarModule.aaa())
-    //console.log("CLICKED", await typeof NativeModules)
-    //console.log("CLICKED", await CalendarModule.callFromReact())
-  };
-
-  useEffect(() => {
-    const eventEmitter = new NativeEventEmitter(MainActivity);
-    let eventListener = eventEmitter.addListener('LayoutInfo', e => {
-      console.log("curr", e.curr)
-      console.log("max", e.max)
-      console.log("state", e.state)
-      console.log("orientation", e.orientation)
-      console.log("occlusionType", e.occlusionType)
-      console.log("isSeparating", e.isSeparating)
-      console.log("hinge", e.hinge)
-    });
-    return () => eventListener.remove();
-  }, []);
-
-  // useEffect(() => {
-  //   const eventEmitter = new NativeEventEmitter(MainActivity);
-  //   let eventListener = eventEmitter.addListener('onStartMainActivity', e => {
-  //     console.log("onStartMainActivity", e)
-  //   });
-  //   return () => eventListener.remove();
-  // }, []);
-
-  // useEffect(() => {
-  //   const eventEmitter = new NativeEventEmitter(CalendarModule);
-  //   let eventListener = eventEmitter.addListener('testFromCalendar', e => {
-  //     console.log("TEST", e)
-  //   });
-  //   return () => eventListener.remove();
-  // }, []);
-
   useEffect(() => {
     const nativeEvent = new NativeEventEmitter(HingeSensor);
     let eventListener = nativeEvent.addListener('angle', e => {
@@ -122,15 +53,88 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     return () => eventListener.remove();
   }, []);
 
+  useEffect(() => {
+    const eventEmitter = new NativeEventEmitter(MainActivity);
+    let eventListener = eventEmitter.addListener('LayoutInfo', e => {
+      console.log("curr", e.curr) // CURRENT WINDOW
+      console.log("max", e.max) // CURRENT SCREEN
+      console.log("state", e.state) // FLAT or HALF_OPENED // useless
+      console.log("orientation", e.orientation) // HORIZONTAL or VERTICAL
+      console.log("occlusionType", e.occlusionType) // NONE or FULL
+      console.log("isSeparating", e.isSeparating) // TRUE or FALSE (boolean)
+      console.log("hinge", e.hinge) // HINGE POSITION
+    });
+    return () => eventListener.remove();
+  }, []);
+
   return (
     <View style={[s.background, { height: '100%', backgroundColor: 'lightblue' }]}>
       <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
-
-      <Button
-        title="Click to invoke your native module!"
-        color="#841584"
-        onPress={onPress}
-      />
+      <View
+        style={[
+          s.contour,
+          { paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, borderWidth: vmin * 0.5, marginRight: ins.right, marginLeft: ins.left, marginBottom: port ? ins.bottom : 0 },
+          port ?
+          { width: vmin * 90, height: vmin * 129.6 } :
+          { width: vmin * 156, height: vmin * 90, marginTop: vmin * 4 }
+        ]}
+      >
+        {
+          parErr &&
+          <Text
+            style={[
+              s.parErr,
+              port ?
+              { width: vmin * 86, height: 40, top: -40 } :
+              { width: vmin * 152, height: 30, top: -30 }
+            ]}
+          >CHECK PARENTHESIS</Text>
+        }
+        <View
+          style={[
+            s.displayContainer,
+            { height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2 },
+            port ?
+            { width: vmin * 86 } :
+            { width: vmin * 152 }
+          ]}
+        >
+          <ScrollView
+            overScrollMode="never"
+            ref={scrollRefUpper}
+            horizontal={true}
+            contentContainerStyle={{ alignItems: 'center' }}
+            showsHorizontalScrollIndicator={false}
+          >
+            <Text style={[ s.secondaryResult, { height: vmin * 6, lineHeight: vmin * 6, } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
+          </ScrollView>
+          <ScrollView
+            overScrollMode="never"
+            ref={scrollRefCenter}
+            horizontal={true}
+            contentContainerStyle={{ alignItems: 'center' }}
+            showsHorizontalScrollIndicator={false}
+          >
+            <Text style={[ s.mainResult, { height: vmin * 8, lineHeight: vmin * 8 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
+          </ScrollView>
+          <Text style={[s.secondaryResult]} />
+        </View>
+        { buttonsMapper() }
+        <TouchableHighlight
+          underlayColor="#8aaeba"
+          activeOpacity={1}
+          style={[
+            s.question,
+            { borderRadius: (vmin * 50) / 2 },
+            port ?
+            { left: ((vmin * 90) / 2) - 23, bottom: -54 } :
+            { top: ((vmin * 90) / 2) - 23, right: -54 },
+          ]}
+          onPress={() => navigate('About')}
+        >
+          <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
+        </TouchableHighlight>
+      </View>
     </View>
   );
 }
