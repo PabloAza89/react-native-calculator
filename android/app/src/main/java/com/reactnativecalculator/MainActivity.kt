@@ -143,8 +143,20 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     // val qqa = Settings.Global.getString(mResolver, "display_features");
 
     // e.g.: hinge-[1080,0,1080,1840]
-    val hnoArr = Settings.Global.getString(context.contentResolver, "display_features").split(",") // HINGE NATURAL ORIENTATION
+    //val hnoArr = Settings.Global.getString(context.contentResolver, "display_features").split(",") // HINGE NATURAL ORIENTATION
+    val hnoArr = Settings.Global.getString(context.contentResolver, "display_features").split(",")
 
+    val hnoArrParsed = mapOf(
+      "left" to hnoArr[0].filter { it.isDigit() }.toDouble() / dotsPerInch,
+      "top" to hnoArr[1].toDouble() / dotsPerInch ,
+      "right" to hnoArr[2].toDouble() / dotsPerInch,
+      "bottom" to hnoArr[3].filter { it.isDigit() }.toDouble() / dotsPerInch
+    )
+    
+    // [ "hinge-[1080", "0", "1080" , "1840]" ]
+    // 0 & 3 NEED TO BE FILTERED
+
+    //val hnoArrParsed = 
 
     // val test = this@MainActivity.getResources().getConfiguration().orientation // retrieve 1 or 2
     //val test = getWindowManager().getDefaultDisplay().getRotation(); // retrieve 0 1 2 3
@@ -157,10 +169,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
     if (rotation == 1) { // rotation 90º (rotated to left)
-      testMap.putString("left", "0")
-      testMap.putString("top", "${hnoArr[2].toDouble() / dotsPerInch}") // CONTINUE HERE
-      testMap.putString("right", "${hnoArr[2].toDouble() / dotsPerInch}")
-      testMap.putString("bottom", "${hnoArr[3].filter { it.isDigit() }.toDouble() / dotsPerInch}")
+      testMap.putString("left", "${hnoArrParsed["left"]}") // Top ~ ALWAYS IS ZERO
+      testMap.putString("top", "${hnoArrParsed["top"]}") // maxHeight - Left
+      testMap.putString("right", "${hnoArrParsed["right"]}") // Bottom
+      testMap.putString("bottom", "${hnoArrParsed["bottom"]}") // maxHeight - Right
+      // testMap.putString("left", "0") // Top ~ ALWAYS IS ZERO
+      // testMap.putString("top", "${maxMap.getDouble("bottom") - hnoArr[0].filter { it.isDigit() }.toDouble()}") // maxHeight - Left
+      // testMap.putString("right", "${hnoArr[3].filter { it.isDigit() }.toDouble()}") // Bottom
+      // testMap.putString("bottom", "${maxMap.getDouble("bottom") - hnoArr[2].toDouble()}") // maxHeight - Right
     } else { // rotation == 0 --> natural orientation
       testMap.putString("left", "${hnoArr[0].filter { it.isDigit() }.toDouble() / dotsPerInch}")
       testMap.putString("top", "${hnoArr[1].toDouble() / dotsPerInch}")
