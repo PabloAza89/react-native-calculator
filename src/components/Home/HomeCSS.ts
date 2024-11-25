@@ -5,17 +5,19 @@ export const s = StyleSheet.create({
     //backgroundColor: 'lightblue',
     position: 'relative',
     //width: '100%',
-    width: 835, // dp full
+    width: 839,
+    //width: 835, // dp full
     //width: 417, // dp half
     //width: 208, // dp quarter
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    /* height: 641 */
   },
   contour: {
     backgroundColor: 'silver',
     borderColor: 'darkblue',
     /* maxWidth: '100%', */
-    maxWidth: 200,
+    maxWidth: 400,
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'space-evenly',

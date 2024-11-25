@@ -3,7 +3,7 @@ import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BootSplash from "react-native-bootsplash";
 import * as Font from 'expo-font';
-import { Image, AppState, Dimensions, useWindowDimensions } from 'react-native';
+import { Image, AppState, Dimensions, useWindowDimensions, NativeModules, NativeEventEmitter } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -189,6 +189,31 @@ function App(): ReactElement {
   })
 
   let initialState = { index: 0, routes: [ { name: 'Home' } ] }; // SET NAVIGATOR INITIAL STATE TO AVOID "UNDEFINED" ON "APP BLUR SAVE LAST ROUTE" (WITHOUT NAVIGATE ANY SCREEN)
+
+  const { HingeSensor, MainActivity } = NativeModules;
+
+  useEffect(() => {
+    const nativeEvent = new NativeEventEmitter(HingeSensor);
+    let eventListener = nativeEvent.addListener('angle', e => {
+      console.log("angle", e)
+    });
+    return () => eventListener.remove();
+  }, []);
+
+  useEffect(() => {
+    const eventEmitter = new NativeEventEmitter(MainActivity);
+    let eventListener = eventEmitter.addListener('LayoutInfo', e => {
+      console.log("curr", e.curr) // CURRENT WINDOW (BOUNDS)
+      console.log("max", e.max) // CURRENT SCREEN (BOUNDS)
+      console.log("state", e.state) // FLAT or HALF_OPENED
+      console.log("orientation", e.orientation) // HORIZONTAL or VERTICAL
+      console.log("occlusionType", e.occlusionType) // NONE or FULL
+      console.log("isSeparating", e.isSeparating) // TRUE or FALSE (boolean)
+      console.log("hinge", e.hinge) // HINGE POSITION (BOUNDS)
+      console.log("test", e.test) // HINGE POSITION (BOUNDS)
+    });
+    return () => eventListener.remove();
+  }, []);
 
   return (
     <NavigationContainer ref={navigationRef} initialState={initialState}>

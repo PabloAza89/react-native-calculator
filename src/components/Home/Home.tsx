@@ -43,32 +43,37 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     )
   }
 
-  const { HingeSensor, MainActivity } = NativeModules;
+  // const { HingeSensor, MainActivity } = NativeModules;
 
-  useEffect(() => {
-    const nativeEvent = new NativeEventEmitter(HingeSensor);
-    let eventListener = nativeEvent.addListener('angle', e => {
-      console.log("angle", e)
-    });
-    return () => eventListener.remove();
-  }, []);
+  // useEffect(() => {
+  //   const nativeEvent = new NativeEventEmitter(HingeSensor);
+  //   let eventListener = nativeEvent.addListener('angle', e => {
+  //     console.log("angle", e)
+  //   });
+  //   return () => eventListener.remove();
+  // }, []);
 
-  useEffect(() => {
-    const eventEmitter = new NativeEventEmitter(MainActivity);
-    let eventListener = eventEmitter.addListener('LayoutInfo', e => {
-      console.log("curr", e.curr) // CURRENT WINDOW
-      console.log("max", e.max) // CURRENT SCREEN
-      console.log("state", e.state) // FLAT or HALF_OPENED // useless
-      console.log("orientation", e.orientation) // HORIZONTAL or VERTICAL
-      console.log("occlusionType", e.occlusionType) // NONE or FULL
-      console.log("isSeparating", e.isSeparating) // TRUE or FALSE (boolean)
-      console.log("hinge", e.hinge) // HINGE POSITION
-    });
-    return () => eventListener.remove();
-  }, []);
+  // useEffect(() => {
+  //   const eventEmitter = new NativeEventEmitter(MainActivity);
+  //   let eventListener = eventEmitter.addListener('LayoutInfo', e => {
+  //     console.log("curr", e.curr) // CURRENT WINDOW
+  //     console.log("max", e.max) // CURRENT SCREEN
+  //     console.log("state", e.state) // FLAT or HALF_OPENED // useless
+  //     console.log("orientation", e.orientation) // HORIZONTAL or VERTICAL
+  //     console.log("occlusionType", e.occlusionType) // NONE or FULL
+  //     console.log("isSeparating", e.isSeparating) // TRUE or FALSE (boolean)
+  //     console.log("hinge", e.hinge) // HINGE POSITION
+  //   });
+  //   return () => eventListener.remove();
+  // }, []);
+
+  //console.log("ins", ins)
 
   return (
     <View style={[s.background, { height: '100%', backgroundColor: 'lightblue' }]}>
+      {/* <View
+        style={[{ position: 'absolute', left: 411.42, top: 10, height: 50, width: 50, backgroundColor: 'red' }]}
+      /> */}
       <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
       <View
         style={[
