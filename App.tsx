@@ -208,9 +208,11 @@ function App(): ReactElement {
       console.log("state", e.state) // FLAT or HALF_OPENED
       console.log("orientation", e.orientation) // HORIZONTAL or VERTICAL
       console.log("occlusionType", e.occlusionType) // NONE or FULL
-      console.log("isSeparating", e.isSeparating) // TRUE or FALSE (boolean)
+      console.log("isSeparating", e.isSeparating) // TRUE or FALSE (boolean) // USELESS
       console.log("hinge", e.hinge) // HINGE POSITION (BOUNDS)
-      console.log("test", e.test) // HINGE POSITION (BOUNDS)
+      console.log("test", e.test)
+      console.log("hno", e.hno)
+      console.log("rotation", e.rotation)
     });
     return () => eventListener.remove();
   }, []);

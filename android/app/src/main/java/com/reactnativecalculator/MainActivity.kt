@@ -93,6 +93,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val currMap = Arguments.createMap()
     val maxMap = Arguments.createMap()
     val hingeMap = Arguments.createMap()
+    val testMap = Arguments.createMap()
 
     val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
     val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
@@ -122,6 +123,10 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         val pixelsHinge = foldingFeature.bounds::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(foldingFeature.bounds).toString().toDouble() // Int --> Double
         val densityIndPixHinge = pixelsHinge / dotsPerInch // dp = px / (dpi / 160) === px / density
         hingeMap.putDouble("${item}", densityIndPixHinge) // densityIndPixHinge!!::class.simpleName --> RETRIEVE TYPE
+
+        // val pixelsHinge = foldingFeature.bounds::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(foldingFeature.bounds).toString().toDouble() // Int --> Double
+        // hingeMap.putDouble("${item}", pixelsHinge) // densityIndPixHinge!!::class.simpleName --> RETRIEVE TYPE
+
       }
 
       mainMap.putString("state", "${foldingFeature.state}") // FLAT or HALF_OPENED
@@ -137,18 +142,40 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     // val mResolver = context.getContentResolver();
     // val qqa = Settings.Global.getString(mResolver, "display_features");
 
-    //val qqa = Settings.Global.getString(context.contentResolver, "display_features")
-    //val test = Display.rotation
+    // e.g.: hinge-[1080,0,1080,1840]
+    val hnoArr = Settings.Global.getString(context.contentResolver, "display_features").split(",") // HINGE NATURAL ORIENTATION
+
+
     // val test = this@MainActivity.getResources().getConfiguration().orientation // retrieve 1 or 2
     //val test = getWindowManager().getDefaultDisplay().getRotation(); // retrieve 0 1 2 3
     //val test = (getSystemService(WindowManager::class.java) as WindowManager).defaultDisplay.rotation
-    val test = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation
+
+    // 0 --> natural orientation
+    // 1 --> rotation 90º (rotated to left)
+    // 2 --> rotation 180º
+    // 3 --> rotation 270º
+
+    val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
+    if (rotation == 1) { // rotation 90º (rotated to left)
+      testMap.putString("left", "0")
+      testMap.putString("top", "${hnoArr[2].toDouble() / dotsPerInch}") // CONTINUE HERE
+      testMap.putString("right", "${hnoArr[2].toDouble() / dotsPerInch}")
+      testMap.putString("bottom", "${hnoArr[3].filter { it.isDigit() }.toDouble() / dotsPerInch}")
+    } else { // rotation == 0 --> natural orientation
+      testMap.putString("left", "${hnoArr[0].filter { it.isDigit() }.toDouble() / dotsPerInch}")
+      testMap.putString("top", "${hnoArr[1].toDouble() / dotsPerInch}")
+      testMap.putString("right", "${hnoArr[2].toDouble() / dotsPerInch}")
+      testMap.putString("bottom", "${hnoArr[3].filter { it.isDigit() }.toDouble() / dotsPerInch}")
+    }
 
     mainMap.putMap("curr", currMap)
     mainMap.putMap("max", maxMap)
     //mainMap.putString("test", "${hardware}")
     //mainMap.putString("test", "${qqa}")
-    mainMap.putString("test", "${test}")
+    //mainMap.putString("hno", "${hno}")
+    mainMap.putString("test", "${hnoArr}")
+    mainMap.putMap("hno", testMap)
+    mainMap.putString("rotation", "${rotation}")
     //mainMap.putString("test", "${foldingFeature}")
     //mainMap.putString("test", "${newLayoutInfo}")
     // 2 LANDSCAPE // 1 PORTRAIT
