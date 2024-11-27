@@ -52,6 +52,8 @@ import android.view.Display
 import android.view.WindowManager
 import android.content.Context
 
+import com.reactnativecalculator.hnoListParsedClass
+
 class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +105,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     var boundsArr = arrayOf("left", "top", "right", "bottom")
 
-    val dotsPerInch = displayMetrics.density.toDouble() // Float --> Double
+    val dotsPerInch: Double = displayMetrics.density.toDouble() // Float --> Double
 
     for (item in boundsArr) {
       val pixelsCurr = boundsCurr::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsCurr).toString().toDouble() // Int --> Double
@@ -143,20 +145,15 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     // val qqa = Settings.Global.getString(mResolver, "display_features");
 
     // e.g.: hinge-[1080,0,1080,1840]
-    //val hnoArr = Settings.Global.getString(context.contentResolver, "display_features").split(",") // HINGE NATURAL ORIENTATION
-    val hnoArr = Settings.Global.getString(context.contentResolver, "display_features").split(",")
+    // { "hinge-[1080", "0", "1080" , "1840]" }
+    val hnoList = Settings.Global.getString(context.contentResolver, "display_features").split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() } // HINGE NATURAL ORIENTATION
 
-    val hnoArrParsed = mapOf(
-      "left" to hnoArr[0].filter { it.isDigit() }.toDouble() / dotsPerInch,
-      "top" to hnoArr[1].toDouble() / dotsPerInch ,
-      "right" to hnoArr[2].toDouble() / dotsPerInch,
-      "bottom" to hnoArr[3].filter { it.isDigit() }.toDouble() / dotsPerInch
-    )
-    
-    // [ "hinge-[1080", "0", "1080" , "1840]" ]
-    // 0 & 3 NEED TO BE FILTERED
+    val hnoListParsed = hnoListParsedClass()
+    hnoListParsed.left = hnoList[0] / dotsPerInch
+    hnoListParsed.top = hnoList[1] / dotsPerInch
+    hnoListParsed.right = hnoList[2] / dotsPerInch
+    hnoListParsed.bottom = hnoList[3] / dotsPerInch
 
-    //val hnoArrParsed = 
 
     // val test = this@MainActivity.getResources().getConfiguration().orientation // retrieve 1 or 2
     //val test = getWindowManager().getDefaultDisplay().getRotation(); // retrieve 0 1 2 3
@@ -169,19 +166,28 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
     if (rotation == 1) { // rotation 90º (rotated to left)
-      testMap.putString("left", "${hnoArrParsed["left"]}") // Top ~ ALWAYS IS ZERO
-      testMap.putString("top", "${hnoArrParsed["top"]}") // maxHeight - Left
-      testMap.putString("right", "${hnoArrParsed["right"]}") // Bottom
-      testMap.putString("bottom", "${hnoArrParsed["bottom"]}") // maxHeight - Right
-      // testMap.putString("left", "0") // Top ~ ALWAYS IS ZERO
-      // testMap.putString("top", "${maxMap.getDouble("bottom") - hnoArr[0].filter { it.isDigit() }.toDouble()}") // maxHeight - Left
-      // testMap.putString("right", "${hnoArr[3].filter { it.isDigit() }.toDouble()}") // Bottom
-      // testMap.putString("bottom", "${maxMap.getDouble("bottom") - hnoArr[2].toDouble()}") // maxHeight - Right
-    } else { // rotation == 0 --> natural orientation
-      testMap.putString("left", "${hnoArr[0].filter { it.isDigit() }.toDouble() / dotsPerInch}")
-      testMap.putString("top", "${hnoArr[1].toDouble() / dotsPerInch}")
-      testMap.putString("right", "${hnoArr[2].toDouble() / dotsPerInch}")
-      testMap.putString("bottom", "${hnoArr[3].filter { it.isDigit() }.toDouble() / dotsPerInch}")
+      testMap.putString("left", "0") // ALWAYS IS ZERO
+      testMap.putString("top", "${ maxMap.getDouble("bottom") - hnoListParsed.left }") // maxHeight - Left
+      testMap.putString("right", "${hnoListParsed.bottom}") // Bottom
+      testMap.putString("bottom", "${ maxMap.getDouble("bottom") - hnoListParsed.right }") // maxHeight - Right
+    }
+    if (rotation == 2) { // rotation 180º
+      testMap.putString("left", "${ maxMap.getDouble("right") - hnoListParsed.right }") // maxWidth - Right
+      testMap.putString("top", "0") // ALWAYS IS ZERO
+      testMap.putString("right", "${ maxMap.getDouble("right") - hnoListParsed.left }") // maxWidth - Left
+      testMap.putString("bottom", "${ hnoListParsed.bottom }") // Bottom
+    }
+    if (rotation == 3) { // rotation 270º
+      testMap.putString("left", "0") // ALWAYS IS ZERO
+      testMap.putString("top", "${ hnoListParsed.left }") // Left
+      testMap.putString("right", "${ hnoListParsed.bottom }") // Bottom
+      testMap.putString("bottom", "${ hnoListParsed.right }") // Right
+    }
+    else { // rotation == 0 --> natural orientation
+      testMap.putString("left", "${hnoListParsed.left}")
+      testMap.putString("top", "${hnoListParsed.top}")
+      testMap.putString("right", "${hnoListParsed.right}")
+      testMap.putString("bottom", "${hnoListParsed.bottom}")
     }
 
     mainMap.putMap("curr", currMap)
@@ -189,7 +195,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     //mainMap.putString("test", "${hardware}")
     //mainMap.putString("test", "${qqa}")
     //mainMap.putString("hno", "${hno}")
-    mainMap.putString("test", "${hnoArr}")
+    mainMap.putString("test", "${hnoList}")
     mainMap.putMap("hno", testMap)
     mainMap.putString("rotation", "${rotation}")
     //mainMap.putString("test", "${foldingFeature}")
