@@ -192,8 +192,16 @@ function App(): ReactElement {
 
   const { HingeSensor, MainActivity } = NativeModules;
 
+  // useEffect(() => {
+  //   const nativeEvent = new NativeEventEmitter(HingeSensor);
+  //   let eventListener = nativeEvent.addListener('angle', e => {
+  //     console.log("angle", e)
+  //   });
+  //   return () => eventListener.remove();
+  // }, []);
+
   useEffect(() => {
-    const nativeEvent = new NativeEventEmitter(HingeSensor);
+    const nativeEvent = new NativeEventEmitter(MainActivity);
     let eventListener = nativeEvent.addListener('angle', e => {
       console.log("angle", e)
     });
@@ -201,8 +209,8 @@ function App(): ReactElement {
   }, []);
 
   useEffect(() => {
-    const eventEmitter = new NativeEventEmitter(MainActivity);
-    let eventListener = eventEmitter.addListener('LayoutInfo', e => {
+    const nativeEvent = new NativeEventEmitter(MainActivity);
+    let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
       console.log("curr", e.curr) // CURRENT WINDOW (BOUNDS)
       console.log("max", e.max) // CURRENT SCREEN (BOUNDS)
       console.log("state", e.state) // FLAT or HALF_OPENED
@@ -214,7 +222,13 @@ function App(): ReactElement {
       console.log("hno", e.hno)
       console.log("rotation", e.rotation)
     });
-    return () => eventListener.remove();
+    let angleListener = nativeEvent.addListener('angle', e => {
+      console.log("angle", e)
+    });
+    return () => {
+      LayoutInfoListener.remove();
+      angleListener.remove();
+    }
   }, []);
 
   return (

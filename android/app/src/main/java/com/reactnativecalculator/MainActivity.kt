@@ -54,6 +54,13 @@ import android.content.Context
 
 import com.reactnativecalculator.hnoListParsedClass
 
+import android.content.Context.SENSOR_SERVICE
+import android.hardware.SensorManager
+import android.hardware.Sensor
+import android.hardware.SensorEventListener
+import android.hardware.SensorEvent
+import com.facebook.react.bridge.LifecycleEventListener
+
 class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +76,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     // }
 
   }
+
 
   override fun onResume() {
     super.onResume()
@@ -88,6 +96,30 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           .collect { value -> updateUI(value, context) }
       }
     }
+
+    var sensorManager: SensorManager? = context.getSystemService(SENSOR_SERVICE) as SensorManager
+    var hingeAngleSensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_HINGE_ANGLE)
+
+    val sensorEventListener = object: SensorEventListener {
+      override fun onSensorChanged(event: SensorEvent) {
+        context
+          .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+          ?.emit("angle", event.values[0].toInt())
+      }
+
+      override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
+    }
+
+    val lifecycleEventListener = object: LifecycleEventListener {
+      override fun onHostResume() { hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) } }
+
+      override fun onHostPause() { hingeAngleSensor?.let { sensorManager?.unregisterListener(sensorEventListener, it) } }
+
+      override fun onHostDestroy() { }
+    }
+
+    context.addLifecycleEventListener(lifecycleEventListener)
+
   }
 
   fun updateUI(newLayoutInfo: WindowLayoutInfo, context: ReactContext) {
