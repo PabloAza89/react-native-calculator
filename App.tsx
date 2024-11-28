@@ -190,32 +190,16 @@ function App(): ReactElement {
 
   let initialState = { index: 0, routes: [ { name: 'Home' } ] }; // SET NAVIGATOR INITIAL STATE TO AVOID "UNDEFINED" ON "APP BLUR SAVE LAST ROUTE" (WITHOUT NAVIGATE ANY SCREEN)
 
-  const { HingeSensor, MainActivity } = NativeModules;
-
-  // useEffect(() => {
-  //   const nativeEvent = new NativeEventEmitter(HingeSensor);
-  //   let eventListener = nativeEvent.addListener('angle', e => {
-  //     console.log("angle", e)
-  //   });
-  //   return () => eventListener.remove();
-  // }, []);
-
-  // useEffect(() => {
-  //   const nativeEvent = new NativeEventEmitter(MainActivity);
-  //   let eventListener = nativeEvent.addListener('angle', e => {
-  //     console.log("angle", e)
-  //   });
-  //   return () => eventListener.remove();
-  // }, []);
+  const { MainActivity } = NativeModules;
 
   useEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
-      console.log("currWindow", e.currWindow) // CURRENT WINDOW (BOUNDS) OK
-      console.log("maxScreen", e.maxScreen) // CURRENT SCREEN (BOUNDS) OK
-      console.log("state", e.state) // FLAT or HALF_OPENED
-      console.log("verticalHinge", e.verticalHinge) // TRUE OR FALSE
-      console.log("occlusion", e.occlusion) // NONE or FULL OK
+      console.log("currWindow", e.currWindow) // CURRENT WINDOW BOUNDS
+      console.log("maxScreen", e.maxScreen) // CURRENT SCREEN BOUNDS
+      console.log("state", e.state) // 'flat' or 'half' or 'closed'
+      console.log("verticalHinge", e.verticalHinge) // Boolean
+      console.log("occlusion", e.occlusion) // Boolean
       console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS
     });
     let angleListener = nativeEvent.addListener('angle', e => {

@@ -30,22 +30,6 @@ import kotlinx.coroutines.launch
 
 import kotlin.reflect.full.declaredMemberProperties
 
-//import androidx.window.extensions.layout.FoldingFeature as OEMFoldingFeature
-//import androidx.window.extensions.layout.FoldingFeature as OEMFoldingFeature
-//import androidx.window.extensions.core.util.function
-//import androidx.window.layout.FoldingFeature
-//import android.view.Display.DEFAULT_DISPLAY;
-//import androidx.window.common.CommonFoldingFeature;
-//import androidx.window.layout.HardwareFoldingFeature
-//import com.android.internal.R.string.config_display_features as ALV
-//import android.content.res.Resources
-//import android.R
-//import com.android.internal.R
-//import androidx.window.common.CommonFoldingFeature
-//import android.hardware.devicestate.DeviceStateManager
-//import android.hardware.devicestate.DeviceState
-//import android.hardware.devicestate.IDeviceStateManagerCallback
-
 import android.provider.Settings
 import android.content.res.Configuration
 import android.view.Display
@@ -66,17 +50,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
-
-    // lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
-    //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-    //     WindowInfoTracker.getOrCreate(this@MainActivity)
-    //       .windowLayoutInfo(this@MainActivity)
-    //       .collect { value -> updateUI(value) }
-    //   }
-    // }
-
   }
-
 
   override fun onResume() {
     super.onResume()
@@ -131,7 +105,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val currWindowMap = Arguments.createMap()
     val maxScreenMap = Arguments.createMap()
     val hingeBoundsMap = Arguments.createMap()
-    ///val testMap = Arguments.createMap()
 
     val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
     val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
@@ -153,33 +126,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       maxScreenMap.putDouble("${item}", densityIndPixMax) // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
     }
 
-    val foldingFeature = newLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
-
-    if (foldingFeature != null) {
-
-      // for (item in boundsArr) {
-      //   val pixelsHinge = foldingFeature.bounds::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(foldingFeature.bounds).toString().toDouble() // Int --> Double
-      //   val densityIndPixHinge = pixelsHinge / dotsPerInch // dp = px / (dpi / 160) === px / density
-      //   hingeMap.putDouble("${item}", densityIndPixHinge) // densityIndPixHinge!!::class.simpleName --> RETRIEVE TYPE
-
-      //   // val pixelsHinge = foldingFeature.bounds::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(foldingFeature.bounds).toString().toDouble() // Int --> Double
-      //   // hingeMap.putDouble("${item}", pixelsHinge) // densityIndPixHinge!!::class.simpleName --> RETRIEVE TYPE
-
-      // }
-
-      //mainMap.putString("state", "${foldingFeature.state}") // FLAT or HALF_OPENED
-      //mainMap.putString("orientation", "${foldingFeature.orientation}") // HORIZONTAL or VERTICAL
-      //mainMap.putString("occlusion", "${foldingFeature.occlusionType}") // NONE or FULL
-      //mainMap.putBoolean("isSeparating", foldingFeature.isSeparating) // TRUE or FALSE (boolean)
-      //mainMap.putMap("hinge", hingeMap) // Rect
-    }
-
-
-    //val qqa = context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android"))
-
-    // val mResolver = context.getContentResolver();
-    // val qqa = Settings.Global.getString(mResolver, "display_features");
-
     // e.g.: hinge-[1080,0,1080,1840]
     // { "hinge-[1080", "0", "1080" , "1840]" }
     val hnoList = Settings.Global.getString(context.contentResolver, "display_features").split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() } // HINGE NATURAL ORIENTATION
@@ -189,16 +135,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     hnoListParsed.top = hnoList[1] / dotsPerInch
     hnoListParsed.right = hnoList[2] / dotsPerInch
     hnoListParsed.bottom = hnoList[3] / dotsPerInch
-
-
-    // val test = this@MainActivity.getResources().getConfiguration().orientation // retrieve 1 or 2
-    //val test = getWindowManager().getDefaultDisplay().getRotation(); // retrieve 0 1 2 3
-    //val test = (getSystemService(WindowManager::class.java) as WindowManager).defaultDisplay.rotation
-
-    // 0 --> natural orientation
-    // 1 --> rotation 90º (rotated to left)
-    // 2 --> rotation 180º
-    // 3 --> rotation 270º
 
     val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
     if (rotation == 1) { // rotation 90º (rotated to left)
@@ -231,33 +167,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     mainMap.putMap("maxScreen", maxScreenMap)
 
     val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right)
-    //val orientationPos = hingeMap.getDouble("top") == 0.0
     val orientationPos = mainMap.getMap("hingeBounds")?.getDouble("top") == 0.0
-    //val orientationPos = hingeMap.getDouble("top")
-
-
 
     val state = if (angle > 150.0) "flat" else if (angle > 30.0) "half" else "closed"
 
-    //mainMap.putString("verticalHinge", "${ hingeMap.getDouble("right") }") // TRUE or FALSE
-    //mainMap.putString("verticalHinge", "${ mainMap.getMap("hinge")!!::class.simpleName }") // TRUE or FALSE
-    //mainMap.putString("verticalHinge", "${ mainMap.getMap("hinge")?.isNull("asd") }") // TRUE or FALSE
-    //mainMap.putString("verticalHinge", "${ mainMap.getMap("hinge")?.getDouble("left") }") // TRUE or FALSE
     mainMap.putBoolean("verticalHinge", orientationPos) // TRUE or FALSE
     mainMap.putBoolean("occlusion", occlusionBoolean) // TRUE or FALSE
 
     mainMap.putString("state", state) // FLAT or HALF_OPENED
-
-    //mainMap.putString("test", "${hardware}")
-    //mainMap.putString("test", "${qqa}")
-    //mainMap.putString("hno", "${hno}")
-    //mainMap.putString("test", "${hnoList}")
-    //mainMap.putMap("hinge", hingeMap)
-    //mainMap.putString("rotation", "${rotation}")
-    //mainMap.putString("test", "${foldingFeature}")
-    //mainMap.putString("test", "${newLayoutInfo}")
-    // 2 LANDSCAPE // 1 PORTRAIT
-    //mainMap.putString("test", "${context.resources.configuration.orientation}")
 
     context
       ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
