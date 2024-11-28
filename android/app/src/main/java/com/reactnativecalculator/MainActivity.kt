@@ -128,10 +128,10 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   fun updateUI(newLayoutInfo: WindowLayoutInfo, context: ReactContext) {
     val mainMap = Arguments.createMap()
-    val currMap = Arguments.createMap()
-    val maxMap = Arguments.createMap()
-    val hingeMap = Arguments.createMap()
-    //val testMap = Arguments.createMap()
+    val currWindowMap = Arguments.createMap()
+    val maxScreenMap = Arguments.createMap()
+    val hingeBoundsMap = Arguments.createMap()
+    ///val testMap = Arguments.createMap()
 
     val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
     val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
@@ -149,8 +149,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       val densityIndPixCurr = pixelsCurr / dotsPerInch // dp = px / (dpi / 160) === px / density
       val densityIndPixMax = pixelsMax / dotsPerInch // dp = px / (dpi / 160) === px / density
 
-      currMap.putDouble("${item}", densityIndPixCurr)
-      maxMap.putDouble("${item}", densityIndPixMax) // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
+      currWindowMap.putDouble("${item}", densityIndPixCurr)
+      maxScreenMap.putDouble("${item}", densityIndPixMax) // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
     }
 
     val foldingFeature = newLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
@@ -202,38 +202,40 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
     if (rotation == 1) { // rotation 90º (rotated to left)
-      hingeMap.putDouble("left", 0.0) // ALWAYS IS ZERO
-      hingeMap.putDouble("top", maxMap.getDouble("bottom") - hnoListParsed.left) // maxHeight - Left
-      hingeMap.putDouble("right", hnoListParsed.bottom) // Bottom
-      hingeMap.putDouble("bottom", maxMap.getDouble("bottom") - hnoListParsed.right) // maxHeight - Right
+      hingeBoundsMap.putDouble("left", 0.0) // ALWAYS IS ZERO
+      hingeBoundsMap.putDouble("top", maxScreenMap.getDouble("bottom") - hnoListParsed.left) // maxHeight - Left
+      hingeBoundsMap.putDouble("right", hnoListParsed.bottom) // Bottom
+      hingeBoundsMap.putDouble("bottom", maxScreenMap.getDouble("bottom") - hnoListParsed.right) // maxHeight - Right
     }
     else if (rotation == 2) { // rotation 180º
-      hingeMap.putDouble("left", maxMap.getDouble("right") - hnoListParsed.right) // maxWidth - Right
-      hingeMap.putDouble("top", 0.0) // ALWAYS IS ZERO
-      hingeMap.putDouble("right", maxMap.getDouble("right") - hnoListParsed.left) // maxWidth - Left
-      hingeMap.putDouble("bottom", hnoListParsed.bottom) // Bottom
+      hingeBoundsMap.putDouble("left", maxScreenMap.getDouble("right") - hnoListParsed.right) // maxWidth - Right
+      hingeBoundsMap.putDouble("top", 0.0) // ALWAYS IS ZERO
+      hingeBoundsMap.putDouble("right", maxScreenMap.getDouble("right") - hnoListParsed.left) // maxWidth - Left
+      hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom) // Bottom
     }
     else if (rotation == 3) { // rotation 270º
-      hingeMap.putDouble("left", 0.0) // ALWAYS IS ZERO
-      hingeMap.putDouble("top", hnoListParsed.left) // Left
-      hingeMap.putDouble("right", hnoListParsed.bottom) // Bottom
-      hingeMap.putDouble("bottom", hnoListParsed.right) // Right
+      hingeBoundsMap.putDouble("left", 0.0) // ALWAYS IS ZERO
+      hingeBoundsMap.putDouble("top", hnoListParsed.left) // Left
+      hingeBoundsMap.putDouble("right", hnoListParsed.bottom) // Bottom
+      hingeBoundsMap.putDouble("bottom", hnoListParsed.right) // Right
     }
     else { // rotation == 0 --> natural orientation
-      hingeMap.putDouble("left", hnoListParsed.left)
-      hingeMap.putDouble("top", hnoListParsed.top)
-      hingeMap.putDouble("right", hnoListParsed.right)
-      hingeMap.putDouble("bottom", hnoListParsed.bottom)
+      hingeBoundsMap.putDouble("left", hnoListParsed.left)
+      hingeBoundsMap.putDouble("top", hnoListParsed.top)
+      hingeBoundsMap.putDouble("right", hnoListParsed.right)
+      hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
     }
 
-    mainMap.putMap("hinge", hingeMap)
-    mainMap.putMap("curr", currMap)
-    mainMap.putMap("max", maxMap)
+    mainMap.putMap("hingeBounds", hingeBoundsMap)
+    mainMap.putMap("currWindow", currWindowMap)
+    mainMap.putMap("maxScreen", maxScreenMap)
 
     val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right)
     //val orientationPos = hingeMap.getDouble("top") == 0.0
-    val orientationPos = mainMap.getMap("hinge")?.getDouble("top") == 0.0
+    val orientationPos = mainMap.getMap("hingeBounds")?.getDouble("top") == 0.0
     //val orientationPos = hingeMap.getDouble("top")
+
+
 
     val state = if (angle > 150.0) "flat" else if (angle > 30.0) "half" else "closed"
 
@@ -244,7 +246,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     mainMap.putBoolean("verticalHinge", orientationPos) // TRUE or FALSE
     mainMap.putBoolean("occlusion", occlusionBoolean) // TRUE or FALSE
 
-    mainMap.putString("state", "${ state }") // FLAT or HALF_OPENED
+    mainMap.putString("state", state) // FLAT or HALF_OPENED
 
     //mainMap.putString("test", "${hardware}")
     //mainMap.putString("test", "${qqa}")

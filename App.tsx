@@ -200,27 +200,23 @@ function App(): ReactElement {
   //   return () => eventListener.remove();
   // }, []);
 
-  useEffect(() => {
-    const nativeEvent = new NativeEventEmitter(MainActivity);
-    let eventListener = nativeEvent.addListener('angle', e => {
-      console.log("angle", e)
-    });
-    return () => eventListener.remove();
-  }, []);
+  // useEffect(() => {
+  //   const nativeEvent = new NativeEventEmitter(MainActivity);
+  //   let eventListener = nativeEvent.addListener('angle', e => {
+  //     console.log("angle", e)
+  //   });
+  //   return () => eventListener.remove();
+  // }, []);
 
   useEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
-      console.log("curr", e.curr) // CURRENT WINDOW (BOUNDS) OK
-      console.log("max", e.max) // CURRENT SCREEN (BOUNDS) OK
+      console.log("currWindow", e.currWindow) // CURRENT WINDOW (BOUNDS) OK
+      console.log("maxScreen", e.maxScreen) // CURRENT SCREEN (BOUNDS) OK
       console.log("state", e.state) // FLAT or HALF_OPENED
       console.log("verticalHinge", e.verticalHinge) // TRUE OR FALSE
       console.log("occlusion", e.occlusion) // NONE or FULL OK
-      //console.log("isSeparating", e.isSeparating) // TRUE or FALSE (boolean) NO
-      //console.log("hinge", e.hinge) // HINGE POSITION (BOUNDS) NO
-      //console.log("test", e.test) NO
-      console.log("hinge", e.hinge) // HINGE BOUNDS
-      //console.log("rotation", e.rotation) // NO
+      console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS
     });
     let angleListener = nativeEvent.addListener('angle', e => {
       console.log("angle", e) // HINGE ANGLE
