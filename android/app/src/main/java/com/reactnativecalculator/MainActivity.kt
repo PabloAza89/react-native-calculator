@@ -88,6 +88,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     reactInstanceManager.removeReactInstanceEventListener(this)
   }
 
+  var angle: Float = 0.toFloat()
+
   override fun onReactContextInitialized(context: ReactContext) {
     lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -102,9 +104,11 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     val sensorEventListener = object: SensorEventListener {
       override fun onSensorChanged(event: SensorEvent) {
+        angle = event.values[0]
         context
           .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-          ?.emit("angle", event.values[0].toInt())
+          ?.emit("angle", angle) // Float
+          //?.emit("angle", event.values[0].toInt())
       }
 
       override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
@@ -163,7 +167,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
       // }
 
-      mainMap.putString("state", "${foldingFeature.state}") // FLAT or HALF_OPENED
+      //mainMap.putString("state", "${foldingFeature.state}") // FLAT or HALF_OPENED
       //mainMap.putString("orientation", "${foldingFeature.orientation}") // HORIZONTAL or VERTICAL
       //mainMap.putString("occlusion", "${foldingFeature.occlusionType}") // NONE or FULL
       //mainMap.putBoolean("isSeparating", foldingFeature.isSeparating) // TRUE or FALSE (boolean)
@@ -223,14 +227,15 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     }
 
     mainMap.putMap("hinge", hingeMap)
+    mainMap.putMap("curr", currMap)
+    mainMap.putMap("max", maxMap)
 
     val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right)
     //val orientationPos = hingeMap.getDouble("top") == 0.0
     val orientationPos = mainMap.getMap("hinge")?.getDouble("top") == 0.0
     //val orientationPos = hingeMap.getDouble("top")
 
-    mainMap.putMap("curr", currMap)
-    mainMap.putMap("max", maxMap)
+    val state = if (angle > 150.0) "flat" else if (angle > 30.0) "half" else "closed"
 
     //mainMap.putString("verticalHinge", "${ hingeMap.getDouble("right") }") // TRUE or FALSE
     //mainMap.putString("verticalHinge", "${ mainMap.getMap("hinge")!!::class.simpleName }") // TRUE or FALSE
@@ -238,6 +243,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     //mainMap.putString("verticalHinge", "${ mainMap.getMap("hinge")?.getDouble("left") }") // TRUE or FALSE
     mainMap.putBoolean("verticalHinge", orientationPos) // TRUE or FALSE
     mainMap.putBoolean("occlusion", occlusionBoolean) // TRUE or FALSE
+
+    mainMap.putString("state", "${ state }") // FLAT or HALF_OPENED
 
     //mainMap.putString("test", "${hardware}")
     //mainMap.putString("test", "${qqa}")
