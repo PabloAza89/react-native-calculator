@@ -127,7 +127,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val currMap = Arguments.createMap()
     val maxMap = Arguments.createMap()
     val hingeMap = Arguments.createMap()
-    val testMap = Arguments.createMap()
+    //val testMap = Arguments.createMap()
 
     val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
     val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
@@ -153,21 +153,21 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     if (foldingFeature != null) {
 
-      for (item in boundsArr) {
-        val pixelsHinge = foldingFeature.bounds::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(foldingFeature.bounds).toString().toDouble() // Int --> Double
-        val densityIndPixHinge = pixelsHinge / dotsPerInch // dp = px / (dpi / 160) === px / density
-        hingeMap.putDouble("${item}", densityIndPixHinge) // densityIndPixHinge!!::class.simpleName --> RETRIEVE TYPE
+      // for (item in boundsArr) {
+      //   val pixelsHinge = foldingFeature.bounds::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(foldingFeature.bounds).toString().toDouble() // Int --> Double
+      //   val densityIndPixHinge = pixelsHinge / dotsPerInch // dp = px / (dpi / 160) === px / density
+      //   hingeMap.putDouble("${item}", densityIndPixHinge) // densityIndPixHinge!!::class.simpleName --> RETRIEVE TYPE
 
-        // val pixelsHinge = foldingFeature.bounds::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(foldingFeature.bounds).toString().toDouble() // Int --> Double
-        // hingeMap.putDouble("${item}", pixelsHinge) // densityIndPixHinge!!::class.simpleName --> RETRIEVE TYPE
+      //   // val pixelsHinge = foldingFeature.bounds::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(foldingFeature.bounds).toString().toDouble() // Int --> Double
+      //   // hingeMap.putDouble("${item}", pixelsHinge) // densityIndPixHinge!!::class.simpleName --> RETRIEVE TYPE
 
-      }
+      // }
 
       mainMap.putString("state", "${foldingFeature.state}") // FLAT or HALF_OPENED
-      mainMap.putString("orientation", "${foldingFeature.orientation}") // HORIZONTAL or VERTICAL
-      mainMap.putString("occlusionType", "${foldingFeature.occlusionType}") // NONE or FULL
-      mainMap.putBoolean("isSeparating", foldingFeature.isSeparating) // TRUE or FALSE (boolean)
-      mainMap.putMap("hinge", hingeMap) // Rect
+      //mainMap.putString("orientation", "${foldingFeature.orientation}") // HORIZONTAL or VERTICAL
+      //mainMap.putString("occlusion", "${foldingFeature.occlusionType}") // NONE or FULL
+      //mainMap.putBoolean("isSeparating", foldingFeature.isSeparating) // TRUE or FALSE (boolean)
+      //mainMap.putMap("hinge", hingeMap) // Rect
     }
 
 
@@ -198,47 +198,59 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
     if (rotation == 1) { // rotation 90º (rotated to left)
-      testMap.putString("left", "0") // ALWAYS IS ZERO
-      testMap.putString("top", "${ maxMap.getDouble("bottom") - hnoListParsed.left }") // maxHeight - Left
-      testMap.putString("right", "${hnoListParsed.bottom}") // Bottom
-      testMap.putString("bottom", "${ maxMap.getDouble("bottom") - hnoListParsed.right }") // maxHeight - Right
+      hingeMap.putDouble("left", 0.0) // ALWAYS IS ZERO
+      hingeMap.putDouble("top", maxMap.getDouble("bottom") - hnoListParsed.left) // maxHeight - Left
+      hingeMap.putDouble("right", hnoListParsed.bottom) // Bottom
+      hingeMap.putDouble("bottom", maxMap.getDouble("bottom") - hnoListParsed.right) // maxHeight - Right
     }
-    if (rotation == 2) { // rotation 180º
-      testMap.putString("left", "${ maxMap.getDouble("right") - hnoListParsed.right }") // maxWidth - Right
-      testMap.putString("top", "0") // ALWAYS IS ZERO
-      testMap.putString("right", "${ maxMap.getDouble("right") - hnoListParsed.left }") // maxWidth - Left
-      testMap.putString("bottom", "${ hnoListParsed.bottom }") // Bottom
+    else if (rotation == 2) { // rotation 180º
+      hingeMap.putDouble("left", maxMap.getDouble("right") - hnoListParsed.right) // maxWidth - Right
+      hingeMap.putDouble("top", 0.0) // ALWAYS IS ZERO
+      hingeMap.putDouble("right", maxMap.getDouble("right") - hnoListParsed.left) // maxWidth - Left
+      hingeMap.putDouble("bottom", hnoListParsed.bottom) // Bottom
     }
-    if (rotation == 3) { // rotation 270º
-      testMap.putString("left", "0") // ALWAYS IS ZERO
-      testMap.putString("top", "${ hnoListParsed.left }") // Left
-      testMap.putString("right", "${ hnoListParsed.bottom }") // Bottom
-      testMap.putString("bottom", "${ hnoListParsed.right }") // Right
+    else if (rotation == 3) { // rotation 270º
+      hingeMap.putDouble("left", 0.0) // ALWAYS IS ZERO
+      hingeMap.putDouble("top", hnoListParsed.left) // Left
+      hingeMap.putDouble("right", hnoListParsed.bottom) // Bottom
+      hingeMap.putDouble("bottom", hnoListParsed.right) // Right
     }
     else { // rotation == 0 --> natural orientation
-      testMap.putString("left", "${hnoListParsed.left}")
-      testMap.putString("top", "${hnoListParsed.top}")
-      testMap.putString("right", "${hnoListParsed.right}")
-      testMap.putString("bottom", "${hnoListParsed.bottom}")
+      hingeMap.putDouble("left", hnoListParsed.left)
+      hingeMap.putDouble("top", hnoListParsed.top)
+      hingeMap.putDouble("right", hnoListParsed.right)
+      hingeMap.putDouble("bottom", hnoListParsed.bottom)
     }
+
+    mainMap.putMap("hinge", hingeMap)
+
+    val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right)
+    //val orientationPos = hingeMap.getDouble("top") == 0.0
+    val orientationPos = mainMap.getMap("hinge")?.getDouble("top") == 0.0
+    //val orientationPos = hingeMap.getDouble("top")
 
     mainMap.putMap("curr", currMap)
     mainMap.putMap("max", maxMap)
+
+    //mainMap.putString("verticalHinge", "${ hingeMap.getDouble("right") }") // TRUE or FALSE
+    //mainMap.putString("verticalHinge", "${ mainMap.getMap("hinge")!!::class.simpleName }") // TRUE or FALSE
+    //mainMap.putString("verticalHinge", "${ mainMap.getMap("hinge")?.isNull("asd") }") // TRUE or FALSE
+    //mainMap.putString("verticalHinge", "${ mainMap.getMap("hinge")?.getDouble("left") }") // TRUE or FALSE
+    mainMap.putBoolean("verticalHinge", orientationPos) // TRUE or FALSE
+    mainMap.putBoolean("occlusion", occlusionBoolean) // TRUE or FALSE
+
     //mainMap.putString("test", "${hardware}")
     //mainMap.putString("test", "${qqa}")
     //mainMap.putString("hno", "${hno}")
-    mainMap.putString("test", "${hnoList}")
-    mainMap.putMap("hno", testMap)
-    mainMap.putString("rotation", "${rotation}")
+    //mainMap.putString("test", "${hnoList}")
+    //mainMap.putMap("hinge", hingeMap)
+    //mainMap.putString("rotation", "${rotation}")
     //mainMap.putString("test", "${foldingFeature}")
     //mainMap.putString("test", "${newLayoutInfo}")
     // 2 LANDSCAPE // 1 PORTRAIT
     //mainMap.putString("test", "${context.resources.configuration.orientation}")
-    
-    
-    
 
-    reactInstanceManager.currentReactContext
+    context
       ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
       ?.emit("LayoutInfo", mainMap)
   }

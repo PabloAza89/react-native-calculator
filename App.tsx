@@ -211,19 +211,19 @@ function App(): ReactElement {
   useEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
-      console.log("curr", e.curr) // CURRENT WINDOW (BOUNDS)
-      console.log("max", e.max) // CURRENT SCREEN (BOUNDS)
+      console.log("curr", e.curr) // CURRENT WINDOW (BOUNDS) OK
+      console.log("max", e.max) // CURRENT SCREEN (BOUNDS) OK
       console.log("state", e.state) // FLAT or HALF_OPENED
-      console.log("orientation", e.orientation) // HORIZONTAL or VERTICAL
-      console.log("occlusionType", e.occlusionType) // NONE or FULL
-      console.log("isSeparating", e.isSeparating) // TRUE or FALSE (boolean) // USELESS
-      console.log("hinge", e.hinge) // HINGE POSITION (BOUNDS)
-      console.log("test", e.test)
-      console.log("hno", e.hno)
-      console.log("rotation", e.rotation)
+      console.log("verticalHinge", e.verticalHinge) // TRUE OR FALSE
+      console.log("occlusion", e.occlusion) // NONE or FULL OK
+      //console.log("isSeparating", e.isSeparating) // TRUE or FALSE (boolean) NO
+      //console.log("hinge", e.hinge) // HINGE POSITION (BOUNDS) NO
+      //console.log("test", e.test) NO
+      console.log("hinge", e.hinge) // HINGE BOUNDS
+      //console.log("rotation", e.rotation) // NO
     });
     let angleListener = nativeEvent.addListener('angle', e => {
-      console.log("angle", e)
+      console.log("angle", e) // HINGE ANGLE
     });
     return () => {
       LayoutInfoListener.remove();
