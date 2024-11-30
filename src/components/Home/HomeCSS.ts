@@ -47,7 +47,7 @@ export const s = StyleSheet.create({
     textAlignVertical: 'center'
   },
   secondaryResult: {
-    /* backgroundColor: 'lightgreen', */ /* DEV */
+    //backgroundColor: 'lightgreen', /* DEV */
     borderColor: 'darkblue',
     fontWeight: '500',
     fontSize: 17,

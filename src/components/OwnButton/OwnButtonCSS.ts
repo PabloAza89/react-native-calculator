@@ -9,6 +9,8 @@ export const s = StyleSheet.create({
     borderColor: 'darkblue',
     borderWidth: .5,
     justifyContent: 'center',
-    textAlign: 'center'
+    textAlign: 'center',
+    aspectRatio: 1,
+    height: 0
   }
 });

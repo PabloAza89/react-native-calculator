@@ -5,7 +5,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { Adder } from '../../functions/adder';
 import { OwnButtonI } from '../../interfaces/interfaces';
 
-export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin }: OwnButtonI): ReactElement {
+//export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin }: OwnButtonI): ReactElement {
+export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin, size }: any): ReactElement {
   async function handlePress() {
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
@@ -181,7 +182,8 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, 
     <TouchableHighlight
       underlayColor="#dddddd"
       activeOpacity={1}
-      style={[ s.ownButton, smaller ? { width: vmin * 15.6, height: vmin * 15.6 } : { width: vmin * 20, height: vmin * 20 } ]}
+      //style={[ s.ownButton, smaller ? { width: vmin * 15.6, height: vmin * 15.6 } : { width: vmin * 20, height: vmin * 20 } ]}
+      style={[ s.ownButton, { width: size } ]}
       onPress={() => handlePress()}
       children={
         <Text

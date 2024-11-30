@@ -5,6 +5,7 @@ import OwnButton from '../OwnButton/OwnButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeI } from '../../interfaces/interfaces';
+import { portButtons, landButtons } from './Buttons';
 
 function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state, width, height }: any): ReactElement {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
@@ -23,24 +24,19 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     scrollRefCenter.current?.scrollToEnd({ animated: false })
   }
 
-  let buttonsMapper = () => {
-    let values = [
-      { value: "(", port: 0, land: 0, smaller: port ? true : false }, { value: ")", port: 1, land: 1, smaller: port ? true : false }, { value: "C", port: 2, land: 2, smaller: port ? true : false },
-      { value: "N", port: 3, land: 3, smaller: port ? true : false }, { value: "B", port: 4, land: 4, smaller: port ? true : false }, { value: "7", port: 5, land: 9 },
-      { value: "8", port: 6, land: 10 }, { value: "9", port: 7, land: 11 }, { value: "X", port: 8, land: 6 },
-      { value: "4", port: 9, land: 18 }, { value: "5", port: 10, land: 7 }, { value: "6", port: 11, land: 8 },
-      { value: "-", port: 12, land: 5 }, { value: "1", port: 13, land: 15 }, { value: "2", port: 14, land: 16 },
-      { value: "3", port: 15, land: 17 }, { value: "+", port: 16, land: 13 }, { value: "/", port: 17, land: 12 },
-      { value: "0", port: 18, land: 14 }, { value: ".", port: 19, land: 19 }, { value: "=", port: 20, land: 20, parErr: parErr }
-    ].sort((a, b) => port ? a.port - b.port : a.land - b.land)
-    return values.map(e =>
-      <OwnButton
-        key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
-        setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
-        vmin={vmin}
-      />
-    )
-  }
+  const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%' }
+  const lastButtonLand = { value: "=", parErr: parErr, size: '12%' }
+
+    // let buttonsMapper = () => {
+
+  //   return portButtons.map(e =>
+  //     <OwnButton
+  //       key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
+  //       setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
+  //       vmin={vmin}
+  //     />
+  //   )
+  // }
 
   console.log("ins", ins)
 
@@ -63,57 +59,51 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
       /> */}
       <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
       {
-        //state === 'cleanFullscreen' /* && parsedPort */ ?
-        true ?
-        <View
-          //ref={testRef}
-          
-          style={[
-            /* s.contour, */
-            { /* aspectRatio: 2/3, */ /* width: test + 50, */ /* maxHeight: parsedHeight - 100, */ backgroundColor: 'darkblue'/*  borderWidth: vmin * 0.4 */ }
-          ]}
-        >
+        // state === 'cleanFullscreen' /* && parsedPort */ ?
+        false  ?
+        <View style={{ backgroundColor: 'darkblue'}} /* OUTLINE */>
           <View
-            onLayout={(event) => {
-              //const {x, y, width, height} = event.nativeEvent.layout;
-              setTest(event.nativeEvent.layout.width)
-            }}
-            style={{ margin: 3, aspectRatio: 2/3, width: parsedWidth , maxHeight: parsedHeight - 0, backgroundColor: 'orange' }}
-          />
-          {/* <View
-            style={{ backgroundColor: 'red', width: '100%', aspectRatio: 1, height: 0 }}
-          /> */}
+            style={[ s.contour, { margin: 3, aspectRatio: 2/3, width: parsedWidth , maxHeight: parsedHeight - 100 } ]}
+          >
+            <View
+              style={[
+                s.displayContainer,
+                { width: '96%', height: `${(28.4/3)*2}%`, marginTop: '2%', paddingLeft: vmin * 1, paddingRight: vmin * 1 },
+              ]}
+            >
+              <ScrollView
+                overScrollMode="never"
+                ref={scrollRefUpper}
+                horizontal={true}
+                contentContainerStyle={{ alignItems: 'center' }}
+                showsHorizontalScrollIndicator={false}
+              >
+                <Text style={[ s.secondaryResult, { height: vmin * 6, lineHeight: vmin * 6, } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
+              </ScrollView>
+              <ScrollView
+                overScrollMode="never"
+                ref={scrollRefCenter}
+                horizontal={true}
+                contentContainerStyle={{ alignItems: 'center' }}
+                showsHorizontalScrollIndicator={false}
+              >
+                <Text style={[ s.mainResult, { height: vmin * 8, lineHeight: vmin * 8 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
+              </ScrollView>
+              <Text style={[s.secondaryResult]} />
+            </View>
 
+            {
+              portButtons.concat(lastButtonPort).map(e =>
+                <OwnButton
+                  key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
+                  setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
+                  vmin={vmin} size={e.size}
+                />
+              )
+            }
 
-          
-
-          {/* <View style={{ backgroundColor: 'darkred', width: '17.6%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '17.6%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '17.6%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '17.6%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '17.6%', aspectRatio: 1, height: 0 }} />
-
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
-          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} /> */}
-
-
+          </View>
+        
           {/* {
             parErr &&
             <Text
@@ -125,8 +115,7 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
               ]}
             >CHECK PARENTHESIS</Text>
           }
-          
-          { buttonsMapper() }
+
           <TouchableHighlight
             underlayColor="#8aaeba"
             activeOpacity={1}
@@ -142,7 +131,53 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
             <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
           </TouchableHighlight> */}
         </View> :
-        <View />
+
+        <View style={{ backgroundColor: 'red'}} /* OUTLINE */>
+          <View
+            //style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth , maxHeight: parsedHeight - 100 } ]}
+            style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 100, maxHeight: parsedHeight - 40 } ]}
+          >
+            <View
+              style={[
+                s.displayContainer,
+                { width: '96%', height: `${(28.4/3)*2}%`, marginTop: '2%', paddingLeft: vmin * 1, paddingRight: vmin * 1 },
+              ]}
+            >
+              <ScrollView
+                overScrollMode="never"
+                ref={scrollRefUpper}
+                horizontal={true}
+                contentContainerStyle={{ alignItems: 'center' }}
+                showsHorizontalScrollIndicator={false}
+              >
+                <Text style={[ s.secondaryResult, { height: vmin * 6, lineHeight: vmin * 6, } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
+              </ScrollView>
+              <ScrollView
+                overScrollMode="never"
+                ref={scrollRefCenter}
+                horizontal={true}
+                contentContainerStyle={{ alignItems: 'center' }}
+                showsHorizontalScrollIndicator={false}
+              >
+                <Text style={[ s.mainResult, { height: vmin * 8, lineHeight: vmin * 8 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
+              </ScrollView>
+              <Text style={[s.secondaryResult]} />
+            </View>
+
+            {
+              landButtons.concat(lastButtonLand).map(e =>
+                <OwnButton
+                  key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
+                  setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
+                  vmin={vmin} size={e.size}
+                />
+              )
+            }
+
+          </View>
+        </View>
+
+        
       }
         
     </View>
