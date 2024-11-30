@@ -1,20 +1,19 @@
 import { ReactElement, useState, useRef, useEffect } from 'react';
-import { ScrollView, StatusBar, Text, View, TouchableHighlight, NativeModules, NativeEventEmitter } from 'react-native';
+import { ScrollView, StatusBar, Text, View, TouchableHighlight } from 'react-native';
 import { s } from './HomeCSS';
 import OwnButton from '../OwnButton/OwnButton';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeI } from '../../interfaces/interfaces';
 
-function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput }: HomeI): ReactElement {
+function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state, width, height }: any): ReactElement {
+//function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
   let ins = useSafeAreaInsets(); // insets
 
   const [ parErr, setParErr ] = useState(false);
 
-  useEffect(() => {
-    scrollEnd()
-  }, [input])
+  useEffect(() => scrollEnd(), [input])
 
   const scrollRefUpper = useRef<ScrollView>(null);
   const scrollRefCenter = useRef<ScrollView>(null);
@@ -43,103 +42,109 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     )
   }
 
-  // const { HingeSensor, MainActivity } = NativeModules;
+  console.log("ins", ins)
 
-  // useEffect(() => {
-  //   const nativeEvent = new NativeEventEmitter(HingeSensor);
-  //   let eventListener = nativeEvent.addListener('angle', e => {
-  //     console.log("angle", e)
-  //   });
-  //   return () => eventListener.remove();
-  // }, []);
+  let parsedWidth = width - ins.left - ins.right
+  let parsedHeight = height - ins.top - ins.bottom
 
-  // useEffect(() => {
-  //   const eventEmitter = new NativeEventEmitter(MainActivity);
-  //   let eventListener = eventEmitter.addListener('LayoutInfo', e => {
-  //     console.log("curr", e.curr) // CURRENT WINDOW
-  //     console.log("max", e.max) // CURRENT SCREEN
-  //     console.log("state", e.state) // FLAT or HALF_OPENED // useless
-  //     console.log("orientation", e.orientation) // HORIZONTAL or VERTICAL
-  //     console.log("occlusionType", e.occlusionType) // NONE or FULL
-  //     console.log("isSeparating", e.isSeparating) // TRUE or FALSE (boolean)
-  //     console.log("hinge", e.hinge) // HINGE POSITION
-  //   });
-  //   return () => eventListener.remove();
-  // }, []);
+  let parsedPort = parsedWidth > parsedHeight ? false : true
 
-  //console.log("ins", ins)
+  const testRef = useRef(null);
+
+  //if (testRef.current !== null) console.log("A VER", testRef.current)
+  //console.log("A VER", x, y, width, height)
+
+  const [ test, setTest ] = useState(0)
 
   return (
-    <View style={[s.background, { height: '100%', backgroundColor: 'lightblue' }]}>
+    <View style={[ s.background, { paddingBottom: ins.bottom, paddingTop: ins.top, width: '100%', height: '100%', backgroundColor: 'lightblue' } ]}>
       {/* <View
         style={[{ position: 'absolute', left: 411.42, top: 10, height: 50, width: 50, backgroundColor: 'red' }]}
       /> */}
-      <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
-      <View
-        style={[
-          s.contour,
-          { paddingTop: vmin * 1.5, paddingBottom: vmin * 1.5, borderWidth: vmin * 0.5, marginRight: ins.right, marginLeft: ins.left, marginBottom: port ? ins.bottom : 0 },
-          port ?
-          { width: vmin * 90, height: vmin * 129.6 } :
-          { width: vmin * 156, height: vmin * 90, marginTop: vmin * 4 }
-        ]}
-      >
-        {
-          parErr &&
-          <Text
-            style={[
-              s.parErr,
-              port ?
-              { width: vmin * 86, height: 40, top: -40 } :
-              { width: vmin * 152, height: 30, top: -30 }
-            ]}
-          >CHECK PARENTHESIS</Text>
-        }
+      <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
+      {
+        //state === 'cleanFullscreen' /* && parsedPort */ ?
+        true ?
         <View
+          //ref={testRef}
+          
           style={[
-            s.displayContainer,
-            { height: vmin * 20, paddingLeft: vmin * 2, paddingRight: vmin * 2 },
-            port ?
-            { width: vmin * 86 } :
-            { width: vmin * 152 }
+            /* s.contour, */
+            { /* aspectRatio: 2/3, */ /* width: test + 50, */ /* maxHeight: parsedHeight - 100, */ backgroundColor: 'darkblue'/*  borderWidth: vmin * 0.4 */ }
           ]}
         >
-          <ScrollView
-            overScrollMode="never"
-            ref={scrollRefUpper}
-            horizontal={true}
-            contentContainerStyle={{ alignItems: 'center' }}
-            showsHorizontalScrollIndicator={false}
+          <View
+            onLayout={(event) => {
+              //const {x, y, width, height} = event.nativeEvent.layout;
+              setTest(event.nativeEvent.layout.width)
+            }}
+            style={{ margin: 3, aspectRatio: 2/3, width: parsedWidth , maxHeight: parsedHeight - 0, backgroundColor: 'orange' }}
+          />
+          {/* <View
+            style={{ backgroundColor: 'red', width: '100%', aspectRatio: 1, height: 0 }}
+          /> */}
+
+
+          
+
+          {/* <View style={{ backgroundColor: 'darkred', width: '17.6%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '17.6%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '17.6%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '17.6%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '17.6%', aspectRatio: 1, height: 0 }} />
+
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} />
+          <View style={{ backgroundColor: 'darkred', width: '22.5%', aspectRatio: 1, height: 0 }} /> */}
+
+
+          {/* {
+            parErr &&
+            <Text
+              style={[
+                s.parErr,
+                port ?
+                { width: vmin * 86, height: 40, top: -40 } :
+                { width: vmin * 152, height: 30, top: -30 }
+              ]}
+            >CHECK PARENTHESIS</Text>
+          }
+          
+          { buttonsMapper() }
+          <TouchableHighlight
+            underlayColor="#8aaeba"
+            activeOpacity={1}
+            style={[
+              s.question,
+              { borderRadius: (vmin * 50) / 2 },
+              port ?
+              { left: ((vmin * 90) / 2) - 23, bottom: -54 } :
+              { top: ((vmin * 90) / 2) - 23, right: -54 },
+            ]}
+            onPress={() => navigate('About')}
           >
-            <Text style={[ s.secondaryResult, { height: vmin * 6, lineHeight: vmin * 6, } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
-          </ScrollView>
-          <ScrollView
-            overScrollMode="never"
-            ref={scrollRefCenter}
-            horizontal={true}
-            contentContainerStyle={{ alignItems: 'center' }}
-            showsHorizontalScrollIndicator={false}
-          >
-            <Text style={[ s.mainResult, { height: vmin * 8, lineHeight: vmin * 8 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
-          </ScrollView>
-          <Text style={[s.secondaryResult]} />
-        </View>
-        { buttonsMapper() }
-        <TouchableHighlight
-          underlayColor="#8aaeba"
-          activeOpacity={1}
-          style={[
-            s.question,
-            { borderRadius: (vmin * 50) / 2 },
-            port ?
-            { left: ((vmin * 90) / 2) - 23, bottom: -54 } :
-            { top: ((vmin * 90) / 2) - 23, right: -54 },
-          ]}
-          onPress={() => navigate('About')}
-        >
-          <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
-        </TouchableHighlight>
-      </View>
+            <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' />
+          </TouchableHighlight> */}
+        </View> :
+        <View />
+      }
+        
     </View>
   );
 }

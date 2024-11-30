@@ -102,9 +102,10 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   fun updateUI(newLayoutInfo: WindowLayoutInfo, context: ReactContext) {
     val mainMap = Arguments.createMap()
-    val currWindowMap = Arguments.createMap()
-    val maxScreenMap = Arguments.createMap()
+    val screenMap = Arguments.createMap()
+    val windowMap = Arguments.createMap()
     val hingeBoundsMap = Arguments.createMap()
+    val testMap = Arguments.createMap()
 
     val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
     val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
@@ -122,8 +123,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       val densityIndPixCurr = pixelsCurr / dotsPerInch // dp = px / (dpi / 160) === px / density
       val densityIndPixMax = pixelsMax / dotsPerInch // dp = px / (dpi / 160) === px / density
 
-      currWindowMap.putDouble("${item}", densityIndPixCurr)
-      maxScreenMap.putDouble("${item}", densityIndPixMax) // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
+      screenMap.putDouble("${item}", densityIndPixMax)
+      windowMap.putDouble("${item}", densityIndPixCurr) // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
     }
 
     // e.g.: hinge-[1080,0,1080,1840]
@@ -139,14 +140,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
     if (rotation == 1) { // rotation 90º (rotated to left)
       hingeBoundsMap.putDouble("left", 0.0) // ALWAYS IS ZERO
-      hingeBoundsMap.putDouble("top", maxScreenMap.getDouble("bottom") - hnoListParsed.left) // maxHeight - Left
+      hingeBoundsMap.putDouble("top", screenMap.getDouble("bottom") - hnoListParsed.left) // maxHeight - Left
       hingeBoundsMap.putDouble("right", hnoListParsed.bottom) // Bottom
-      hingeBoundsMap.putDouble("bottom", maxScreenMap.getDouble("bottom") - hnoListParsed.right) // maxHeight - Right
+      hingeBoundsMap.putDouble("bottom", screenMap.getDouble("bottom") - hnoListParsed.right) // maxHeight - Right
     }
     else if (rotation == 2) { // rotation 180º
-      hingeBoundsMap.putDouble("left", maxScreenMap.getDouble("right") - hnoListParsed.right) // maxWidth - Right
+      hingeBoundsMap.putDouble("left", screenMap.getDouble("right") - hnoListParsed.right) // maxWidth - Right
       hingeBoundsMap.putDouble("top", 0.0) // ALWAYS IS ZERO
-      hingeBoundsMap.putDouble("right", maxScreenMap.getDouble("right") - hnoListParsed.left) // maxWidth - Left
+      hingeBoundsMap.putDouble("right", screenMap.getDouble("right") - hnoListParsed.left) // maxWidth - Left
       hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom) // Bottom
     }
     else if (rotation == 3) { // rotation 270º
@@ -163,16 +164,29 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     }
 
     mainMap.putMap("hingeBounds", hingeBoundsMap)
-    mainMap.putMap("currWindow", currWindowMap)
-    mainMap.putMap("maxScreen", maxScreenMap)
+    mainMap.putMap("screen", screenMap)
+    mainMap.putMap("window", windowMap)
 
     val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right)
     val orientationPos = mainMap.getMap("hingeBounds")?.getDouble("top") == 0.0
 
-    val state = if (angle > 150.0) "flat" else if (angle > 30.0) "half" else "closed"
+    //val fullscreen = screenMap.getDouble("left") == windowMap.getDouble("left")
+    val fullscreen =
+      mainMap.getMap("screen")?.getDouble("left") == mainMap.getMap("window")?.getDouble("left") &&
+      mainMap.getMap("screen")?.getDouble("top") == mainMap.getMap("window")?.getDouble("top") &&
+      mainMap.getMap("screen")?.getDouble("right") == mainMap.getMap("window")?.getDouble("right") &&
+      mainMap.getMap("screen")?.getDouble("bottom") == mainMap.getMap("window")?.getDouble("bottom")
+
+    //val state = if (angle > 150.0) "flat" else if (angle > 30.0) "half" else "closed"
+    val state = if (angle > 150.0 && fullscreen && !occlusionBoolean) "cleanFullscreen" else if (angle > 30.0) "half" else "closed"
 
     mainMap.putBoolean("verticalHinge", orientationPos) // TRUE or FALSE
     mainMap.putBoolean("occlusion", occlusionBoolean) // TRUE or FALSE
+
+    //mainMap.putString("test", "${ mainMap.getMap("screen")?.getDouble("right") == mainMap.getMap("window")?.getDouble("right") }")
+    //mainMap.putString("test1", "${ mainMap.getMap("screen")?.getDouble("bottom") }")
+    //mainMap.putString("test2", "${ screenMap?.getDouble("bottom") }")
+    //mainMap.putString("test2", "${ mainMap.getMap("hingeBounds")?.getDouble("top") }")
 
     mainMap.putString("state", state) // FLAT or HALF_OPENED
 

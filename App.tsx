@@ -8,7 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { StackAnimationTypes } from "react-native-screens";
-import { dimI, navigationI } from './src/interfaces/interfaces'
+import { dimI, navigationI } from './src/interfaces/interfaces';
+//import { useSafeAreaInsets, SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
@@ -133,6 +134,7 @@ function App(): ReactElement {
 
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
+  const [ state, setState ] = useState('flat')
 
   useEffect(() => { // ON APP BLUR
     const blur = AppState.addEventListener('blur', () => {
@@ -167,6 +169,7 @@ function App(): ReactElement {
           <Home
             {...props} input={input} setInput={setInput} port={port}
             setSecInput={setSecInput} vmin={vmin} secInput={secInput}
+            state={state} width={width} height={height}
           />
         )
       case "About":
@@ -195,12 +198,18 @@ function App(): ReactElement {
   useEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
-      console.log("currWindow", e.currWindow) // CURRENT WINDOW BOUNDS
-      console.log("maxScreen", e.maxScreen) // CURRENT SCREEN BOUNDS
+      console.log("screen", e.screen) // SCREEN BOUNDS (SCREEN SIZE)
+      console.log("window", e.window) // WINDOW BOUNDS (APP SIZE)
       console.log("state", e.state) // 'flat' or 'half' or 'closed'
       console.log("verticalHinge", e.verticalHinge) // Boolean
       console.log("occlusion", e.occlusion) // Boolean
       console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS
+
+      setState(e.state)
+
+      //console.log("test", e.test) // HINGE BOUNDS
+      //console.log("test1", e.test1) // HINGE BOUNDS
+      //console.log("test2", e.test2) // HINGE BOUNDS
     });
     let angleListener = nativeEvent.addListener('angle', e => {
       console.log("angle", e) // HINGE ANGLE
@@ -210,6 +219,8 @@ function App(): ReactElement {
       angleListener.remove();
     }
   }, []);
+
+  //let ins = useSafeAreaInsets(); // insets
 
   return (
     <NavigationContainer ref={navigationRef} initialState={initialState}>
