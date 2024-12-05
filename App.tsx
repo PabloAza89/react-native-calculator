@@ -70,9 +70,10 @@ function App(): ReactElement {
   if (width > height) { vmin = oph, port = false }
   else { vmin = opw, port = true }
 
-  //console.log("WIDTH", width)
-  //console.log("HEIGHT", height)
-  //console.log("VMIN", vmin)
+  console.log("X WIDTH", width)
+  console.log("X HEIGHT", height)
+  console.log("X VMIN", vmin)
+  //console.log("AAA", oph)
 
   const navigationRef = useNavigationContainerRef();
 
@@ -169,7 +170,7 @@ function App(): ReactElement {
           <Home
             {...props} input={input} setInput={setInput} port={port}
             setSecInput={setSecInput} vmin={vmin} secInput={secInput}
-            state={state} width={width} height={height}
+            state={state} width={width} height={height} opw={opw} oph={oph}
           />
         )
       case "About":

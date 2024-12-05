@@ -1,6 +1,10 @@
+// const portSmall = '17.6%';
+// const portLarge = '22.5%';
+// const land = '12%';
+
 const portSmall = '17.6%';
 const portLarge = '22.5%';
-const land = '12%';
+const land = `${92/7}%`;
 
 export let portButtons: any[] = [
   { value: "(", size: portSmall }, { value: ")", size: portSmall }, { value: "C", size: portSmall },

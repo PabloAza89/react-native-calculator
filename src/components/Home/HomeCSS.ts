@@ -20,7 +20,9 @@ export const s = StyleSheet.create({
     /* maxWidth: 400, */
     flexWrap: 'wrap',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    //justifyContent: 'space-evenly',
+    //justifyContent: 'space-around',
+    //justifyContent: 'space-between',
     /* alignContent: 'space-between' */
     /* alignContent: 'space-around' */
     /* alignContent: 'center' */
@@ -30,35 +32,51 @@ export const s = StyleSheet.create({
 
   },
   displayContainer: {
+    //display: 'flex',
+    //flexDirection: 'column',
     backgroundColor: 'antiquewhite',
-    borderColor: 'darkblue',
-    fontSize: 30,
+    borderColor: '#4d4db0',
+    //fontSize: 30,
+    //fontSize: 'auto',
     alignItems: 'flex-end',
-    justifyContent: 'center',
-    borderWidth: .5
+    //justifyContent: 'flex-start',
+    //justifyContent: 'center',
+    //justifyContent: 'space-around',
+    //justifyContent: 'space-evenly',
+    //justifyContent: 'center',
+    borderWidth: 1,
+    display: 'flex',
+    flexDirection: 'column'
   },
-  mainResult: {
-    //backgroundColor: 'burlywood', /* DEV */
+  secondaryResult: {
+    //backgroundColor: 'lightgreen', // DEV
     borderColor: 'darkblue',
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
-    fontSize: 30,
-    textAlign: 'right',
-    textAlignVertical: 'center'
+    //height: '25%'
+    textAlignVertical: 'center',
+    //textAlignVertical: "bottom",
+    includeFontPadding: false
   },
-  secondaryResult: {
-    //backgroundColor: 'lightgreen', /* DEV */
+  mainResult: {
+    //backgroundColor: 'burlywood', // DEV
     borderColor: 'darkblue',
+    color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
-    fontSize: 17,
-    textAlign: 'right',
-    textAlignVertical: 'center'
+    //height: '50%'
+    //textAlignVertical: 'top',
+    //textAlignVertical: 'center',
+    //textAlignVertical: "bottom",
+    //textAlignVertical: 'center',
+    //textAlignVertical: 'center',
+    includeFontPadding: false
   },
+
   parErr: {
     //backgroundColor: 'green', // DEV
-    position: 'absolute',
+    //position: 'absolute',
     color: 'red',
-    fontSize: 17,
+    //fontSize: 17,
     textAlign: 'center',
     textAlignVertical: 'center'
   },

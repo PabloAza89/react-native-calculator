@@ -168,7 +168,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     mainMap.putMap("window", windowMap)
 
     val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right)
-    val orientationPos = mainMap.getMap("hingeBounds")?.getDouble("top") == 0.0
+    val verticalHinge = mainMap.getMap("hingeBounds")?.getDouble("top") == 0.0
 
     //val fullscreen = screenMap.getDouble("left") == windowMap.getDouble("left")
     val fullscreen =
@@ -178,9 +178,12 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       mainMap.getMap("screen")?.getDouble("bottom") == mainMap.getMap("window")?.getDouble("bottom")
 
     //val state = if (angle > 150.0) "flat" else if (angle > 30.0) "half" else "closed"
-    val state = if (angle > 150.0 && fullscreen && !occlusionBoolean) "cleanFullscreen" else if (angle > 30.0) "half" else "closed"
+    val state =
+      if (angle > 150.0 && fullscreen && !occlusionBoolean) "cleanFullscreen"
+      else if (angle > 30.0 && fullscreen && !verticalHinge) "tabletop"
+      else "closed"
 
-    mainMap.putBoolean("verticalHinge", orientationPos) // TRUE or FALSE
+    mainMap.putBoolean("verticalHinge", verticalHinge) // TRUE or FALSE
     mainMap.putBoolean("occlusion", occlusionBoolean) // TRUE or FALSE
 
     //mainMap.putString("test", "${ mainMap.getMap("screen")?.getDouble("right") == mainMap.getMap("window")?.getDouble("right") }")

@@ -2,12 +2,13 @@ import { StyleSheet } from 'react-native';
 
 export const s = StyleSheet.create({
   text: {
-    textAlign: 'center'
+    textAlign: 'center',
+    //textAlignVertical: 'bottom'
   },
   ownButton: {
     backgroundColor: '#ababab',
-    borderColor: 'darkblue',
-    borderWidth: .5,
+    borderColor: '#4d4db0',
+    borderWidth: 1,
     justifyContent: 'center',
     textAlign: 'center',
     aspectRatio: 1,

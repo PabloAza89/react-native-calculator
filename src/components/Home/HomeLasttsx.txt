@@ -24,13 +24,10 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
     scrollRefCenter.current?.scrollToEnd({ animated: false })
   }
 
-  // const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%' }
-  // const lastButtonLand = { value: "=", parErr: parErr, size: '12%' }
-
   const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%' }
-  const lastButtonLand = { value: "=", parErr: parErr, size: `${92/7}%` }
+  const lastButtonLand = { value: "=", parErr: parErr, size: '12%' }
 
-  // let buttonsMapper = () => {
+    // let buttonsMapper = () => {
 
   //   return portButtons.map(e =>
   //     <OwnButton
@@ -54,8 +51,6 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
   //console.log("A VER", x, y, width, height)
 
   const [ test, setTest ] = useState(0)
-
-  console.log("PARR ERR", parErr)
 
   return (
     <View style={[ s.background, { paddingBottom: ins.bottom, paddingTop: ins.top, width: '100%', height: '100%', backgroundColor: 'lightblue' } ]}>
@@ -138,7 +133,7 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
           </TouchableHighlight> */}
         </View> :
 
-        <View style={{ backgroundColor: 'darkblue' }} /* OUTLINE LANDSCAPE */>
+        <View style={{ backgroundColor: 'darkblue' }} /* OUTLINE */>
           <View
             //style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth , maxHeight: parsedHeight - 100 } ]}
             style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 100, maxHeight: parsedHeight - 40 } ]}
@@ -146,7 +141,7 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
             <View
               style={[ // `${(11.14/4)*7}%`
                 s.displayContainer,
-                { width: '98%', marginLeft: '1%', height: `${(((400 / 7) - (((92/7)*3)+5)) / 4) * 7}%`, marginTop: '1%', paddingLeft: vmin * 1, paddingRight: vmin * 1 },
+                { width: '96%', marginLeft: '2%', height: `${(((400 / 7) - 46) / 4) * 7}%`, marginTop: '2%', paddingLeft: vmin * 1, paddingRight: vmin * 1 },
               ]}
             >
               <ScrollView
@@ -154,12 +149,12 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
                 ref={scrollRefUpper}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                style={{ height: '30%' }}
+                //style={{ height: '25%' }}
               >
                 <Text
                   // adjustsFontSizeToFit={true}
                   // numberOfLines={1}
-                  style={[ s.secondaryResult, { fontSize: opw * 2.6,/*  lineHeight: opw * 2.6 */ } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
+                  style={[ s.secondaryResult, { fontSize: opw * 2/* , lineHeight: opw * 2 */ } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
               </ScrollView>
               <ScrollView
                 overScrollMode="never"
@@ -167,22 +162,15 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 //contentContainerStyle={{ alignItems: 'center' }}
-                style={{ height: '40%' }}
+                //style={{ height: '50%' }}
               >
                 <Text
                   // adjustsFontSizeToFit={true}
                   // numberOfLines={1}
-                  style={[ s.mainResult, { fontSize: opw * 4.7, lineHeight: opw * 4.7 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
+                  style={[ s.mainResult, { fontSize: opw * 4, lineHeight: opw * 4 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
                   {/* </ScrollView>style={[ s.mainResult, { fontSize: oph * 8, lineHeight: oph * 8 } ]}>{ input.replaceAll(/N/g,"-") }</Text> */}
               </ScrollView>
-              <View style={{ height: '30%', /* backgroundColor: 'red' */ }}>
-                {
-                  parErr &&
-                  <Text
-                    style={[ s.parErr, { fontSize: opw * 2.1 } ]}
-                  >CHECK PARENTHESIS</Text>
-                }
-              </View>
+              {/* <View style={{ height: '25%' }} /> */}
             </View>
 
             {
