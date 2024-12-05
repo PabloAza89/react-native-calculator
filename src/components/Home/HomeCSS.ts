@@ -59,26 +59,27 @@ export const s = StyleSheet.create({
     includeFontPadding: false
   },
   mainResult: {
-    //backgroundColor: 'burlywood', // DEV
+    backgroundColor: 'burlywood', // DEV
     borderColor: 'darkblue',
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
     //height: '50%'
     //textAlignVertical: 'top',
-    //textAlignVertical: 'center',
+    textAlignVertical: 'center',
+    //justifyContent: 'center',
     //textAlignVertical: "bottom",
     //textAlignVertical: 'center',
     //textAlignVertical: 'center',
     includeFontPadding: false
   },
-
   parErr: {
     //backgroundColor: 'green', // DEV
     //position: 'absolute',
     color: 'red',
     //fontSize: 17,
     textAlign: 'center',
-    textAlignVertical: 'center'
+    //textAlignVertical: 'center',
+    includeFontPadding: false
   },
   question: {
     //backgroundColor: 'green', // DEV

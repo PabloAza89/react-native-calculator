@@ -6,7 +6,7 @@ import { Adder } from '../../functions/adder';
 import { OwnButtonI } from '../../interfaces/interfaces';
 
 //export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin }: OwnButtonI): ReactElement {
-export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin, size, opw, oph }: any): ReactElement {
+export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin, size, opw, oph, margin, small, fontSize }: any): ReactElement {
   async function handlePress() {
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
@@ -179,28 +179,23 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, 
   }
 
   //console.log("AAA", oph)
+  console.log("MARGIN", margin)
 
   return (
     <TouchableHighlight
       underlayColor="#dddddd"
       activeOpacity={1}
-      style={[ s.ownButton, { width: size, marginLeft: '1%' } ]}
+      style={[ s.ownButton, { width: size, marginLeft: margin } ]}
       onPress={() => handlePress()}
       children={
         <Text
-          //style={[ s.text, { fontSize: opw * 6 } ]}
-          //style={[ s.text, { fontSize: oph * 7 } ]}
-          style={[ s.text, { fontSize: vmin * 6 } ]}
+          //style={[ s.text, { fontSize: small ? vmin * 5.5 : vmin * 6 } ]} // fontSize
+          style={[ s.text, { fontSize: small ? fontSize * 5.5 : fontSize * 6 } ]} // fontSize
           children={
             value === "B" ?
-            //<Ionicons name='backspace' size={opw * 6} color='rgba(0, 0, 0, .5)' /> :
-            //<Ionicons name='backspace' size={oph * 7} color='rgba(0, 0, 0, .5)' /> :
-            <Ionicons name='backspace' size={vmin * 6} color='rgba(0, 0, 0, .5)' /> :
+            <Ionicons name='backspace' size={small ? fontSize * 5.5 : fontSize * 6 } color='rgba(0, 0, 0, .5)' /> :
             value === "N" ?
             "-X" :
-            value === "(" || value === ")" ?
-            //<Text style={ { fontSize: oph * 7, lineHeight: oph * 7 } } children={value} /> :
-            <Text style={ { fontSize: vmin * 6, lineHeight: vmin * 6 } } children={value} /> :
             value
           }
         />

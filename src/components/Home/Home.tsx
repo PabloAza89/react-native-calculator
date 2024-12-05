@@ -27,8 +27,8 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
   // const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%' }
   // const lastButtonLand = { value: "=", parErr: parErr, size: '12%' }
 
-  const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%' }
-  const lastButtonLand = { value: "=", parErr: parErr, size: `${92/7}%` }
+  const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%', margin: '2%' }
+  const lastButtonLand = { value: "=", parErr: parErr, size: `${92/7}%`, margin: '1%' }
 
   // let buttonsMapper = () => {
 
@@ -67,8 +67,9 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
         //state === 'cleanFullscreen' ?
         false ?
         //true ?
-        <View style={{ backgroundColor: 'darkblue'}} /* OUTLINE */>
+        <View style={{ backgroundColor: 'darkblue'}} /* OUTLINE PORTRAIT */>
           <View
+            //style={[ s.contour, { margin: 3, aspectRatio: 16/23, width: parsedWidth , maxHeight: parsedHeight - 100 } ]}
             style={[ s.contour, { margin: 3, aspectRatio: 2/3, width: parsedWidth , maxHeight: parsedHeight - 100 } ]}
           >
             <View
@@ -81,21 +82,29 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
                 overScrollMode="never"
                 ref={scrollRefUpper}
                 horizontal={true}
-                //contentContainerStyle={{ alignItems: 'center' }}
                 showsHorizontalScrollIndicator={false}
+                style={{ height: '30%' }}
               >
-                <Text style={[ s.secondaryResult, { fontSize: opw * 2 } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
+                <Text style={[ s.secondaryResult, { fontSize: oph * 2.7 } ]}>{ secInput.replaceAll(/N/g,"-") }</Text>
               </ScrollView>
               <ScrollView
                 overScrollMode="never"
                 ref={scrollRefCenter}
                 horizontal={true}
-                //contentContainerStyle={{ alignItems: 'center' }}
                 showsHorizontalScrollIndicator={false}
+                style={{ height: '40%' }}
               >
-                <Text style={[ s.mainResult, { fontSize: opw * 4, lineHeight: opw * 4 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
+                <Text style={[ s.mainResult, { fontSize: oph * 4.5, lineHeight: oph * 4.5 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
               </ScrollView>
-              {/* <Text style={[s.secondaryResult]} /> */}
+              <View style={{ /* display: 'flex', */ height: '30%', /* backgroundColor: 'red', */ justifyContent: 'center' }}>
+                {
+                  //parErr &&
+                  true &&
+                  <Text
+                    style={[ s.parErr, { fontSize: oph * 2.1 } ]}
+                  >CHECK PARENTHESIS</Text>
+                }
+              </View>
             </View>
 
             {
@@ -103,24 +112,14 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
                 <OwnButton
                   key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
                   setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
-                  vmin={vmin} size={e.size} opw={opw} oph={oph}
+                  vmin={vmin} size={e.size} opw={opw} oph={oph} margin={e.margin} small={e.small} fontSize={oph}
                 />
               )
             }
 
           </View>
         
-          {/* {
-            parErr &&
-            <Text
-              style={[
-                s.parErr,
-                port ?
-                { width: vmin * 86, height: 40, top: -40 } :
-                { width: vmin * 152, height: 30, top: -30 }
-              ]}
-            >CHECK PARENTHESIS</Text>
-          }
+          {/* 
 
           <TouchableHighlight
             underlayColor="#8aaeba"
@@ -169,15 +168,12 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
                 //contentContainerStyle={{ alignItems: 'center' }}
                 style={{ height: '40%' }}
               >
-                <Text
-                  // adjustsFontSizeToFit={true}
-                  // numberOfLines={1}
-                  style={[ s.mainResult, { fontSize: opw * 4.7, lineHeight: opw * 4.7 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
-                  {/* </ScrollView>style={[ s.mainResult, { fontSize: oph * 8, lineHeight: oph * 8 } ]}>{ input.replaceAll(/N/g,"-") }</Text> */}
+                <Text style={[ s.mainResult, { fontSize: opw * 4.7, lineHeight: opw * 4.7 } ]}>{ input.replaceAll(/N/g,"-") }</Text>
               </ScrollView>
               <View style={{ height: '30%', /* backgroundColor: 'red' */ }}>
                 {
-                  parErr &&
+                  //parErr &&
+                  true &&
                   <Text
                     style={[ s.parErr, { fontSize: opw * 2.1 } ]}
                   >CHECK PARENTHESIS</Text>
@@ -190,7 +186,7 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
                 <OwnButton
                   key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
                   setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
-                  vmin={vmin} size={e.size} opw={opw} oph={oph}
+                  vmin={vmin} size={e.size} opw={opw} oph={oph} margin={e.margin} fontSize={opw}
                 />
               )
             }

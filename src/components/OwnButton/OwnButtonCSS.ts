@@ -4,6 +4,7 @@ export const s = StyleSheet.create({
   text: {
     textAlign: 'center',
     //textAlignVertical: 'bottom'
+    includeFontPadding: false
   },
   ownButton: {
     backgroundColor: '#ababab',
