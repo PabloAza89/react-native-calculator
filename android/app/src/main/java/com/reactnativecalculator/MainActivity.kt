@@ -181,6 +181,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val state =
       if (angle > 150.0 && fullscreen && !occlusionBoolean) "cleanFullscreen"
       else if (angle > 30.0 && fullscreen && !verticalHinge) "tabletop"
+      else if (angle > 30.0 && fullscreen && verticalHinge) "book"
       else "closed"
 
     mainMap.putBoolean("verticalHinge", verticalHinge) // TRUE or FALSE

@@ -195,6 +195,18 @@ function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput,
 
         :
 
+        state === 'book' ?
+
+        <View style={{ backgroundColor: 'lightgreen', display: 'flex', flexDirection: 'row', width: '100%', height: '100%'  }} /* BOOK */>
+
+          <View style={{ flexDirection: 'row', backgroundColor: '#004747', width: hingeBounds.left - ins.left, justifyContent: 'center', alignItems: 'center' }} /* LEFT SIDE */ >
+          </View>
+          <View style={{ backgroundColor: '#581199', width: width - hingeBounds.right - ins.left, justifyContent: 'center', alignItems: 'center' }} /* RIGHT SIDE */ >
+          </View>
+        </View>
+
+        :
+
         <View style={{ backgroundColor: 'darkblue' }} /* OUTLINE LANDSCAPE */>
           <View style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 100, maxHeight: parsedHeight - 40 } ]}>
             <View
