@@ -6,7 +6,10 @@ import { Adder } from '../../functions/adder';
 import { OwnButtonI } from '../../interfaces/interfaces';
 
 //export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin }: OwnButtonI): ReactElement {
-export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin, size, opw, oph, margin, small, fontSize }: any): ReactElement {
+export function OwnButton({
+  scrollEnd, parErr, value, input, setInput, smaller, setParErr,
+  setSecInput, vmin, size, opw, oph, margin, small, fontSize, type
+}: any): ReactElement {
   async function handlePress() {
 
     if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
@@ -179,13 +182,13 @@ export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, 
   }
 
   //console.log("AAA", oph)
-  console.log("MARGIN", margin)
+  //console.log("MARGIN", margin)
 
   return (
     <TouchableHighlight
       underlayColor="#dddddd"
       activeOpacity={1}
-      style={[ s.ownButton, { width: size, marginLeft: margin } ]}
+      style={[ type === 'tabletop' ? s.ownButtonTabletop : s.ownButton, { width: size, marginLeft: margin, /* marginTop: '1%' */ } ]}
       onPress={() => handlePress()}
       children={
         <Text

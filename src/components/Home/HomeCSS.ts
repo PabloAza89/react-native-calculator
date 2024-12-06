@@ -26,7 +26,11 @@ export const s = StyleSheet.create({
     /* alignContent: 'space-between' */
     /* alignContent: 'space-around' */
     /* alignContent: 'center' */
+
     alignContent: 'stretch',
+    //alignContent: 'space-around'
+    //alignContent: 'space-between'
+    //alignContent: 'center'
     
     
 

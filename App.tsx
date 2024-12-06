@@ -136,6 +136,7 @@ function App(): ReactElement {
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
   const [ state, setState ] = useState('flat')
+  const [ hingeBounds, setHingeBounds ] = useState({ left: 0, top: 0, right: 0, bottom: 0 })
 
   useEffect(() => { // ON APP BLUR
     const blur = AppState.addEventListener('blur', () => {
@@ -171,6 +172,7 @@ function App(): ReactElement {
             {...props} input={input} setInput={setInput} port={port}
             setSecInput={setSecInput} vmin={vmin} secInput={secInput}
             state={state} width={width} height={height} opw={opw} oph={oph}
+            hingeBounds={hingeBounds}
           />
         )
       case "About":
@@ -207,6 +209,7 @@ function App(): ReactElement {
       console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS
 
       setState(e.state)
+      setHingeBounds(e.hingeBounds)
 
       //console.log("test", e.test) // HINGE BOUNDS
       //console.log("test1", e.test1) // HINGE BOUNDS
