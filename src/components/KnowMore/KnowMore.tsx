@@ -4,12 +4,13 @@ import {
   Pressable, InteractionManager, ActivityIndicator, NativeSyntheticEvent, NativeScrollEvent
 } from 'react-native';
 import { s } from './KnowMoreCSS';
-import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
-function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
+//function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
+const KnowMore = ({ navigation: { navigate }, opw, port, height, buttonOne, buttonTwo }: any): ReactElement => {
 
   //const  { navigate } navigation
 
@@ -224,52 +225,70 @@ function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElem
       <LinearGradient
         colors={[ `rgba(${colorVariables}, 1)`, `rgba(255, 255, 255, 1)` ]}
         style={[ s.linearGradient, { height: '100%', width: '100%' } ]}
-        start={{ x: 0, y: 1 }} //  x0__x1/y0
-        end={{x: 1, y: 0}}    //      |y1
+        start={[ 0, 1 ]} // left, top
+        end={[ 1, 0 ]}   // left, bottom
         children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
       />
       <LinearGradient
         colors={[ `rgba(${colorVariables}, 1)`, `rgba(255, 255, 255, 1)` ]}
         style={[ s.linearGradient, { height: ins.top, width: '100%', zIndex: 4, opacity: 0.85 }]}
-        start={{ x: 0, y: 29.2 }} // x left      y top
-        end={{ x: 1, y: 0 }} // x left       y bottom
+        start={[ 0, height / ins.top ]} // left, top
+        end={[ 1, 0 ]}      // left, bottom
       />
-
-      {/* <LinearGradient
-        colors={[ `rgba(${colorVariables}, 0.7)`, `rgba(255, 255, 255, 1)` ]}
-        style={[ s.linearGradient, { height: '100%' } ]}
-        start={{ x: 0, y: 1}} //  x0__x1/y0
-        end={{x: 1, y: 0}}    //      |y1
-        children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
-      />
-      <LinearGradient
-        colors={[ `rgba(${colorVariables}, 0.9)`, `rgba(255, 255, 255, 0.9)` ]}
-        style={[ s.linearGradient, { height: ins.top, zIndex: 4 }]}
-        start={{ x: 0, y: port ? 39.25 : 29.5 }} //  x0__x1/y0
-        end={{ x: 1, y: 0 }}                     //      |y1
-      /> */}
 
       <ScrollView ref={scrollRef} onScroll={handleScroll}>
         <View style={[ s.background, { /* width: opw * 100, */width: '100%', marginLeft: ins.left } ]}>
 
           <View style={s.buttonContainer}>
-            <Ionicons.Button
-              name='chevron-back-circle-sharp'
-              size={30}
-              color='rgba(0, 0, 0, .7)'
-              onPress={() => navigate('About')}
-            >
-              <Text style={s.textInButton}>BACK</Text>
-            </Ionicons.Button>
+
+            {
+
+              buttonOne !== undefined ?
+
+              <MaterialCommunityIcons.Button
+                name='swap-horizontal-bold'
+                size={30}
+                color='rgba(0, 0, 0, .7)'
+                onPress={() => navigate('About')}
+                style={{ flex: 1 }}
+                children={ <Text style={s.textInButton}>SWITCH{"\n"}SCREENS</Text> }
+              /> :
+
+              <Ionicons.Button
+                name='chevron-back-circle-sharp'
+                size={30}
+                color='rgba(0, 0, 0, .7)'
+                onPress={() => navigate('About')}
+                style={{ flex: 1 }}
+                children={ <Text style={s.textInButton}>BACK</Text> }
+              />
+
+            }
+
+            
+
             <View style={s.space} />
-            <Ionicons.Button
-              name='home'
-              size={30}
-              color='rgba(0, 0, 0, .7)'
-              onPress={() => navigate('Home')}
-            >
-              <Text style={s.textInButton}>HOME</Text>
-            </Ionicons.Button>
+
+            {
+              buttonTwo !== undefined ?
+              <SimpleLineIcons.Button
+                name='question'
+                size={25}
+                color='rgba(0, 0, 0, .7)'
+                onPress={() => navigate('Home')}
+                style={{ flex: 1 }}
+                children={ <Text style={s.textInButton}>ABOUT</Text> }
+              /> :
+              <Ionicons.Button
+                name='home'
+                size={30}
+                color='rgba(0, 0, 0, .7)'
+                onPress={() => navigate('Home')}
+                style={{ flex: 1 }}
+                children={ <Text style={s.textInButton}>HOME</Text> }
+              />
+            }
+
           </View>
 
           <Text style={s.centerText}>

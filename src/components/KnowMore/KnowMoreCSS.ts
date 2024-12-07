@@ -68,13 +68,15 @@ export const s = StyleSheet.create({
     fontSize: 14,
     lineHeight: 15,
     marginLeft: -6,
-    marginRight: 2
+    marginRight: 2,
+    textAlign: 'center'
   },
   space: {
     width: 25,
     height: 25
   },
   buttonContainer: {
+    //backgroundColor: 'green', // DEV
     marginTop: 35,
     flexDirection: 'row'
   },

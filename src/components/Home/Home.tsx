@@ -277,7 +277,10 @@ function Home({ navigation, vmin, port, input, secInput, setInput, setSecInput, 
 
 
             {/* <KnowMore /> */}
-            <KnowMore navigation={navigation}/* {...props} */ opw={opw} port={port} />
+            <KnowMore
+              navigation={navigation} opw={opw} port={port} height={height}
+              buttonOne={'SWITCH{"\n"}SCREENS'} buttonTwo={'ABOUT'}
+            />
 
           </View>
         </View>
