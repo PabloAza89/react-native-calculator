@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
-const KnowMore = ({ navigation: { navigate }, opw, port, height, buttonOne, buttonTwo }: any): ReactElement => {
+const KnowMore = ({ navigation: { navigate }, opw, port, height, buttonOne, buttonTwo, setCalcLeft, calcLeft, switchSide }: any): ReactElement => {
 
   //const  { navigate } navigation
 
@@ -249,7 +249,7 @@ const KnowMore = ({ navigation: { navigate }, opw, port, height, buttonOne, butt
                 name='swap-horizontal-bold'
                 size={30}
                 color='rgba(0, 0, 0, .7)'
-                onPress={() => navigate('About')}
+                onPress={() => switchSide()}
                 style={{ flex: 1 }}
                 children={ <Text style={s.textInButton}>SWITCH{"\n"}SCREENS</Text> }
               /> :
