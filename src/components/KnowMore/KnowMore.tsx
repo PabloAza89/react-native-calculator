@@ -11,6 +11,8 @@ import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
 
+  //const  { navigate } navigation
+
   let ins = useSafeAreaInsets(); // insets
 
   const scrollRef = useRef<ScrollView>(null);
@@ -214,26 +216,41 @@ function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElem
 
   let colorVariables = `${counter["0"]}, ${counter["1"]}, ${counter["2"]}`
 
+  //console.log("INS TOP", ins.top)
+
   return (
-    <View style={{ height: '100%' }}>
+    <View style={{ height: '100%', width: '100%' }}>
+
       <LinearGradient
+        colors={[ `rgba(${colorVariables}, 1)`, `rgba(255, 255, 255, 1)` ]}
+        style={[ s.linearGradient, { height: '100%', width: '100%' } ]}
+        start={{ x: 0, y: 1 }} //  x0__x1/y0
+        end={{x: 1, y: 0}}    //      |y1
+        children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
+      />
+      <LinearGradient
+        colors={[ `rgba(${colorVariables}, 1)`, `rgba(255, 255, 255, 1)` ]}
+        style={[ s.linearGradient, { height: ins.top, width: '100%', zIndex: 4, opacity: 0.85 }]}
+        start={{ x: 0, y: 29.2 }} // x left      y top
+        end={{ x: 1, y: 0 }} // x left       y bottom
+      />
+
+      {/* <LinearGradient
         colors={[ `rgba(${colorVariables}, 0.7)`, `rgba(255, 255, 255, 1)` ]}
         style={[ s.linearGradient, { height: '100%' } ]}
         start={{ x: 0, y: 1}} //  x0__x1/y0
         end={{x: 1, y: 0}}    //      |y1
-      >
-        <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
-      </LinearGradient>
+        children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
+      />
       <LinearGradient
         colors={[ `rgba(${colorVariables}, 0.9)`, `rgba(255, 255, 255, 0.9)` ]}
         style={[ s.linearGradient, { height: ins.top, zIndex: 4 }]}
-
         start={{ x: 0, y: port ? 39.25 : 29.5 }} //  x0__x1/y0
         end={{ x: 1, y: 0 }}                     //      |y1
-      />
+      /> */}
 
       <ScrollView ref={scrollRef} onScroll={handleScroll}>
-        <View style={[ s.background, { width: opw * 100, marginLeft: ins.left } ]}>
+        <View style={[ s.background, { /* width: opw * 100, */width: '100%', marginLeft: ins.left } ]}>
 
           <View style={s.buttonContainer}>
             <Ionicons.Button
