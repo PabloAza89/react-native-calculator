@@ -17,8 +17,10 @@ export const s = StyleSheet.create({
     textAlign: 'center'
   },
   imageWrapper: {
+    //backgroundColor: 'lightcoral', // DEV
     marginTop: 20,
-    marginBottom: 25
+    marginBottom: 25,
+    //justifyContent: 'flex-start'
   },
   iconStyle: {
     position: 'absolute'
@@ -29,7 +31,11 @@ export const s = StyleSheet.create({
     fontSize: 14,
     lineHeight: 15,
     marginLeft: -6,
-    marginRight: 2
+    marginRight: 2,
+    height: 30,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    includeFontPadding: false
   },
   textInButtonLower: {
     color: 'white',

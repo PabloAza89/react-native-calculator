@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
-const KnowMore = ({ navigation: { navigate }, opw, port, height, buttonOne, buttonTwo, setCalcLeft, calcLeft, switchSide }: any): ReactElement => {
+const KnowMore = ({ navigation: { navigate }, opw, port, height, setCalcLeft, calcLeft, switchSide, twoScreens, nextScreen }: any): ReactElement => {
 
   //const  { navigate } navigation
 
@@ -233,7 +233,7 @@ const KnowMore = ({ navigation: { navigate }, opw, port, height, buttonOne, butt
         colors={[ `rgba(${colorVariables}, 1)`, `rgba(255, 255, 255, 1)` ]}
         style={[ s.linearGradient, { height: ins.top, width: '100%', zIndex: 4, opacity: 0.85 }]}
         start={[ 0, height / ins.top ]} // left, top
-        end={[ 1, 0 ]}      // left, bottom
+        end={[ 1, 0 ]}                  // left, bottom
       />
 
       <ScrollView ref={scrollRef} onScroll={handleScroll}>
@@ -242,27 +242,22 @@ const KnowMore = ({ navigation: { navigate }, opw, port, height, buttonOne, butt
           <View style={s.buttonContainer}>
 
             {
-
-              buttonOne !== undefined ?
-
+              twoScreens ?
               <MaterialCommunityIcons.Button
                 name='swap-horizontal-bold'
                 size={30}
                 color='rgba(0, 0, 0, .7)'
                 onPress={() => switchSide()}
-                style={{ flex: 1 }}
+                //style={{ flex: 1 }}
                 children={ <Text style={s.textInButton}>SWITCH{"\n"}SCREENS</Text> }
               /> :
-
               <Ionicons.Button
                 name='chevron-back-circle-sharp'
                 size={30}
                 color='rgba(0, 0, 0, .7)'
                 onPress={() => navigate('About')}
-                style={{ flex: 1 }}
                 children={ <Text style={s.textInButton}>BACK</Text> }
               />
-
             }
 
             
@@ -270,12 +265,12 @@ const KnowMore = ({ navigation: { navigate }, opw, port, height, buttonOne, butt
             <View style={s.space} />
 
             {
-              buttonTwo !== undefined ?
+              twoScreens ?
               <SimpleLineIcons.Button
                 name='question'
                 size={25}
                 color='rgba(0, 0, 0, .7)'
-                onPress={() => navigate('Home')}
+                onPress={() => nextScreen()}
                 style={{ flex: 1 }}
                 children={ <Text style={s.textInButton}>ABOUT</Text> }
               /> :
@@ -284,7 +279,6 @@ const KnowMore = ({ navigation: { navigate }, opw, port, height, buttonOne, butt
                 size={30}
                 color='rgba(0, 0, 0, .7)'
                 onPress={() => navigate('Home')}
-                style={{ flex: 1 }}
                 children={ <Text style={s.textInButton}>HOME</Text> }
               />
             }

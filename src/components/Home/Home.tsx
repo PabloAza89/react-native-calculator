@@ -1,12 +1,13 @@
 import { ReactElement, useState, useRef, useEffect } from 'react';
 import { ScrollView, StatusBar, Text, View, TouchableHighlight } from 'react-native';
 import { s } from './HomeCSS';
+import About from '../About/About';
 import OwnButton from '../OwnButton/OwnButton';
+import KnowMore from '../KnowMore/KnowMore';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeI } from '../../interfaces/interfaces';
 import { portButtons, landButtons } from './Buttons';
-import KnowMore from '../KnowMore/KnowMore';
 
 function Home({ navigation, vmin, port, input, secInput, setInput, setSecInput, state, width, height, opw, oph, hingeBounds }: any): ReactElement {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
@@ -62,20 +63,28 @@ function Home({ navigation, vmin, port, input, secInput, setInput, setSecInput, 
   console.log("HEIGHT HEIGHT", height)
   console.log("WIDTH WIDTH", width)
 
-  const [ calcLeft, setCalcLeft ] = useState(true) // INITIAL VALUE
+  const [ calcLeft, setCalcLeft ] = useState(true)
+  const [ showKnowMore, setShowKnowMore ] = useState(true)
 
-  const switchSide = () => {
-    setCalcLeft(!calcLeft)
-  }
+  const switchSide = () => setCalcLeft(!calcLeft)
+  const nextScreen = () => setShowKnowMore(!showKnowMore)
 
-  const KnowMoreScreen = <KnowMore
+  const KnowMoreScreen =
+  <KnowMore
     navigation={navigation} opw={opw} port={port} height={height}
-    buttonOne={'SWITCH{"\n"}SCREENS'} buttonTwo={'ABOUT'} setCalcRight={setCalcLeft}
-    calcRight={calcLeft} switchSide={switchSide}
-  />
+    setCalcRight={setCalcLeft}
+    calcRight={calcLeft} switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
+  />;
+
+  const AboutScreen =
+  <About
+    navigation={navigation} vmin={vmin}
+    currWidth={ calcLeft ? width - hingeBounds.right - ins.left : hingeBounds.left - ins.left }
+    switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
+  />;
 
   const PortCalc =
-  <View style={{ backgroundColor: 'darkblue'}} /* OUTLINE PORTRAIT */>
+  <View style={{ marginBottom: ins.bottom, marginTop: ins.top,backgroundColor: 'darkblue'}} /* OUTLINE PORTRAIT */>
     <View style={[ s.contour, { margin: 3, aspectRatio: 2/3, width: parsedWidth , maxHeight: parsedHeight - 100 } ]}>
       <View
         style={[
@@ -120,10 +129,7 @@ function Home({ navigation, vmin, port, input, secInput, setInput, setSecInput, 
       }
 
     </View>
-  </View>
-
-  
-
+  </View>;
 
   return (
     <View style={[ s.background, { /* paddingBottom: ins.bottom, paddingTop: ins.top, */ width: '100%', height: '100%', backgroundColor: 'lightblue' } ]}>
@@ -267,17 +273,17 @@ function Home({ navigation, vmin, port, input, secInput, setInput, setSecInput, 
 
         <View style={{ backgroundColor: 'lightgreen', display: 'flex', flexDirection: 'row', width: '100%', height: '100%'  }} /* BOOK */>
 
-          <View style={{ paddingBottom: ins.bottom, paddingTop: ins.top,flexDirection: 'row', backgroundColor: '#004747', width: hingeBounds.left - ins.left, justifyContent: 'center', alignItems: 'center' }} /* LEFT SIDE */ >
+          <View style={{ flexDirection: 'row', backgroundColor: '#004747', width: hingeBounds.left - ins.left, justifyContent: 'center', alignItems: 'center' }} /* LEFT SIDE */ >
 
 
-            { calcLeft ? PortCalc : KnowMoreScreen }
+            { calcLeft ? PortCalc : ( showKnowMore ? KnowMoreScreen : AboutScreen ) }
 
 
           </View>
           <View style={{ backgroundColor: '#581199', width: width - hingeBounds.right - ins.left, justifyContent: 'center', alignItems: 'center' }} /* RIGHT SIDE */ >
 
 
-            { calcLeft ? KnowMoreScreen : PortCalc }
+            { calcLeft ? ( showKnowMore ? KnowMoreScreen : AboutScreen ) : PortCalc }
 
           </View>
         </View>

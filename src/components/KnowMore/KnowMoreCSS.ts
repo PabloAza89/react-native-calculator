@@ -69,7 +69,9 @@ export const s = StyleSheet.create({
     lineHeight: 15,
     marginLeft: -6,
     marginRight: 2,
-    textAlign: 'center'
+    textAlign: 'center',
+    justifyContent: 'center'
+    
   },
   space: {
     width: 25,
