@@ -25,6 +25,19 @@ export const s = StyleSheet.create({
   iconStyle: {
     position: 'absolute'
   },
+  buttonModal: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 14,
+    lineHeight: 15,
+    marginLeft: -6,
+    marginRight: 2,
+    height: 25,
+    width: 70,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    includeFontPadding: false,
+  },
   textInButtonUpper: {
     color: 'white',
     fontWeight: '600',

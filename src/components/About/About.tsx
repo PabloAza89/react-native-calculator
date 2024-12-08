@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
-import { Text, View, Linking, StatusBar } from 'react-native';
+import { ReactElement, useState, useEffect } from 'react';
+import { Text, View, Linking, StatusBar, Modal, Button, Animated, useAnimatedValue, Pressable } from 'react-native';
 import { s } from './AboutCSS';
 import { Ionicons, AntDesign, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -12,8 +12,101 @@ function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScr
 
   let ins = useSafeAreaInsets(); // insets
 
+  const [ showModal, setShowModal ] = useState(false);
+
+  const fadeAnim = useAnimatedValue(0);
+
+  // duration: 200
+  const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
+  const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
+
+  useEffect(() => {
+    showModal ? fadeIn() : fadeOut()
+
+  }, [showModal])
+
+  // <Animated.View
+
   return (
     <View style={[s.background, { height: '100%', width: '100%' } ]}>
+
+      <Animated.View
+        style={{
+          display: 'flex',
+          //display: showModal ? 'flex' : 'none',
+          backgroundColor: 'rgba(0, 128, 0, .5)', position: 'absolute', zIndex: 1000000,
+          width: '100%', height: '100%', //justifyContent: 'center', alignItems: 'center',
+          //paddingTop: ins.top, paddingBottom: ins.bottom,
+          opacity: fadeAnim,
+          //backfaceVisibility: 'visible',
+          //opacity: 0.5, // 'none' 'auto'
+          pointerEvents: showModal ? 'auto' : 'none'
+        }}
+        children={
+          <Pressable
+            style={{
+              display: 'flex', backgroundColor: 'rgba(255, 0, 0, .5)', /* position: 'absolute', */ //zIndex: 1000000,
+              width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center',
+              paddingTop: ins.top, paddingBottom: ins.bottom
+            }}
+            onPress={() => setShowModal(false)}
+            children={
+
+
+              <View
+                //visible={showModal}
+                style={{
+                  //display: showModal ? 'flex' : 'none',
+                  display: 'flex',
+                  position: 'relative',
+                  opacity: 1,
+                  //opacity: fadeAnim,
+                  /* position: 'absolute', */
+                  //flexDirection:'column',
+                  //height: 100,
+                  zIndex: 1000001,
+                  backgroundColor: 'white',
+                  padding: 10,
+                  borderRadius: 10,
+                  //pointerEvents: 'box-only'
+                  //pointerEvents: 'none'
+                  //pointerEvents: 'auto'
+                  //pointerEvents: 'box-none'
+                  //pointerEvents: 'box-only'
+                }}
+                onStartShouldSetResponder={ () => true } // BLOCK CLICK ON CURRENT VIEW
+                onTouchEnd={ e => e.stopPropagation() } // BLOCK CLICK ON CURRENT VIEW
+              >
+                <Text
+                  style={{ /* backgroundColor: 'lightgreen', */paddingBottom: 5, /* flex: 1, */ justifyContent: 'center', alignItems: 'center', fontSize: vmin * 3, textAlign: 'center', includeFontPadding: false, fontWeight: "500" }}
+                  children={'You are about to leave this App\nand access an external link\nDo you want to continue ?'}
+                />
+                <View style={{ /* backgroundColor: 'red', */ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                  <Ionicons.Button
+                    name='close-circle'
+                    size={25}
+                    color='rgba(0, 0, 0, .7)'
+                    //onPress={hideModal}
+                    onPress={() => setShowModal(false)}
+                    children={ <Text style={s.buttonModal} children={'CANCEL'} /> }
+                  />
+                  <Ionicons.Button
+                    name='checkmark-circle'
+                    size={25}
+                    color='rgba(0, 0, 0, .7)'
+                    //onPress={() => navigate('Home')}
+                    onPress={() => { Linking.openURL('https://www.linkedin.com/in/juan-pablo-azambuyo'); setShowModal(false) }}
+                    children={ <Text style={s.buttonModal} children={'CONTINUE'} /> }
+                  />
+                </View>
+              </View>
+
+
+            }
+          />
+        }
+      />
+
       <LinearGradient
         colors={[ 'rgba(18, 56, 117, 0.7)', 'yellow' ]}
         style={s.linearGradient}
@@ -39,7 +132,13 @@ function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScr
           name='linkedin-square'
           size={40}
           color='rgba(0, 0, 0, .7)'
-          onPress={() => Linking.openURL('https://www.linkedin.com/in/juan-pablo-azambuyo')}
+          //onPress={() => Linking.openURL('https://www.linkedin.com/in/juan-pablo-azambuyo')}
+          //onPress={() => setShowModal(true)}
+          //onPress={() => fadeIn()}
+          //onPress={showModal}
+          //onPress={fadeIn}
+          onPress={() => setShowModal(true)}
+          
         />
       </View>
 
@@ -79,8 +178,6 @@ function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScr
           children={ <Text style={s.textInButtonLower} children={'HOW DOES IT WORK ?'} /> }
         />
       }
-
-
     </View>
   );
 }

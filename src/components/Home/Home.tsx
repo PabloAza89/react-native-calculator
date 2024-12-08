@@ -64,7 +64,7 @@ function Home({ navigation, vmin, port, input, secInput, setInput, setSecInput, 
   console.log("WIDTH WIDTH", width)
 
   const [ calcLeft, setCalcLeft ] = useState(true)
-  const [ showKnowMore, setShowKnowMore ] = useState(true)
+  const [ showKnowMore, setShowKnowMore ] = useState(false)
 
   const switchSide = () => setCalcLeft(!calcLeft)
   const nextScreen = () => setShowKnowMore(!showKnowMore)
