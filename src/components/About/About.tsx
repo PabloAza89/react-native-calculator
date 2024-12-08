@@ -8,11 +8,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AboutI } from '../../interfaces/interfaces';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScreen, currWidth }: any): ReactElement {
+function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScreen, currWidth, showModal, updateShowModal }: any): ReactElement {
 
   let ins = useSafeAreaInsets(); // insets
 
-  const [ showModal, setShowModal ] = useState(false);
+  //const [ showModal, setShowModal ] = useState(false);
 
   const fadeAnim = useAnimatedValue(0);
 
@@ -22,7 +22,6 @@ function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScr
 
   useEffect(() => {
     showModal ? fadeIn() : fadeOut()
-
   }, [showModal])
 
   // <Animated.View
@@ -33,75 +32,56 @@ function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScr
       <Animated.View
         style={{
           display: 'flex',
-          //display: showModal ? 'flex' : 'none',
-          backgroundColor: 'rgba(0, 128, 0, .5)', position: 'absolute', zIndex: 1000000,
-          width: '100%', height: '100%', //justifyContent: 'center', alignItems: 'center',
-          //paddingTop: ins.top, paddingBottom: ins.bottom,
+          backgroundColor: 'rgba(0, 0, 0, 0.4)', position: 'absolute', zIndex: 1000000,
+          width: '100%', height: '100%',
           opacity: fadeAnim,
-          //backfaceVisibility: 'visible',
-          //opacity: 0.5, // 'none' 'auto'
           pointerEvents: showModal ? 'auto' : 'none'
         }}
         children={
           <Pressable
             style={{
-              display: 'flex', backgroundColor: 'rgba(255, 0, 0, .5)', /* position: 'absolute', */ //zIndex: 1000000,
+              display: 'flex',
               width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center',
               paddingTop: ins.top, paddingBottom: ins.bottom
             }}
-            onPress={() => setShowModal(false)}
+            //onPress={() => setShowModal(false)}
+            onPress={() => updateShowModal(false)}
             children={
-
-
               <View
-                //visible={showModal}
                 style={{
-                  //display: showModal ? 'flex' : 'none',
                   display: 'flex',
                   position: 'relative',
                   opacity: 1,
-                  //opacity: fadeAnim,
-                  /* position: 'absolute', */
-                  //flexDirection:'column',
-                  //height: 100,
                   zIndex: 1000001,
                   backgroundColor: 'white',
                   padding: 10,
                   borderRadius: 10,
-                  //pointerEvents: 'box-only'
-                  //pointerEvents: 'none'
-                  //pointerEvents: 'auto'
-                  //pointerEvents: 'box-none'
-                  //pointerEvents: 'box-only'
                 }}
                 onStartShouldSetResponder={ () => true } // BLOCK CLICK ON CURRENT VIEW
                 onTouchEnd={ e => e.stopPropagation() } // BLOCK CLICK ON CURRENT VIEW
               >
                 <Text
-                  style={{ /* backgroundColor: 'lightgreen', */paddingBottom: 5, /* flex: 1, */ justifyContent: 'center', alignItems: 'center', fontSize: vmin * 3, textAlign: 'center', includeFontPadding: false, fontWeight: "500" }}
+                  style={{ paddingBottom: 5, justifyContent: 'center', alignItems: 'center', fontSize: vmin * 3, textAlign: 'center', includeFontPadding: false, fontWeight: "500" }}
                   children={'You are about to leave this App\nand access an external link\nDo you want to continue ?'}
                 />
-                <View style={{ /* backgroundColor: 'red', */ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
                   <Ionicons.Button
                     name='close-circle'
                     size={25}
                     color='rgba(0, 0, 0, .7)'
-                    //onPress={hideModal}
-                    onPress={() => setShowModal(false)}
+                    //onPress={() => setShowModal(false)}
+                    onPress={() => updateShowModal(false)}
                     children={ <Text style={s.buttonModal} children={'CANCEL'} /> }
                   />
                   <Ionicons.Button
                     name='checkmark-circle'
                     size={25}
                     color='rgba(0, 0, 0, .7)'
-                    //onPress={() => navigate('Home')}
-                    onPress={() => { Linking.openURL('https://www.linkedin.com/in/juan-pablo-azambuyo'); setShowModal(false) }}
+                    onPress={() => { Linking.openURL('https://www.linkedin.com/in/juan-pablo-azambuyo'); updateShowModal(false) }}
                     children={ <Text style={s.buttonModal} children={'CONTINUE'} /> }
                   />
                 </View>
               </View>
-
-
             }
           />
         }
@@ -137,7 +117,8 @@ function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScr
           //onPress={() => fadeIn()}
           //onPress={showModal}
           //onPress={fadeIn}
-          onPress={() => setShowModal(true)}
+          //onPress={() => setShowModal(true)}
+          onPress={() => updateShowModal(true)}
           
         />
       </View>

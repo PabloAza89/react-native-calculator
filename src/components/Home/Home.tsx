@@ -1,5 +1,5 @@
 import { ReactElement, useState, useRef, useEffect } from 'react';
-import { ScrollView, StatusBar, Text, View, TouchableHighlight } from 'react-native';
+import { ScrollView, StatusBar, Text, View, TouchableHighlight, Animated, useAnimatedValue, Pressable } from 'react-native';
 import { s } from './HomeCSS';
 import About from '../About/About';
 import OwnButton from '../OwnButton/OwnButton';
@@ -69,6 +69,12 @@ function Home({ navigation, vmin, port, input, secInput, setInput, setSecInput, 
   const switchSide = () => setCalcLeft(!calcLeft)
   const nextScreen = () => setShowKnowMore(!showKnowMore)
 
+  const [ showModal, setShowModal ] = useState(false);
+
+  const updateShowModal = (bool: boolean) => {
+    setShowModal(bool)
+  }
+
   const KnowMoreScreen =
   <KnowMore
     navigation={navigation} opw={opw} port={port} height={height}
@@ -80,7 +86,8 @@ function Home({ navigation, vmin, port, input, secInput, setInput, setSecInput, 
   <About
     navigation={navigation} vmin={vmin}
     currWidth={ calcLeft ? width - hingeBounds.right - ins.left : hingeBounds.left - ins.left }
-    switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
+    switchSide={switchSide} twoScreens={true} nextScreen={nextScreen} showModal={showModal}
+    updateShowModal={updateShowModal}
   />;
 
   const PortCalc =
@@ -130,6 +137,15 @@ function Home({ navigation, vmin, port, input, secInput, setInput, setSecInput, 
 
     </View>
   </View>;
+
+  const fadeAnim = useAnimatedValue(0);
+
+  const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
+  const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
+
+  useEffect(() => {
+    showModal ? fadeIn() : fadeOut()
+  }, [showModal])
 
   return (
     <View style={[ s.background, { /* paddingBottom: ins.bottom, paddingTop: ins.top, */ width: '100%', height: '100%', backgroundColor: 'lightblue' } ]}>
@@ -275,12 +291,60 @@ function Home({ navigation, vmin, port, input, secInput, setInput, setSecInput, 
 
           <View style={{ flexDirection: 'row', backgroundColor: '#004747', width: hingeBounds.left - ins.left, justifyContent: 'center', alignItems: 'center' }} /* LEFT SIDE */ >
 
+            {
+              calcLeft &&
+              <Animated.View
+                style={{
+                  display: 'flex',
+                  backgroundColor: 'rgba(0, 0, 0, 0.4)', position: 'absolute', zIndex: 1000000,
+                  width: '100%', height: '100%',
+                  opacity: fadeAnim,
+                  pointerEvents: showModal ? 'auto' : 'none'
+                }}
+                children={
+                  <Pressable
+                    style={{
+                      display: 'flex',
+                      width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center',
+                      paddingTop: ins.top, paddingBottom: ins.bottom
+                    }}
+                    onPress={() => updateShowModal(false)}
+                  />
+                }
+              />
+            }
 
             { calcLeft ? PortCalc : ( showKnowMore ? KnowMoreScreen : AboutScreen ) }
+
+            
 
 
           </View>
           <View style={{ backgroundColor: '#581199', width: width - hingeBounds.right - ins.left, justifyContent: 'center', alignItems: 'center' }} /* RIGHT SIDE */ >
+
+            {
+              !calcLeft &&
+              <Animated.View
+                style={{
+                  display: 'flex',
+                  backgroundColor: 'rgba(0, 0, 0, 0.4)', position: 'absolute', zIndex: 1000000,
+                  width: '100%', height: '100%',
+                  opacity: fadeAnim,
+                  pointerEvents: showModal ? 'auto' : 'none'
+                }}
+                children={
+                  <Pressable
+                    style={{
+                      display: 'flex',
+                      width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center',
+                      paddingTop: ins.top, paddingBottom: ins.bottom
+                    }}
+                    onPress={() => updateShowModal(false)}
+                  />
+                }
+              />
+            }
+         
 
 
             { calcLeft ? ( showKnowMore ? KnowMoreScreen : AboutScreen ) : PortCalc }
