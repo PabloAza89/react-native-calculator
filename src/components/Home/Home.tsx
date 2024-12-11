@@ -9,12 +9,24 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeI } from '../../interfaces/interfaces';
 import { portButtons, landButtons } from './Buttons';
 
-const Home = ({ navigation/* : { navigate } */, vmin, port, input, secInput, setInput, setSecInput, state, width, height, opw, oph, hingeBounds, showModal, updateShowModal }: any): ReactElement =>{
+const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSecInput, state, width, height, opw, oph, hingeBounds, showModal, updateShowModal }: any): ReactElement =>{
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
   const { navigate } = navigation
 
   //state === 'book' && navigate('Home')
+
+  const [ showKnowMore, setShowKnowMore ] = useState(false)
+
+  //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", route)
+  useEffect(() => {
+    const lastRoute = route.params?.lastRoute
+    //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", route.params)
+    //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", lastRoute)
+    //if (lastRoute === 'KnowMore') setShowKnowMore(true)
+    lastRoute === 'KnowMore' && setShowKnowMore(true)
+    lastRoute === 'About' && setShowKnowMore(false)
+  }, [route])
 
   let ins = useSafeAreaInsets(); // insets
 
@@ -66,7 +78,6 @@ const Home = ({ navigation/* : { navigate } */, vmin, port, input, secInput, set
   console.log("WIDTH WIDTH", width)
 
   const [ calcLeft, setCalcLeft ] = useState(true)
-  const [ showKnowMore, setShowKnowMore ] = useState(false)
 
   const switchSide = () => setCalcLeft(!calcLeft)
   const nextScreen = () => setShowKnowMore(!showKnowMore)

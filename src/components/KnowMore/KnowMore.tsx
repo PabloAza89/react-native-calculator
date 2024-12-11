@@ -15,7 +15,8 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
   const { navigate } = navigation
 
   useEffect(() => {
-    if (navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') navigate('Home')
+    (navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
+    //(navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home')
   }, [state])
 
   let ins = useSafeAreaInsets(); // insets
@@ -283,6 +284,7 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
                 size={30}
                 color='rgba(0, 0, 0, .7)'
                 onPress={() => navigate('Home')}
+                //onPress={() => navigate('Home', { lastRoute: 'KnowMore' })}
                 children={ <Text style={s.textInButton}>HOME</Text> }
               />
             }

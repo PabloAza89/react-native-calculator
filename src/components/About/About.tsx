@@ -14,7 +14,8 @@ const About = ({ navigation /* { navigate } */, vmin, switchSide, twoScreens, ne
   const { navigate } = navigation
 
   useEffect(() => {
-    if (navigation.getState().routes.at(-1).name === 'About' && state === 'book') navigate('Home')
+    (navigation.getState().routes.at(-1).name === 'About' && state === 'book') && navigate('Home', { lastRoute: 'About' })
+    //(navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
   }, [state])
 
   let ins = useSafeAreaInsets(); // insets
