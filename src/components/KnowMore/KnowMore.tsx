@@ -10,9 +10,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
-const KnowMore = ({ navigation: { navigate }, opw, port, height, setCalcLeft, calcLeft, switchSide, twoScreens, nextScreen }: any): ReactElement => {
+const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLeft, calcLeft, switchSide, twoScreens, nextScreen, state }: any): ReactElement => {
 
-  //const  { navigate } navigation
+  const { navigate } = navigation
+
+  useEffect(() => {
+    if (navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') navigate('Home')
+  }, [state])
 
   let ins = useSafeAreaInsets(); // insets
 
@@ -223,14 +227,14 @@ const KnowMore = ({ navigation: { navigate }, opw, port, height, setCalcLeft, ca
     <View style={{ height: '100%', width: '100%' }}>
 
       <LinearGradient
-        colors={[ `rgba(${colorVariables}, 1)`, `rgba(255, 255, 255, 1)` ]}
+        colors={[ `rgba(${colorVariables}, 1)`, 'rgba(255, 255, 255, 1)' ]}
         style={[ s.linearGradient, { height: '100%', width: '100%' } ]}
         start={[ 0, 1 ]} // left, top
         end={[ 1, 0 ]}   // left, bottom
         children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
       />
       <LinearGradient
-        colors={[ `rgba(${colorVariables}, 1)`, `rgba(255, 255, 255, 1)` ]}
+        colors={[ `rgba(${colorVariables}, 1)`, 'rgba(255, 255, 255, 1)' ]}
         style={[ s.linearGradient, { height: ins.top, width: '100%', zIndex: 4, opacity: 0.85 }]}
         start={[ 0, height / ins.top ]} // left, top
         end={[ 1, 0 ]}                  // left, bottom

@@ -163,6 +163,9 @@ function App(): ReactElement {
 
   FastImage.preload([{ uri: Image.resolveAssetSource(require('./src/images/profile.png')).uri }])
 
+  const [ showModal, setShowModal ] = useState(false);
+  const updateShowModal = (bool: boolean) => setShowModal(bool)
+
   const dynamicImport = (props: navigationI, module: any) => {
     switch (module) {
       case "Home":
@@ -172,15 +175,20 @@ function App(): ReactElement {
             {...props} input={input} setInput={setInput} port={port}
             setSecInput={setSecInput} vmin={vmin} secInput={secInput}
             state={state} width={width} height={height} opw={opw} oph={oph}
-            hingeBounds={hingeBounds}
+            hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
           />
         )
       case "About":
         const About = require('./src/components/About/About').default
-        return <About {...props} vmin={vmin} />
+        return (
+          <About
+            {...props} vmin={vmin} currWidth={width} showModal={showModal}
+            updateShowModal={updateShowModal} state={state} twoScreens={false}
+          />
+        )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
-        return <KnowMore {...props} opw={opw} port={port} />
+        return <KnowMore {...props} opw={opw} port={port} height={height} state={state} />
     }
   }
 

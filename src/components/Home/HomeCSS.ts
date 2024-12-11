@@ -2,87 +2,61 @@ import { StyleSheet } from 'react-native';
 
 export const s = StyleSheet.create({
   background: {
-    //backgroundColor: 'lightblue',
+    backgroundColor: 'lightblue',
     position: 'relative',
-    //width: '100%',
-    /* width: 839, */
-    //width: 835, // dp full
-    //width: 417, // dp half
-    //width: 208, // dp quarter
+    width: '100%',
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    /* height: 641 */
+  },
+  outline: {
+    backgroundColor: 'darkblue'
   },
   contour: {
     backgroundColor: 'silver',
-    borderColor: 'darkblue',
-    /* maxWidth: '100%', */
-    /* maxWidth: 400, */
     flexWrap: 'wrap',
     flexDirection: 'row',
-    //justifyContent: 'space-evenly',
-    //justifyContent: 'space-around',
-    //justifyContent: 'space-between',
-    /* alignContent: 'space-between' */
-    /* alignContent: 'space-around' */
-    /* alignContent: 'center' */
-
     alignContent: 'stretch',
-    //alignContent: 'space-around'
-    //alignContent: 'space-between'
-    //alignContent: 'center'
-    
-    
-
+    margin: 3
   },
   displayContainer: {
-    //display: 'flex',
-    //flexDirection: 'column',
     backgroundColor: 'antiquewhite',
     borderColor: '#4d4db0',
-    //fontSize: 30,
-    //fontSize: 'auto',
     alignItems: 'flex-end',
-    //justifyContent: 'flex-start',
-    //justifyContent: 'center',
-    //justifyContent: 'space-around',
-    //justifyContent: 'space-evenly',
-    //justifyContent: 'center',
     borderWidth: 1,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+  },
+  displayContainerPort: {
+    width: '96%',
+    marginLeft: '2%',
+    marginTop: '2%'
+  },
+  displayContainerLand: {
+    width: '98%',
+    marginLeft: '1%',
+    marginTop: '1%'
   },
   secondaryResult: {
     //backgroundColor: 'lightgreen', // DEV
     borderColor: 'darkblue',
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
-    //height: '25%'
     textAlignVertical: 'center',
-    //textAlignVertical: "bottom",
     includeFontPadding: false
   },
   mainResult: {
-    backgroundColor: 'burlywood', // DEV
+    //backgroundColor: 'burlywood', // DEV
     borderColor: 'darkblue',
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
-    //height: '50%'
-    //textAlignVertical: 'top',
     textAlignVertical: 'center',
-    //justifyContent: 'center',
-    //textAlignVertical: "bottom",
-    //textAlignVertical: 'center',
-    //textAlignVertical: 'center',
     includeFontPadding: false
   },
   parErr: {
     //backgroundColor: 'green', // DEV
-    //position: 'absolute',
     color: 'red',
-    //fontSize: 17,
     textAlign: 'center',
-    //textAlignVertical: 'center',
     includeFontPadding: false
   },
   question: {
@@ -93,4 +67,64 @@ export const s = StyleSheet.create({
     width: 42,
     height: 42
   },
+  tabletopContainer: { // TABLETOP // TABLETOP // TABLETOP //
+    //backgroundColor: 'lightgreen', // DEV
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    height: '100%'
+  },
+  upperScreenTabletop: {
+    //backgroundColor: '#004747', // DEV
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  lowerScreenTabletop: {
+    //backgroundColor: '#581199', // DEV
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  landButtonsContainer: {
+    //backgroundColor: 'yellow', // DEV
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    marginTop: '1%',
+    marginBottom: '1%',
+    width: '99%',
+    justifyContent:'space-around',
+    alignContent: 'space-between'
+  },
+  bookContainer: { // BOOK // BOOK // BOOK // BOOK // BOOK //
+    //backgroundColor: 'lightgreen', // DEV
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    height: '100%'
+  },
+  leftScreenBook: {
+    //backgroundColor: '#004747', // DEV
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  rightScreenBook: {
+    //backgroundColor: '#581199', // DEV
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  modalBackgroundOtherScreen: { // MODAL // MODAL // MODAL //
+    display: 'flex',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    position: 'absolute',
+    zIndex: 1000000,
+    width: '100%',
+    height: '100%'
+  },
+  modalBackgroundOtherScreenPressable: {
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });

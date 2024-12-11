@@ -6,9 +6,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AboutI } from '../../interfaces/interfaces';
+//import { useIsFocused } from "@react-navigation/native";
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScreen, currWidth, showModal, updateShowModal }: any): ReactElement {
+const About = ({ navigation /* { navigate } */, vmin, switchSide, twoScreens, nextScreen, currWidth, showModal, updateShowModal, state }: any): ReactElement => {
+
+  const { navigate } = navigation
+
+  useEffect(() => {
+    if (navigation.getState().routes.at(-1).name === 'About' && state === 'book') navigate('Home')
+  }, [state])
 
   let ins = useSafeAreaInsets(); // insets
 
@@ -20,9 +27,7 @@ function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScr
   const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
   const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
 
-  useEffect(() => {
-    showModal ? fadeIn() : fadeOut()
-  }, [showModal])
+  useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
   // <Animated.View
 
@@ -35,6 +40,7 @@ function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScr
           backgroundColor: 'rgba(0, 0, 0, 0.4)', position: 'absolute', zIndex: 1000000,
           width: '100%', height: '100%',
           opacity: fadeAnim,
+          //opacity: 0,
           pointerEvents: showModal ? 'auto' : 'none'
         }}
         children={
@@ -57,8 +63,8 @@ function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScr
                   padding: 10,
                   borderRadius: 10,
                 }}
-                onStartShouldSetResponder={ () => true } // BLOCK CLICK ON CURRENT VIEW
-                onTouchEnd={ e => e.stopPropagation() } // BLOCK CLICK ON CURRENT VIEW
+                // onStartShouldSetResponder={ () => true } // BLOCK CLICK ON CURRENT VIEW
+                // onTouchEnd={ e => e.stopPropagation() } // BLOCK CLICK ON CURRENT VIEW
               >
                 <Text
                   style={{ paddingBottom: 5, justifyContent: 'center', alignItems: 'center', fontSize: vmin * 3, textAlign: 'center', includeFontPadding: false, fontWeight: "500" }}
@@ -95,7 +101,7 @@ function About({ navigation: { navigate }, vmin, switchSide, twoScreens, nextScr
         children={ <StatusBar translucent={true} backgroundColor={'transparent'} /> }
       />
       <Text
-        style={[ s.text, { marginTop: -ins.bottom } ]}
+        style={[ s.text, { marginTop: ins.bottom * -1 } ]}
         children={'This App is developed by\nJuan Pablo Azambuyo'}
       />
       <View style={s.imageWrapper}>
