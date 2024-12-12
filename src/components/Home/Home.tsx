@@ -1,5 +1,6 @@
 import { ReactElement, useState, useRef, useEffect } from 'react';
-import { ScrollView, StatusBar, Text, View, Animated, useAnimatedValue, Pressable, TouchableHighlight } from 'react-native';
+import { ScrollView, StatusBar, Text, View, Animated, useAnimatedValue,
+  Pressable, TouchableHighlight, NativeModules, NativeEventEmitter } from 'react-native';
 import { s } from './HomeCSS';
 import About from '../About/About';
 import OwnButton from '../OwnButton/OwnButton';
@@ -9,7 +10,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeI } from '../../interfaces/interfaces';
 import { portButtons, landButtons } from './Buttons';
 
-const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSecInput, state, width, height, opw, oph, hingeBounds, showModal, updateShowModal }: any): ReactElement =>{
+const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSecInput,
+  state, width, height, opw, oph, hingeBounds, showModal, updateShowModal, /* MainActivity, ClassTest */ }: any): ReactElement =>{
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
   const { navigate } = navigation
@@ -174,12 +176,43 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
     showModal ? fadeIn() : fadeOut()
   }, [showModal])
 
+   const { MainActivity, TestModule } = NativeModules;
+
+  // useEffect(() => {
+  //   const nativeEvent = new NativeEventEmitter(MainActivity);
+
+  //   let angleListener = nativeEvent.addListener('angle', e => {
+  //     console.log("angleASDASD", e) // HINGE ANGLE
+  //   });
+  //   return () => {
+  //     angleListener.remove();
+  //   }
+  // }, []);
+
+
+  const onPressTest = async () => {
+    try {
+      //console.log("CLICKED", await MainActivity.callFromReact())
+      //console.log("CLICKED", await MainActivity.getMainComponentName())
+      //console.log("CLICKED", await MainActivity.getMainComponentName())
+      //console.log("CLICKED", await MainActivity.TestClass.getName())
+      //console.log("CLICKED", await MainActivity.testFunc())
+      console.log("CLICKED", await TestModule.testFunc())
+      
+      
+    }
+    catch(e) {
+      console.log("ERROR", e)
+    }
+    
+  };
+
   return (
     <View style={[ s.background ]}>
       <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
       {
-        state === 'cleanFullscreen' ?
-        //true ?
+        //state === 'cleanFullscreen' ?
+        true ?
 
         <>
           { PortCalc }
@@ -200,7 +233,8 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
             //   { left: ((vmin * 90) / 2) - 23, bottom: -54 } :
             //   { top: ((vmin * 90) / 2) - 23, right: -54 },
             // ]}
-            onPress={() => navigate('About')}
+            //onPress={() => navigate('About')}
+            onPress={() => onPressTest()}
             children={ <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' /> }
           />
         </>

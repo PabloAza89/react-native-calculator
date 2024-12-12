@@ -45,11 +45,102 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorEvent
 import com.facebook.react.bridge.LifecycleEventListener
 
-class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
+// TEST //
+
+import androidx.window.area.WindowAreaController
+import java.util.concurrent.Executor
+import androidx.window.area.WindowAreaSessionPresenter
+import androidx.window.area.WindowAreaInfo
+import androidx.window.area.WindowAreaCapability
+import androidx.core.content.ContextCompat
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.distinctUntilChanged
+import androidx.window.area.WindowAreaPresentationSessionCallback
+import android.widget.TextView
+import androidx.window.core.ExperimentalWindowApi
+
+import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReactMethod
+
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactContextBaseJavaModule
+
+import com.facebook.react.ReactPackage
+import android.view.View
+import com.facebook.react.bridge.NativeModule
+//import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.uimanager.ReactShadowNode
+import com.facebook.react.uimanager.ViewManager
+import com.facebook.react.PackageList
+
+// TEST //
+
+@OptIn(ExperimentalWindowApi::class)
+class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener, WindowAreaPresentationSessionCallback {
+
+  // TEST //
+
+  private lateinit var windowAreaController: WindowAreaController
+  private lateinit var displayExecutor: Executor
+  private var windowAreaSession: WindowAreaSessionPresenter? = null
+  private var windowAreaInfo: WindowAreaInfo? = null
+  private var capabilityStatus: WindowAreaCapability.Status =
+    WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNSUPPORTED
+
+  private val dualScreenOperation = WindowAreaCapability.Operation.OPERATION_PRESENT_ON_AREA
+  private val rearDisplayOperation = WindowAreaCapability.Operation.OPERATION_TRANSFER_ACTIVITY_TO_AREA
+
+  // TEST //
 
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
+
+
+    displayExecutor = ContextCompat.getMainExecutor(this)
+    windowAreaController = WindowAreaController.getOrCreate()
+
+    lifecycleScope.launch(Dispatchers.Main) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            windowAreaController.windowAreaInfos
+                .map { info -> info.firstOrNull { it.type == WindowAreaInfo.Type.TYPE_REAR_FACING } }
+                .onEach { info -> windowAreaInfo = info }
+                .map { it?.getCapability(dualScreenOperation)?.status ?: WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNSUPPORTED }
+                .distinctUntilChanged()
+                .collect {
+                    capabilityStatus = it
+
+                    when (capabilityStatus) {
+                        WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNSUPPORTED -> {
+                          // The selected display mode is not supported on this device.
+                        }
+                        WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNAVAILABLE -> {
+                          // The selected display mode is not available.
+                        }
+                        WindowAreaCapability.Status.WINDOW_AREA_STATUS_AVAILABLE -> {
+                          // The selected display mode is available and can be enabled.
+                          toggleDualScreenMode()
+                        }
+                        WindowAreaCapability.Status.WINDOW_AREA_STATUS_ACTIVE -> {
+                          // The selected display mode is already active.
+                          //toggleDualScreenMode()
+                        }
+                        else -> {
+                          // The selected display mode status is unknown.
+                        }
+                    }
+
+
+
+
+
+                }
+        }
+    }
+
+    //fun getPackages(): List<ReactPackage> = PackageList(application).packages.apply { add(TestPackage()) }
+
   }
 
   override fun onResume() {
@@ -89,14 +180,20 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     }
 
     val lifecycleEventListener = object: LifecycleEventListener {
-      override fun onHostResume() { hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) } }
+      override fun onHostResume() {
+
+        hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) };
+
+        
+
+      }
 
       override fun onHostPause() { hingeAngleSensor?.let { sensorManager?.unregisterListener(sensorEventListener, it) } }
 
-      override fun onHostDestroy() { }
+      override fun onHostDestroy() { } 
     }
 
-    context.addLifecycleEventListener(lifecycleEventListener)
+    context.addLifecycleEventListener(lifecycleEventListener)    
 
   }
 
@@ -198,6 +295,77 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
       ?.emit("LayoutInfo", mainMap)
   }
+
+
+  fun toggleDualScreenMode() {
+      if (windowAreaSession != null) {
+          windowAreaSession?.close()
+      }
+      else {
+          windowAreaInfo?.token?.let { token ->
+              windowAreaController.presentContentOnWindowArea(
+                  token = token,
+                  activity = this@MainActivity,
+                  executor = displayExecutor,
+                  windowAreaPresentationSessionCallback = this@MainActivity
+              )
+          }
+      }
+  }
+
+  class TestPackage : ReactPackage {
+      override fun createViewManagers(
+          reactContext: ReactApplicationContext
+      ): MutableList<ViewManager<View, ReactShadowNode<*>>> = mutableListOf()
+
+      override fun createNativeModules(
+          reactContext: ReactApplicationContext
+      ): MutableList<NativeModule> = listOf(TestModule(reactContext)).toMutableList()
+  }
+
+  class TestModule(reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext) {
+    override fun getName(): String = "TestModule"
+
+    @ReactMethod
+    fun testFunc(promise: Promise) {
+      //Log.d("LOG", "valid context");
+
+      try {
+        //promise.resolve((activity as MainActivity).getString()) // OK
+        promise.resolve("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // OK
+      } catch (e: Exception) {
+          promise.reject(e)
+          // pickerPromise?.reject(E_FAILED_TO_SHOW_PICKER, t)
+          // pickerPromise = null
+      }
+
+
+    }
+
+  }
+
+  
+
+  override fun onSessionStarted(session: WindowAreaSessionPresenter) {
+      windowAreaSession = session
+      val view = TextView(session.context)
+      //view.text = "Hello world!"
+      view.text = "Hello world, from the other screen!"
+      session.setContentView(view)
+  }
+
+  override fun onSessionEnded(t: Throwable?) {
+      if(t != null) {
+          //Log.e(logTag, "Something was broken: ${t.message}")
+          Log.d("LOG", "Something was broken: ${t.message}")
+      }
+  }
+
+  override fun onContainerVisibilityChanged(isVisible: Boolean) {
+      //Log.d(logTag, "onContainerVisibilityChanged. isVisible = $isVisible")
+      Log.d("LOG", "onContainerVisibilityChanged. isVisible = $isVisible")
+  }
+
 
   // Returns the name of the main component registered from JavaScript. This is used to schedule rendering of the component.
   override fun getMainComponentName(): String = "reactNativeCalculator"

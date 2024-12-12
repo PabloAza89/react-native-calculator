@@ -166,6 +166,8 @@ function App(): ReactElement {
   const [ showModal, setShowModal ] = useState(false);
   const updateShowModal = (bool: boolean) => setShowModal(bool)
 
+  //const { MainActivity, ClassTest } = NativeModules;
+
   const dynamicImport = (props: navigationI, module: any) => {
     switch (module) {
       case "Home":
@@ -176,6 +178,7 @@ function App(): ReactElement {
             setSecInput={setSecInput} vmin={vmin} secInput={secInput}
             state={state} width={width} height={height} opw={opw} oph={oph}
             hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
+            //MainActivity={MainActivity} ClassTest={ClassTest}
           />
         )
       case "About":
@@ -204,33 +207,33 @@ function App(): ReactElement {
 
   let initialState = { index: 0, routes: [ { name: 'Home' } ] }; // SET NAVIGATOR INITIAL STATE TO AVOID "UNDEFINED" ON "APP BLUR SAVE LAST ROUTE" (WITHOUT NAVIGATE ANY SCREEN)
 
-  const { MainActivity } = NativeModules;
+  
 
-  useEffect(() => {
-    const nativeEvent = new NativeEventEmitter(MainActivity);
-    let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
-      console.log("screen", e.screen) // SCREEN BOUNDS (SCREEN SIZE)
-      console.log("window", e.window) // WINDOW BOUNDS (APP SIZE)
-      console.log("state", e.state) // 'flat' or 'half' or 'closed'
-      console.log("verticalHinge", e.verticalHinge) // Boolean
-      console.log("occlusion", e.occlusion) // Boolean
-      console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS
+  // useEffect(() => {
+  //   const nativeEvent = new NativeEventEmitter(MainActivity);
+  //   let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
+  //     console.log("screen", e.screen) // SCREEN BOUNDS (SCREEN SIZE)
+  //     console.log("window", e.window) // WINDOW BOUNDS (APP SIZE)
+  //     console.log("state", e.state) // 'flat' or 'half' or 'closed'
+  //     console.log("verticalHinge", e.verticalHinge) // Boolean
+  //     console.log("occlusion", e.occlusion) // Boolean
+  //     console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS
 
-      setState(e.state)
-      setHingeBounds(e.hingeBounds)
+  //     setState(e.state)
+  //     setHingeBounds(e.hingeBounds)
 
-      //console.log("test", e.test) // HINGE BOUNDS
-      //console.log("test1", e.test1) // HINGE BOUNDS
-      //console.log("test2", e.test2) // HINGE BOUNDS
-    });
-    let angleListener = nativeEvent.addListener('angle', e => {
-      console.log("angle", e) // HINGE ANGLE
-    });
-    return () => {
-      LayoutInfoListener.remove();
-      angleListener.remove();
-    }
-  }, []);
+  //     //console.log("test", e.test) // HINGE BOUNDS
+  //     //console.log("test1", e.test1) // HINGE BOUNDS
+  //     //console.log("test2", e.test2) // HINGE BOUNDS
+  //   });
+  //   let angleListener = nativeEvent.addListener('angle', e => {
+  //     console.log("angle", e) // HINGE ANGLE
+  //   });
+  //   return () => {
+  //     LayoutInfoListener.remove();
+  //     angleListener.remove();
+  //   }
+  // }, []);
 
   //let ins = useSafeAreaInsets(); // insets
 
