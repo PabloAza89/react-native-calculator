@@ -1,6 +1,9 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+
+apply plugin: 'kotlin-kapt'
+
 // apply plugin: 'org.jetbrains.kotlin.android.extensions'
 // androidExtensions {
 //     experimental = true
@@ -122,6 +125,21 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    // buildFeatures {
+    //     viewBinding = true
+    //     dataBinding = true
+    // }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+        // viewBinding = true
+        // dataBinding = true
+    }
+
+    // dataBinding {
+    //     enabled = true
+    // }
 }
 
 dependencies {
@@ -141,11 +159,14 @@ dependencies {
     //implementation("androidx.window.extensions.core:core:1.0.0")
     //compileOnly("androidx.window.extensions.core:core:1.0.0")
 
-    def extensions_core_version = "androidx.window.extensions.core:core:1.0.0"
-    compileOnly(extensions_core_version)
-    testImplementation(extensions_core_version)
-    androidTestCompileOnly(extensions_core_version)
-    androidTestImplementation(extensions_core_version)
+    // def extensions_core_version = "androidx.window.extensions.core:core:1.0.0"
+    // compileOnly(extensions_core_version)
+    // testImplementation(extensions_core_version)
+    // androidTestCompileOnly(extensions_core_version)
+    // androidTestImplementation(extensions_core_version)
+
+    //kapt "com.android.databinding:compiler:$android_plugin_version"
+    //kapt "com.android.databinding:compiler:3.+"
 
     //def extensions_core_version = "androidx.window.extensions.core:core:1.0.0"
 
@@ -155,5 +176,8 @@ dependencies {
         implementation jscFlavor
     }
 }
+// kapt {
+//     generateStubs = true
+// }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

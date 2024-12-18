@@ -49,14 +49,16 @@ import com.facebook.react.bridge.LifecycleEventListener
 
 import androidx.window.area.WindowAreaController
 import java.util.concurrent.Executor
-import androidx.window.area.WindowAreaSessionPresenter
+//import androidx.window.area.WindowAreaSessionPresenter
+import androidx.window.area.WindowAreaSession
 import androidx.window.area.WindowAreaInfo
 import androidx.window.area.WindowAreaCapability
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.distinctUntilChanged
-import androidx.window.area.WindowAreaPresentationSessionCallback
+//import androidx.window.area.WindowAreaPresentationSessionCallback
+import androidx.window.area.WindowAreaSessionCallback
 import android.widget.TextView
 import androidx.window.core.ExperimentalWindowApi
 
@@ -74,18 +76,26 @@ import com.facebook.react.uimanager.ReactShadowNode
 import com.facebook.react.uimanager.ViewManager
 import com.facebook.react.PackageList
 
+//import com.reactnativecalculator.databinding.ActivityDualScreenBinding
+import androidx.databinding.DataBindingUtil
+//import androidx.appcompat.app.AppCompatActivity // ReactActivity() is instanceOf
+
 // TEST //
 
 @OptIn(ExperimentalWindowApi::class)
-class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener, WindowAreaPresentationSessionCallback {
+class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener, WindowAreaSessionCallback {
 
   // TEST //
 
+  //private lateinit var binding: ActivityDualScreenBinding
+  //private val infoLogAdapter = InfoLogAdapter()
+
   private lateinit var windowAreaController: WindowAreaController
   private lateinit var displayExecutor: Executor
-  private var windowAreaSession: WindowAreaSessionPresenter? = null
-  private var windowAreaInfo: WindowAreaInfo? = null
-  private var capabilityStatus: WindowAreaCapability.Status =
+  //private var windowAreaSession: WindowAreaSessionPresenter? = null
+  private var rearDisplaySession: WindowAreaSession? = null
+  private var rearDisplayWindowAreaInfo: WindowAreaInfo? = null
+  private var rearDisplayStatus: WindowAreaCapability.Status =
     WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNSUPPORTED
 
   private val dualScreenOperation = WindowAreaCapability.Operation.OPERATION_PRESENT_ON_AREA
@@ -98,50 +108,67 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
 
 
-    displayExecutor = ContextCompat.getMainExecutor(this)
+    // binding = ActivityDualScreenBinding.inflate(layoutInflater)
+    // setContentView(binding.root)
+
+    //binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+    // binding = ActivityDualScreenBinding.inflate(layoutInflater)
+    // //val view = binding.root
+    // setContentView(binding.root)
+
+    displayExecutor = ContextCompat.getMainExecutor(this@MainActivity)
     windowAreaController = WindowAreaController.getOrCreate()
 
-    lifecycleScope.launch(Dispatchers.Main) {
-        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            windowAreaController.windowAreaInfos
-                .map { info -> info.firstOrNull { it.type == WindowAreaInfo.Type.TYPE_REAR_FACING } }
-                .onEach { info -> windowAreaInfo = info }
-                .map { it?.getCapability(dualScreenOperation)?.status ?: WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNSUPPORTED }
-                .distinctUntilChanged()
-                .collect {
-                    capabilityStatus = it
-
-                    when (capabilityStatus) {
-                        WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNSUPPORTED -> {
-                          // The selected display mode is not supported on this device.
-                        }
-                        WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNAVAILABLE -> {
-                          // The selected display mode is not available.
-                        }
-                        WindowAreaCapability.Status.WINDOW_AREA_STATUS_AVAILABLE -> {
-                          // The selected display mode is available and can be enabled.
-                          toggleDualScreenMode()
-                        }
-                        WindowAreaCapability.Status.WINDOW_AREA_STATUS_ACTIVE -> {
-                          // The selected display mode is already active.
-                          //toggleDualScreenMode()
-                        }
-                        else -> {
-                          // The selected display mode status is unknown.
-                        }
-                    }
-
-
-
-
-
-                }
-        }
-    }
+    updateCapabilities()
 
     //fun getPackages(): List<ReactPackage> = PackageList(application).packages.apply { add(TestPackage()) }
 
   }
+
+  private fun updateCapabilities() {
+      lifecycleScope.launch(Dispatchers.Main) {
+          lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+              windowAreaController.windowAreaInfos
+                  .map { info -> info.firstOrNull { it.type == WindowAreaInfo.Type.TYPE_REAR_FACING } }
+                  .onEach { info -> rearDisplayWindowAreaInfo = info }
+                  .map { it?.getCapability(rearDisplayOperation)?.status ?: WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNSUPPORTED }
+                  .distinctUntilChanged()
+                  .collect {
+                      rearDisplayStatus = it
+                      updateUI()
+                      Log.d("LOG", "A VER ESTE 1 ${rearDisplayStatus}")
+                      //infoLogAdapter.notifyDataSetChanged()
+                  }
+          }
+      }
+  }
+
+  private fun updateUI() {
+        if(rearDisplaySession != null) {
+            // binding.button.isEnabled = true
+            // binding.status.text = "Disable Dual Screen Mode"
+        } else {
+            when(rearDisplayStatus) {
+                WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNSUPPORTED -> {
+                    // binding.button.isEnabled = false
+                    // binding.status.text = "Dual Screen is not supported on this device"
+                }
+                WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNAVAILABLE -> {
+                    // binding.button.isEnabled = false
+                    // binding.status.text = "Dual Screen is not currently available"
+                }
+                WindowAreaCapability.Status.WINDOW_AREA_STATUS_AVAILABLE -> {
+                    // binding.button.isEnabled = true
+                    // binding.status.text = "Enable Dual Screen Mode"
+                }
+                else -> {
+                    // binding.button.isEnabled = false
+                    // binding.status.text = "Dual Screen status is unknown"
+                }
+            }
+        }
+    }
 
   override fun onResume() {
     super.onResume()
@@ -163,6 +190,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           .collect { value -> updateUI(value, context) }
       }
     }
+
+
+
 
     var sensorManager: SensorManager? = context.getSystemService(SENSOR_SERVICE) as SensorManager
     var hingeAngleSensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_HINGE_ANGLE)
@@ -298,19 +328,43 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
 
   fun toggleDualScreenMode() {
-      if (windowAreaSession != null) {
-          windowAreaSession?.close()
-      }
-      else {
-          windowAreaInfo?.token?.let { token ->
-              windowAreaController.presentContentOnWindowArea(
-                  token = token,
-                  activity = this@MainActivity,
-                  executor = displayExecutor,
-                  windowAreaPresentationSessionCallback = this@MainActivity
-              )
-          }
-      }
+    Log.d("LOG", "BUTTON PRESSED")
+      // if (windowAreaSession != null) {
+      //     windowAreaSession?.close()
+      // }
+      // else {
+      //     windowAreaInfo?.token?.let { token ->
+      //         windowAreaController.presentContentOnWindowArea(
+      //             token = token,
+      //             activity = this@MainActivity,
+      //             executor = displayExecutor,
+      //             windowAreaPresentationSessionCallback = this@MainActivity
+      //         )
+      //     }
+      // }
+
+    // windowAreaInfo?.token?.let { token ->
+    //     windowAreaController.presentContentOnWindowArea(
+    //         token = token,
+    //         activity = this@MainActivity,
+    //         executor = displayExecutor,
+    //         windowAreaPresentationSessionCallback = this@MainActivity
+    //     )
+    // }
+
+    rearDisplayWindowAreaInfo?.token?.let { token ->
+        windowAreaController.transferActivityToWindowArea(
+            token = token,
+            activity = this@MainActivity,
+            executor = displayExecutor,
+            windowAreaSessionCallback = this@MainActivity
+        )
+    }
+
+  }
+
+  fun toggleDualScreenMode2() {
+    Log.d("LOG", "valid context")
   }
 
   class TestPackage : ReactPackage {
@@ -328,11 +382,18 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     @ReactMethod
     fun testFunc(promise: Promise) {
+    //fun testFunc(promise: Promise) {
       //Log.d("LOG", "valid context");
-
+      val activity = currentActivity
+      
       try {
         //promise.resolve((activity as MainActivity).getString()) // OK
-        promise.resolve("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // OK
+        //promise.resolve("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // OK
+        //this.toggleDualScreenMode()
+        //promise.resolve((activity as MainActivity).getString())
+        //promise.resolve((activity as MainActivity).toggleDualScreenMode())
+        (activity as MainActivity).toggleDualScreenMode()
+        //(activity as MainActivity).toggleDualScreenMode2()
       } catch (e: Exception) {
           promise.reject(e)
           // pickerPromise?.reject(E_FAILED_TO_SHOW_PICKER, t)
@@ -346,12 +407,15 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   
 
-  override fun onSessionStarted(session: WindowAreaSessionPresenter) {
-      windowAreaSession = session
-      val view = TextView(session.context)
-      //view.text = "Hello world!"
-      view.text = "Hello world, from the other screen!"
-      session.setContentView(view)
+  override fun onSessionStarted(session: WindowAreaSession) {
+      // windowAreaSession = session
+      // val view = TextView(session.context)
+      // //view.text = "Hello world!"
+      // view.text = "Hello world, from the other screen!"
+      // session.setContentView(view)
+      // updateUI()
+      startCamera()
+      Log.d("LOG", "BB Session started")
   }
 
   override fun onSessionEnded(t: Throwable?) {
@@ -359,12 +423,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           //Log.e(logTag, "Something was broken: ${t.message}")
           Log.d("LOG", "Something was broken: ${t.message}")
       }
+      Log.d("LOG", "AA Something was broken: ")
+      //windowAreaSession = null
   }
 
-  override fun onContainerVisibilityChanged(isVisible: Boolean) {
-      //Log.d(logTag, "onContainerVisibilityChanged. isVisible = $isVisible")
-      Log.d("LOG", "onContainerVisibilityChanged. isVisible = $isVisible")
-  }
+  // override fun onContainerVisibilityChanged(isVisible: Boolean) {
+  //     //Log.d(logTag, "onContainerVisibilityChanged. isVisible = $isVisible")
+  //     Log.d("LOG", "onContainerVisibilityChanged. isVisible = $isVisible")
+  // }
 
 
   // Returns the name of the main component registered from JavaScript. This is used to schedule rendering of the component.
