@@ -1,4 +1,4 @@
-import { ReactElement, useState, useRef, useEffect } from 'react';
+import React, { ReactElement, useState, useRef, useEffect } from 'react';
 import { ScrollView, StatusBar, Text, View, Animated, useAnimatedValue,
   Pressable, TouchableHighlight, NativeModules, NativeEventEmitter } from 'react-native';
 import { s } from './HomeCSS';
@@ -11,7 +11,7 @@ import { HomeI } from '../../interfaces/interfaces';
 import { portButtons, landButtons } from './Buttons';
 
 const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSecInput,
-  state, width, height, opw, oph, hingeBounds, showModal, updateShowModal, /* MainActivity, ClassTest */ }: any): ReactElement =>{
+  state, width, height, opw, oph, hingeBounds, showModal, updateShowModal, /* MainActivity, ClassTest */ }: any): ReactElement => {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
   const { navigate } = navigation
@@ -191,7 +191,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
 
 
   const onPressTest = async () => {
-    try {
+
       //console.log("CLICKED", await MainActivity.callFromReact())
       //console.log("CLICKED", await MainActivity.getMainComponentName())
       //console.log("CLICKED", await MainActivity.getMainComponentName())
@@ -200,10 +200,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
       console.log("CLICKED", await TestModule.testFunc())
       
       
-    }
-    catch(e) {
-      console.log("ERROR", e)
-    }
+
     
   };
 
@@ -238,6 +235,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
             children={ <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' /> }
           />
         </>
+       
 
         :
 

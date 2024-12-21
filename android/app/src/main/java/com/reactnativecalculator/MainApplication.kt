@@ -27,7 +27,6 @@ class MainApplication: Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
     ReactNativeHostWrapper(this, object : DefaultReactNativeHost(this) {
-      //override fun getPackages(): List<ReactPackage> = PackageList(this).packages.apply { add(TestPackage()) }
       override fun getPackages(): List<ReactPackage> = PackageList(this).packages.apply { add(MainActivity.TestPackage()) }
       override fun getJSMainModuleName(): String = "index"
       override fun getUseDeveloperSupport(): Boolean = BuildConfig.DEBUG

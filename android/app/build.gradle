@@ -2,7 +2,7 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
-apply plugin: 'kotlin-kapt'
+//apply plugin: 'kotlin-kapt'
 
 // apply plugin: 'org.jetbrains.kotlin.android.extensions'
 // androidExtensions {
@@ -130,12 +130,12 @@ android {
     //     dataBinding = true
     // }
 
-    buildFeatures {
-        dataBinding true
-        viewBinding true
-        // viewBinding = true
-        // dataBinding = true
-    }
+    // buildFeatures {
+    //     dataBinding true
+    //     viewBinding true
+    //     // viewBinding = true
+    //     // dataBinding = true
+    // }
 
     // dataBinding {
     //     enabled = true
