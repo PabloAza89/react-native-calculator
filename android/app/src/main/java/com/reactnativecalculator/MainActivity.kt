@@ -26,6 +26,7 @@ import androidx.lifecycle.repeatOnLifecycle
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 import kotlin.reflect.full.declaredMemberProperties
@@ -106,8 +107,26 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   var angle: Float = 0.toFloat()
 
   override fun onReactContextInitialized(context: ReactContext) {
+    // lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
+    //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) { updateUI(context) }
+    // }
+
     lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
-      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) { updateUI(context) }
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        //updateUI(context)
+        //Log.d("LOG", "EXECUTED") //
+
+        WindowInfoTracker.getOrCreate(this@MainActivity)
+          .windowLayoutInfo(this@MainActivity)
+          .collect { updateUI(context) }
+          //.collect { Log.d("LOG", "EXECUTED") }
+          //.distinctUntilChanged { Log.d("LOG", "EXECUTED") }
+          //.collect { Log.d("LOG", "EXECUTED") }
+          //.collect { Log.d("LOG", "EXECUTED") }
+          //.collect(Log.d("LOG", "EXECUTED"))
+          //.collect { value -> updateUI(value, context) }
+        //Log.d("LOG", "EXECUTED")
+      }
     }
 
 
@@ -170,17 +189,17 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       windowMap.putDouble("${item}", densityIndPixCurr) // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
     }
 
-    // e.g.: hinge-[1080,0,1080,1840]
+    // e.g.: hinge-[1080,0,1080,1840] // e.g.: fold-[1104,0,1104,1848]
     // { "hinge-[1080", "0", "1080" , "1840]" }
     //val hnoList = Settings.Global.getString(context.contentResolver, "display_features").split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() } // HINGE NATURAL ORIENTATION
-    Log.d("LOG", "A VER ESTE 111 ${Settings.Global.getString(context.contentResolver, "display_features").isNullOrEmpty()}");
-    Log.d("LOG", "A VER ESTE 222 ${context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android")).isNullOrEmpty()}");
+    Log.d("LOG", "A VER ESTE 111 ${Settings.Global.getString(context.contentResolver, "display_features")}"); // api UDCPS target 15 google play
+    Log.d("LOG", "A VER ESTE 222 ${context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android"))}"); // api 34 target 14 google apis
     //Log.d("LOG", "A VER ESTE 222 ${context.resources.getString(context.resources.getIdentifier("config_foldedArea", "string", "android")).isNullOrEmpty()}");
 
-    val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features") // = "hinge-[0,1,2,3]"
+    val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features")
     val hnoSecondPlace = context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android"))
 
-    val hnoFound = // HINGE NATURAL ORIENTATION
+    val hnoFound = // HINGE NATURAL ORIENTATION // SAME AS RawFoldingFeatureProducer
       if (!hnoFirstPlace.isNullOrEmpty()) hnoFirstPlace
       else if (!hnoSecondPlace.isNullOrEmpty()) hnoSecondPlace
       else null

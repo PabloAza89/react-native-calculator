@@ -208,8 +208,8 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
     <View style={[ s.background ]}>
       <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
       {
-        //state === 'cleanFullscreen' ?
-        true ?
+        state === 'cleanFullscreen' ?
+        //true ?
 
         <>
           { PortCalc }
