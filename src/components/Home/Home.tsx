@@ -61,7 +61,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
   //   )
   // }
 
-  console.log("ins", ins)
+  //console.log("ins", ins)
 
   const parsedWidth = width - ins.left - ins.right
   const parsedHeight = height - ins.top - ins.bottom
@@ -76,8 +76,8 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
   //const [ test, setTest ] = useState(0)
 
   //console.log("PARR ERR", parErr)
-  console.log("HEIGHT HEIGHT", height)
-  console.log("WIDTH WIDTH", width)
+  //console.log("HEIGHT HEIGHT", height)
+  //console.log("WIDTH WIDTH", width)
 
   const [ calcLeft, setCalcLeft ] = useState(true)
 
@@ -208,7 +208,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
     <View style={[ s.background ]}>
       <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
       {
-        state === 'cleanFullscreen' ?
+        state === 'fullscreen' ?
         //true ?
 
         <>

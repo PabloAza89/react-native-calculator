@@ -70,9 +70,9 @@ function App(): ReactElement {
   if (width > height) { vmin = oph, port = false }
   else { vmin = opw, port = true }
 
-  console.log("X WIDTH", width)
-  console.log("X HEIGHT", height)
-  console.log("X VMIN", vmin)
+  //console.log("X WIDTH", width)
+  //console.log("X HEIGHT", height)
+  //console.log("X VMIN", vmin)
   //console.log("AAA", oph)
 
   const navigationRef = useNavigationContainerRef();
@@ -226,12 +226,8 @@ function App(): ReactElement {
       //console.log("test1", e.test1) // HINGE BOUNDS
       //console.log("test2", e.test2) // HINGE BOUNDS
     });
-    let angleListener = nativeEvent.addListener('angle', e => {
-      console.log("angle", e) // HINGE ANGLE
-    });
     return () => {
       LayoutInfoListener.remove();
-      angleListener.remove();
     }
   }, []);
 

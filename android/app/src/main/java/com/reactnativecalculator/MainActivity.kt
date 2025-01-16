@@ -136,14 +136,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     var hingeAngleSensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_HINGE_ANGLE)
 
     val sensorEventListener = object: SensorEventListener {
-      override fun onSensorChanged(event: SensorEvent) {
-        angle = event.values[0]
-        context
-          .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-          ?.emit("angle", angle) // Float
-          //?.emit("angle", event.values[0].toInt())
-      }
-
+      override fun onSensorChanged(event: SensorEvent) { angle = event.values[0] }
       override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
     }
 
@@ -188,16 +181,12 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       screenMap.putDouble("${item}", densityIndPixMax)
       windowMap.putDouble("${item}", densityIndPixCurr) // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
     }
+    //Log.d("LOG", "POS 1 ${Settings.Global.getString(context.contentResolver, "display_features")}");
+    //Log.d("LOG", "POS 2 ${context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android"))}");
 
-    // e.g.: hinge-[1080,0,1080,1840] // e.g.: fold-[1104,0,1104,1848]
+    val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features") // api TPS target 14 google play // api UDCPS target 15 google play // e.g.: hinge-[1080,0,1080,1840]
+    val hnoSecondPlace = context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android")) // api 34 target 14 google apis // e.g.: fold-[1104,0,1104,1848]
     // { "hinge-[1080", "0", "1080" , "1840]" }
-    //val hnoList = Settings.Global.getString(context.contentResolver, "display_features").split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() } // HINGE NATURAL ORIENTATION
-    Log.d("LOG", "A VER ESTE 111 ${Settings.Global.getString(context.contentResolver, "display_features")}"); // api UDCPS target 15 google play
-    Log.d("LOG", "A VER ESTE 222 ${context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android"))}"); // api 34 target 14 google apis
-    //Log.d("LOG", "A VER ESTE 222 ${context.resources.getString(context.resources.getIdentifier("config_foldedArea", "string", "android")).isNullOrEmpty()}");
-
-    val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features")
-    val hnoSecondPlace = context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android"))
 
     val hnoFound = // HINGE NATURAL ORIENTATION // SAME AS RawFoldingFeatureProducer
       if (!hnoFirstPlace.isNullOrEmpty()) hnoFirstPlace
@@ -262,7 +251,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
       //val state = if (angle > 150.0) "flat" else if (angle > 30.0) "half" else "closed"
       val state =
-        if (angle > 150.0 && fullscreen && !occlusionBoolean) "cleanFullscreen"
+        if (angle > 150.0 && fullscreen && !occlusionBoolean) "fullscreen"
         else if (angle > 30.0 && fullscreen && !verticalHinge) "tabletop"
         else if (angle > 30.0 && fullscreen && verticalHinge) "book"
         else "closed"
