@@ -222,7 +222,7 @@ function App(): ReactElement {
       setState(e.state)
       setHingeBounds(e.hingeBounds)
 
-      //console.log("test", e.test) // HINGE BOUNDS
+      console.log("test", e.test) // TEST
       //console.log("test1", e.test1) // HINGE BOUNDS
       //console.log("test2", e.test2) // HINGE BOUNDS
     });

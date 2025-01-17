@@ -60,8 +60,8 @@ export const s = StyleSheet.create({
     includeFontPadding: false
   },
   question: {
-    //backgroundColor: 'green', // DEV
-    position: 'absolute',
+    backgroundColor: 'green', // DEV
+    //position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'center',
     width: 42,

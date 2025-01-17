@@ -160,7 +160,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val screenMap = Arguments.createMap()
     val windowMap = Arguments.createMap()
     val hingeBoundsMap = Arguments.createMap()
-    //val testMap = Arguments.createMap()
+    //val testMap = Arguments.createMap() // TEST
 
     val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
     val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
@@ -238,6 +238,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       mainMap.putMap("hingeBounds", hingeBoundsMap)
       mainMap.putMap("screen", screenMap)
       mainMap.putMap("window", windowMap)
+      //mainMap.putMap("test"
 
       val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right)
       val verticalHinge = mainMap.getMap("hingeBounds")?.getDouble("top") == 0.0
@@ -254,11 +255,16 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         if (angle > 150.0 && fullscreen && !occlusionBoolean) "fullscreen"
         else if (angle > 30.0 && fullscreen && !verticalHinge) "tabletop"
         else if (angle > 30.0 && fullscreen && verticalHinge) "book"
-        else "closed"
+        else if (boundsCurr.height() >= boundsCurr.width()) "portrait"
+        else "landscape"
+        //else "closed"
+        //else if () // boundsCurr
+        
 
       mainMap.putBoolean("verticalHinge", verticalHinge) // TRUE or FALSE
       mainMap.putBoolean("occlusion", occlusionBoolean) // TRUE or FALSE
 
+      mainMap.putString("test", "${ boundsCurr.width() } / ${ boundsCurr.height() }")
       //mainMap.putString("test", "${ mainMap.getMap("screen")?.getDouble("right") == mainMap.getMap("window")?.getDouble("right") }")
       //mainMap.putString("test1", "${ mainMap.getMap("screen")?.getDouble("bottom") }")
       //mainMap.putString("test2", "${ screenMap?.getDouble("bottom") }")

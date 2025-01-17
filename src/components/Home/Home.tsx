@@ -127,11 +127,38 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
       />
     );
 
+  const ButtonAbout =
+      <TouchableHighlight
+        underlayColor="#8aaeba"
+        //underlayColor="red"
+        activeOpacity={1}
+
+        style={[
+          s.question,
+          { borderRadius: 21 }
+          //{ borderRadius: (vmin * 50) / 2, left: (parsedWidth - 30) / 2, bottom: -52 }
+          //{ borderRadius: (vmin * 50) / 2, right: 90, bottom:110 }
+
+        ]}
+
+        // style={[
+        //   s.question,
+        //   { borderRadius: (vmin * 50) / 2 },
+        //   port ?
+        //   { left: ((vmin * 90) / 2) - 23, bottom: -54 } :
+        //   { top: ((vmin * 90) / 2) - 23, right: -54 },
+        // ]}
+        //onPress={() => navigate('About')}
+        onPress={() => onPressTest()}
+        children={ <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' /> }
+      />
+
+
   const PortCalc =
     <View // OUTLINE PORTRAIT
-      style={[ s.outline, { marginTop: ins.top, marginBottom: ins.bottom } ]}
+      style={[ s.outline, { marginTop: ins.top, marginBottom: ins.bottom/* , paddingLeft: 10, paddingRight: 10 */ } ]}
       children={
-        <View style={[ s.contour, { aspectRatio: 2/3, width: parsedWidth , maxHeight: parsedHeight - 100 } ]}>
+        <View style={[ s.contour, { aspectRatio: 2/3, width: parsedWidth - 30, maxHeight: parsedHeight - 130 } ]}>
           <View style={[ s.displayContainer, s.displayContainerPort, { height: `${(28.4/3)*2}%`, paddingLeft: vmin * 1, paddingRight: vmin * 1 } ]}>
             <ScrollView
               overScrollMode="never"
@@ -156,10 +183,69 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
           </View>
 
           { PortButtons }
+          
+          <View
+            style={[ { position: 'absolute', backgroundColor: 'rgba(209, 46, 46, 0.4)',
+              width: '100%', height: 42, bottom: -55, alignItems: 'center' } ]}
+          >
+            { ButtonAbout }
+          </View>
+          
 
         </View>
       }
     />;
+
+  const LandCalc = 
+    <View style={{ backgroundColor: 'darkblue' }} /* OUTLINE LANDSCAPE */>
+      <View style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}>
+      {/* <View style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth, maxHeight: parsedHeight, maxWidth: parsedWidth } ]}> */}
+        <View
+          style={[ // `${(11.14/4)*7}%`
+            s.displayContainer,
+            { width: '98%', marginLeft: '1%', height: `${(((400 / 7) - (((92/7)*3)+5)) / 4) * 7}%`, marginTop: '1%', paddingLeft: vmin * 1, paddingRight: vmin * 1 }
+          ]}
+        >
+          <ScrollView
+            overScrollMode="never"
+            ref={scrollRefUpper}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            style={{ height: '30%' }}
+            children={ <Text style={[ s.secondaryResult, { fontSize: opw * 2.6 } ]} children={secInput.replaceAll(/N/g,"-")} /> }
+          />
+          <ScrollView
+            overScrollMode="never"
+            ref={scrollRefCenter}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            style={{ height: '40%' }}
+            children={ <Text style={[ s.mainResult, { fontSize: opw * 4.7, lineHeight: opw * 4.7 } ]} children={ input.replaceAll(/N/g,"-") } /> }
+          />
+          <View
+            style={{ height: '30%' }}
+            children={
+              //parErr &&
+              true &&
+              <Text style={[ s.parErr, { fontSize: opw * 2.1 } ]} children={`CHECK PARENTHESIS`} />
+            }
+          />
+        </View>
+
+        { LandButtons }
+        
+        <View
+          style={[ { position: 'absolute', backgroundColor: 'rgba(209, 46, 46, 0.4)',
+            width: 42, height: '100%', right: -55, alignItems: 'center', justifyContent: 'center' } ]}
+        >
+          { ButtonAbout }
+        </View>
+
+
+      </View>
+    </View>;
+
+
 
   const ModalBackgroundOtherScreen =
     <Animated.View
@@ -197,7 +283,8 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
       //console.log("CLICKED", await MainActivity.getMainComponentName())
       //console.log("CLICKED", await MainActivity.TestClass.getName())
       //console.log("CLICKED", await MainActivity.testFunc())
-      console.log("CLICKED", await TestModule.testFunc())
+      //console.log("CLICKED", await TestModule.testFunc())
+      console.log("CLICKED")
       
       
 
@@ -213,33 +300,10 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
 
         <>
           { PortCalc }
-          <TouchableHighlight
-            underlayColor="#8aaeba"
-            activeOpacity={1}
-
-            style={[
-              s.question,
-              { borderRadius: (vmin * 50) / 2, right: 90, bottom:110 }
-
-            ]}
-
-            // style={[
-            //   s.question,
-            //   { borderRadius: (vmin * 50) / 2 },
-            //   port ?
-            //   { left: ((vmin * 90) / 2) - 23, bottom: -54 } :
-            //   { top: ((vmin * 90) / 2) - 23, right: -54 },
-            // ]}
-            //onPress={() => navigate('About')}
-            onPress={() => onPressTest()}
-            children={ <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' /> }
-          />
+          { ButtonAbout }
         </>
-       
 
-        :
-
-        state === 'tabletop' ?
+        : state === 'tabletop' ?
 
         <View style={[ s.tabletopContainer ]} /* TABLETOP */>
           <View /* UPPER SIDE */
@@ -294,10 +358,8 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
             }
           />
         </View>
-        
-        :
 
-        state === 'book' ?
+        : state === 'book' ?
 
         <View style={[ s.bookContainer ]} /* BOOK */>
           <View style={[ s.leftScreenBook, { width: hingeBounds.left - ins.left } ]} /* LEFT SIDE */ >
@@ -310,50 +372,20 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
           </View>
         </View>
 
-        :
+        : // closed or no fold device
 
-        <View style={{ backgroundColor: 'darkblue' }} /* OUTLINE LANDSCAPE */>
-          <View style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 100, maxHeight: parsedHeight - 40 } ]}>
-            <View
-              style={[ // `${(11.14/4)*7}%`
-                s.displayContainer,
-                { width: '98%', marginLeft: '1%', height: `${(((400 / 7) - (((92/7)*3)+5)) / 4) * 7}%`, marginTop: '1%', paddingLeft: vmin * 1, paddingRight: vmin * 1 }
-              ]}
-            >
-              <ScrollView
-                overScrollMode="never"
-                ref={scrollRefUpper}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                style={{ height: '30%' }}
-                children={ <Text style={[ s.secondaryResult, { fontSize: opw * 2.6 } ]} children={secInput.replaceAll(/N/g,"-")} /> }
-              />
-              <ScrollView
-                overScrollMode="never"
-                ref={scrollRefCenter}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                style={{ height: '40%' }}
-                children={ <Text style={[ s.mainResult, { fontSize: opw * 4.7, lineHeight: opw * 4.7 } ]} children={ input.replaceAll(/N/g,"-") } /> }
-              />
-              <View
-                style={{ height: '30%' }}
-                children={
-                  //parErr &&
-                  true &&
-                  <Text style={[ s.parErr, { fontSize: opw * 2.1 } ]} children={`CHECK PARENTHESIS`} />
-                }
-              />
-            </View>
+        state === 'portrait' ?
+        <>
+          { PortCalc }
+          {/* { ButtonAbout } */}
+        </>
+        :  // landscape
+        <>
+          { LandCalc }
+          {/* { ButtonAbout } */}
+        </>
 
-            { LandButtons }
-
-          </View>
-        </View>
-
-        
       }
-        
     </View>
   );
 }
