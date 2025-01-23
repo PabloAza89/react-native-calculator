@@ -19,8 +19,8 @@ export let portButtons: any[] = [
 ]
 
 export let landButtons: any[] = [
-  { value: "(", size: land, margin: marginLand }, { value: ")", size: land, margin: marginLand }, { value: "C", size: land, margin: marginLand },
-  { value: "N", size: land, margin: marginLand }, { value: "B", size: land, margin: marginLand }, { value: "-", size: land, margin: marginLand },
+  { value: "(", size: land, margin: marginLand }, { value: ")", size: land, margin: marginLand }, { value: "C", size: land, margin: marginLand }, // hyphen // en dash // em dash
+  { value: "N", size: land, margin: marginLand }, { value: "B", size: land, margin: marginLand }, { value: "-", size: land, margin: marginLand }, // - – —
   { value: "X", size: land, margin: marginLand }, { value: "5", size: land, margin: marginLand }, { value: "6", size: land, margin: marginLand },
   { value: "7", size: land, margin: marginLand }, { value: "8", size: land, margin: marginLand }, { value: "9", size: land, margin: marginLand },
   { value: "/", size: land, margin: marginLand }, { value: "+", size: land, margin: marginLand }, { value: "0", size: land, margin: marginLand },

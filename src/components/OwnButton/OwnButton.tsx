@@ -193,12 +193,14 @@ export function OwnButton({
       children={
         <Text
           //style={[ s.text, { fontSize: small ? vmin * 5.5 : vmin * 6 } ]} // fontSize
-          style={[ s.text, { fontSize: small ? fontSize * 5.5 : fontSize * 6 } ]} // fontSize
+          style={[ s.text, { fontSize: small ? fontSize * 12 : fontSize * 12 } ]} // fontSize
           children={
             value === "B" ?
-            <Ionicons name='backspace' size={small ? fontSize * 5.5 : fontSize * 6 } color='rgba(0, 0, 0, .5)' /> :
+            <Ionicons name='backspace' size={small ? fontSize * 12 : fontSize * 12 } color='rgba(0, 0, 0, .5)' /> :
             value === "N" ?
             "-X" :
+            value === "-" ?
+            "–" :
             value
           }
         />

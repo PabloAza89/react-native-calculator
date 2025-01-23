@@ -38,23 +38,23 @@ export const s = StyleSheet.create({
     marginTop: '1%'
   },
   secondaryResult: {
-    backgroundColor: 'lightgreen', // DEV
+    //backgroundColor: 'lightgreen', // DEV
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
     textAlignVertical: 'center',
     includeFontPadding: false
   },
   mainResult: {
-    backgroundColor: 'burlywood', // DEV
+    //backgroundColor: 'burlywood', // DEV
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
-    textAlignVertical: 'center',
-    includeFontPadding: false
+    //textAlignVertical: 'center',
+    //includeFontPadding: false
   },
   parErr: {
-    backgroundColor: 'green', // DEV
+    //backgroundColor: 'green', // DEV
     color: 'red',
-    textAlign: 'center',
+    textAlignVertical: 'center',
     includeFontPadding: false
   },
   questionContainer: {

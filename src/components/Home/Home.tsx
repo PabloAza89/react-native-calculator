@@ -93,6 +93,8 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
   const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
   const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
 
+  const [ OPCQH, setOPCQH ] = useState(0) // onePercentContainerQueryHeight
+
   const KnowMoreScreen =
     <KnowMore
       navigation={navigation} opw={opw} port={port} height={height}
@@ -124,7 +126,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
       <OwnButton
         key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
         setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
-        vmin={vmin} size={e.size} opw={opw} oph={oph} margin={e.margin} fontSize={opw} type={state}
+        vmin={vmin} size={e.size} opw={opw} oph={oph} margin={e.margin} fontSize={OPCQH} type={state}
       />
     );
 
@@ -204,9 +206,6 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
 
   // ref={refWidth}
 
-  const [ OPCQH, setOPCQH ] = useState(0)
-  const ophcq = height / 100
-
   const LandCalc =
     <View style={{ backgroundColor: 'darkblue', marginBottom: ins.bottom, marginTop: ins.top }} /* OUTLINE */>
       {/* <View ref={refWidth} style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}> */}
@@ -223,8 +222,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             style={{ height: '30%' }}
-            //children={ <Text style={[ s.secondaryResult, { fontSize: opw * 2.6 } ]} children={secInput.replaceAll(/N/g,"-")} /> }
-            children={ <Text /* adjustsFontSizeToFit={true} */ style={[ s.secondaryResult, {  } ]} children={secInput.replaceAll(/N/g,"-")} /> }
+            children={ <Text style={[ s.secondaryResult, { fontSize: OPCQH * 5.5 } ]} children={ secInput.replaceAll(/N/g,"-") } /> }
           />
           <ScrollView
             overScrollMode="never"
@@ -232,15 +230,13 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             style={{ height: '40%' }}
-            //children={ <Text style={[ s.mainResult, { fontSize: opw * 4.7, lineHeight: opw * 4.7 } ]} children={ input.replaceAll(/N/g,"-") } /> }
-            children={ <Text /* adjustsFontSizeToFit={true} */ style={[ s.mainResult, { fontSize: OPCQH * 10, lineHeight: OPCQH * 10 } ]} children={ input.replaceAll(/N/g,"-") } /> }
+            children={ <Text style={[ s.mainResult, { fontSize: OPCQH * 10, lineHeight: OPCQH * 10.2 } ]} children={ input.replaceAll(/N/g,"-") } /> }
           />
           <View
             style={{ height: '30%' }}
             children={
-              //parErr &&
-              true &&
-              <Text style={[ s.parErr, { fontSize: opw * 2.1 } ]} children={`CHECK PARENTHESIS`} />
+              true && //parErr &&
+              <Text style={[ s.parErr, { fontSize: OPCQH * 5.5 } ]} children={`CHECK PARENTHESIS`} />
             }
           />
         </View>
