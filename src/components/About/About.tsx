@@ -32,6 +32,8 @@ const About = ({ navigation /* { navigate } */, vmin, switchSide, twoScreens, ne
 
   // <Animated.View
 
+  //console.log("VMIN",vmin)
+
   return (
     <View style={[s.background, { height: '100%', width: '100%' } ]}>
 
@@ -68,7 +70,7 @@ const About = ({ navigation /* { navigate } */, vmin, switchSide, twoScreens, ne
                 // onTouchEnd={ e => e.stopPropagation() } // BLOCK CLICK ON CURRENT VIEW
               >
                 <Text
-                  style={{ paddingBottom: 5, justifyContent: 'center', alignItems: 'center', fontSize: vmin * 3, textAlign: 'center', includeFontPadding: false, fontWeight: "500" }}
+                  style={{ paddingBottom: 5, justifyContent: 'center', alignItems: 'center', fontSize: 20, textAlign: 'center', includeFontPadding: false, fontWeight: "500" }}
                   children={'You are about to leave this App\nand access an external link\nDo you want to continue ?'}
                 />
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>

@@ -38,30 +38,33 @@ export const s = StyleSheet.create({
     marginTop: '1%'
   },
   secondaryResult: {
-    //backgroundColor: 'lightgreen', // DEV
-    borderColor: 'darkblue',
+    backgroundColor: 'lightgreen', // DEV
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
     textAlignVertical: 'center',
     includeFontPadding: false
   },
   mainResult: {
-    //backgroundColor: 'burlywood', // DEV
-    borderColor: 'darkblue',
+    backgroundColor: 'burlywood', // DEV
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
     textAlignVertical: 'center',
     includeFontPadding: false
   },
   parErr: {
-    //backgroundColor: 'green', // DEV
+    backgroundColor: 'green', // DEV
     color: 'red',
     textAlign: 'center',
     includeFontPadding: false
   },
+  questionContainer: {
+    //backgroundColor: 'rgba(209, 46, 46, 0.4)', // DEV
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   question: {
-    backgroundColor: 'green', // DEV
-    //position: 'absolute',
+    //backgroundColor: 'green', // DEV
     flexDirection: 'row',
     justifyContent: 'center',
     width: 42,
@@ -75,12 +78,12 @@ export const s = StyleSheet.create({
     height: '100%'
   },
   upperScreenTabletop: {
-    //backgroundColor: '#004747', // DEV
+    backgroundColor: '#004747', // DEV
     justifyContent: 'center',
     alignItems: 'center'
   },
   lowerScreenTabletop: {
-    //backgroundColor: '#581199', // DEV
+    backgroundColor: '#581199', // DEV
     justifyContent: 'center',
     alignItems: 'center'
   },

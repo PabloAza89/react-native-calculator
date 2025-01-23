@@ -13,7 +13,7 @@ import { dimI, navigationI } from './src/interfaces/interfaces';
 
 const Stack = createNativeStackNavigator();
 
-export const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screens: ReactElement[]) => {
+const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screens: ReactElement[]) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -28,7 +28,7 @@ export const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean,
   )
 }
 
-function App(): ReactElement {
+const App = (): ReactElement => {
 
   const { width, height } = useWindowDimensions();
 
@@ -137,6 +137,7 @@ function App(): ReactElement {
   const [ input, setInput ] = useState("");
   const [ state, setState ] = useState('flat');
   const [ hingeBounds, setHingeBounds ] = useState({ left: 0, top: 0, right: 0, bottom: 0 });
+  const [ windowHeight, setWindowHeight ] = useState(Dimensions.get("screen").height);
 
   useEffect(() => { // ON APP BLUR
     const blur = AppState.addEventListener('blur', () => {
@@ -176,7 +177,7 @@ function App(): ReactElement {
           <Home
             {...props} input={input} setInput={setInput} port={port}
             setSecInput={setSecInput} vmin={vmin} secInput={secInput}
-            state={state} width={width} height={height} opw={opw} oph={oph}
+            state={state} width={width} height={windowHeight} opw={opw} oph={oph}
             hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
             //MainActivity={MainActivity} ClassTest={ClassTest}
           />
@@ -207,7 +208,7 @@ function App(): ReactElement {
 
   let initialState = { index: 0, routes: [ { name: 'Home' } ] }; // SET NAVIGATOR INITIAL STATE TO AVOID "UNDEFINED" ON "APP BLUR SAVE LAST ROUTE" (WITHOUT NAVIGATE ANY SCREEN)
 
-  
+  console.log("A VER", Dimensions.get("screen").height)
 
   useEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
@@ -221,6 +222,7 @@ function App(): ReactElement {
 
       setState(e.state)
       setHingeBounds(e.hingeBounds)
+      setWindowHeight(e.window.bottom - e.window.top)
 
       console.log("test", e.test) // TEST
       //console.log("test1", e.test1) // HINGE BOUNDS

@@ -61,10 +61,11 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
   //   )
   // }
 
-  //console.log("ins", ins)
+  console.log("ins", ins)
 
   const parsedWidth = width - ins.left - ins.right
   const parsedHeight = height - ins.top - ins.bottom
+  //const parsedHeight = height - ins.top - ins.bottom
 
   const parsedPort = parsedWidth > parsedHeight ? false : true
 
@@ -148,17 +149,18 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
         //   { left: ((vmin * 90) / 2) - 23, bottom: -54 } :
         //   { top: ((vmin * 90) / 2) - 23, right: -54 },
         // ]}
-        //onPress={() => navigate('About')}
-        onPress={() => onPressTest()}
+        onPress={() => navigate('About')}
+        //onPress={() => onPressTest()}
         children={ <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' /> }
       />
 
-
+ 
   const PortCalc =
     <View // OUTLINE PORTRAIT
-      style={[ s.outline, { marginTop: ins.top, marginBottom: ins.bottom/* , paddingLeft: 10, paddingRight: 10 */ } ]}
+      style={[ /* s.outline, */ { backgroundColor: 'darkblue', marginTop: ins.top, marginBottom: ins.bottom } ]}
       children={
         <View style={[ s.contour, { aspectRatio: 2/3, width: parsedWidth - 30, maxHeight: parsedHeight - 130 } ]}>
+        {/* <View style={[ s.contour, { aspectRatio: 2/3, width: parsedWidth - 30, maxHeight: parsedHeight - 130 } ]}> */}
           <View style={[ s.displayContainer, s.displayContainerPort, { height: `${(28.4/3)*2}%`, paddingLeft: vmin * 1, paddingRight: vmin * 1 } ]}>
             <ScrollView
               overScrollMode="never"
@@ -185,21 +187,30 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
           { PortButtons }
           
           <View
-            style={[ { position: 'absolute', backgroundColor: 'rgba(209, 46, 46, 0.4)',
-              width: '100%', height: 42, bottom: -55, alignItems: 'center' } ]}
+            style={[ s.questionContainer, { width: '100%', height: 42, bottom: -55 } ]}
+            //children={ ButtonAbout }
           >
-            { ButtonAbout }
+            { state !== 'book' && ButtonAbout }
           </View>
-          
 
         </View>
       }
     />;
 
-  const LandCalc = 
-    <View style={{ backgroundColor: 'darkblue' }} /* OUTLINE LANDSCAPE */>
-      <View style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}>
-      {/* <View style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth, maxHeight: parsedHeight, maxWidth: parsedWidth } ]}> */}
+  const refWidth = useRef(null);
+
+  //console.log("REF REF", refWidth?.current?.getBoundingClientRect());
+  //console.log("REF REF", refWidth.current?.viewConfig?.validAttributes.style)
+
+  // ref={refWidth}
+
+  const [ OPCQH, setOPCQH ] = useState(0)
+  const ophcq = height / 100
+
+  const LandCalc =
+    <View style={{ backgroundColor: 'darkblue', marginBottom: ins.bottom, marginTop: ins.top }} /* OUTLINE */>
+      {/* <View ref={refWidth} style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}> */}
+      <View onLayout={e => setOPCQH(e.nativeEvent.layout.height / 100)} style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}>
         <View
           style={[ // `${(11.14/4)*7}%`
             s.displayContainer,
@@ -212,7 +223,8 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             style={{ height: '30%' }}
-            children={ <Text style={[ s.secondaryResult, { fontSize: opw * 2.6 } ]} children={secInput.replaceAll(/N/g,"-")} /> }
+            //children={ <Text style={[ s.secondaryResult, { fontSize: opw * 2.6 } ]} children={secInput.replaceAll(/N/g,"-")} /> }
+            children={ <Text /* adjustsFontSizeToFit={true} */ style={[ s.secondaryResult, {  } ]} children={secInput.replaceAll(/N/g,"-")} /> }
           />
           <ScrollView
             overScrollMode="never"
@@ -220,7 +232,8 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             style={{ height: '40%' }}
-            children={ <Text style={[ s.mainResult, { fontSize: opw * 4.7, lineHeight: opw * 4.7 } ]} children={ input.replaceAll(/N/g,"-") } /> }
+            //children={ <Text style={[ s.mainResult, { fontSize: opw * 4.7, lineHeight: opw * 4.7 } ]} children={ input.replaceAll(/N/g,"-") } /> }
+            children={ <Text /* adjustsFontSizeToFit={true} */ style={[ s.mainResult, { fontSize: OPCQH * 10, lineHeight: OPCQH * 10 } ]} children={ input.replaceAll(/N/g,"-") } /> }
           />
           <View
             style={{ height: '30%' }}
@@ -233,14 +246,11 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
         </View>
 
         { LandButtons }
-        
-        <View
-          style={[ { position: 'absolute', backgroundColor: 'rgba(209, 46, 46, 0.4)',
-            width: 42, height: '100%', right: -55, alignItems: 'center', justifyContent: 'center' } ]}
-        >
-          { ButtonAbout }
-        </View>
 
+        <View
+          style={[ s.questionContainer, { width: 42, height: '100%', right: -55 } ]}
+          children={ ButtonAbout }
+        />
 
       </View>
     </View>;
@@ -258,52 +268,20 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
       }
     />
 
-  useEffect(() => {
-    showModal ? fadeIn() : fadeOut()
-  }, [showModal])
+  useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
-   const { MainActivity, TestModule } = NativeModules;
-
-  // useEffect(() => {
-  //   const nativeEvent = new NativeEventEmitter(MainActivity);
-
-  //   let angleListener = nativeEvent.addListener('angle', e => {
-  //     console.log("angleASDASD", e) // HINGE ANGLE
-  //   });
-  //   return () => {
-  //     angleListener.remove();
-  //   }
-  // }, []);
-
-
-  const onPressTest = async () => {
-
-      //console.log("CLICKED", await MainActivity.callFromReact())
-      //console.log("CLICKED", await MainActivity.getMainComponentName())
-      //console.log("CLICKED", await MainActivity.getMainComponentName())
-      //console.log("CLICKED", await MainActivity.TestClass.getName())
-      //console.log("CLICKED", await MainActivity.testFunc())
-      //console.log("CLICKED", await TestModule.testFunc())
-      console.log("CLICKED")
-      
-      
-
-    
-  };
+  console.log("HEIGHT", height)
+  console.log("state state", state)
 
   return (
     <View style={[ s.background ]}>
       <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
       {
         state === 'fullscreen' ?
-        //true ?
 
-        <>
-          { PortCalc }
-          { ButtonAbout }
-        </>
+        PortCalc :
 
-        : state === 'tabletop' ?
+        state === 'tabletop' ?
 
         <View style={[ s.tabletopContainer ]} /* TABLETOP */>
           <View /* UPPER SIDE */
@@ -342,7 +320,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
             }
           />
           <View /* LOWER SIDE */
-            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom, paddingBottom: ins.bottom } ]} /* LOWER SIDE */
+            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom - ins.bottom } ]} /* LOWER SIDE */
             children={
               <View
                 style={[ s.outline ]}
@@ -357,9 +335,9 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
               />
             }
           />
-        </View>
+        </View> :
 
-        : state === 'book' ?
+        state === 'book' ?
 
         <View style={[ s.bookContainer ]} /* BOOK */>
           <View style={[ s.leftScreenBook, { width: hingeBounds.left - ins.left } ]} /* LEFT SIDE */ >
@@ -370,20 +348,13 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
             { !calcLeft && ModalBackgroundOtherScreen }
             { calcLeft ? ( showKnowMore ? KnowMoreScreen : AboutScreen ) : PortCalc }
           </View>
-        </View>
-
-        : // closed or no fold device
+        </View> : // closed or no fold device
 
         state === 'portrait' ?
-        <>
-          { PortCalc }
-          {/* { ButtonAbout } */}
-        </>
-        :  // landscape
-        <>
-          { LandCalc }
-          {/* { ButtonAbout } */}
-        </>
+
+        PortCalc :
+
+        LandCalc // landscape 
 
       }
     </View>
