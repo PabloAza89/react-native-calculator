@@ -1,6 +1,21 @@
 package com.reactnativecalculator
 
-import expo.modules.ReactActivityDelegateWrapper
+import android.content.Context
+import android.content.Context.SENSOR_SERVICE
+import android.hardware.SensorManager
+import android.hardware.Sensor
+import android.hardware.SensorEventListener
+import android.hardware.SensorEvent
+import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
+import android.view.WindowManager
+
+import androidx.window.layout.WindowInfoTracker
+import androidx.window.layout.WindowMetricsCalculator
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
@@ -8,55 +23,21 @@ import com.facebook.react.ReactInstanceManager
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 import com.facebook.react.bridge.Arguments
+import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
+import com.reactnativecalculator.hnoListParsedClass
+
 import com.zoontek.rnbootsplash.RNBootSplash
 
-import android.os.Bundle
-import android.util.Log
-
-import androidx.window.layout.WindowInfoTracker
-import androidx.window.layout.WindowLayoutInfo
-import androidx.window.layout.FoldingFeature
-import androidx.window.layout.WindowMetricsCalculator
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
+import expo.modules.ReactActivityDelegateWrapper
 
 import kotlin.reflect.full.declaredMemberProperties
 
-import android.provider.Settings
-import android.content.res.Configuration
-import android.view.Display
-import android.view.WindowManager
-import android.content.Context
-
-import com.reactnativecalculator.hnoListParsedClass
-
-import android.content.Context.SENSOR_SERVICE
-import android.hardware.SensorManager
-import android.hardware.Sensor
-import android.hardware.SensorEventListener
-import android.hardware.SensorEvent
-import com.facebook.react.bridge.LifecycleEventListener
-
-import com.facebook.react.bridge.Promise
-import com.facebook.react.bridge.ReactMethod
-
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-
-import com.facebook.react.ReactPackage
-import android.view.View
-import com.facebook.react.bridge.NativeModule
-import com.facebook.react.uimanager.ReactShadowNode
-import com.facebook.react.uimanager.ViewManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
 class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
@@ -100,7 +81,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       override fun onHostPause() { hingeAngleSensor?.let { sensorManager?.unregisterListener(sensorEventListener, it) } }
       override fun onHostDestroy() { }
     }
-
     context.addLifecycleEventListener(lifecycleEventListener)
   }
 
@@ -136,7 +116,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features") // api TPS target 14 google play // api UDCPS target 15 google play // e.g.: hinge-[1080,0,1080,1840]
     val hnoSecondPlace = context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android")) // api 34 target 14 google apis // e.g.: fold-[1104,0,1104,1848]
-    // { "hinge-[1080", "0", "1080" , "1840]" }
 
     val hnoFound = // HINGE NATURAL ORIENTATION // SAME AS RawFoldingFeatureProducer
       if (!hnoFirstPlace.isNullOrEmpty()) hnoFirstPlace
@@ -145,7 +124,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     if (!hnoFound.isNullOrEmpty()) {
          // start hno //
-      val hnoList = hnoFound.split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() }
+      val hnoList = hnoFound.split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() } // { "hinge-[1080", "0", "1080" , "1840]" }
 
       val hnoListParsed = hnoListParsedClass()
       hnoListParsed.left = hnoList[0] / dotsPerInch
@@ -200,7 +179,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
       mainMap.putBoolean("verticalHinge", verticalHinge) // TRUE or FALSE
       mainMap.putBoolean("occlusion", occlusionBoolean) // TRUE or FALSE
-      mainMap.putString("state", state) // FLAT, HALF_OPENED...
+      mainMap.putString("state", state) // fullscreen, tabletop..
 
       // end hno //
 
@@ -209,56 +188,13 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         if (boundsCurr.height() >= boundsCurr.width()) "portrait"
         else "landscape";
 
-      mainMap.putString("state", state) // FLAT, HALF_OPENED...
+      mainMap.putString("state", state) // fullscreen, tabletop..
     }
-
- 
 
     context
       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
       ?.emit("LayoutInfo", mainMap)
   }
-
-  class TestPackage : ReactPackage {
-    override fun createViewManagers(
-      reactContext: ReactApplicationContext
-    ): MutableList<ViewManager<View, ReactShadowNode<*>>> = mutableListOf()
-
-    override fun createNativeModules(
-      reactContext: ReactApplicationContext
-    ): MutableList<NativeModule> = listOf(TestModule(reactContext)).toMutableList()
-  }
-
-  class TestModule(reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext) {
-    override fun getName(): String = "TestModule"
-
-    @ReactMethod
-    fun testFunc(promise: Promise) {
-    //fun testFunc(promise: Promise) {
-      //Log.d("LOG", "valid context");
-      //val activity = currentActivity
-      
-      
-      try {
-        //let asd = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        promise.resolve("AASDASDASDASDASD") // OK
-        //promise.resolve("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // OK
-        //this.toggleDualScreenMode()
-        //promise.resolve((activity as MainActivity).getString())
-        //promise.resolve((activity as MainActivity).toggleDualScreenMode())
-        //(activity as MainActivity).toggleDualScreenMode()
-        //(activity as MainActivity).toggleDualScreenMode2()
-      } catch (e: Exception) {
-          promise.reject(e)
-          // pickerPromise?.reject(E_FAILED_TO_SHOW_PICKER, t)
-          // pickerPromise = null
-      }
-
-
-    }
-
-  }
-
 
   // Returns the name of the main component registered from JavaScript. This is used to schedule rendering of the component.
   override fun getMainComponentName(): String = "reactNativeCalculator"
@@ -267,4 +203,3 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun createReactActivityDelegate(): ReactActivityDelegate =
     ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED, DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled))
 }
-
