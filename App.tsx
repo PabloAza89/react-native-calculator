@@ -192,7 +192,7 @@ const App = (): ReactElement => {
         )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
-        return <KnowMore {...props} opw={opw} port={port} height={height} state={state} />
+        return <KnowMore {...props} opw={opw} height={height} state={state} />
     }
   }
 

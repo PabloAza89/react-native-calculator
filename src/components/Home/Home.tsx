@@ -16,16 +16,10 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
 
   const { navigate } = navigation
 
-  //state === 'book' && navigate('Home')
-
   const [ showKnowMore, setShowKnowMore ] = useState(false)
 
-  //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", route)
   useEffect(() => {
     const lastRoute = route.params?.lastRoute
-    //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", route.params)
-    //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", lastRoute)
-    //if (lastRoute === 'KnowMore') setShowKnowMore(true)
     lastRoute === 'KnowMore' && setShowKnowMore(true)
     lastRoute === 'About' && setShowKnowMore(false)
   }, [route])
@@ -44,49 +38,16 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
     scrollRefCenter.current?.scrollToEnd({ animated: false })
   }
 
-  // const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%' }
-  // const lastButtonLand = { value: "=", parErr: parErr, size: '12%' }
-
   const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%', margin: '2%' }
   const lastButtonLand = { value: "=", parErr: parErr, size: `${92/7}%`, margin: '1%' }
 
-  // let buttonsMapper = () => {
-
-  //   return portButtons.map(e =>
-  //     <OwnButton
-  //       key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
-  //       setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
-  //       vmin={vmin}
-  //     />
-  //   )
-  // }
-
-  console.log("ins", ins)
-
   const parsedWidth = width - ins.left - ins.right
   const parsedHeight = height - ins.top - ins.bottom
-  //const parsedHeight = height - ins.top - ins.bottom
-
-  const parsedPort = parsedWidth > parsedHeight ? false : true
-
-  const testRef = useRef(null);
-
-  //if (testRef.current !== null) console.log("A VER", testRef.current)
-  //console.log("A VER", x, y, width, height)
-
-  //const [ test, setTest ] = useState(0)
-
-  //console.log("PARR ERR", parErr)
-  //console.log("HEIGHT HEIGHT", height)
-  //console.log("WIDTH WIDTH", width)
 
   const [ calcLeft, setCalcLeft ] = useState(true)
 
   const switchSide = () => setCalcLeft(!calcLeft)
   const nextScreen = () => setShowKnowMore(!showKnowMore)
-
-  // const [ showModal, setShowModal ] = useState(false);
-  // const updateShowModal = (bool: boolean) => setShowModal(bool)
 
   const fadeAnim = useAnimatedValue(0);
 
@@ -98,16 +59,17 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
   const KnowMoreScreen =
     <KnowMore
       navigation={navigation} opw={opw} port={port} height={height}
-      //navigate={navigate} opw={opw} port={port} height={height}
-      setCalcRight={setCalcLeft}
-      calcRight={calcLeft} switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
+      switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
     />;
+
+  console.log("AAA", width)
+  console.log("INS", ins)
+  console.log("INHEBOUNDS", hingeBounds)
 
   const AboutScreen =
     <About
       navigation={navigation} vmin={vmin}
-      //navigate={navigate} vmin={vmin}
-      currWidth={ calcLeft ? width - hingeBounds.right - ins.left : hingeBounds.left - ins.left }
+      currWidth={ hingeBounds === undefined ? width : calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
       switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
       showModal={showModal} updateShowModal={updateShowModal}
     />;
@@ -117,7 +79,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
       <OwnButton
         key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
         setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
-        vmin={vmin} size={e.size} opw={opw} oph={oph} margin={e.margin} small={e.small} fontSize={oph}
+        vmin={vmin} size={e.size} opw={opw} oph={oph} margin={e.margin} small={e.small} fontSize={OPCQH/1.5}
       />
     );
 
@@ -156,12 +118,12 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
         children={ <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' /> }
       />
 
- 
+  //onLayout={e => setOPCQH(e.nativeEvent.layout.height / 100)}
   const PortCalc =
-    <View // OUTLINE PORTRAIT
-      style={[ /* s.outline, */ { backgroundColor: 'darkblue', marginTop: ins.top, marginBottom: ins.bottom } ]}
+    <View
+      style={[ s.outline, { marginTop: ins.top, marginBottom: ins.bottom } ]}
       children={
-        <View style={[ s.contour, { aspectRatio: 2/3, width: parsedWidth - 30, maxHeight: parsedHeight - 130 } ]}>
+        <View onLayout={e => setOPCQH(e.nativeEvent.layout.height / 100)} style={[ s.contour, { aspectRatio: 2/3, width: parsedWidth - 30, maxHeight: parsedHeight - 130 } ]}>
         {/* <View style={[ s.contour, { aspectRatio: 2/3, width: parsedWidth - 30, maxHeight: parsedHeight - 130 } ]}> */}
           <View style={[ s.displayContainer, s.displayContainerPort, { height: `${(28.4/3)*2}%`, paddingLeft: vmin * 1, paddingRight: vmin * 1 } ]}>
             <ScrollView
@@ -170,7 +132,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               style={{ height: '30%' }}
-              children={ <Text style={[ s.secondaryResult, { fontSize: oph * 2.7 } ]} children={ secInput.replaceAll(/N/g,"-") } /> }
+              children={ <Text style={[ s.secondaryResult, { fontSize: OPCQH * 3 } ]} children={ secInput.replaceAll(/N/g,"-") } /> }
             />
             <ScrollView
               overScrollMode="never"
@@ -178,11 +140,11 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               style={{ height: '40%' }}
-              children={ <Text style={[ s.mainResult, { fontSize: oph * 4.5, lineHeight: oph * 4.5 } ]} children={ input.replaceAll(/N/g,"-") } /> }
+              children={ <Text style={[ s.mainResult, { fontSize: OPCQH * 6 } ]} children={ input.replaceAll(/N/g,"-") } /> }
             />
             <View
               style={{ height: '30%' }}
-              children={ parErr && <Text style={[ s.parErr, { fontSize: oph * 2.1 } ]} children={`CHECK PARENTHESIS`} /> }
+              children={ /* parErr && */ <Text style={[ s.parErr, { fontSize: OPCQH * 3 } ]} children={`CHECK PARENTHESIS`} /> }
             />
           </View>
 
@@ -207,7 +169,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
   // ref={refWidth}
 
   const LandCalc =
-    <View style={{ backgroundColor: 'darkblue', marginBottom: ins.bottom, marginTop: ins.top }} /* OUTLINE */>
+    <View style={[ s.outline, { marginBottom: ins.bottom, marginTop: ins.top } ]}>
       {/* <View ref={refWidth} style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}> */}
       <View onLayout={e => setOPCQH(e.nativeEvent.layout.height / 100)} style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}>
         <View

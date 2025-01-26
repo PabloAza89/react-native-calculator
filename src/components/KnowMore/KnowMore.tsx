@@ -10,13 +10,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
-const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLeft, calcLeft, switchSide, twoScreens, nextScreen, state }: any): ReactElement => {
+const KnowMore = ({ navigation, opw, height, switchSide, twoScreens, nextScreen, state }: any): ReactElement => {
 
   const { navigate } = navigation
 
   useEffect(() => {
     (navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
-    //(navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home')
   }, [state])
 
   let ins = useSafeAreaInsets(); // insets
@@ -51,81 +50,39 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
 
   let lazyLoad = [
     <View key={0} style={s.eachItem}>
-      <Text style={s.leftItem}>
-        -X
-      </Text>
-      <Text style={s.rightItem}>
-        Negative number. Press it before your number.
-      </Text>
+      <Text style={s.leftItem} children={'-X'} />
+      <Text style={s.rightItem} children={'Negative number. Press it before your number.'} />
     </View>,
     <View key={1} style={s.eachItem}>
-      <Text style={s.leftItem}>
-        ( )
-      </Text>
+      <Text style={s.leftItem} children={'( )'}/>
       <View>
-        <Text style={s.rightItem}>
-          Chain any amount of parenthesis and
-          calculator will parse the result,
-          following the next rules:
-        </Text>
+        <Text style={s.rightItem} children={'Chain any amount of parenthesis and calculator will parse the result, following the next rules:'} />
         <View style={s.eachItemInner}>
-          <Text style={s.leftItemInner}>
-            •
-          </Text>
-          <Text style={s.rightItemInner}>
-            Innermost parentheses calc will be done.
-          </Text>
+          <Text style={s.leftItemInner} children={'•'} />
+          <Text style={s.rightItemInner} children={'Innermost parentheses calc will be done.'} />
         </View>
         <View style={s.eachItemInner}>
-          <Text style={s.leftItemInner}>
-            •
-          </Text>
-          <Text style={s.rightItemInner}>
-            Inside that parentheses, or if not present, will do the next,
-            from left to right, in this order:
-            All 'x', then all '/', then all '+' and finally all '-'.
-          </Text>
+          <Text style={s.leftItemInner} children={'•'} />
+          <Text style={s.rightItemInner} children={`Inside that parentheses, or if not present, will do the next, from left to right, in this order: All 'x', then all '/', then all '+' and finally all '-'.`} />
         </View>
       </View>
-      <Text style={s.rightItem}>
-        Then will quit that parenthesis, if exists,
-        and do the same as above.
-      </Text>
+      <Text style={s.rightItem} children={'Then will quit that parenthesis, if exists, and do the same as above.'} />
     </View>,
     <View key={2} style={s.eachItem}>
-      <Text style={[ s.leftItem, s.sn ]}>
-        1e+12
-      </Text>
+      <Text style={[ s.leftItem, s.sn ]} children={'1e+12'} />
       <View>
-        <Text style={s.rightItem}>
-          If the integer side, in the result,
-          is more than 12 digits (e.g.: 1000000000001.23 + 1.23),
-          it will be converted to scientific notation.{"\n"}
-          Results in scientific notation are parsed as follows:
-        </Text>
+        <Text style={s.rightItem} children={'If the integer side, in the result, is more than 12 digits (e.g.: 1000000000001.23 + 1.23), it will be converted to scientific notation.\nResults in scientific notation are parsed as follows:'} />
         <View style={[ s.eachItemInner, { width: targetWidth } ]}>
-          <Text style={s.leftItemInner}>
-            •
-          </Text>
-          <Text style={s.rightItemInner}>
-            If exponent have 1 digits, decimal part are 8 places.
-          </Text>
+          <Text style={s.leftItemInner} children={'•'} />
+          <Text style={s.rightItemInner} children={'If exponent have 1 digits, decimal part are 8 places.'} />
         </View>
         <View style={[ s.eachItemInner, { width: targetWidth } ]}>
-          <Text style={s.leftItemInner}>
-            •
-          </Text>
-          <Text style={s.rightItemInner}>
-            If exponent have 2 digits, decimal part are 7 places. And so..
-          </Text>
+          <Text style={s.leftItemInner} children={'•'} />
+          <Text style={s.rightItemInner} children={'If exponent have 2 digits, decimal part are 7 places. And so..'} />
         </View>
         <View style={[ s.eachItemInner, { width: targetWidth } ]}>
-          <Text style={s.leftItemInner}>
-            •
-          </Text>
-          <Text style={s.rightItemInner}>
-            If decimal part have trailing zeros, they will be removed.
-          </Text>
+          <Text style={s.leftItemInner} children={'•'} />
+          <Text style={s.rightItemInner} children={'If decimal part have trailing zeros, they will be removed.'} />
         </View>
       </View>
     </View>,
@@ -136,11 +93,7 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
         color='rgba(0, 0, 0, .7)'
         style={s.leftItem}
       />
-      <Text style={s.rightItem}>
-        Numbers largers than 1.797693e+307 (positive or negative)
-        are treated as Infinity. After that,
-        every calc will output Infinity, or -Infinity, as applicable.
-      </Text>
+      <Text style={s.rightItem} children={'Numbers largers than 1.797693e+307 (positive or negative) are treated as Infinity. After that, every calc will output Infinity, or -Infinity, as applicable.'} />
     </View>,
     <View key={4} style={s.eachItem}>
       <Entypo
@@ -149,9 +102,7 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
         color='rgba(0, 0, 0, .7)'
         style={s.leftItem}
       />
-      <Text style={s.rightItem}>
-        All new input characters are placed to the right.
-      </Text>
+      <Text style={s.rightItem} children={'All new input characters are placed to the right.'} />
     </View>,
     <View key={5} style={s.eachItem}>
       <Ionicons
@@ -160,39 +111,19 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
         color='rgba(0, 0, 0, .7)'
         style={s.leftItem}
       />
-      <Text style={s.rightItem}>
-        Erase the last character.
-      </Text>
+      <Text style={s.rightItem} children={'Erase the last character.'} />
     </View>,
     <View key={6} style={s.eachItem}>
-      <Text style={s.leftItem}>
-        C
-      </Text>
-      <Text style={s.rightItem}>
-        Delete the entire input.
-      </Text>
+      <Text style={s.leftItem} children={'C'} />
+      <Text style={s.rightItem} children={'Delete the entire input.'} />
     </View>,
     <View key={7} style={s.eachItem}>
-      <Text style={[ s.leftItem, s.dot ]}>
-        .
-      </Text>
-      <Text style={s.rightItem}>
-        Decimal numbers can have up to two digits maximum.
-        But decimal results can be more than 2 digits long !
-      </Text>
+      <Text style={[ s.leftItem, s.dot ]} children={'.'} />
+      <Text style={s.rightItem} children={'Decimal numbers can have up to two digits maximum. But decimal results can be more than 2 digits long !'} />
     </View>,
     <View key={8} style={s.eachItem}>
-      <Text style={s.leftItem}>
-        =
-      </Text>
-      <Text style={s.rightItem}>
-        If there is no calc to do ('x', '/', '+' or '-')
-        '=' will not work.{"\n"}
-        If calc is valid, result will be shown and,
-        in a smaller upper place, the current calc will be shown.{"\n"}
-        If result or current calc is larger than screen,
-        you can scroll to see entire result/calc.
-      </Text>
+      <Text style={s.leftItem} children={'='} />
+      <Text style={s.rightItem} children={`If there is no calc to do ('x', '/', '+' or '-') '=' will not work.\nIf calc is valid, result will be shown and, in a smaller upper place, the current calc will be shown.\nIf result or current calc is larger than screen, you can scroll to see entire result/calc.`} />
     </View>,
     <View key={9} style={[ s.eachItem, { marginBottom: ins.bottom + 20 } ]}>
       <MaterialIcons
@@ -201,9 +132,7 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
         color='rgba(0, 0, 0, .7)'
         style={s.leftItem}
       />
-      <Text style={s.rightItem}>
-        This App does not have access to your device.
-      </Text>
+      <Text style={s.rightItem} children={'This App does not have access to your device.'} />
     </View>
   ]
 
@@ -222,8 +151,6 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
 
   let colorVariables = `${counter["0"]}, ${counter["1"]}, ${counter["2"]}`
 
-  //console.log("INS TOP", ins.top)
-
   return (
     <View style={{ height: '100%', width: '100%' }}>
 
@@ -231,18 +158,18 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
         colors={[ `rgba(${colorVariables}, 1)`, 'rgba(255, 255, 255, 1)' ]}
         style={[ s.linearGradient, { height: '100%', width: '100%' } ]}
         start={[ 0, 1 ]} // left, top
-        end={[ 1, 0 ]}   // left, bottom
+        end={[ 1, 0 ]}   // left, top
         children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
       />
       <LinearGradient
         colors={[ `rgba(${colorVariables}, 1)`, 'rgba(255, 255, 255, 1)' ]}
         style={[ s.linearGradient, { height: ins.top, width: '100%', zIndex: 4, opacity: 0.85 }]}
         start={[ 0, height / ins.top ]} // left, top
-        end={[ 1, 0 ]}                  // left, bottom
+        end={[ 1, 0 ]}                  // left, top
       />
 
-      <ScrollView ref={scrollRef} onScroll={handleScroll}>
-        <View style={[ s.background, { /* width: opw * 100, */width: '100%', marginLeft: ins.left } ]}>
+      <ScrollView ref={scrollRef} onScroll={handleScroll} persistentScrollbar={true}>
+        <View style={[ s.background, { width: '100%', marginLeft: ins.left } ]}>
 
           <View style={s.buttonContainer}>
 
@@ -253,15 +180,14 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
                 size={30}
                 color='rgba(0, 0, 0, .7)'
                 onPress={() => switchSide()}
-                //style={{ flex: 1 }}
-                children={ <Text style={s.textInButton}>SWITCH{"\n"}SCREENS</Text> }
+                children={ <Text style={s.textInButton} children={'SWITCH\nSCREENS'} /> }
               /> :
               <Ionicons.Button
                 name='chevron-back-circle-sharp'
                 size={30}
                 color='rgba(0, 0, 0, .7)'
                 onPress={() => navigate('About')}
-                children={ <Text style={s.textInButton}>BACK</Text> }
+                children={ <Text style={s.textInButton} children={'BACK'} /> }
               />
             }
 
@@ -277,7 +203,7 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
                 color='rgba(0, 0, 0, .7)'
                 onPress={() => nextScreen()}
                 style={{ flex: 1 }}
-                children={ <Text style={s.textInButton}>ABOUT</Text> }
+                children={ <Text style={s.textInButton} children={'ABOUT'} /> }
               /> :
               <Ionicons.Button
                 name='home'
@@ -285,20 +211,14 @@ const KnowMore = ({ navigation/* : { navigate } */, opw, port, height, setCalcLe
                 color='rgba(0, 0, 0, .7)'
                 onPress={() => navigate('Home')}
                 //onPress={() => navigate('Home', { lastRoute: 'KnowMore' })}
-                children={ <Text style={s.textInButton}>HOME</Text> }
+                children={ <Text style={s.textInButton} children={'HOME'} /> }
               />
             }
 
           </View>
 
-          <Text style={s.centerText}>
-            Welcome to my very first{"\n"}
-            Android App: A Classic Calculator !
-          </Text>
-
-          <Text style={s.leftText}>
-            Below I will give you some tips if you have any doubt:
-          </Text>
+          <Text style={s.centerText} children={'Welcome to my very first\nAndroid App: A Classic Calculator !'} />
+          <Text style={s.leftText} children={'Below I will give you some tips if you have any doubt:'} />
 
           { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3"/> }
 

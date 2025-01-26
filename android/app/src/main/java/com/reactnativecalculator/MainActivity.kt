@@ -46,23 +46,6 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorEvent
 import com.facebook.react.bridge.LifecycleEventListener
 
-// TEST //
-
-// import androidx.window.area.WindowAreaController
-// import java.util.concurrent.Executor
-// //import androidx.window.area.WindowAreaSessionPresenter
-// import androidx.window.area.WindowAreaSession
-// import androidx.window.area.WindowAreaInfo
-// import androidx.window.area.WindowAreaCapability
-// import androidx.core.content.ContextCompat
-// import kotlinx.coroutines.flow.map
-// import kotlinx.coroutines.flow.onEach
-// import kotlinx.coroutines.flow.distinctUntilChanged
-// //import androidx.window.area.WindowAreaPresentationSessionCallback
-// import androidx.window.area.WindowAreaSessionCallback
-// import android.widget.TextView
-// import androidx.window.core.ExperimentalWindowApi
-
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactMethod
 
@@ -72,26 +55,15 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.ReactPackage
 import android.view.View
 import com.facebook.react.bridge.NativeModule
-//import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ReactShadowNode
 import com.facebook.react.uimanager.ViewManager
-//import com.facebook.react.PackageList
-
-//import com.reactnativecalculator.databinding.ActivityDualScreenBinding
-//import androidx.databinding.DataBindingUtil
-//import androidx.appcompat.app.AppCompatActivity // ReactActivity() is instanceOf
-
-// TEST //
 
 @Suppress("DEPRECATION")
 class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
 
-
-
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
-
   }
 
   override fun onResume() {
@@ -107,30 +79,13 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   var angle: Float = 0.toFloat()
 
   override fun onReactContextInitialized(context: ReactContext) {
-    // lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
-    //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) { updateUI(context) }
-    // }
-
     lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        //updateUI(context)
-        //Log.d("LOG", "EXECUTED") //
-
         WindowInfoTracker.getOrCreate(this@MainActivity)
           .windowLayoutInfo(this@MainActivity)
           .collect { updateUI(context) }
-          //.collect { Log.d("LOG", "EXECUTED") }
-          //.distinctUntilChanged { Log.d("LOG", "EXECUTED") }
-          //.collect { Log.d("LOG", "EXECUTED") }
-          //.collect { Log.d("LOG", "EXECUTED") }
-          //.collect(Log.d("LOG", "EXECUTED"))
-          //.collect { value -> updateUI(value, context) }
-        //Log.d("LOG", "EXECUTED")
       }
     }
-
-
-
 
     var sensorManager: SensorManager? = context.getSystemService(SENSOR_SERVICE) as SensorManager
     var hingeAngleSensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_HINGE_ANGLE)
@@ -141,18 +96,12 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     }
 
     val lifecycleEventListener = object: LifecycleEventListener {
-      override fun onHostResume() {
-        hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) }
-
-      }
-
+      override fun onHostResume() { hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) } }
       override fun onHostPause() { hingeAngleSensor?.let { sensorManager?.unregisterListener(sensorEventListener, it) } }
-
       override fun onHostDestroy() { }
     }
 
     context.addLifecycleEventListener(lifecycleEventListener)
-
   }
 
   fun updateUI(context: ReactContext) {
@@ -181,8 +130,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       screenMap.putDouble("${item}", densityIndPixMax)
       windowMap.putDouble("${item}", densityIndPixCurr) // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
     }
-    //Log.d("LOG", "POS 1 ${Settings.Global.getString(context.contentResolver, "display_features")}");
-    //Log.d("LOG", "POS 2 ${context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android"))}");
+
+    mainMap.putMap("screen", screenMap)
+    mainMap.putMap("window", windowMap)
 
     val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features") // api TPS target 14 google play // api UDCPS target 15 google play // e.g.: hinge-[1080,0,1080,1840]
     val hnoSecondPlace = context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android")) // api 34 target 14 google apis // e.g.: fold-[1104,0,1104,1848]
@@ -192,11 +142,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       if (!hnoFirstPlace.isNullOrEmpty()) hnoFirstPlace
       else if (!hnoSecondPlace.isNullOrEmpty()) hnoSecondPlace
       else null
-    
-    //Log.d("LOG", "A VER ESTE 333 ${hnoListTEST}");
-
-    //Log.d("LOG", "A VER ESTE 222 ${context.getResources().getString(R.string.config_display_features)}");
-    //val hnoList = listOf(1.05, 2.05, 2.05, 2.05)
 
     if (!hnoFound.isNullOrEmpty()) {
          // start hno //
@@ -236,44 +181,35 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       }
 
       mainMap.putMap("hingeBounds", hingeBoundsMap)
-      mainMap.putMap("screen", screenMap)
-      mainMap.putMap("window", windowMap)
-      //mainMap.putMap("test"
 
       val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right)
       val verticalHinge = mainMap.getMap("hingeBounds")?.getDouble("top") == 0.0
 
-      //val fullscreen = screenMap.getDouble("left") == windowMap.getDouble("left")
       val fullscreen =
         mainMap.getMap("screen")?.getDouble("left") == mainMap.getMap("window")?.getDouble("left") &&
         mainMap.getMap("screen")?.getDouble("top") == mainMap.getMap("window")?.getDouble("top") &&
         mainMap.getMap("screen")?.getDouble("right") == mainMap.getMap("window")?.getDouble("right") &&
         mainMap.getMap("screen")?.getDouble("bottom") == mainMap.getMap("window")?.getDouble("bottom")
 
-      //val state = if (angle > 150.0) "flat" else if (angle > 30.0) "half" else "closed"
       val state =
         if (angle > 150.0 && fullscreen && !occlusionBoolean) "fullscreen"
         else if (angle > 30.0 && fullscreen && !verticalHinge) "tabletop"
         else if (angle > 30.0 && fullscreen && verticalHinge) "book"
         else if (boundsCurr.height() >= boundsCurr.width()) "portrait"
         else "landscape"
-        //else "closed"
-        //else if () // boundsCurr
-        
 
       mainMap.putBoolean("verticalHinge", verticalHinge) // TRUE or FALSE
       mainMap.putBoolean("occlusion", occlusionBoolean) // TRUE or FALSE
-
-      mainMap.putString("test", "${ boundsCurr.width() } / ${ boundsCurr.height() }")
-      //mainMap.putString("test", "${ mainMap.getMap("screen")?.getDouble("right") == mainMap.getMap("window")?.getDouble("right") }")
-      //mainMap.putString("test1", "${ mainMap.getMap("screen")?.getDouble("bottom") }")
-      //mainMap.putString("test2", "${ screenMap?.getDouble("bottom") }")
-      //mainMap.putString("test2", "${ mainMap.getMap("hingeBounds")?.getDouble("top") }")
-
-      mainMap.putString("state", state) // FLAT or HALF_OPENED
+      mainMap.putString("state", state) // FLAT, HALF_OPENED...
 
       // end hno //
 
+    } else {
+      val state =
+        if (boundsCurr.height() >= boundsCurr.width()) "portrait"
+        else "landscape";
+
+      mainMap.putString("state", state) // FLAT, HALF_OPENED...
     }
 
  

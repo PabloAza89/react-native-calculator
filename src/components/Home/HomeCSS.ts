@@ -38,24 +38,27 @@ export const s = StyleSheet.create({
     marginTop: '1%'
   },
   secondaryResult: {
-    //backgroundColor: 'lightgreen', // DEV
+    backgroundColor: 'lightgreen', // DEV
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
     textAlignVertical: 'center',
-    includeFontPadding: false
+    includeFontPadding: false,
+    height: '100%'
   },
   mainResult: {
-    //backgroundColor: 'burlywood', // DEV
+    backgroundColor: 'burlywood', // DEV
     color: 'rgba(0, 0, 0, .5)',
     fontWeight: '500',
-    //textAlignVertical: 'center',
-    //includeFontPadding: false
+    textAlignVertical: 'center',
+    includeFontPadding: false,
+    height: '100%'
   },
   parErr: {
-    //backgroundColor: 'green', // DEV
+    backgroundColor: 'green', // DEV
     color: 'red',
     textAlignVertical: 'center',
-    includeFontPadding: false
+    includeFontPadding: false,
+    height: '100%'
   },
   questionContainer: {
     //backgroundColor: 'rgba(209, 46, 46, 0.4)', // DEV

@@ -79,7 +79,7 @@ export const s = StyleSheet.create({
   },
   buttonContainer: {
     //backgroundColor: 'green', // DEV
-    marginTop: 35,
+    marginTop: 35, // MORE THAN 24dp OF STATUS BAR
     flexDirection: 'row'
   },
   eachItemInner: {
