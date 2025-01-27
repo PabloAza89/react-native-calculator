@@ -3,13 +3,14 @@ import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BootSplash from "react-native-bootsplash";
 import * as Font from 'expo-font';
-import { Image, AppState, Dimensions, useWindowDimensions, NativeModules, NativeEventEmitter } from 'react-native';
+import {
+  Image, AppState, Dimensions, useWindowDimensions, NativeModules, NativeEventEmitter
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { StackAnimationTypes } from "react-native-screens";
 import { dimI, navigationI } from './src/interfaces/interfaces';
-//import { useSafeAreaInsets, SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,9 +33,6 @@ const App = (): ReactElement => {
 
   const { width, height } = useWindowDimensions();
 
-  // console.log("width", width)
-  // console.log("height", height)
-
   let navBar = useRef<boolean>(true)
 
   let updateNavBar = async() => {
@@ -44,36 +42,12 @@ const App = (): ReactElement => {
     else navBar.current = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
   }
 
-  // Dimensions.addEventListener('change', () => {
-  //   //this.setState({});
-  //   console.log("AAAAAAAAA")
-  // });
-
-  useEffect(() => {
-    const subscription = Dimensions.addEventListener(
-      'change',
-      //({window, screen}) => {
-      (e) => {
-        //console.log("AAAAA window", window)
-        //console.log("AAAAA screen", screen)
-        //console.log("AAAAA e", e)
-        //setDimensions({window, screen});
-      },
-    );
-    return () => subscription?.remove();
-  });
-
   let opw: number = width / 100 // one percent window width
   let oph: number = height / 100 // one percent window height
   let vmin: number
   let port: boolean // PORTRAIT
   if (width > height) { vmin = oph, port = false }
   else { vmin = opw, port = true }
-
-  //console.log("X WIDTH", width)
-  //console.log("X HEIGHT", height)
-  //console.log("X VMIN", vmin)
-  //console.log("AAA", oph)
 
   const navigationRef = useNavigationContainerRef();
 
@@ -175,9 +149,9 @@ const App = (): ReactElement => {
         const Home = require('./src/components/Home/Home').default
         return (
           <Home
-            {...props} input={input} setInput={setInput} port={port}
-            setSecInput={setSecInput} vmin={vmin} secInput={secInput}
-            state={state} width={width} height={windowHeight} opw={opw} oph={oph}
+            {...props} input={input} setInput={setInput}
+            setSecInput={setSecInput} secInput={secInput} vmin={vmin}
+            state={state} width={width} height={windowHeight} opw={opw}
             hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
           />
         )

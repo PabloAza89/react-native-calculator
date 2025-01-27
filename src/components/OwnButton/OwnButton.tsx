@@ -7,8 +7,8 @@ import { OwnButtonI } from '../../interfaces/interfaces';
 
 //export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin }: OwnButtonI): ReactElement {
 export function OwnButton({
-  scrollEnd, parErr, value, input, setInput, smaller, setParErr,
-  setSecInput, vmin, size, opw, oph, margin, small, fontSize, type
+  scrollEnd, parErr, value, input, setInput, setParErr,
+  setSecInput, size, margin, small, fontSize, state
 }: any): ReactElement {
   async function handlePress() {
 
@@ -139,7 +139,6 @@ export function OwnButton({
       value === "N")
     ) { scrollEnd(); return } // STOP IF ATTEMPT N+
 
-
     if (
       (input.slice(-3) === " x " ||
       input.slice(-3) === " / " ||
@@ -178,26 +177,19 @@ export function OwnButton({
     else { setInput((prev: string) => prev + value); setSecInput("") }
 
     /// -----------> END INPUT UPDATE <----------- ///
-
   }
-
-  //console.log("AAA", oph)
-  //console.log("MARGIN", margin)
 
   return (
     <TouchableHighlight
       underlayColor="#dddddd"
       activeOpacity={1}
-      style={[ type === 'tabletop' ? s.ownButtonTabletop : s.ownButton, { width: size, marginLeft: margin, /* marginTop: '1%' */ } ]}
+      style={[ state === 'tabletop' ? s.ownButtonTabletop : s.ownButton, { width: size, marginLeft: margin } ]}
       onPress={() => handlePress()}
       children={
         <Text
-          //style={[ s.text, { fontSize: small ? vmin * 5.5 : vmin * 6 } ]} // fontSize
-          //style={[ s.text, { fontSize: small ? fontSize * 12 : fontSize * 12 } ]} // fontSize
-          style={[ s.text, { fontSize: small ? fontSize * 10 : fontSize * 12 } ]} // fontSize
+          style={[ s.text, { fontSize: small ? fontSize * 10 : fontSize * 12 } ]}
           children={
             value === "B" ?
-            // <Ionicons name='backspace' size={small ? fontSize * 12 : fontSize * 12 } color='rgba(0, 0, 0, .5)' /> :
             <Ionicons name='backspace' size={small ? fontSize * 10 : fontSize * 12 } color='rgba(0, 0, 0, .5)' /> :
             value === "N" ?
             "-X" :

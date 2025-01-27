@@ -1,6 +1,6 @@
 import React, { ReactElement, useState, useRef, useEffect } from 'react';
-import { ScrollView, StatusBar, Text, View, Animated, useAnimatedValue,
-  Pressable, TouchableHighlight, NativeModules, NativeEventEmitter } from 'react-native';
+import { ScrollView, StatusBar, Text, View, Animated,
+  useAnimatedValue, Pressable, TouchableHighlight } from 'react-native';
 import { s } from './HomeCSS';
 import About from '../About/About';
 import OwnButton from '../OwnButton/OwnButton';
@@ -10,8 +10,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeI } from '../../interfaces/interfaces';
 import { portButtons, landButtons } from './Buttons';
 
-const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSecInput,
-  state, width, height, opw, oph, hingeBounds, showModal, updateShowModal, /* MainActivity, ClassTest */ }: any): ReactElement => {
+const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
+  width, height, route, opw, hingeBounds, showModal, updateShowModal }: any): ReactElement => {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
   const { navigate } = navigation
@@ -56,31 +56,28 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
 
   const [ OPCQH, setOPCQH ] = useState(0) // onePercentContainerQueryHeight
 
+  const AboutScreen =
+  <About
+    navigation={navigation} vmin={vmin}
+    currWidth={ hingeBounds === undefined ? width : calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
+    showModal={showModal} updateShowModal={updateShowModal}
+    state={state} twoScreens={true}
+    switchSide={switchSide} nextScreen={nextScreen}
+  />;
+
   const KnowMoreScreen =
     <KnowMore
-      navigation={navigation} opw={opw} port={port} height={height}
-      switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
-    />;
-
-  console.log("AAA", width)
-  console.log("INS", ins)
-  console.log("INHEBOUNDS", hingeBounds)
-
-  const AboutScreen =
-    <About
-      navigation={navigation} vmin={vmin}
-      //currWidth={ calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
-      currWidth={ hingeBounds === undefined ? width : calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
-      switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
-      showModal={showModal} updateShowModal={updateShowModal}
+      navigation={navigation} opw={opw} height={height}
+      state={state} switchSide={switchSide}
+      twoScreens={true} nextScreen={nextScreen}
     />;
 
   const PortButtons =
     portButtons.concat(lastButtonPort).map(e =>
       <OwnButton
         key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
-        setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
-        vmin={vmin} size={e.size} opw={opw} oph={oph} margin={e.margin} small={e.small} fontSize={OPCQH/1.5}
+        setInput={setInput} setParErr={setParErr} setSecInput={setSecInput}
+        size={e.size} margin={e.margin} small={e.small} fontSize={OPCQH/1.5}
       />
     );
 
@@ -88,44 +85,25 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
     landButtons.concat(lastButtonLand).map(e =>
       <OwnButton
         key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
-        setInput={setInput} smaller={e.smaller} setParErr={setParErr} setSecInput={setSecInput}
-        vmin={vmin} size={e.size} opw={opw} oph={oph} margin={e.margin} fontSize={OPCQH} type={state}
+        setInput={setInput} setParErr={setParErr} setSecInput={setSecInput}
+        size={e.size} margin={e.margin} fontSize={OPCQH} state={state}
       />
     );
 
   const ButtonAbout =
-      <TouchableHighlight
-        underlayColor="#8aaeba"
-        //underlayColor="red"
-        activeOpacity={1}
+    <TouchableHighlight
+      underlayColor="#8aaeba"
+      activeOpacity={1}
+      style={s.question}
+      onPress={() => navigate('About')}
+      children={ <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' /> }
+    />;
 
-        style={[
-          s.question,
-          { borderRadius: 21 }
-          //{ borderRadius: (vmin * 50) / 2, left: (parsedWidth - 30) / 2, bottom: -52 }
-          //{ borderRadius: (vmin * 50) / 2, right: 90, bottom:110 }
-
-        ]}
-
-        // style={[
-        //   s.question,
-        //   { borderRadius: (vmin * 50) / 2 },
-        //   port ?
-        //   { left: ((vmin * 90) / 2) - 23, bottom: -54 } :
-        //   { top: ((vmin * 90) / 2) - 23, right: -54 },
-        // ]}
-        onPress={() => navigate('About')}
-        //onPress={() => onPressTest()}
-        children={ <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' /> }
-      />
-
-  //onLayout={e => setOPCQH(e.nativeEvent.layout.height / 100)}
   const PortCalc =
     <View
       style={[ s.outline, { marginTop: ins.top, marginBottom: ins.bottom } ]}
       children={
         <View onLayout={e => setOPCQH(e.nativeEvent.layout.height / 100)} style={[ s.contour, { aspectRatio: 2/3, width: parsedWidth - 30, maxHeight: parsedHeight - 130 } ]}>
-        {/* <View style={[ s.contour, { aspectRatio: 2/3, width: parsedWidth - 30, maxHeight: parsedHeight - 130 } ]}> */}
           <View style={[ s.displayContainer, s.displayContainerPort, { height: `${(28.4/3)*2}%`, paddingLeft: vmin * 1, paddingRight: vmin * 1 } ]}>
             <ScrollView
               overScrollMode="never"
@@ -153,25 +131,15 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
           
           <View
             style={[ s.questionContainer, { width: '100%', height: 42, bottom: -55 } ]}
-            //children={ ButtonAbout }
-          >
-            { state !== 'book' && ButtonAbout }
-          </View>
+            children={ state !== 'book' && ButtonAbout }
+          />
 
         </View>
       }
     />;
 
-  const refWidth = useRef(null);
-
-  //console.log("REF REF", refWidth?.current?.getBoundingClientRect());
-  //console.log("REF REF", refWidth.current?.viewConfig?.validAttributes.style)
-
-  // ref={refWidth}
-
   const LandCalc =
     <View style={[ s.outline, { marginBottom: ins.bottom, marginTop: ins.top } ]}>
-      {/* <View ref={refWidth} style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}> */}
       <View onLayout={e => setOPCQH(e.nativeEvent.layout.height / 100)} style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}>
         <View
           style={[ // `${(11.14/4)*7}%`
@@ -197,10 +165,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
           />
           <View
             style={{ height: '30%' }}
-            children={
-              true && //parErr &&
-              <Text style={[ s.parErr, { fontSize: OPCQH * 5.5 } ]} children={`CHECK PARENTHESIS`} />
-            }
+            children={ parErr && <Text style={[ s.parErr, { fontSize: OPCQH * 5.5 } ]} children={`CHECK PARENTHESIS`} /> }
           />
         </View>
 
@@ -214,8 +179,6 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
       </View>
     </View>;
 
-
-
   const ModalBackgroundOtherScreen =
     <Animated.View
       style={[ s.modalBackgroundOtherScreen, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none' } ]}
@@ -228,9 +191,6 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
     />
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
-
-  console.log("HEIGHT", height)
-  console.log("state state", state)
 
   return (
     <View style={[ s.background ]}>
@@ -269,8 +229,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
                       />
                       <View
                         style={{ height: '30%' }}
-                        //children={ parErr && <Text style={[ s.parErr, { fontSize: opw * 2.1 } ]} children={'CHECK PARENTHESIS'} /> }
-                        children={ true && <Text style={[ s.parErr, { fontSize: opw * 2.1 } ]} children={'CHECK PARENTHESIS'} /> }
+                        children={ parErr && <Text style={[ s.parErr, { fontSize: opw * 2.1 } ]} children={'CHECK PARENTHESIS'} /> }
                       />
                     </View>
                   </View>
@@ -307,13 +266,13 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
             { !calcLeft && ModalBackgroundOtherScreen }
             { calcLeft ? ( showKnowMore ? KnowMoreScreen : AboutScreen ) : PortCalc }
           </View>
-        </View> : // closed or no fold device
+        </View> :
 
         state === 'portrait' ?
 
         PortCalc :
 
-        LandCalc // landscape 
+        LandCalc
 
       }
     </View>

@@ -71,7 +71,8 @@ export const s = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     width: 42,
-    height: 42
+    height: 42,
+    borderRadius: 21
   },
   tabletopContainer: { // TABLETOP // TABLETOP // TABLETOP //
     //backgroundColor: 'lightgreen', // DEV

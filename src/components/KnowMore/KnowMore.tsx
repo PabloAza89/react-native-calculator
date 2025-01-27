@@ -1,7 +1,7 @@
 import { ReactElement, useState, useEffect, useRef, MutableRefObject } from 'react';
 import {
-  Text, View, StatusBar, ScrollView,
-  Pressable, InteractionManager, ActivityIndicator, NativeSyntheticEvent, NativeScrollEvent
+  Text, View, StatusBar, ScrollView, Pressable,
+  InteractionManager, ActivityIndicator, NativeSyntheticEvent, NativeScrollEvent
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -10,9 +10,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
-const KnowMore = ({ navigation, opw, height, switchSide, twoScreens, nextScreen, state }: any): ReactElement => {
+const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, nextScreen }: any): ReactElement => {
 
-  const { navigate } = navigation
+  const { navigate } = navigation;
 
   useEffect(() => {
     (navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
@@ -22,12 +22,7 @@ const KnowMore = ({ navigation, opw, height, switchSide, twoScreens, nextScreen,
 
   const scrollRef = useRef<ScrollView>(null);
 
-  const onFabPress = () => {
-    scrollRef.current?.scrollTo({
-      y: 0,
-      animated: true
-    });
-  }
+  const onFabPress = () => scrollRef.current?.scrollTo({ y: 0, animated: true });
 
   const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
   const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
@@ -143,9 +138,7 @@ const KnowMore = ({ navigation, opw, height, switchSide, twoScreens, nextScreen,
     return () => interactionPromise.cancel();
   }, []);
 
-  function handleScroll(event: NativeSyntheticEvent<NativeScrollEvent>) {
-    event.nativeEvent.contentOffset.y > 100 ? setShowButton(true) : setShowButton(false)
-  }
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => e.nativeEvent.contentOffset.y > 100 ? setShowButton(true) : setShowButton(false)
 
   const [ showButton, setShowButton ] = useState(false)
 
@@ -191,8 +184,6 @@ const KnowMore = ({ navigation, opw, height, switchSide, twoScreens, nextScreen,
               />
             }
 
-            
-
             <View style={s.space} />
 
             {
@@ -210,7 +201,6 @@ const KnowMore = ({ navigation, opw, height, switchSide, twoScreens, nextScreen,
                 size={30}
                 color='rgba(0, 0, 0, .7)'
                 onPress={() => navigate('Home')}
-                //onPress={() => navigate('Home', { lastRoute: 'KnowMore' })}
                 children={ <Text style={s.textInButton} children={'HOME'} /> }
               />
             }

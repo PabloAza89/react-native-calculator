@@ -8,13 +8,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AboutI } from '../../interfaces/interfaces';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-const About = ({ navigation /* { navigate } */, vmin, switchSide, twoScreens, nextScreen, currWidth, showModal, updateShowModal, state }: any): ReactElement => {
+const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen }: any): ReactElement => {
 
   const { navigate } = navigation
 
   useEffect(() => {
     (navigation.getState().routes.at(-1).name === 'About' && state === 'book') && navigate('Home', { lastRoute: 'About' })
-    //(navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
   }, [state])
 
   let ins = useSafeAreaInsets(); // insets
