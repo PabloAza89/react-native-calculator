@@ -89,7 +89,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val screenMap = Arguments.createMap()
     val windowMap = Arguments.createMap()
     val hingeBoundsMap = Arguments.createMap()
-    //val testMap = Arguments.createMap() // TEST
 
     val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
     val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
@@ -102,29 +101,28 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val dotsPerInch: Double = displayMetrics.density.toDouble() // Float --> Double
 
     for (item in boundsArr) {
-      val pixelsCurr = boundsCurr::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsCurr).toString().toDouble() // Int --> Double
-      val pixelsMax = boundsMax::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsMax).toString().toDouble() // Int --> Double
-      val densityIndPixCurr = pixelsCurr / dotsPerInch // dp = px / (dpi / 160) === px / density
-      val densityIndPixMax = pixelsMax / dotsPerInch // dp = px / (dpi / 160) === px / density
+      val pixelsCurr = boundsCurr::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsCurr).toString().toDouble(); // Int --> Double
+      val pixelsMax = boundsMax::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsMax).toString().toDouble(); // Int --> Double
+      val densityIndPixCurr = pixelsCurr / dotsPerInch; // dp = px / (dpi / 160) === px / density
+      val densityIndPixMax = pixelsMax / dotsPerInch; // dp = px / (dpi / 160) === px / density
 
-      screenMap.putDouble("${item}", densityIndPixMax)
-      windowMap.putDouble("${item}", densityIndPixCurr) // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
+      screenMap.putDouble("${item}", densityIndPixMax);
+      windowMap.putDouble("${item}", densityIndPixCurr); // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
     }
 
-    mainMap.putMap("screen", screenMap)
-    mainMap.putMap("window", windowMap)
-
-    val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features") // api TPS target 14 google play // api UDCPS target 15 google play // e.g.: hinge-[1080,0,1080,1840]
-    val hnoSecondPlace = context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android")) // api 34 target 14 google apis // e.g.: fold-[1104,0,1104,1848]
+    val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features"); // api TPS target 14 google play // api UDCPS target 15 google play // e.g.: hinge-[1080,0,1080,1840]
+    val hnoSecondPlace = context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android")); // api 34 target 14 google apis // e.g.: fold-[1104,0,1104,1848]
 
     val hnoFound = // HINGE NATURAL ORIENTATION // SAME AS RawFoldingFeatureProducer
       if (!hnoFirstPlace.isNullOrEmpty()) hnoFirstPlace
       else if (!hnoSecondPlace.isNullOrEmpty()) hnoSecondPlace
-      else null
+      else null;
+
+    val state: String;
 
     if (!hnoFound.isNullOrEmpty()) {
-         // start hno //
-      val hnoList = hnoFound.split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() } // { "hinge-[1080", "0", "1080" , "1840]" }
+      // start hno //
+      val hnoList = hnoFound.split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() }; // { "hinge-[1080", "0", "1080" , "1840]" }
 
       val hnoListParsed = hnoListParsedClass()
       hnoListParsed.left = hnoList[0] / dotsPerInch
@@ -139,57 +137,50 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         hingeBoundsMap.putDouble("top", screenMap.getDouble("bottom") - hnoListParsed.left) // maxHeight - Left
         hingeBoundsMap.putDouble("right", hnoListParsed.bottom) // Bottom
         hingeBoundsMap.putDouble("bottom", screenMap.getDouble("bottom") - hnoListParsed.right) // maxHeight - Right
-      }
-      else if (rotation == 2) { // rotation 180º
+      } else if (rotation == 2) { // rotation 180º
         hingeBoundsMap.putDouble("left", screenMap.getDouble("right") - hnoListParsed.right) // maxWidth - Right
         hingeBoundsMap.putDouble("top", 0.0) // ALWAYS IS ZERO
         hingeBoundsMap.putDouble("right", screenMap.getDouble("right") - hnoListParsed.left) // maxWidth - Left
         hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom) // Bottom
-      }
-      else if (rotation == 3) { // rotation 270º
+      } else if (rotation == 3) { // rotation 270º
         hingeBoundsMap.putDouble("left", 0.0) // ALWAYS IS ZERO
         hingeBoundsMap.putDouble("top", hnoListParsed.left) // Left
         hingeBoundsMap.putDouble("right", hnoListParsed.bottom) // Bottom
         hingeBoundsMap.putDouble("bottom", hnoListParsed.right) // Right
-      }
-      else { // rotation == 0 --> natural orientation
+      } else { // rotation == 0 --> natural orientation
         hingeBoundsMap.putDouble("left", hnoListParsed.left)
         hingeBoundsMap.putDouble("top", hnoListParsed.top)
         hingeBoundsMap.putDouble("right", hnoListParsed.right)
         hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
       }
 
-      mainMap.putMap("hingeBounds", hingeBoundsMap)
-
-      val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right)
-      val verticalHinge = mainMap.getMap("hingeBounds")?.getDouble("top") == 0.0
+      val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right) // BOOLEAN
+      val verticalHinge = hingeBoundsMap.getDouble("top") == 0.0 // BOOLEAN
 
       val fullscreen =
-        mainMap.getMap("screen")?.getDouble("left") == mainMap.getMap("window")?.getDouble("left") &&
-        mainMap.getMap("screen")?.getDouble("top") == mainMap.getMap("window")?.getDouble("top") &&
-        mainMap.getMap("screen")?.getDouble("right") == mainMap.getMap("window")?.getDouble("right") &&
-        mainMap.getMap("screen")?.getDouble("bottom") == mainMap.getMap("window")?.getDouble("bottom")
+        screenMap.getDouble("left") == windowMap.getDouble("left") &&
+        screenMap.getDouble("top") == windowMap.getDouble("top") &&
+        screenMap.getDouble("right") == windowMap.getDouble("right") &&
+        screenMap.getDouble("bottom") == windowMap.getDouble("bottom")
 
-      val state =
-        if (angle > 150.0 && fullscreen && !occlusionBoolean) "fullscreen"
+      state =
+        if (angle > 150.0 && fullscreen && !occlusionBoolean) "fullscreen" // fullscreen fold..
         else if (angle > 30.0 && fullscreen && !verticalHinge) "tabletop"
         else if (angle > 30.0 && fullscreen && verticalHinge) "book"
         else if (boundsCurr.height() >= boundsCurr.width()) "portrait"
         else "landscape"
 
-      mainMap.putBoolean("verticalHinge", verticalHinge) // TRUE or FALSE
-      mainMap.putBoolean("occlusion", occlusionBoolean) // TRUE or FALSE
-      mainMap.putString("state", state) // fullscreen, tabletop..
-
+      mainMap.putMap("hingeBounds", hingeBoundsMap)
       // end hno //
-
     } else {
-      val state =
+      state =
         if (boundsCurr.height() >= boundsCurr.width()) "portrait"
         else "landscape";
-
-      mainMap.putString("state", state) // fullscreen, tabletop..
     }
+
+    mainMap.putString("state", state) // fullscreen, tabletop..
+    mainMap.putMap("screen", screenMap);
+    mainMap.putMap("window", windowMap);
 
     context
       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)

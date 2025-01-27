@@ -179,7 +179,6 @@ const App = (): ReactElement => {
             setSecInput={setSecInput} vmin={vmin} secInput={secInput}
             state={state} width={width} height={windowHeight} opw={opw} oph={oph}
             hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
-            //MainActivity={MainActivity} ClassTest={ClassTest}
           />
         )
       case "About":
@@ -208,32 +207,19 @@ const App = (): ReactElement => {
 
   let initialState = { index: 0, routes: [ { name: 'Home' } ] }; // SET NAVIGATOR INITIAL STATE TO AVOID "UNDEFINED" ON "APP BLUR SAVE LAST ROUTE" (WITHOUT NAVIGATE ANY SCREEN)
 
-  console.log("A VER", Dimensions.get("screen").height)
-
   useEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
-      console.log("screen", e.screen) // SCREEN BOUNDS (SCREEN SIZE)
       console.log("window", e.window) // WINDOW BOUNDS (APP SIZE)
       console.log("state", e.state) // 'flat' or 'half' or 'closed'
-      console.log("verticalHinge", e.verticalHinge) // Boolean
-      console.log("occlusion", e.occlusion) // Boolean
       console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS
 
       setState(e.state)
       setHingeBounds(e.hingeBounds)
       setWindowHeight(e.window.bottom - e.window.top)
-
-      console.log("test", e.test) // TEST
-      //console.log("test1", e.test1) // HINGE BOUNDS
-      //console.log("test2", e.test2) // HINGE BOUNDS
     });
-    return () => {
-      LayoutInfoListener.remove();
-    }
+    return () => LayoutInfoListener.remove();
   }, []);
-
-  //let ins = useSafeAreaInsets(); // insets
 
   return (
     <NavigationContainer ref={navigationRef} initialState={initialState}>

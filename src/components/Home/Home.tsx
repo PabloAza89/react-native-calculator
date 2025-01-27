@@ -69,6 +69,7 @@ const Home = ({ navigation, route, vmin, port, input, secInput, setInput, setSec
   const AboutScreen =
     <About
       navigation={navigation} vmin={vmin}
+      //currWidth={ calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
       currWidth={ hingeBounds === undefined ? width : calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
       switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
       showModal={showModal} updateShowModal={updateShowModal}
