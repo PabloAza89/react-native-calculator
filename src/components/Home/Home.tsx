@@ -45,9 +45,11 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   const parsedHeight = height - ins.top - ins.bottom
 
   const [ calcLeft, setCalcLeft ] = useState(true)
+  const [ aboutUp, setAboutUp ] = useState(true)
+  const [ showCalc, setShowCalc ] = useState(true)
 
-  const switchSide = () => setCalcLeft(!calcLeft)
-  const nextScreen = () => setShowKnowMore(!showKnowMore)
+  const switchSide = () => state === 'tabletop' ? setAboutUp(!aboutUp) : setCalcLeft(!calcLeft)
+  const nextScreen = () => state === 'tabletop' ? setShowCalc(true) : setShowKnowMore(!showKnowMore)
 
   const fadeAnim = useAnimatedValue(0);
 
@@ -57,34 +59,41 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   const [ OPCQH, setOPCQH ] = useState(0) // onePercentContainerQueryHeight
 
   const AboutScreen =
-  <About
-    navigation={navigation} vmin={vmin}
-    currWidth={ hingeBounds === undefined ? width : calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
-    showModal={showModal} updateShowModal={updateShowModal}
-    state={state} twoScreens={true}
-    switchSide={switchSide} nextScreen={nextScreen}
-  />;
+    <About
+      navigation={navigation} vmin={vmin}
+      //currWidth={ hingeBounds === undefined ? width : calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
+      currWidth={
+        state === 'book' && calcLeft ? width - hingeBounds.right - ins.right :
+        state === 'book' && !calcLeft ? hingeBounds.left - ins.left :
+        width
+      }
+      //currWidth={ width }
+      showModal={showModal} updateShowModal={updateShowModal}
+      state={state} twoScreens={true}
+      switchSide={switchSide} nextScreen={nextScreen}
+    />;
 
   const KnowMoreScreen =
     <KnowMore
       navigation={navigation} opw={opw} height={height}
       state={state} switchSide={switchSide}
       twoScreens={true} nextScreen={nextScreen}
+      aboutUp={aboutUp}
     />;
 
   const PortButtons =
-    portButtons.concat(lastButtonPort).map(e =>
+    portButtons.concat(lastButtonPort).map((e, i) =>
       <OwnButton
-        key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
+        key={i} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
         setInput={setInput} setParErr={setParErr} setSecInput={setSecInput}
-        size={e.size} margin={e.margin} small={e.small} fontSize={OPCQH/1.5}
+        size={e.size} margin={e.margin} fontSize={OPCQH/1.5} small={e.small}
       />
     );
 
   const LandButtons =
-    landButtons.concat(lastButtonLand).map(e =>
+    landButtons.concat(lastButtonLand).map((e, i) =>
       <OwnButton
-        key={e.value} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
+        key={i} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
         setInput={setInput} setParErr={setParErr} setSecInput={setSecInput}
         size={e.size} margin={e.margin} fontSize={OPCQH} state={state}
       />
@@ -95,7 +104,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       underlayColor="#8aaeba"
       activeOpacity={1}
       style={s.question}
-      onPress={() => navigate('About')}
+      onPress={() => state === 'tabletop' ? setShowCalc(false) : navigate('About')}
       children={ <SimpleLineIcons name='question' size={40} color='rgba(0, 0, 0, .7)' /> }
     />;
 
@@ -123,12 +132,12 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
             />
             <View
               style={{ height: '30%' }}
-              children={ /* parErr && */ <Text style={[ s.parErr, { fontSize: OPCQH * 3 } ]} children={`CHECK PARENTHESIS`} /> }
+              children={ parErr && <Text style={[ s.parErr, { fontSize: OPCQH * 3 } ]} children={`CHECK PARENTHESIS`} /> }
             />
           </View>
 
           { PortButtons }
-          
+
           <View
             style={[ s.questionContainer, { width: '100%', height: 42, bottom: -55 } ]}
             children={ state !== 'book' && ButtonAbout }
@@ -138,6 +147,30 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       }
     />;
 
+  const LandCalcDisplay =
+    <>
+      <ScrollView
+        overScrollMode="never"
+        ref={scrollRefUpper}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={{ height: '30%' }}
+        children={ <Text style={[ s.secondaryResult, { fontSize: OPCQH * 5.5 } ]} children={secInput.replaceAll(/N/g,"-")} /> }
+      />
+      <ScrollView
+        overScrollMode="never"
+        ref={scrollRefCenter}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={{ height: '40%' }}
+        children={ <Text style={[ s.mainResult, { fontSize: OPCQH * 10, lineHeight: OPCQH * 10.2 } ]} children={ input.replaceAll(/N/g,"-") } /> }
+      />
+      <View
+        style={{ height: '30%' }}
+        children={ parErr && <Text style={[ s.parErr, { fontSize: OPCQH * 5.5 } ]} children={'CHECK PARENTHESIS'} /> }
+      />
+    </>;
+
   const LandCalc =
     <View style={[ s.outline, { marginBottom: ins.bottom, marginTop: ins.top } ]}>
       <View onLayout={e => setOPCQH(e.nativeEvent.layout.height / 100)} style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}>
@@ -146,28 +179,8 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
             s.displayContainer,
             { width: '98%', marginLeft: '1%', height: `${(((400 / 7) - (((92/7)*3)+5)) / 4) * 7}%`, marginTop: '1%', paddingLeft: vmin * 1, paddingRight: vmin * 1 }
           ]}
-        >
-          <ScrollView
-            overScrollMode="never"
-            ref={scrollRefUpper}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            style={{ height: '30%' }}
-            children={ <Text style={[ s.secondaryResult, { fontSize: OPCQH * 5.5 } ]} children={ secInput.replaceAll(/N/g,"-") } /> }
-          />
-          <ScrollView
-            overScrollMode="never"
-            ref={scrollRefCenter}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            style={{ height: '40%' }}
-            children={ <Text style={[ s.mainResult, { fontSize: OPCQH * 10, lineHeight: OPCQH * 10.2 } ]} children={ input.replaceAll(/N/g,"-") } /> }
-          />
-          <View
-            style={{ height: '30%' }}
-            children={ parErr && <Text style={[ s.parErr, { fontSize: OPCQH * 5.5 } ]} children={`CHECK PARENTHESIS`} /> }
-          />
-        </View>
+          children={ LandCalcDisplay }
+        />
 
         { LandButtons }
 
@@ -193,7 +206,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
   return (
-    <View style={[ s.background ]}>
+    <View style={s.background}>
       <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
       {
         state === 'fullscreen' ?
@@ -202,62 +215,64 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
         state === 'tabletop' ?
 
-        <View style={[ s.tabletopContainer ]} /* TABLETOP */>
+        <View style={s.tabletopContainer}>
           <View /* UPPER SIDE */
-            style={[ s.upperScreenTabletop, { height: hingeBounds.top, paddingTop: ins.top  } ]} /* UPPER SIDE */
-            children={
+            style={[ s.upperScreenTabletop, { height: hingeBounds.top, /* paddingTop: ins.top */  } ]}
+          >
+
+            {
+              showCalc &&
               <View
-                style={[ s.outline ]}
+                style={s.outline}
                 children={
-                  <View style={[ s.contour, { aspectRatio: 7/1, width: parsedWidth - 100, maxHeight: parsedHeight - 40 } ]}>
-                    <View style={[ s.displayContainer, s.displayContainerLand, { height: `${((100 / 7) - 2) * 7}%`, paddingLeft: vmin * 1, paddingRight: vmin * 1 } ]}>
-                      <ScrollView
-                        overScrollMode="never"
-                        ref={scrollRefUpper}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        style={{ height: '30%' }}
-                        children={ <Text style={[ s.secondaryResult, { fontSize: opw * 2.6 } ]} children={secInput.replaceAll(/N/g,"-")} /> }
-                      />
-                      <ScrollView
-                        overScrollMode="never"
-                        ref={scrollRefCenter}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        style={{ height: '40%' }}
-                        children={ <Text style={[ s.mainResult, { fontSize: opw * 4.7, lineHeight: opw * 4.7 } ]} children={ input.replaceAll(/N/g,"-") } /> }
-                      />
-                      <View
-                        style={{ height: '30%' }}
-                        children={ parErr && <Text style={[ s.parErr, { fontSize: opw * 2.1 } ]} children={'CHECK PARENTHESIS'} /> }
-                      />
-                    </View>
-                  </View>
-                }
-              />
-            }
-          />
-          <View /* LOWER SIDE */
-            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom - ins.bottom } ]} /* LOWER SIDE */
-            children={
-              <View
-                style={[ s.outline ]}
-                children={
-                  <View style={[ s.contour, { aspectRatio: 7/3, width: parsedWidth - 100, maxHeight: parsedHeight - 40 } ]}>
+                  <View
+                    onLayout={e => setOPCQH((e.nativeEvent.layout.height * 4) / 100)}
+                    style={[ s.contour, { aspectRatio: 7/1, width: parsedWidth - 100, maxHeight: parsedHeight - 40 } ]}
+                  >
                     <View
-                      style={[ s.landButtonsContainer ]}
-                      children={LandButtons}
+                      style={[ s.displayContainer, s.displayContainerLand, { height: `${((100 / 7) - 2) * 7}%`, paddingLeft: vmin * 1, paddingRight: vmin * 1 } ]}
+                      children={ LandCalcDisplay }
+                    />
+                    <View
+                      style={[ s.questionContainer, { width: '100%', height: 42, bottom: -55 } ]}
+                      children={ state !== 'book' && ButtonAbout }
                     />
                   </View>
                 }
               />
             }
-          />
+            {/* aboutUp */}
+
+            {/* { !showCalc && AboutScreen } */}
+            { !showCalc && (aboutUp ? AboutScreen : KnowMoreScreen) }
+
+          </View>
+          <View /* LOWER SIDE */
+            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom - ins.bottom } ]}
+          >
+
+            {
+              showCalc &&
+              <View
+                style={s.outline}
+                children={
+                  <View
+                    style={[ s.contour, { aspectRatio: 7/3, width: parsedWidth - 100, maxHeight: parsedHeight - 40 } ]}
+                    children={ <View style={s.landButtonsContainer} children={LandButtons} /> }
+                  />
+                }
+              />
+            }
+
+            {/* { !showCalc && KnowMoreScreen } */}
+            { !showCalc && ( aboutUp ? KnowMoreScreen : AboutScreen ) }
+
+          </View>
         </View> :
 
         state === 'book' ?
 
-        <View style={[ s.bookContainer ]} /* BOOK */>
+        <View style={s.bookContainer} /* BOOK */>
           <View style={[ s.leftScreenBook, { width: hingeBounds.left - ins.left } ]} /* LEFT SIDE */ >
             { calcLeft && ModalBackgroundOtherScreen }
             { calcLeft ? PortCalc : ( showKnowMore ? KnowMoreScreen : AboutScreen ) }

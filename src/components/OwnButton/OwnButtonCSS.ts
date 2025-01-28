@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 export const s = StyleSheet.create({
   text: {
     textAlign: 'center',
-    //textAlignVertical: 'bottom'
     includeFontPadding: false
   },
   ownButton: {

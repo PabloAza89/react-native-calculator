@@ -82,12 +82,12 @@ export const s = StyleSheet.create({
     height: '100%'
   },
   upperScreenTabletop: {
-    backgroundColor: '#004747', // DEV
+    //backgroundColor: 'rgba(109, 197, 143, 0.5)', // DEV
     justifyContent: 'center',
     alignItems: 'center'
   },
   lowerScreenTabletop: {
-    backgroundColor: '#581199', // DEV
+    //backgroundColor: 'rgba(150, 54, 126, 0.5)', // DEV
     justifyContent: 'center',
     alignItems: 'center'
   },

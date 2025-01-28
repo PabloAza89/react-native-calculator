@@ -8,7 +8,7 @@ import { OwnButtonI } from '../../interfaces/interfaces';
 //export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin }: OwnButtonI): ReactElement {
 export function OwnButton({
   scrollEnd, parErr, value, input, setInput, setParErr,
-  setSecInput, size, margin, small, fontSize, state
+  setSecInput, size, margin, fontSize, small, state
 }: any): ReactElement {
   async function handlePress() {
 

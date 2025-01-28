@@ -6,6 +6,10 @@ export const s = StyleSheet.create({
     left: 0,
     right: 0
   },
+  mainContainer: {
+    height: '98%',
+    width: '100%'
+  },
   background: {
     //backgroundColor: 'red', // DEV
     alignItems: 'center'
@@ -71,7 +75,6 @@ export const s = StyleSheet.create({
     marginRight: 2,
     textAlign: 'center',
     justifyContent: 'center'
-    
   },
   space: {
     width: 25,
@@ -79,7 +82,6 @@ export const s = StyleSheet.create({
   },
   buttonContainer: {
     //backgroundColor: 'green', // DEV
-    marginTop: 35, // MORE THAN 24dp OF STATUS BAR
     flexDirection: 'row'
   },
   eachItemInner: {

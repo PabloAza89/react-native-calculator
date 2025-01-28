@@ -1,16 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 export const s = StyleSheet.create({
+  background: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '100%'
+  },
   linearGradient: {
     position: 'absolute',
     left: 0,
     right: 0,
     height: '100%',
     //width: '100%'
-  },
-  background: {
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   scrollView: {
     //backgroundColor: 'red', // DEV

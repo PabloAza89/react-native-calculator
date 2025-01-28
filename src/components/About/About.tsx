@@ -1,7 +1,9 @@
-import { ReactElement, useState, useEffect } from 'react';
-import { Text, View, Linking, StatusBar, Modal, Button, Animated, useAnimatedValue, Pressable, ScrollView } from 'react-native';
+import { ReactElement, useEffect } from 'react';
+import {
+  Text, View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView
+} from 'react-native';
 import { s } from './AboutCSS';
-import { Ionicons, AntDesign, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,25 +18,17 @@ const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state,
     (navigation.getState().routes.at(-1).name === 'About' && state === 'book') && navigate('Home', { lastRoute: 'About' })
   }, [state])
 
-  let ins = useSafeAreaInsets(); // insets
-
-  //const [ showModal, setShowModal ] = useState(false);
+  let ins = useSafeAreaInsets();
 
   const fadeAnim = useAnimatedValue(0);
 
-  // duration: 200
   const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
   const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
-  // <Animated.View
-
-  //console.log("VMIN",vmin)
-
   return (
-    <View style={[ s.background, { height: '100%', width: '100%' } ]}>
-
+    <View style={s.background}>
       <Animated.View
         style={[ s.backgroundModal, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none' } ]}
         children={
@@ -72,7 +66,6 @@ const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state,
         }
       />
 
-      
       <LinearGradient
         colors={[ 'rgba(18, 56, 117, 0.7)', 'yellow' ]}
         style={s.linearGradient}
@@ -86,7 +79,6 @@ const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state,
         scrollEnabled={true}
         style={s.scrollView}
         contentContainerStyle={s.scrollViewInner}
-        //showsVerticalScrollIndicator={false}
         persistentScrollbar={true}
       >
         <View style={s.space35} />
@@ -112,11 +104,11 @@ const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state,
         {
           twoScreens ?
           <MaterialCommunityIcons.Button
-            name='swap-horizontal-bold'
+            name={ state === 'tabletop' ? 'swap-vertical-bold' : 'swap-horizontal-bold' }
             size={30}
             color='rgba(0, 0, 0, .7)'
             onPress={() => switchSide()}
-            children={ <Text style={s.textInButtonUpper}>SWITCH{"\n"}SCREENS</Text> }
+            children={ <Text style={s.textInButtonUpper} children={'SWITCH\nSCREENS'} /> }
           /> :
           <Ionicons.Button
             name='chevron-back-circle-sharp'
@@ -130,11 +122,11 @@ const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state,
         {
           twoScreens ?
           <Ionicons.Button
-            name='alert-circle'
+            name={ state === 'tabletop' ? 'calculator-sharp' : 'alert-circle' }
             size={30}
             color='rgba(0, 0, 0, .7)'
             onPress={() => nextScreen()}
-            children={ <Text style={s.textInButtonUpper} children={'HOW DOES IT WORK ?'} /> }
+            children={ <Text style={s.textInButtonUpper} children={ state === 'tabletop' ? 'HOME' : 'HOW DOES IT WORK ?' } /> }
           /> :
           <Ionicons.Button
             name='chevron-back-circle-sharp'

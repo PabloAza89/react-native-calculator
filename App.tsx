@@ -23,9 +23,8 @@ const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screen
         navigationBarColor: navBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
         animation: animation
       }}
-    >
-      { screens.map((e: ReactElement) => e) }
-    </Stack.Navigator>
+      children={ screens.map((e: ReactElement) => e) }
+    />
   )
 }
 
@@ -196,9 +195,11 @@ const App = (): ReactElement => {
   }, []);
 
   return (
-    <NavigationContainer ref={navigationRef} initialState={initialState}>
-      { NavigatorMapper(animation, navBar.current, stackScreens) }
-    </NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef}
+      initialState={initialState}
+      children={ NavigatorMapper(animation, navBar.current, stackScreens) }
+    />
   );
 }
 

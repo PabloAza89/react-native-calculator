@@ -1,6 +1,6 @@
 import { AdderI, operationI } from '../interfaces/interfaces';
 
-export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) {
+export const Adder = ({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) => {
 
   let init: string[] = input.replace(/ /g,'').split("") // OK
 
@@ -28,9 +28,7 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   let innerToDo: number = 0; // INNER OPERATION INSIDE toDo
   let index: number = 1; // WHILE LOOP INDEX
 
- 
-
-  function updateParenthesis() {
+  const updateParenthesis = () => {
 
     openPar = parsed.indexOf(")") // OPEN PARENTHESIS FOUND, MOVING INDEX
     closePar = openPar; // CLOSED PARENTHESIS FOUND
@@ -70,8 +68,8 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   let firOp: string | undefined;
 
   let opOne: operationI = { // OPERATION ONE ==> x OR /
-    'x': function(a, b) { return parseFloat(a) * parseFloat(b) },
-    '/': function(a, b) { return parseFloat(a) / parseFloat(b) }
+    'x': (a, b) => { return parseFloat(a) * parseFloat(b) },
+    '/': (a, b) => { return parseFloat(a) / parseFloat(b) }
   };
 
   let foundPlus: number = -1;
@@ -79,11 +77,11 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
   let secOp: string | undefined;
 
   let opTwo: operationI = { // OPERATION TWO ==> + OR -
-    '+': function(a: string, b: string) { return parseFloat(a) + parseFloat(b) },
-    '-': function(a: string, b: string) { return parseFloat(a) - parseFloat(b) }
+    '+': (a: string, b: string) => { return parseFloat(a) + parseFloat(b) },
+    '-': (a: string, b: string) => { return parseFloat(a) - parseFloat(b) }
   };
 
-  function updateOperators() { // firOp & secOp
+  const updateOperators = () => { // firOp & secOp
     foundMul = toDo && toDo.indexOf("x") // UPDATE x INDEX
     foundDiv = toDo && toDo.indexOf("/") // UPDATE / INDEX
     if (foundMul < foundDiv && foundMul > 0 || foundMul > 0 && foundDiv === -1) firOp = "x"
@@ -177,15 +175,13 @@ export function Adder({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
     !isScientific && prevMinus.indexOf(".") === -1 ?
     prevMinus.length :
     undefined
-    //0 // TEST
   let spacesLeft = intLength && 12 - intLength // TO COMPLETE 12 SPACES
   let spacesAfterE =
     prevMinus.indexOf("+") !== -1 ?
     prevMinus.slice(prevMinus.indexOf("+") + 1) :
     prevMinus.indexOf("-") !== -1 ?
     prevMinus.slice(prevMinus.indexOf("-") + 1) :
-    //undefined
-    [] // TEST
+    []
   let result // result always as [ "A", "R", "R", "A", "Y" ] // FINAL RESULT
 
   if (prevMinus.join("") === "Infinity") result = prevMinus // RESULT IS INFINITY
