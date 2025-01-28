@@ -10,12 +10,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AboutI } from '../../interfaces/interfaces';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen }: any): ReactElement => {
+const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp }: any): ReactElement => {
 
   const { navigate } = navigation
 
   useEffect(() => {
-    (navigation.getState().routes.at(-1).name === 'About' && state === 'book') && navigate('Home', { lastRoute: 'About' })
+    (navigation.getState().routes.at(-1).name === 'About' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'About' })
   }, [state])
 
   let ins = useSafeAreaInsets();
@@ -81,7 +81,7 @@ const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state,
         contentContainerStyle={s.scrollViewInner}
         persistentScrollbar={true}
       >
-        <View style={s.space35} />
+        <View /* SPACE */ style={{ marginBottom: state === 'tabletop' ? ins.top : ins.top * 2 }} />
         <Text
           style={s.title}
           children={'This App is developed by\nJuan Pablo Azambuyo'}
@@ -137,7 +137,7 @@ const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state,
             children={ <Text style={s.textInButtonLower} children={'HOW DOES IT WORK ?'} /> }
           />
         }
-        <View style={s.space35} />
+        <View /* SPACE */ style={{ marginBottom: (state === 'tabletop' && aboutUp) ? ins.top : ins.bottom + ins.top }} />
       </ScrollView>
     </View>
   );

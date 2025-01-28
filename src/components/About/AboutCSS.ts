@@ -11,8 +11,7 @@ export const s = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    height: '100%',
-    //width: '100%'
+    height: '100%'
   },
   scrollView: {
     //backgroundColor: 'red', // DEV
@@ -24,7 +23,7 @@ export const s = StyleSheet.create({
     alignItems: 'center'
   },
   title: {
-    //backgroundColor: 'green', // DEV
+    backgroundColor: 'green', // DEV
     fontWeight: '500',
     fontSize: 24,
     textAlign: 'center',
@@ -32,8 +31,7 @@ export const s = StyleSheet.create({
   imageWrapper: {
     //backgroundColor: 'lightcoral', // DEV
     marginTop: 20,
-    marginBottom: 25,
-    //justifyContent: 'flex-start'
+    marginBottom: 25
   },
   iconStyle: {
     position: 'absolute'
@@ -108,8 +106,7 @@ export const s = StyleSheet.create({
     lineHeight: 15,
     marginRight: 4,
     marginLeft: -4,
-    transform: [{ rotate: '180deg' }],
-    //marginBottom: 35, // MORE THAN 24dp OF STATUS BAR
+    transform: [{ rotate: '180deg' }]
   },
   space10: {
     width: 10,
@@ -119,14 +116,7 @@ export const s = StyleSheet.create({
     width: 25,
     height: 25,
   },
-  space35: { // MORE THAN 24dp OF STATUS BAR
-    width: 35,
-    height: 35,
-  },
   buttonAndIconLower: {
-    transform: [{ rotate: '180deg' }],
-    //height: 15,
-    //marginBottom: 35, // MORE THAN 24dp OF STATUS BAR
-    //paddingTop: 35, // MORE THAN 24dp OF STATUS BAR
+    transform: [{ rotate: '180deg' }]
   }
 });

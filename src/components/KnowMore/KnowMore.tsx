@@ -17,7 +17,7 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
   useEffect(() => {
     //(navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
     //(navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
-    if (navigation.getState().routes.at(-1).name === 'KnowMore' && (state === 'tabletop' || state === 'book')) navigate('Home', { lastRoute: 'KnowMore' })
+    (navigation.getState().routes.at(-1).name === 'KnowMore' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'KnowMore' })
     //console.log("AA VER 11", navigation.getState().routes.at(-1).name)
     //console.log("AA VER 22", state)
   }, [state])
@@ -128,7 +128,6 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
       key={9}
       style={[ s.eachItem, {
         marginBottom: (state === 'tabletop' && !aboutUp) ? 20 : ins.bottom + 20
-        //marginBottom: (state === 'tabletop' && aboutUp) || state === 'book' ? ins.bottom + 20 : 20
       } ]}
     >
       <MaterialIcons
@@ -156,6 +155,8 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
 
   //console.log("INS AAA", ins)
 
+  const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
+
   return (
     <View style={s.mainContainer}>
       <LinearGradient
@@ -170,8 +171,8 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
         <LinearGradient
           colors={[ `rgba(${colorVariables}, 1)`, 'rgba(255, 255, 255, 1)' ]}
           style={[ s.linearGradient, { height: ins.top, width: '100%', zIndex: 4, opacity: 0.85 }]}
-          start={[ 0, state === 'tabletop' ?  hingeBounds.top / ins.top : height / ins.top ]} // left, top
-          //start={[ 0, height / ins.top ]} // left, top
+          start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
+          //start={[ 0, state === 'tabletop' ?  hingeBounds.top / ins.top : height / ins.top ]} // left, top
           end={[ 1, 0 ]}                  // left, top
         />
       }
@@ -248,7 +249,6 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
         <Pressable
           style={[ s.floatButton, {
             bottom: (state === 'tabletop' && !aboutUp) ? 10 : ins.bottom + 10,
-            //bottom: state === 'fullscreen' ? ins.bottom + 10 : 10,
             right: ins.right + 10
           } ]}
           onPress={() => onFabPress()}

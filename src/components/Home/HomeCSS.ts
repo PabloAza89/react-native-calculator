@@ -82,12 +82,12 @@ export const s = StyleSheet.create({
     height: '100%'
   },
   upperScreenTabletop: {
-    //backgroundColor: 'rgba(109, 197, 143, 0.5)', // DEV
+    backgroundColor: 'rgba(109, 197, 143, 0.5)', // DEV
     justifyContent: 'center',
     alignItems: 'center'
   },
   lowerScreenTabletop: {
-    //backgroundColor: 'rgba(150, 54, 126, 0.5)', // DEV
+    backgroundColor: 'rgba(150, 54, 126, 0.5)', // DEV
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -110,7 +110,7 @@ export const s = StyleSheet.create({
   },
   leftScreenBook: {
     //backgroundColor: '#004747', // DEV
-    flexDirection: 'row',
+    //flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
   },

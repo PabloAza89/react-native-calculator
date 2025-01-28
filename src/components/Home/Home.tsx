@@ -70,7 +70,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       //currWidth={ width }
       showModal={showModal} updateShowModal={updateShowModal}
       state={state} twoScreens={true}
-      switchSide={switchSide} nextScreen={nextScreen}
+      switchSide={switchSide} nextScreen={nextScreen} aboutUp={aboutUp}
     />;
 
   const KnowMoreScreen =
@@ -254,7 +254,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
             {
               showCalc &&
               <View
-                style={s.outline}
+                style={[ s.outline, { marginBottom: ins.bottom } ]}
                 children={
                   <View
                     style={[ s.contour, { aspectRatio: 7/3, width: parsedWidth - 100, maxHeight: parsedHeight - 40 } ]}
@@ -264,7 +264,6 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
               />
             }
 
-            {/* { !showCalc && KnowMoreScreen } */}
             { !showCalc && ( aboutUp ? KnowMoreScreen : AboutScreen ) }
 
           </View>
