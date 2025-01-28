@@ -78,7 +78,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       navigation={navigation} opw={opw} height={height}
       state={state} switchSide={switchSide}
       twoScreens={true} nextScreen={nextScreen}
-      aboutUp={aboutUp}
+      aboutUp={aboutUp} hingeBounds={hingeBounds}
     />;
 
   const PortButtons =
@@ -217,7 +217,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
         <View style={s.tabletopContainer}>
           <View /* UPPER SIDE */
-            style={[ s.upperScreenTabletop, { height: hingeBounds.top, /* paddingTop: ins.top */  } ]}
+            style={[ s.upperScreenTabletop, { height: hingeBounds.top , /* paddingTop: ins.top */  } ]}
           >
 
             {
@@ -248,7 +248,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
           </View>
           <View /* LOWER SIDE */
-            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom - ins.bottom } ]}
+            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom /* - ins.bottom */ } ]}
           >
 
             {

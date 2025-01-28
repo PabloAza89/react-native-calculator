@@ -10,12 +10,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
-const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, nextScreen, aboutUp }: any): ReactElement => {
+const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds }: any): ReactElement => {
 
   const { navigate } = navigation;
 
   useEffect(() => {
-    (navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
+    //(navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
+    //(navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
+    if (navigation.getState().routes.at(-1).name === 'KnowMore' && (state === 'tabletop' || state === 'book')) navigate('Home', { lastRoute: 'KnowMore' })
+    //console.log("AA VER 11", navigation.getState().routes.at(-1).name)
+    //console.log("AA VER 22", state)
   }, [state])
 
   let ins = useSafeAreaInsets(); // insets
@@ -123,7 +127,8 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
     <View
       key={9}
       style={[ s.eachItem, {
-        marginBottom: (state === 'tabletop' && aboutUp) || state === 'book' ? ins.bottom + 20 : 20
+        marginBottom: (state === 'tabletop' && !aboutUp) ? 20 : ins.bottom + 20
+        //marginBottom: (state === 'tabletop' && aboutUp) || state === 'book' ? ins.bottom + 20 : 20
       } ]}
     >
       <MaterialIcons
@@ -165,7 +170,8 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
         <LinearGradient
           colors={[ `rgba(${colorVariables}, 1)`, 'rgba(255, 255, 255, 1)' ]}
           style={[ s.linearGradient, { height: ins.top, width: '100%', zIndex: 4, opacity: 0.85 }]}
-          start={[ 0, height / ins.top ]} // left, top
+          start={[ 0, state === 'tabletop' ?  hingeBounds.top / ins.top : height / ins.top ]} // left, top
+          //start={[ 0, height / ins.top ]} // left, top
           end={[ 1, 0 ]}                  // left, top
         />
       }
@@ -175,7 +181,7 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
         onScroll={handleScroll}
         persistentScrollbar={true}
         children={
-          <View style={[ s.background, { width: '100%', marginLeft: ins.left } ]}>
+          <View style={[ s.background, { width: '100%', marginLeft: ins.left/* , marginBottom: ins.bottom */ } ]}>
 
             <View style={[ s.buttonContainer, { marginTop: ins.top + 7 } ]}>
 
@@ -241,7 +247,8 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
         showButton &&
         <Pressable
           style={[ s.floatButton, {
-            bottom: state === 'fullscreen' ? ins.bottom + 10 : 10,
+            bottom: (state === 'tabletop' && !aboutUp) ? 10 : ins.bottom + 10,
+            //bottom: state === 'fullscreen' ? ins.bottom + 10 : 10,
             right: ins.right + 10
           } ]}
           onPress={() => onFabPress()}
