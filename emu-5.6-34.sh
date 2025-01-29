@@ -7,7 +7,7 @@ function launchQuickEmulator() {
   cd /c/Users/pablo/AppData/Local/Android/Sdk/emulator/ && ./emulator -avd Pixel_3a_5.6_API_34_Android_14 -no-snapshot-load -no-snapshot-save # -n-s-l = COLD BOOT
 }
 
-function waitDevice() { # PERFECTO // ESTO PRIMERO
+function waitDevice() {
   cd /c/Users/pablo/AppData/Local/Android/Sdk/platform-tools
 
   if [ $(./adb -s emulator-5554 shell getprop init.svc.bootanim 2> /dev/null | grep "stopped") ]; then # 2> /dev/null --> HIDE ERRORS
