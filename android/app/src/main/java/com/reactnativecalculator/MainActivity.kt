@@ -110,8 +110,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       windowMap.putDouble("${item}", densityIndPixCurr); // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
     }
 
-    val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features"); // api TPS target 14 google play // api UDCPS target 15 google play // e.g.: hinge-[1080,0,1080,1840]
-    val hnoSecondPlace = context.resources.getString(context.resources.getIdentifier("config_display_features", "string", "android")); // api 34 target 14 google apis // e.g.: fold-[1104,0,1104,1848]
+    // hnoFirstPlace --> api TPS target 14 google play // api UDCPS target 15 google play --> e.g.: hinge-[1080,0,1080,1840] // api 30 surface duo --> e.g.: hinge-[1391,0,1392,1800]
+    val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features"); // return null if not found
+    val IDHnoSecondPlace = context.resources.getIdentifier("config_display_features", "string", "android"); // return 0 if not found
+    // hnoSecondPlace --> api 34 target 14 google apis --> e.g.: fold-[1104,0,1104,1848]
+    val hnoSecondPlace = if (IDHnoSecondPlace !== 0) context.resources.getString(IDHnoSecondPlace) else null;
+
+    Log.d("LOG", "111 ${hnoFirstPlace}"); // ok // android.content.res.Resources@749fb15
+    Log.d("LOG", "222 ${hnoSecondPlace}"); // ok // android.content.res.Resources@749fb15
 
     val hnoFound = // HINGE NATURAL ORIENTATION // SAME AS RawFoldingFeatureProducer
       if (!hnoFirstPlace.isNullOrEmpty()) hnoFirstPlace
