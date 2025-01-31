@@ -100,7 +100,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     context.addLifecycleEventListener(lifecycleEventListener)
   }
 
-  fun updateUI(value: WindowLayoutInfo, context: ReactContext) {
+  fun updateUI(windowLayoutInfo: WindowLayoutInfo, context: ReactContext) {
     val mainMap = Arguments.createMap()
     val screenMap = Arguments.createMap()
     val windowMap = Arguments.createMap()
@@ -113,7 +113,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val boundsMax = windowMetricsMax.bounds
 
     Log.d("LOG", "333 ${displayMetrics}"); // displayMetrics
-    Log.d("LOG", "444 ${value}"); // displayMetrics
+    Log.d("LOG", "444 ${windowLayoutInfo}"); // displayMetrics
 
     //val qq = (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
     //Log.d("LOG", "555 ${qq.displays}"); // displayMetrics
@@ -132,9 +132,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     // val displayFeatures: List<DisplayFeature>
     // Log.d("LOG", "555 ${displayFeatures}");
-    val displayFeatures: List<DisplayFeature> = value.displayFeatures
+    val displayFeatures: List<DisplayFeature> = windowLayoutInfo.displayFeatures
 
-    Log.d("LOG", "555 ${displayFeatures}");
+    Log.d("LOG", "555 ${displayFeatures}"); // THIS // ArrayList <- !!::class.simpleName
+    Log.d("LOG", "555 A ${displayFeatures.isEmpty()}"); // THIS
+    Log.d("LOG", "555 B ${displayFeatures.get(0)!!::class.simpleName}"); // THIS WORK IF 5 A IS FALSE
+    Log.d("LOG", "555 C ${displayFeatures.get(0).bounds}"); // THIS WORK IF 5 A IS FALSE
+    //Log.d("LOG", "555 C ${displayFeatures.get(1)}"); // THIS
+    //Log.d("LOG", "555 D ${displayFeatures.get(2)}"); // THIS
 
     var boundsArr = arrayOf("left", "top", "right", "bottom")
 
