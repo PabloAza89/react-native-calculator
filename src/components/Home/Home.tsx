@@ -205,6 +205,8 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
+  console.log("INS", ins)
+
   return (
     <View style={s.background}>
       <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />

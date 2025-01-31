@@ -183,6 +183,7 @@ const App = (): ReactElement => {
   useEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
+      console.log("screen", e.screen)
       console.log("window", e.window) // WINDOW BOUNDS (APP SIZE)
       console.log("state", e.state) // 'flat' or 'half' or 'closed'
       console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS

@@ -39,6 +39,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+// TEST //
+
+import androidx.window.layout.WindowLayoutInfo
+import androidx.window.layout.FoldingFeature
+import android.hardware.display.DisplayManager
+import android.view.Display
+import android.util.DisplayMetrics
+import androidx.window.layout.DisplayFeature
+//import androidx.window.layout.WindowLayoutComponent
+//import androidx.window.extensions.WindowExtensions
+//import androidx.window.extensions.layout.WindowLayoutComponent
+//import androidx.window.extensions.layout.WindowLayoutComponent
+
+// TEST //
+
 @Suppress("DEPRECATION")
 class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
 
@@ -64,7 +79,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
         WindowInfoTracker.getOrCreate(this@MainActivity)
           .windowLayoutInfo(this@MainActivity)
-          .collect { updateUI(context) }
+          .collect { value -> updateUI(value, context) }
+          //.collect { updateUI(context) }
       }
     }
 
@@ -84,7 +100,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     context.addLifecycleEventListener(lifecycleEventListener)
   }
 
-  fun updateUI(context: ReactContext) {
+  fun updateUI(value: WindowLayoutInfo, context: ReactContext) {
     val mainMap = Arguments.createMap()
     val screenMap = Arguments.createMap()
     val windowMap = Arguments.createMap()
@@ -95,6 +111,30 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val displayMetrics = this@MainActivity.resources.displayMetrics
     val boundsCurr = windowMetricsCurr.bounds
     val boundsMax = windowMetricsMax.bounds
+
+    Log.d("LOG", "333 ${displayMetrics}"); // displayMetrics
+    Log.d("LOG", "444 ${value}"); // displayMetrics
+
+    //val qq = (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
+    //Log.d("LOG", "555 ${qq.displays}"); // displayMetrics
+
+    // fun getDisplayMetrics(
+    //     context: Context = this@MainActivity,
+    //     displayId: Int = Display.DEFAULT_DISPLAY
+    // ): DisplayMetrics {
+    //     val dm = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    //     val display = dm.getDisplay(displayId)
+    //     val metrics = DisplayMetrics()
+    //     display.getMetrics(metrics)
+    //     return metrics
+    // }
+    // Log.d("LOG", "555 ${getDisplayMetrics()}");
+
+    // val displayFeatures: List<DisplayFeature>
+    // Log.d("LOG", "555 ${displayFeatures}");
+    val displayFeatures: List<DisplayFeature> = value.displayFeatures
+
+    Log.d("LOG", "555 ${displayFeatures}");
 
     var boundsArr = arrayOf("left", "top", "right", "bottom")
 
