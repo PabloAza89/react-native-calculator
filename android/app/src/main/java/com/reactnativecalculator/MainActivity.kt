@@ -106,14 +106,15 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val windowMap = Arguments.createMap()
     val hingeBoundsMap = Arguments.createMap()
 
-    val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
-    val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
-    val displayMetrics = this@MainActivity.resources.displayMetrics
-    val boundsCurr = windowMetricsCurr.bounds
-    val boundsMax = windowMetricsMax.bounds
+    // val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
+    // val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
+    //val displayMetrics = this@MainActivity.resources.displayMetrics
+    val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
+    val boundsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
+    val boundsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity).bounds
 
-    Log.d("LOG", "333 ${displayMetrics}"); // displayMetrics
-    Log.d("LOG", "444 ${windowLayoutInfo}"); // displayMetrics
+    // Log.d("LOG", "333 ${displayMetrics}"); // displayMetrics
+    // Log.d("LOG", "444 ${windowLayoutInfo}"); // displayMetrics
 
     //val qq = (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
     //Log.d("LOG", "555 ${qq.displays}"); // displayMetrics
@@ -132,18 +133,20 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     // val displayFeatures: List<DisplayFeature>
     // Log.d("LOG", "555 ${displayFeatures}");
-    val displayFeatures: List<DisplayFeature> = windowLayoutInfo.displayFeatures
+    //val displayFeatures: List<DisplayFeature> = windowLayoutInfo.displayFeatures
+    val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
 
-    Log.d("LOG", "555 ${displayFeatures}"); // THIS // ArrayList <- !!::class.simpleName
-    Log.d("LOG", "555 A ${displayFeatures.isEmpty()}"); // THIS
-    Log.d("LOG", "555 B ${displayFeatures.get(0)!!::class.simpleName}"); // THIS WORK IF 5 A IS FALSE
-    Log.d("LOG", "555 C ${displayFeatures.get(0).bounds}"); // THIS WORK IF 5 A IS FALSE
-    //Log.d("LOG", "555 C ${displayFeatures.get(1)}"); // THIS
-    //Log.d("LOG", "555 D ${displayFeatures.get(2)}"); // THIS
+    // Log.d("LOG", "555 ${displayFeatures}"); // THIS // ArrayList <- !!::class.simpleName
+    // Log.d("LOG", "555 A ${displayFeatures.isEmpty()}"); // THIS
+
+    // if (!displayFeatures.isEmpty()) {
+    //   Log.d("LOG", "555 B ${displayFeatures.get(0)!!::class.simpleName}"); // THIS WORK IF 5 A IS FALSE
+    //   Log.d("LOG", "555 C ${displayFeatures.get(0).bounds}"); // THIS WORK IF 5 A IS FALSE
+    //   Log.d("LOG", "555 D ${displayFeatures!!::class.simpleName}"); // THIS WORK IF 5 A IS FALSE
+    //   Log.d("LOG", "555 E ${displayFeatures.size}"); // THIS WORK IF 5 A IS FALSE
+    // }
 
     var boundsArr = arrayOf("left", "top", "right", "bottom")
-
-    val dotsPerInch: Double = displayMetrics.density.toDouble() // Float --> Double
 
     for (item in boundsArr) {
       val pixelsCurr = boundsCurr::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsCurr).toString().toDouble(); // Int --> Double
@@ -156,70 +159,94 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     }
 
     // hnoFirstPlace --> api TPS target 14 google play // api UDCPS target 15 google play --> e.g.: hinge-[1080,0,1080,1840] // api 30 surface duo --> e.g.: hinge-[1391,0,1392,1800]
-    val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features"); // return null if not found
-    val IDHnoSecondPlace = context.resources.getIdentifier("config_display_features", "string", "android"); // return 0 if not found
+    //val hnoFirstPlace = Settings.Global.getString(context.contentResolver, "display_features"); // return null if not found
+    //val IDHnoSecondPlace = context.resources.getIdentifier("config_display_features", "string", "android"); // return 0 if not found
     // hnoSecondPlace --> api 34 target 14 google apis --> e.g.: fold-[1104,0,1104,1848]
-    val hnoSecondPlace = if (IDHnoSecondPlace !== 0) context.resources.getString(IDHnoSecondPlace) else null;
+    //val hnoSecondPlace = if (IDHnoSecondPlace !== 0) context.resources.getString(IDHnoSecondPlace) else null;
 
-    Log.d("LOG", "111 ${hnoFirstPlace}"); // ok // android.content.res.Resources@749fb15
-    Log.d("LOG", "222 ${hnoSecondPlace}"); // ok // android.content.res.Resources@749fb15
+    //Log.d("LOG", "111 ${hnoFirstPlace}"); // ok // android.content.res.Resources@749fb15
+    //Log.d("LOG", "222 ${hnoSecondPlace}"); // ok // android.content.res.Resources@749fb15
 
-    val hnoFound = // HINGE NATURAL ORIENTATION // SAME AS RawFoldingFeatureProducer
-      if (!hnoFirstPlace.isNullOrEmpty()) hnoFirstPlace
-      else if (!hnoSecondPlace.isNullOrEmpty()) hnoSecondPlace
-      else null;
+    // val hnoFound = // HINGE NATURAL ORIENTATION // SAME AS RawFoldingFeatureProducer
+    //   if (!hnoFirstPlace.isNullOrEmpty()) hnoFirstPlace
+    //   else if (!hnoSecondPlace.isNullOrEmpty()) hnoSecondPlace
+    //   else null;
 
     val state: String;
 
-    if (!hnoFound.isNullOrEmpty()) {
-      // start hno //
-      val hnoList = hnoFound.split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() }; // { "hinge-[1080", "0", "1080" , "1840]" }
+    /////Log.d("LOG", "AZ ${foldingFeature!!::class.simpleName}")
+    /////if (!hnoFound.isNullOrEmpty()) {
+    if (foldingFeature !== null) {
+      ///// start hno //
+      /////val hnoList = hnoFound.split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() }; // { "hinge-[1080", "0", "1080" , "1840]" }
+      
+      Log.d("LOG", "555 F A ${foldingFeature}"); // THIS WORK IF 5 A IS FALSE
+      Log.d("LOG", "555 F B ${foldingFeature.state}"); // FLAT or HALF_OPENED
+      Log.d("LOG", "555 F C ${foldingFeature.orientation}"); // HORIZONTAL or VERTICAL
+      Log.d("LOG", "555 F C C ${foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL}"); // HORIZONTAL or VERTICAL
+      Log.d("LOG", "555 F D ${foldingFeature.occlusionType}"); // NONE or FULL (fold or hinge conceals part of the display)
+      Log.d("LOG", "555 F E ${foldingFeature.isSeparating}"); // true or false (two logical display areas)
+      Log.d("LOG", "555 F G ${foldingFeature.bounds}"); // bounds
+      Log.d("LOG", "555 F H ${foldingFeature.bounds.left}"); // bounds
+
+      // val hnoListParsed = hnoListParsedClass()
+      // hnoListParsed.left = hnoList[0] / dotsPerInch
+      // hnoListParsed.top = hnoList[1] / dotsPerInch
+      // hnoListParsed.right = hnoList[2] / dotsPerInch
+      // hnoListParsed.bottom = hnoList[3] / dotsPerInch
 
       val hnoListParsed = hnoListParsedClass()
-      hnoListParsed.left = hnoList[0] / dotsPerInch
-      hnoListParsed.top = hnoList[1] / dotsPerInch
-      hnoListParsed.right = hnoList[2] / dotsPerInch
-      hnoListParsed.bottom = hnoList[3] / dotsPerInch
+      hnoListParsed.left = foldingFeature.bounds.left / dotsPerInch
+      hnoListParsed.top = foldingFeature.bounds.top / dotsPerInch
+      hnoListParsed.right = foldingFeature.bounds.right / dotsPerInch
+      hnoListParsed.bottom = foldingFeature.bounds.bottom / dotsPerInch
 
-      @Suppress("DEPRECATION")
-      val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
-      if (rotation == 1) { // rotation 90º (rotated to left)
-        hingeBoundsMap.putDouble("left", 0.0) // ALWAYS IS ZERO
-        hingeBoundsMap.putDouble("top", screenMap.getDouble("bottom") - hnoListParsed.left) // maxHeight - Left
-        hingeBoundsMap.putDouble("right", hnoListParsed.bottom) // Bottom
-        hingeBoundsMap.putDouble("bottom", screenMap.getDouble("bottom") - hnoListParsed.right) // maxHeight - Right
-      } else if (rotation == 2) { // rotation 180º
-        hingeBoundsMap.putDouble("left", screenMap.getDouble("right") - hnoListParsed.right) // maxWidth - Right
-        hingeBoundsMap.putDouble("top", 0.0) // ALWAYS IS ZERO
-        hingeBoundsMap.putDouble("right", screenMap.getDouble("right") - hnoListParsed.left) // maxWidth - Left
-        hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom) // Bottom
-      } else if (rotation == 3) { // rotation 270º
-        hingeBoundsMap.putDouble("left", 0.0) // ALWAYS IS ZERO
-        hingeBoundsMap.putDouble("top", hnoListParsed.left) // Left
-        hingeBoundsMap.putDouble("right", hnoListParsed.bottom) // Bottom
-        hingeBoundsMap.putDouble("bottom", hnoListParsed.right) // Right
-      } else { // rotation == 0 --> natural orientation
-        hingeBoundsMap.putDouble("left", hnoListParsed.left)
-        hingeBoundsMap.putDouble("top", hnoListParsed.top)
-        hingeBoundsMap.putDouble("right", hnoListParsed.right)
-        hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
-      }
+      hingeBoundsMap.putDouble("left", hnoListParsed.left)
+      hingeBoundsMap.putDouble("top", hnoListParsed.top)
+      hingeBoundsMap.putDouble("right", hnoListParsed.right)
+      hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
 
-      val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right) // BOOLEAN
-      val verticalHinge = hingeBoundsMap.getDouble("top") == 0.0 // BOOLEAN
+      // @Suppress("DEPRECATION")
+      // val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
+      // if (rotation == 1) { // rotation 90º (rotated to left)
+      //   hingeBoundsMap.putDouble("left", 0.0) // ALWAYS IS ZERO
+      //   hingeBoundsMap.putDouble("top", screenMap.getDouble("bottom") - hnoListParsed.left) // maxHeight - Left
+      //   hingeBoundsMap.putDouble("right", hnoListParsed.bottom) // Bottom
+      //   hingeBoundsMap.putDouble("bottom", screenMap.getDouble("bottom") - hnoListParsed.right) // maxHeight - Right
+      // } else if (rotation == 2) { // rotation 180º
+      //   hingeBoundsMap.putDouble("left", screenMap.getDouble("right") - hnoListParsed.right) // maxWidth - Right
+      //   hingeBoundsMap.putDouble("top", 0.0) // ALWAYS IS ZERO
+      //   hingeBoundsMap.putDouble("right", screenMap.getDouble("right") - hnoListParsed.left) // maxWidth - Left
+      //   hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom) // Bottom
+      // } else if (rotation == 3) { // rotation 270º
+      //   hingeBoundsMap.putDouble("left", 0.0) // ALWAYS IS ZERO
+      //   hingeBoundsMap.putDouble("top", hnoListParsed.left) // Left
+      //   hingeBoundsMap.putDouble("right", hnoListParsed.bottom) // Bottom
+      //   hingeBoundsMap.putDouble("bottom", hnoListParsed.right) // Right
+      // } else { // rotation == 0 --> natural orientation
+      //   hingeBoundsMap.putDouble("left", hnoListParsed.left)
+      //   hingeBoundsMap.putDouble("top", hnoListParsed.top)
+      //   hingeBoundsMap.putDouble("right", hnoListParsed.right)
+      //   hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
+      // }
 
-      val fullscreen =
-        screenMap.getDouble("left") == windowMap.getDouble("left") &&
-        screenMap.getDouble("top") == windowMap.getDouble("top") &&
-        screenMap.getDouble("right") == windowMap.getDouble("right") &&
-        screenMap.getDouble("bottom") == windowMap.getDouble("bottom")
+      // val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right) // BOOLEAN
+      // val verticalHinge = hingeBoundsMap.getDouble("top") == 0.0 // BOOLEAN
+      val occlusionBoolean = false // BOOLEAN
+      val verticalHinge = true // BOOLEAN
 
-      state =
-        if (angle > 150.0 && fullscreen && !occlusionBoolean) "fullscreen" // fullscreen fold..
-        else if (angle > 30.0 && fullscreen && !verticalHinge) "tabletop"
-        else if (angle > 30.0 && fullscreen && verticalHinge) "book"
-        else if (boundsCurr.height() >= boundsCurr.width()) "portrait"
-        else "landscape"
+      val fullscreen = true
+        // screenMap.getDouble("left") == windowMap.getDouble("left") &&
+        // screenMap.getDouble("top") == windowMap.getDouble("top") &&
+        // screenMap.getDouble("right") == windowMap.getDouble("right") &&
+        // screenMap.getDouble("bottom") == windowMap.getDouble("bottom")
+
+      state = "landscape"
+        // if (angle > 150.0 && fullscreen && !occlusionBoolean) "fullscreen" // fullscreen fold..
+        // else if (angle > 30.0 && fullscreen && !verticalHinge) "tabletop"
+        // else if (angle > 30.0 && fullscreen && verticalHinge) "book"
+        // else if (boundsCurr.height() >= boundsCurr.width()) "portrait"
+        // else "landscape"
 
       mainMap.putMap("hingeBounds", hingeBoundsMap)
       // end hno //
