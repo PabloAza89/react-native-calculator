@@ -62,12 +62,12 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     <About
       navigation={navigation} vmin={vmin}
       //currWidth={ hingeBounds === undefined ? width : calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
-      currWidth={
-        state === 'book' && calcLeft ? width - hingeBounds.right - ins.right :
-        state === 'book' && !calcLeft ? hingeBounds.left - ins.left :
-        width
-      }
-      //currWidth={ width }
+      // currWidth={
+      //   state === 'book' && calcLeft ? width - hingeBounds.right - ins.right :
+      //   state === 'book' && !calcLeft ? hingeBounds.left - ins.left :
+      //   width
+      // }
+      currWidth={width}
       showModal={showModal} updateShowModal={updateShowModal}
       state={state} twoScreens={true}
       switchSide={switchSide} nextScreen={nextScreen} aboutUp={aboutUp}

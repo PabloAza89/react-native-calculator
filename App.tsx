@@ -32,6 +32,8 @@ const App = (): ReactElement => {
 
   const { width, height } = useWindowDimensions();
 
+  console.log("width", width)
+
   let navBar = useRef<boolean>(true)
 
   let updateNavBar = async() => {

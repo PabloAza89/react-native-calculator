@@ -52,6 +52,8 @@ import androidx.window.layout.DisplayFeature
 //import androidx.window.extensions.layout.WindowLayoutComponent
 //import androidx.window.extensions.layout.WindowLayoutComponent
 
+//import android.util.DisplayMetrics
+
 // TEST //
 
 @Suppress("DEPRECATION")
@@ -60,11 +62,13 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
+    Log.d("LOG", "EXECUTED 1");
   }
 
   override fun onResume() {
     super.onResume()
     reactInstanceManager.addReactInstanceEventListener(this)
+    Log.d("LOG", "AAA");
   }
 
   override fun onPause() {
@@ -77,9 +81,11 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun onReactContextInitialized(context: ReactContext) {
     lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        Log.d("LOG", "A VER ${context.resources.displayMetrics}");
+
         WindowInfoTracker.getOrCreate(this@MainActivity)
           .windowLayoutInfo(this@MainActivity)
-          .collect { value -> updateUI(value, context) }
+          .collect { value -> updateUI(value, context) };
           //.collect { updateUI(context) }
       }
     }
@@ -93,7 +99,10 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     }
 
     val lifecycleEventListener = object: LifecycleEventListener {
-      override fun onHostResume() { hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) } }
+      override fun onHostResume() {
+        Log.d("LOG", "EXECUTED 3");
+        hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) }
+      }
       override fun onHostPause() { hingeAngleSensor?.let { sensorManager?.unregisterListener(sensorEventListener, it) } }
       override fun onHostDestroy() { }
     }
@@ -101,17 +110,20 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   }
 
   fun updateUI(windowLayoutInfo: WindowLayoutInfo, context: ReactContext) {
+
+    Log.d("LOG", "EXECUTED updateUI");
+    
     val mainMap = Arguments.createMap()
     val screenMap = Arguments.createMap()
     val windowMap = Arguments.createMap()
     val hingeBoundsMap = Arguments.createMap()
 
-    // val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
-    // val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
+    val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
+    val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
     //val displayMetrics = this@MainActivity.resources.displayMetrics
     val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
-    val boundsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
-    val boundsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity).bounds
+    val boundsCurr = windowMetricsCurr.bounds
+    val boundsMax = windowMetricsMax.bounds
 
     // Log.d("LOG", "333 ${displayMetrics}"); // displayMetrics
     // Log.d("LOG", "444 ${windowLayoutInfo}"); // displayMetrics
@@ -135,6 +147,10 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     // Log.d("LOG", "555 ${displayFeatures}");
     //val displayFeatures: List<DisplayFeature> = windowLayoutInfo.displayFeatures
     val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
+
+    Log.d("LOG", "foldingFeature ${foldingFeature}");
+    Log.d("LOG", "angle ${angle}");
+    
 
     // Log.d("LOG", "555 ${displayFeatures}"); // THIS // ArrayList <- !!::class.simpleName
     // Log.d("LOG", "555 A ${displayFeatures.isEmpty()}"); // THIS
@@ -176,6 +192,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     /////Log.d("LOG", "AZ ${foldingFeature!!::class.simpleName}")
     /////if (!hnoFound.isNullOrEmpty()) {
+    val hnoListParsed = hnoListParsedClass()
+
     if (foldingFeature !== null) {
       ///// start hno //
       /////val hnoList = hnoFound.split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() }; // { "hinge-[1080", "0", "1080" , "1840]" }
@@ -183,11 +201,11 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       Log.d("LOG", "555 F A ${foldingFeature}"); // THIS WORK IF 5 A IS FALSE
       Log.d("LOG", "555 F B ${foldingFeature.state}"); // FLAT or HALF_OPENED
       Log.d("LOG", "555 F C ${foldingFeature.orientation}"); // HORIZONTAL or VERTICAL
-      Log.d("LOG", "555 F C C ${foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL}"); // HORIZONTAL or VERTICAL
-      Log.d("LOG", "555 F D ${foldingFeature.occlusionType}"); // NONE or FULL (fold or hinge conceals part of the display)
-      Log.d("LOG", "555 F E ${foldingFeature.isSeparating}"); // true or false (two logical display areas)
+      //Log.d("LOG", "555 F C C ${foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL}"); // HORIZONTAL or VERTICAL
+      //Log.d("LOG", "555 F D ${foldingFeature.occlusionType}"); // NONE or FULL (fold or hinge conceals part of the display)
+      //Log.d("LOG", "555 F E ${foldingFeature.isSeparating}"); // true or false (two logical display areas)
       Log.d("LOG", "555 F G ${foldingFeature.bounds}"); // bounds
-      Log.d("LOG", "555 F H ${foldingFeature.bounds.left}"); // bounds
+      //Log.d("LOG", "555 F H ${foldingFeature.bounds.left}"); // bounds
 
       // val hnoListParsed = hnoListParsedClass()
       // hnoListParsed.left = hnoList[0] / dotsPerInch
@@ -195,16 +213,20 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       // hnoListParsed.right = hnoList[2] / dotsPerInch
       // hnoListParsed.bottom = hnoList[3] / dotsPerInch
 
-      val hnoListParsed = hnoListParsedClass()
+      //val hnoListParsed = hnoListParsedClass()
       hnoListParsed.left = foldingFeature.bounds.left / dotsPerInch
       hnoListParsed.top = foldingFeature.bounds.top / dotsPerInch
       hnoListParsed.right = foldingFeature.bounds.right / dotsPerInch
       hnoListParsed.bottom = foldingFeature.bounds.bottom / dotsPerInch
 
-      hingeBoundsMap.putDouble("left", hnoListParsed.left)
-      hingeBoundsMap.putDouble("top", hnoListParsed.top)
-      hingeBoundsMap.putDouble("right", hnoListParsed.right)
-      hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
+      // hingeBoundsMap.putDouble("left", hnoListParsed.left)
+      // hingeBoundsMap.putDouble("top", hnoListParsed.top)
+      // hingeBoundsMap.putDouble("right", hnoListParsed.right)
+      // hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
+
+      // @Suppress("DEPRECATION")
+      // val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
+      // Log.d("LOG", "ROTATION ${rotation}")
 
       // @Suppress("DEPRECATION")
       // val rotation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
@@ -241,22 +263,42 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         // screenMap.getDouble("right") == windowMap.getDouble("right") &&
         // screenMap.getDouble("bottom") == windowMap.getDouble("bottom")
 
-      state = "landscape"
+      state = //"landscape"
+        if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "fullscreen"
+        else if (foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) "tabletop"
+        else "book"
+        // else if (
+        //   (foldingFeature.state == FoldingFeature.State.HALF_OPENED && foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) ||
+        //   (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL)
+        // ) "tabletop"
+        // else if (foldingFeature.state == FoldingFeature.State.HALF_OPENED && foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL) "book"
+        // else "book"
         // if (angle > 150.0 && fullscreen && !occlusionBoolean) "fullscreen" // fullscreen fold..
         // else if (angle > 30.0 && fullscreen && !verticalHinge) "tabletop"
         // else if (angle > 30.0 && fullscreen && verticalHinge) "book"
         // else if (boundsCurr.height() >= boundsCurr.width()) "portrait"
         // else "landscape"
 
-      mainMap.putMap("hingeBounds", hingeBoundsMap)
+      //mainMap.putMap("hingeBounds", hingeBoundsMap)
       // end hno //
     } else {
       state =
         if (boundsCurr.height() >= boundsCurr.width()) "portrait"
         else "landscape";
+
+        // hingeBoundsMap.putDouble("left", 0.0)
+        // hingeBoundsMap.putDouble("top", 0.0)
+        // hingeBoundsMap.putDouble("right", 0.0)
+        // hingeBoundsMap.putDouble("bottom", 0.0)
     }
 
-    mainMap.putString("state", state) // fullscreen, tabletop..
+    hingeBoundsMap.putDouble("left", hnoListParsed.left)
+    hingeBoundsMap.putDouble("top", hnoListParsed.top)
+    hingeBoundsMap.putDouble("right", hnoListParsed.right)
+    hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
+
+    mainMap.putMap("hingeBounds", hingeBoundsMap);
+    mainMap.putString("state", state); // fullscreen, tabletop..
     mainMap.putMap("screen", screenMap);
     mainMap.putMap("window", windowMap);
 
