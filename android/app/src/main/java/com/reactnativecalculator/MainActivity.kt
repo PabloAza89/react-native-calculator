@@ -148,6 +148,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     context.addLifecycleEventListener(lifecycleEventListener)
   }
 
+  //val state: String;
+
   fun updateUI(windowLayoutInfo: WindowLayoutInfo, context: ReactContext) {
 
     Log.d("LOG", "EXECUTED updateUI");
@@ -185,6 +187,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     // val displayFeatures: List<DisplayFeature>
     // Log.d("LOG", "555 ${displayFeatures}");
     //val displayFeatures: List<DisplayFeature> = windowLayoutInfo.displayFeatures
+    Log.d("LOG", "555 ${windowLayoutInfo}");
     val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
 
     //Log.d("LOG", "foldingFeature ${foldingFeature}");
@@ -346,7 +349,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       ?.emit("LayoutInfo", mainMap)
   }
 
-  override fun onConfigurationChanged(newConfig: Configuration) {
+  override fun onConfigurationChanged(newConfig: Configuration) { // 1st EXECUTED
       super.onConfigurationChanged(newConfig)
 
       // Checks the orientation of the screen
@@ -354,6 +357,11 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           Configuration.ORIENTATION_LANDSCAPE -> {
               //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show()
               Log.d("LOG", "$$$ LANDSCAPE");
+              //Log.d("LOG", "TEST ${WindowInfoTracker.getOrCreate(this@MainActivity).windowLayoutInfo(this@MainActivity).collect { value -> updateUI(value, context) }}");
+              lifecycleScope.launch {
+                WindowInfoTracker.getOrCreate(this@MainActivity).windowLayoutInfo(this@MainActivity).collect { value -> Log.d("LOG", "TEST ${value}") }
+              }
+              
           }
           Configuration.ORIENTATION_PORTRAIT -> {
               //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show()
