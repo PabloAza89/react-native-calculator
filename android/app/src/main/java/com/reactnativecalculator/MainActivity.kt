@@ -54,6 +54,12 @@ import androidx.window.layout.DisplayFeature
 
 //import android.util.DisplayMetrics
 
+//import android.content.Context
+//import android.hardware.SensorManager
+import android.view.OrientationEventListener
+
+import android.content.res.Configuration
+
 // TEST //
 
 @Suppress("DEPRECATION")
@@ -62,18 +68,20 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
-    Log.d("LOG", "EXECUTED 1");
+    //Log.d("LOG", "EXECUTED 1");
   }
 
   override fun onResume() {
     super.onResume()
     reactInstanceManager.addReactInstanceEventListener(this)
-    Log.d("LOG", "AAA");
+    //Log.d("LOG", "AAA");
+    //orientationListener.enable();
   }
 
   override fun onPause() {
     super.onPause()
     reactInstanceManager.removeReactInstanceEventListener(this)
+    //orientationListener.disable();
   }
 
   var angle: Float = 0.toFloat()
@@ -81,7 +89,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun onReactContextInitialized(context: ReactContext) {
     lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        Log.d("LOG", "A VER ${context.resources.displayMetrics}");
+        //Log.d("LOG", "A VER ${context.resources.displayMetrics}");
+
+        //Log.d("TEST 2", "A VER ${WindowInfoTracker.getOrCreate(this@MainActivity).windowLayoutInfo(this@MainActivity)}");
 
         WindowInfoTracker.getOrCreate(this@MainActivity)
           .windowLayoutInfo(this@MainActivity)
@@ -98,12 +108,41 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
     }
 
+    @Suppress("DEPRECATION")
+    val rotation = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
+
+    val orientationListener = object : OrientationEventListener(this@MainActivity, SensorManager.SENSOR_DELAY_NORMAL) {
+      override fun onOrientationChanged(orientation: Int) {
+        //Log.d("LOG", "ORIENTATION ${orientation}")
+
+        
+        //Log.d("LOG", "ROTATION ${rotation}")
+
+        //Log.d("LOG", "OTHER ${this@MainActivity.resources.displayMetrics}")
+       //Log.d("LOG", "OTHER ${this@MainActivity.resources.configuration.orientation}")
+
+        
+
+        // if(orientation == Configuration.ORIENTATION_LANDSCAPE){
+        //     Log.d("LOG", "11111111111111111111 LAND")
+        //   }else if(orientation == Configuration.ORIENTATION_PORTRAIT){
+        //     Log.d("LOG", "11111111111111111111 PORT")
+        //   }
+
+      }
+    }
+
     val lifecycleEventListener = object: LifecycleEventListener {
       override fun onHostResume() {
-        Log.d("LOG", "EXECUTED 3");
+        //Log.d("LOG", "EXECUTED 3")
+
+        orientationListener.enable()
         hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) }
       }
-      override fun onHostPause() { hingeAngleSensor?.let { sensorManager?.unregisterListener(sensorEventListener, it) } }
+      override fun onHostPause() {
+        orientationListener.disable()
+        hingeAngleSensor?.let { sensorManager?.unregisterListener(sensorEventListener, it) }
+      }
       override fun onHostDestroy() { }
     }
     context.addLifecycleEventListener(lifecycleEventListener)
@@ -148,8 +187,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     //val displayFeatures: List<DisplayFeature> = windowLayoutInfo.displayFeatures
     val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
 
-    Log.d("LOG", "foldingFeature ${foldingFeature}");
-    Log.d("LOG", "angle ${angle}");
+    //Log.d("LOG", "foldingFeature ${foldingFeature}");
+    //Log.d("LOG", "angle ${angle}");
     
 
     // Log.d("LOG", "555 ${displayFeatures}"); // THIS // ArrayList <- !!::class.simpleName
@@ -198,9 +237,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       ///// start hno //
       /////val hnoList = hnoFound.split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() }; // { "hinge-[1080", "0", "1080" , "1840]" }
       
-      Log.d("LOG", "555 F A ${foldingFeature}"); // THIS WORK IF 5 A IS FALSE
-      Log.d("LOG", "555 F B ${foldingFeature.state}"); // FLAT or HALF_OPENED
-      Log.d("LOG", "555 F C ${foldingFeature.orientation}"); // HORIZONTAL or VERTICAL
+      //Log.d("LOG", "555 F A ${foldingFeature}"); // THIS WORK IF 5 A IS FALSE
+      //Log.d("LOG", "555 F B ${foldingFeature.state}"); // FLAT or HALF_OPENED
+      //Log.d("LOG", "555 F C ${foldingFeature.orientation}"); // HORIZONTAL or VERTICAL
       //Log.d("LOG", "555 F C C ${foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL}"); // HORIZONTAL or VERTICAL
       //Log.d("LOG", "555 F D ${foldingFeature.occlusionType}"); // NONE or FULL (fold or hinge conceals part of the display)
       //Log.d("LOG", "555 F E ${foldingFeature.isSeparating}"); // true or false (two logical display areas)
@@ -305,6 +344,22 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     context
       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
       ?.emit("LayoutInfo", mainMap)
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+      super.onConfigurationChanged(newConfig)
+
+      // Checks the orientation of the screen
+      when (newConfig.orientation) {
+          Configuration.ORIENTATION_LANDSCAPE -> {
+              //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show()
+              Log.d("LOG", "$$$ LANDSCAPE");
+          }
+          Configuration.ORIENTATION_PORTRAIT -> {
+              //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show()
+              Log.d("LOG", "$$$ PORTRAIT");
+          }
+      }
   }
 
   // Returns the name of the main component registered from JavaScript. This is used to schedule rendering of the component.
