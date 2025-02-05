@@ -98,34 +98,11 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     reactInstanceManager.removeReactInstanceEventListener(this)
   }
 
-  var angle: Float = 0.toFloat()
-
   override fun onReactContextInitialized(context: ReactContext) {
 
     Log.d("LOG", "REACT CONTEXT ONCE ?");
     updateUI()
-
-    var sensorManager: SensorManager? = context.getSystemService(SENSOR_SERVICE) as SensorManager
-    var hingeAngleSensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_HINGE_ANGLE)
-
-    val sensorEventListener = object: SensorEventListener {
-      override fun onSensorChanged(event: SensorEvent) { angle = event.values[0] }
-      override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
-    }
-
-    val lifecycleEventListener = object: LifecycleEventListener {
-      override fun onHostResume() {
-        hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) }
-      }
-      override fun onHostPause() {
-        hingeAngleSensor?.let { sensorManager?.unregisterListener(sensorEventListener, it) }
-      }
-      override fun onHostDestroy() { }
-    }
-    context.addLifecycleEventListener(lifecycleEventListener)
   }
-
-
 
   //fun updateUI(windowLayoutInfo: WindowLayoutInfo, context: ReactContext) {
   //fun updateUI(context: ReactContext) {
@@ -285,10 +262,10 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   override fun onConfigurationChanged(newConfig: Configuration) { // 1st EXECUTED
       super.onConfigurationChanged(newConfig)
-
+      Log.d("LOG", "CONFIGURATION CHANGED");
       when (newConfig.screenLayout) {
         newConfig.screenLayout -> {
-          //Log.d("LOG", "AAA ${newConfig.screenLayout}");
+          Log.d("LOG", "AAA ${newConfig.screenLayout}");
           updateUI()
         }
       }
