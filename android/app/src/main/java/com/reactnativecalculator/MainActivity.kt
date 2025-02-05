@@ -69,45 +69,41 @@ import kotlinx.coroutines.*
 @Suppress("DEPRECATION")
 class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
 
+  var orientation = "portrait" // DEFAULT
+
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
     Log.d("LOG", "EXECUTED CREATE");
+
+    val firstOrientation = this@MainActivity.resources.configuration.orientation
+    if (firstOrientation == Configuration.ORIENTATION_PORTRAIT) {
+      Log.d("LOG", "FIRST PORTRAIT");
+      orientation = "portrait"
+    } else {
+      Log.d("LOG", "FIRST LANDSCAPE");
+      orientation = "landscape"
+    }
+    
+
     updateUI()
   }
 
   override fun onResume() {
     super.onResume()
     reactInstanceManager.addReactInstanceEventListener(this)
-    //Log.d("LOG", "onResume EXECUTED");
-    //orientationListener.enable();
   }
 
   override fun onPause() {
     super.onPause()
     reactInstanceManager.removeReactInstanceEventListener(this)
-    //orientationListener.disable();
   }
 
   var angle: Float = 0.toFloat()
 
   override fun onReactContextInitialized(context: ReactContext) {
-    // lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
-    //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-    //     //Log.d("LOG", "A VER ${context.resources.displayMetrics}");
 
-    //     //Log.d("TEST 2", "A VER ${WindowInfoTracker.getOrCreate(this@MainActivity).windowLayoutInfo(this@MainActivity)}");
-
-    //     WindowInfoTracker.getOrCreate(this@MainActivity)
-    //       .windowLayoutInfo(this@MainActivity)
-    //       .collect { value -> updateUI(value, context) };
-    //       //.collect { updateUI(context) }
-    //   }
-    // }
-
-    Log.d("LOG", "EXECUTED ONCE TEST");
-
-    //updateUI(context)
+    Log.d("LOG", "REACT CONTEXT ONCE ?");
 
     var sensorManager: SensorManager? = context.getSystemService(SENSOR_SERVICE) as SensorManager
     var hingeAngleSensor: Sensor? = sensorManager?.getDefaultSensor(Sensor.TYPE_HINGE_ANGLE)
@@ -117,39 +113,11 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
     }
 
-    @Suppress("DEPRECATION")
-    val rotation = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation // retrieve 0 1 2 3
-
-    val orientationListener = object : OrientationEventListener(this@MainActivity, SensorManager.SENSOR_DELAY_NORMAL) {
-      override fun onOrientationChanged(orientation: Int) {
-        //Log.d("LOG", "ORIENTATION ${orientation}")
-
-        
-        //Log.d("LOG", "ROTATION ${rotation}")
-
-        //Log.d("LOG", "OTHER ${this@MainActivity.resources.displayMetrics}")
-       //Log.d("LOG", "OTHER ${this@MainActivity.resources.configuration.orientation}")
-
-        
-
-        // if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-        //     Log.d("LOG", "11111111111111111111 LAND")
-        //   }else if(orientation == Configuration.ORIENTATION_PORTRAIT){
-        //     Log.d("LOG", "11111111111111111111 PORT")
-        //   }
-
-      }
-    }
-
     val lifecycleEventListener = object: LifecycleEventListener {
       override fun onHostResume() {
-        Log.d("LOG", "EXECUTED RESUME")
-
-        orientationListener.enable()
         hingeAngleSensor?.let { sensorManager?.registerListener(sensorEventListener, it, SensorManager.SENSOR_DELAY_NORMAL) }
       }
       override fun onHostPause() {
-        orientationListener.disable()
         hingeAngleSensor?.let { sensorManager?.unregisterListener(sensorEventListener, it) }
       }
       override fun onHostDestroy() { }
@@ -157,9 +125,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     context.addLifecycleEventListener(lifecycleEventListener)
   }
 
-  //val state: String;
 
-  
 
   //fun updateUI(windowLayoutInfo: WindowLayoutInfo, context: ReactContext) {
   //fun updateUI(context: ReactContext) {
@@ -178,12 +144,12 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val windowMap = Arguments.createMap()
     val hingeBoundsMap = Arguments.createMap()
 
-    val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
-    val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
+    //val windowMetricsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity)
+    //val windowMetricsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity)
     //val displayMetrics = this@MainActivity.resources.displayMetrics
     val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
-    val boundsCurr = windowMetricsCurr.bounds
-    val boundsMax = windowMetricsMax.bounds
+    val boundsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
+    val boundsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity).bounds
 
     lateinit var jobbb: Job
 
@@ -419,13 +385,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun onConfigurationChanged(newConfig: Configuration) { // 1st EXECUTED
       super.onConfigurationChanged(newConfig)
 
-      // Checks the orientation of the screen
-      
-      // when (newConfig.orientation) {
-      //   newConfig.orientation -> {
-      //     Log.d("LOG", "AAA ${newConfig.orientation}");
-      //   }
-      // }
       when (newConfig.screenLayout) {
         newConfig.screenLayout -> {
           //Log.d("LOG", "AAA ${newConfig.screenLayout}");
@@ -434,46 +393,13 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       }
       when (newConfig.orientation) {
           Configuration.ORIENTATION_LANDSCAPE -> {
-              //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show()
               Log.d("LOG", "$$$ LANDSCAPE");
-              //Log.d("LOG", "TEST ${WindowInfoTracker.getOrCreate(this@MainActivity).windowLayoutInfo(this@MainActivity).collect { value -> updateUI(value, context) }}");
-              // lifecycleScope.launch(Dispatchers.Main) {
-              //   WindowInfoTracker.getOrCreate(this@MainActivity).windowLayoutInfo(this@MainActivity).collect { value -> Log.d("LOG", "TEST ${value}") }
-              // }
-              //Log.d("LOG", "$$$ NEXT");
-
-              // fun main() = runBlocking { // working test 1
-
-              //   val resultOne = async { function1() }
-              //   val resultText = resultOne.await()
-              //   Log.d("LOG", "exec 2nd ${resultText}")
-              // }
-              // main()
-
-              // fun doWorkAsync(): Deferred<Unit> = GlobalScope.async { // working test 2
-              //   //delay(500)
-              //   //println("$msg - Work done")
-              //   //Log.d("LOG", "exec 2nd ASDASD")
-              //   WindowInfoTracker.getOrCreate(this@MainActivity).windowLayoutInfo(this@MainActivity).collect { value -> Log.d("LOG", "TEST ${value}") }
-              //   //return@async 42
-              // }
-              // doWorkAsync()
-
-             
-                //.collect { value -> Log.d("LOG", "TEST ${value}") }
-                //.flowWithLifecycle(contextProvider.activity.lifecycle)
-
-                //.map { it.displayFeatures.filterIsInstance<FoldingFeature>() }
-                //.collect { value -> Log.d("LOG", "TEST ${value}") }
-
-            //   WindowInfoTracker.getOrCreate(requireContext())
-            // .windowLayoutInfo(requireActivity()).collect(viewLifecycleOwner) {
-            //     updateFoldableLayout(requireActivity() as EmulationActivity, it)
+              orientation = "landscape"
             }
 
           Configuration.ORIENTATION_PORTRAIT -> {
-              //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show()
               Log.d("LOG", "$$$ PORTRAIT");
+              orientation = "portrait"
           }
       }
   }
