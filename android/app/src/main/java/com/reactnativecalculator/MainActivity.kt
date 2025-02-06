@@ -74,7 +74,7 @@ import androidx.core.util.Consumer
 class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
 
   var orientation = "portrait" // DEFAULT
-  var canExecute: Boolean = true
+  var canUpdate: Boolean = true
 
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
@@ -110,7 +110,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     class StateCallback : Consumer<WindowLayoutInfo> {
       override fun accept(newLayoutInfo: WindowLayoutInfo) {
         Log.d("LOG", "[]CALLBACK");
-        if (canExecute) updateUI("CB")
+        if (canUpdate) updateUI("CB", newLayoutInfo)
       }
 
 
@@ -140,15 +140,21 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   //fun updateUI(windowLayoutInfo: WindowLayoutInfo, context: ReactContext) {
   //fun updateUI(context: ReactContext) {
-  fun updateUI(who: String) {
 
-    canExecute = false
+  val mainMap = Arguments.createMap()
+  val screenMap = Arguments.createMap()
+  val windowMap = Arguments.createMap()
+  val hingeBoundsMap = Arguments.createMap()
+
+  fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?) {
+
+    canUpdate = false
     //Log.d("LOG", "EXECUTED updateUI");
 
     //lateinit var windowLayoutInfo: WindowLayoutInfo
 
-
-    
+    //val testVal = incomingWindowLayoutInfo
+    Log.d("LOG", "TEST LOG ${incomingWindowLayoutInfo}");
 
     lateinit var job: Job
 
@@ -159,19 +165,12 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       Log.d("LOG", "${who} ${windowLayoutInfo}");
       job.cancel()
 
-      val mainMap = Arguments.createMap()
-      val screenMap = Arguments.createMap()
-      val windowMap = Arguments.createMap()
-      val hingeBoundsMap = Arguments.createMap()
-
       val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
       val boundsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
       val boundsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity).bounds
 
-
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
-      //this@MainActivity.jobbb.cancel()
-      //funcTwo()
+      
       Log.d("LOG", "${who} ${foldingFeature}");
 
       var boundsArr = arrayOf("left", "top", "right", "bottom")
@@ -191,45 +190,11 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       val hnoListParsed = hnoListParsedClass()
 
       if (foldingFeature !== null) {
-        ///// start hno //
-        /////val hnoList = hnoFound.split(",").map { item -> item.replace(Regex("[^0-9]"), "").toDouble() }; // { "hinge-[1080", "0", "1080" , "1840]" }
-        
-        //Log.d("LOG", "555 F A ${foldingFeature}"); // THIS WORK IF 5 A IS FALSE
-        //Log.d("LOG", "555 F B ${foldingFeature.state}"); // FLAT or HALF_OPENED
-        //Log.d("LOG", "555 F C ${foldingFeature.orientation}"); // HORIZONTAL or VERTICAL
-        //Log.d("LOG", "555 F C C ${foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL}"); // HORIZONTAL or VERTICAL
-        //Log.d("LOG", "555 F D ${foldingFeature.occlusionType}"); // NONE or FULL (fold or hinge conceals part of the display)
-        //Log.d("LOG", "555 F E ${foldingFeature.isSeparating}"); // true or false (two logical display areas)
-        //Log.d("LOG", "555 F G ${foldingFeature.bounds}"); // bounds
-        //Log.d("LOG", "555 F H ${foldingFeature.bounds.left}"); // bounds
 
-        // val hnoListParsed = hnoListParsedClass()
-        // hnoListParsed.left = hnoList[0] / dotsPerInch
-        // hnoListParsed.top = hnoList[1] / dotsPerInch
-        // hnoListParsed.right = hnoList[2] / dotsPerInch
-        // hnoListParsed.bottom = hnoList[3] / dotsPerInch
-
-        //val hnoListParsed = hnoListParsedClass()
         hnoListParsed.left = foldingFeature.bounds.left / dotsPerInch
         hnoListParsed.top = foldingFeature.bounds.top / dotsPerInch
         hnoListParsed.right = foldingFeature.bounds.right / dotsPerInch
         hnoListParsed.bottom = foldingFeature.bounds.bottom / dotsPerInch
-
-        // hingeBoundsMap.putDouble("left", hnoListParsed.left)
-        // hingeBoundsMap.putDouble("top", hnoListParsed.top)
-        // hingeBoundsMap.putDouble("right", hnoListParsed.right)
-        // hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
-
-        // val occlusionBoolean = !(hnoListParsed.left == hnoListParsed.right) // BOOLEAN
-        // val verticalHinge = hingeBoundsMap.getDouble("top") == 0.0 // BOOLEAN
-        val occlusionBoolean = false // BOOLEAN
-        val verticalHinge = true // BOOLEAN
-
-        val fullscreen = true
-          // screenMap.getDouble("left") == windowMap.getDouble("left") &&
-          // screenMap.getDouble("top") == windowMap.getDouble("top") &&
-          // screenMap.getDouble("right") == windowMap.getDouble("right") &&
-          // screenMap.getDouble("bottom") == windowMap.getDouble("bottom")
 
         state = //"landscape"
           if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "fullscreen" // flat
@@ -237,20 +202,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           else "book"
 
           Log.d("LOG", "${who} STATE ${state}");
-          // else if (
-          //   (foldingFeature.state == FoldingFeature.State.HALF_OPENED && foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) ||
-          //   (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL)
-          // ) "tabletop"
-          // else if (foldingFeature.state == FoldingFeature.State.HALF_OPENED && foldingFeature.orientation == FoldingFeature.Orientation.VERTICAL) "book"
-          // else "book"
-          // if (angle > 150.0 && fullscreen && !occlusionBoolean) "fullscreen" // fullscreen fold..
-          // else if (angle > 30.0 && fullscreen && !verticalHinge) "tabletop"
-          // else if (angle > 30.0 && fullscreen && verticalHinge) "book"
-          // else if (boundsCurr.height() >= boundsCurr.width()) "portrait"
-          // else "landscape"
-
-        //mainMap.putMap("hingeBounds", hingeBoundsMap)
-        // end hno //
       } else {
         state = orientation
       }
@@ -265,57 +216,35 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     mainMap.putMap("screen", screenMap);
     mainMap.putMap("window", windowMap);
 
-    reactInstanceManager.currentReactContext
+    reactInstanceManager.currentReactContext // context.getJSModule()?.emit()
       ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
       ?.emit("LayoutInfo", mainMap)
 
-      canExecute = true
+      canUpdate = true
       
     }
 
     job = lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
-
-          //Log.d("LOG", "A VER ${context.resources.displayMetrics}");
-
-          //Log.d("TEST 2", "A VER ${WindowInfoTracker.getOrCreate(this@MainActivity).windowLayoutInfo(this@MainActivity)}");
-
-          WindowInfoTracker.getOrCreate(this@MainActivity)
-            .windowLayoutInfo(this@MainActivity)
-            .collect {
-              collectAndCancel(it)
-              //funcTwo()
-              //jobbb.cancel()
-            }
-            //.collect { value -> testFAA(value) }
-            //.collect { updateUI(context) }
+      WindowInfoTracker.getOrCreate(this@MainActivity)
+        .windowLayoutInfo(this@MainActivity)
+        .collect { collectAndCancel(it) }
     };
 
-    
-
-    // context
-    //   .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-    //   ?.emit("LayoutInfo", mainMap)
   }
 
   override fun onConfigurationChanged(newConfig: Configuration) { // 1st EXECUTED
-      Log.d("LOG", "PRE CONFIGURATION CHANGED");
-      super.onConfigurationChanged(newConfig)
-      Log.d("LOG", "CONFIGURATION CHANGED");
-      when (newConfig.orientation) {
-        Configuration.ORIENTATION_LANDSCAPE -> { orientation = "landscape" }
-
-        Configuration.ORIENTATION_PORTRAIT -> { orientation = "portrait" }
+    super.onConfigurationChanged(newConfig)
+    when (newConfig.orientation) {
+      Configuration.ORIENTATION_LANDSCAPE -> { orientation = "landscape" }
+      Configuration.ORIENTATION_PORTRAIT -> { orientation = "portrait" }
+    }
+    when (newConfig.screenLayout) {
+      newConfig.screenLayout -> {
+        Log.d("LOG", "[]POSITION");
+        if (canUpdate) updateUI("POS", null)
       }
-      when (newConfig.screenLayout) {
-        newConfig.screenLayout -> {
-          Log.d("LOG", "[]POSITION");
-          //updateUI()
-          if (canExecute) updateUI("POS")
-        }
-      }
-      
+    }
   }
-
 
   // Returns the name of the main component registered from JavaScript. This is used to schedule rendering of the component.
   override fun getMainComponentName(): String = "reactNativeCalculator"
