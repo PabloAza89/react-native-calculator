@@ -141,10 +141,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   //fun updateUI(windowLayoutInfo: WindowLayoutInfo, context: ReactContext) {
   //fun updateUI(context: ReactContext) {
 
-  val mainMap = Arguments.createMap()
-  val screenMap = Arguments.createMap()
-  val windowMap = Arguments.createMap()
-  val hingeBoundsMap = Arguments.createMap()
+  
 
   fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?) {
 
@@ -161,16 +158,21 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     //var preFoldingFeature: FoldingFeature? = null
     //val foldingFeature = preFoldingFeature
 
-    fun collectAndCancel(windowLayoutInfo: WindowLayoutInfo) {
+    fun collectAndCancel(windowLayoutInfo: WindowLayoutInfo, doJob: Boolean) {
       Log.d("LOG", "${who} ${windowLayoutInfo}");
-      job.cancel()
+      if (doJob) job.cancel()
+
+      val mainMap = Arguments.createMap()
+      val screenMap = Arguments.createMap()
+      val windowMap = Arguments.createMap()
+      val hingeBoundsMap = Arguments.createMap()
 
       val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
       val boundsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
       val boundsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity).bounds
 
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
-      
+
       Log.d("LOG", "${who} ${foldingFeature}");
 
       var boundsArr = arrayOf("left", "top", "right", "bottom")
@@ -189,50 +191,47 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
       val hnoListParsed = hnoListParsedClass()
 
-      if (foldingFeature !== null) {
-
+      if (foldingFeature != null) {
         hnoListParsed.left = foldingFeature.bounds.left / dotsPerInch
         hnoListParsed.top = foldingFeature.bounds.top / dotsPerInch
         hnoListParsed.right = foldingFeature.bounds.right / dotsPerInch
         hnoListParsed.bottom = foldingFeature.bounds.bottom / dotsPerInch
 
         state = //"landscape"
-          if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "fullscreen" // flat
+          if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "fullscreen"
           else if (foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) "tabletop"
           else "book"
+      } else { state = orientation }
 
-          Log.d("LOG", "${who} STATE ${state}");
-      } else {
-        state = orientation
-      }
+      hingeBoundsMap.putDouble("left", hnoListParsed.left)
+      hingeBoundsMap.putDouble("top", hnoListParsed.top)
+      hingeBoundsMap.putDouble("right", hnoListParsed.right)
+      hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
 
-    hingeBoundsMap.putDouble("left", hnoListParsed.left)
-    hingeBoundsMap.putDouble("top", hnoListParsed.top)
-    hingeBoundsMap.putDouble("right", hnoListParsed.right)
-    hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
+      mainMap.putMap("hingeBounds", hingeBoundsMap);
+      mainMap.putString("state", state); // fullscreen, tabletop..
+      mainMap.putMap("screen", screenMap);
+      mainMap.putMap("window", windowMap);
 
-    mainMap.putMap("hingeBounds", hingeBoundsMap);
-    mainMap.putString("state", state); // fullscreen, tabletop..
-    mainMap.putMap("screen", screenMap);
-    mainMap.putMap("window", windowMap);
-
-    reactInstanceManager.currentReactContext // context.getJSModule()?.emit()
-      ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-      ?.emit("LayoutInfo", mainMap)
+      reactInstanceManager.currentReactContext // context.getJSModule()?.emit()
+        ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+        ?.emit("LayoutInfo", mainMap)
 
       canUpdate = true
-      
     }
 
-    job = lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
-      WindowInfoTracker.getOrCreate(this@MainActivity)
-        .windowLayoutInfo(this@MainActivity)
-        .collect { collectAndCancel(it) }
-    };
+    if (incomingWindowLayoutInfo != null) collectAndCancel(incomingWindowLayoutInfo, false)
+    else {
+      job = lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
+        WindowInfoTracker.getOrCreate(this@MainActivity)
+          .windowLayoutInfo(this@MainActivity)
+          .collect { collectAndCancel(it, true) }
+      };
+    }
 
   }
 
-  override fun onConfigurationChanged(newConfig: Configuration) { // 1st EXECUTED
+  override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
     when (newConfig.orientation) {
       Configuration.ORIENTATION_LANDSCAPE -> { orientation = "landscape" }
