@@ -62,6 +62,10 @@ import android.content.res.Configuration
 
 import kotlinx.coroutines.*
 
+import androidx.window.java.layout.WindowInfoTrackerCallbackAdapter
+import java.util.concurrent.Executors
+import androidx.core.util.Consumer
+
 //import androidx.window.common.CommonFoldingFeature
 
 // TEST //
@@ -70,11 +74,14 @@ import kotlinx.coroutines.*
 class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
 
   var orientation = "portrait" // DEFAULT
+  var canExecute: Boolean = true
 
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
     Log.d("LOG", "EXECUTED CREATE");
+
+    //Log.d("LOG", "NEW NEW ${this@MainActivity}");
 
     val firstOrientation = this@MainActivity.resources.configuration.orientation
     if (firstOrientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -100,14 +107,42 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   override fun onReactContextInitialized(context: ReactContext) {
 
+    class StateCallback : Consumer<WindowLayoutInfo> {
+      override fun accept(newLayoutInfo: WindowLayoutInfo) {
+        Log.d("LOG", "[]CALLBACK");
+        if (canExecute) updateUI("CB")
+      }
+
+
+    }
+
+    val stateCallback = StateCallback()
+
+    val windowInfoTracker =
+      WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this@MainActivity))
+        .addWindowLayoutInfoListener(
+              this@MainActivity,
+              Executors.newSingleThreadExecutor(),
+              stateCallback
+            )
+
+
+
+    //Log.d("LOG", "NEW ${context.getCurrentActivity()}");
+    //Log.d("LOG", "NEW 2 ${this@MainActivity}");
+
     Log.d("LOG", "REACT CONTEXT ONCE ?");
-    updateUI()
+    //updateUI()
+
+
+
   }
 
   //fun updateUI(windowLayoutInfo: WindowLayoutInfo, context: ReactContext) {
   //fun updateUI(context: ReactContext) {
-  fun updateUI() {
+  fun updateUI(who: String) {
 
+    canExecute = false
     //Log.d("LOG", "EXECUTED updateUI");
 
     //lateinit var windowLayoutInfo: WindowLayoutInfo
@@ -121,7 +156,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     //val foldingFeature = preFoldingFeature
 
     fun collectAndCancel(windowLayoutInfo: WindowLayoutInfo) {
-      Log.d("LOG", "333 ${windowLayoutInfo}");
+      Log.d("LOG", "${who} ${windowLayoutInfo}");
       job.cancel()
 
       val mainMap = Arguments.createMap()
@@ -137,7 +172,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
       //this@MainActivity.jobbb.cancel()
       //funcTwo()
-      Log.d("LOG", "FF ${foldingFeature}");
+      Log.d("LOG", "${who} ${foldingFeature}");
 
       var boundsArr = arrayOf("left", "top", "right", "bottom")
 
@@ -197,11 +232,11 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           // screenMap.getDouble("bottom") == windowMap.getDouble("bottom")
 
         state = //"landscape"
-          if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "fullscreen"
+          if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "fullscreen" // flat
           else if (foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) "tabletop"
           else "book"
 
-          Log.d("LOG", "STATE ${state}");
+          Log.d("LOG", "${who} STATE ${state}");
           // else if (
           //   (foldingFeature.state == FoldingFeature.State.HALF_OPENED && foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) ||
           //   (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL)
@@ -233,6 +268,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     reactInstanceManager.currentReactContext
       ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
       ?.emit("LayoutInfo", mainMap)
+
+      canExecute = true
       
     }
 
@@ -261,25 +298,22 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   }
 
   override fun onConfigurationChanged(newConfig: Configuration) { // 1st EXECUTED
+      Log.d("LOG", "PRE CONFIGURATION CHANGED");
       super.onConfigurationChanged(newConfig)
       Log.d("LOG", "CONFIGURATION CHANGED");
+      when (newConfig.orientation) {
+        Configuration.ORIENTATION_LANDSCAPE -> { orientation = "landscape" }
+
+        Configuration.ORIENTATION_PORTRAIT -> { orientation = "portrait" }
+      }
       when (newConfig.screenLayout) {
         newConfig.screenLayout -> {
-          Log.d("LOG", "AAA ${newConfig.screenLayout}");
-          updateUI()
+          Log.d("LOG", "[]POSITION");
+          //updateUI()
+          if (canExecute) updateUI("POS")
         }
       }
-      when (newConfig.orientation) {
-          Configuration.ORIENTATION_LANDSCAPE -> {
-              Log.d("LOG", "$$$ LANDSCAPE");
-              orientation = "landscape"
-            }
-
-          Configuration.ORIENTATION_PORTRAIT -> {
-              Log.d("LOG", "$$$ PORTRAIT");
-              orientation = "portrait"
-          }
-      }
+      
   }
 
 
