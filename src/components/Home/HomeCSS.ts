@@ -75,19 +75,19 @@ export const s = StyleSheet.create({
     borderRadius: 21
   },
   tabletopContainer: { // TABLETOP // TABLETOP // TABLETOP //
-    //backgroundColor: 'lightgreen', // DEV
+    backgroundColor: 'black', // HINGE COLOR & POSITION
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
     height: '100%'
   },
   upperScreenTabletop: {
-    backgroundColor: 'rgba(109, 197, 143, 0.5)', // DEV
+    backgroundColor: 'lightyellow', // DEV
     justifyContent: 'center',
     alignItems: 'center'
   },
   lowerScreenTabletop: {
-    backgroundColor: 'rgba(150, 54, 126, 0.5)', // DEV
+    backgroundColor: 'lightgreen', // DEV
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -102,20 +102,20 @@ export const s = StyleSheet.create({
     alignContent: 'space-between'
   },
   bookContainer: { // BOOK // BOOK // BOOK // BOOK // BOOK //
-    //backgroundColor: 'lightgreen', // DEV
+    backgroundColor: 'black', // HINGE COLOR & POSITION
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
     height: '100%'
   },
   leftScreenBook: {
-    //backgroundColor: '#004747', // DEV
+    backgroundColor: 'lightblue',
     //flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
   },
   rightScreenBook: {
-    //backgroundColor: '#581199', // DEV
+    backgroundColor: 'lightblue',
     justifyContent: 'center',
     alignItems: 'center'
   },

@@ -219,7 +219,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
         <View style={s.tabletopContainer}>
           <View /* UPPER SIDE */
-            style={[ s.upperScreenTabletop, { height: hingeBounds.top , /* paddingTop: ins.top */  } ]}
+            style={[ s.upperScreenTabletop, { height: hingeBounds.top, width: hingeBounds.right, paddingRight: ins.right } ]}
           >
 
             {
@@ -250,7 +250,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
           </View>
           <View /* LOWER SIDE */
-            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom /* - ins.bottom */ } ]}
+            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom, width: hingeBounds.right, paddingRight: ins.right } ]}
           >
 
             {
@@ -278,7 +278,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
             { calcLeft && ModalBackgroundOtherScreen }
             { calcLeft ? PortCalc : ( showKnowMore ? KnowMoreScreen : AboutScreen ) }
           </View>
-          <View style={[ s.rightScreenBook, { width: width - hingeBounds.right - ins.left } ]} /* RIGHT SIDE */ >
+          <View style={[ s.rightScreenBook, { left: hingeBounds.right - hingeBounds.left, width: width - hingeBounds.right - ins.right } ]} /* RIGHT SIDE */ >
             { !calcLeft && ModalBackgroundOtherScreen }
             { calcLeft ? ( showKnowMore ? KnowMoreScreen : AboutScreen ) : PortCalc }
           </View>
