@@ -73,7 +73,7 @@ import androidx.core.util.Consumer
 @Suppress("DEPRECATION")
 class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
 
-  var orientation = "portrait" // DEFAULT
+  var orientation: String = "portrait" // DEFAULT
   var canUpdate: Boolean = true
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,58 +81,63 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
     Log.d("LOG", "EXECUTED CREATE");
 
-    //Log.d("LOG", "NEW NEW ${this@MainActivity}");
-
     val firstOrientation = this@MainActivity.resources.configuration.orientation
-    if (firstOrientation == Configuration.ORIENTATION_PORTRAIT) {
-      Log.d("LOG", "FIRST PORTRAIT");
-      orientation = "portrait"
-    } else {
-      Log.d("LOG", "FIRST LANDSCAPE");
-      orientation = "landscape"
-    }
-
-    //updateUI()
+    if (firstOrientation == Configuration.ORIENTATION_PORTRAIT) { orientation = "portrait" }
+    else { orientation = "landscape" }
   }
 
   override fun onResume() {
     super.onResume()
     reactInstanceManager.addReactInstanceEventListener(this)
+    Log.d("LOG", "ON RESUME");
   }
 
   override fun onPause() {
     super.onPause()
     reactInstanceManager.removeReactInstanceEventListener(this)
+    Log.d("LOG", "ON PAUSE");
+  }
+
+  override fun onStop() {
+    super.onStop()
+    Log.d("LOG", "ON STOP");
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    Log.d("LOG", "ON DESTROY");
   }
 
   override fun onReactContextInitialized(context: ReactContext) {
 
-    class StateCallback : Consumer<WindowLayoutInfo> {
-      override fun accept(newLayoutInfo: WindowLayoutInfo) {
-        Log.d("LOG", "[]CALLBACK");
-        if (canUpdate) updateUI("CB", newLayoutInfo)
-      }
-
-
+    class ListenerCallback : Consumer<WindowLayoutInfo> {
+      override fun accept(newLayoutInfo: WindowLayoutInfo) { if (canUpdate) updateUI("CB", newLayoutInfo) }
     }
 
-    val stateCallback = StateCallback()
+    val listenerCallback = ListenerCallback()
 
-    val windowInfoTracker =
-      WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this@MainActivity))
-        .addWindowLayoutInfoListener(
-              this@MainActivity,
-              Executors.newSingleThreadExecutor(),
-              stateCallback
-            )
+    val windowInfoTracker = WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this@MainActivity))
+      
+        
 
+    val lifecycleEventListener = object: LifecycleEventListener {
+      override fun onHostResume() {
+        Log.d("LOG", "ADD CALLBACK");
+        windowInfoTracker.addWindowLayoutInfoListener(
+          this@MainActivity,
+          Executors.newSingleThreadExecutor(),
+          listenerCallback
+        )
 
+      }
+      override fun onHostPause() {
+        Log.d("LOG", "REMOVE CALLBACK");
+        windowInfoTracker.removeWindowLayoutInfoListener(listenerCallback)
+      }
+      override fun onHostDestroy() { }
+    }
+    context.addLifecycleEventListener(lifecycleEventListener)
 
-    //Log.d("LOG", "NEW ${context.getCurrentActivity()}");
-    //Log.d("LOG", "NEW 2 ${this@MainActivity}");
-
-    Log.d("LOG", "REACT CONTEXT ONCE ?");
-    //updateUI()
 
 
 
