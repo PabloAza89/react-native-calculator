@@ -190,7 +190,7 @@ export function OwnButton({
           style={[ s.text, { fontSize: small ? fontSize * 10 : fontSize * 12 } ]}
           children={
             value === "B" ?
-            <Ionicons name='backspace' size={small ? fontSize * 10 : fontSize * 12 } color='rgba(0, 0, 0, .5)' /> :
+            <Ionicons name='backspace' size={small ? fontSize * 10 : fontSize * 12 } color='rgba(0, 0, 0, .54)' /> :
             value === "N" ?
             "-X" :
             value === "-" ?

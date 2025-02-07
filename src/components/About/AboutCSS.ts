@@ -27,6 +27,8 @@ export const s = StyleSheet.create({
     fontWeight: '500',
     fontSize: 24,
     textAlign: 'center',
+    //color: 'red'
+    color: 'rgba(0, 0, 0, .54)'
   },
   imageWrapper: {
     //backgroundColor: 'lightcoral', // DEV

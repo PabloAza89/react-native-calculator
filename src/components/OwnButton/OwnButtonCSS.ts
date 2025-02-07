@@ -3,9 +3,11 @@ import { StyleSheet } from 'react-native';
 export const s = StyleSheet.create({
   text: {
     textAlign: 'center',
-    includeFontPadding: false
+    includeFontPadding: false,
+    color: 'rgba(0, 0, 0, .54)'
   },
   ownButton: {
+    //backgroundColor: '#ababab', // ORI
     backgroundColor: '#ababab',
     borderColor: '#4d4db0',
     borderWidth: 1,
