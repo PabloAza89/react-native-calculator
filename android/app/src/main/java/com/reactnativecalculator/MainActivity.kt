@@ -86,28 +86,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     else { orientation = "landscape" }
   }
 
-  override fun onResume() {
-    super.onResume()
-    reactInstanceManager.addReactInstanceEventListener(this)
-    Log.d("LOG", "ON RESUME");
-  }
-
-  override fun onPause() {
-    super.onPause()
-    reactInstanceManager.removeReactInstanceEventListener(this)
-    Log.d("LOG", "ON PAUSE");
-  }
-
-  override fun onStop() {
-    super.onStop()
-    Log.d("LOG", "ON STOP");
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    Log.d("LOG", "ON DESTROY");
-  }
-
   override fun onReactContextInitialized(context: ReactContext) {
 
     class ListenerCallback : Consumer<WindowLayoutInfo> {

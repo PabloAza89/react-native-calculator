@@ -45,8 +45,6 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
     return () => clearInterval(interval);
   }, [counter, currIdx, goUp])
 
-  let targetWidth = (opw * 95) - 40
-
   let lazyLoad = [
     <View key={0} style={s.eachItem}>
       <Text style={s.leftItem} children={'-X'} />
@@ -71,15 +69,15 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
       <Text style={[ s.leftItem, s.sn ]} children={'1e+12'} />
       <View>
         <Text style={s.rightItem} children={'If the integer side, in the result, is more than 12 digits (e.g.: 1000000000001.23 + 1.23), it will be converted to scientific notation.\nResults in scientific notation are parsed as follows:'} />
-        <View style={[ s.eachItemInner, { width: targetWidth } ]}>
+        <View style={s.eachItemInner}>
           <Text style={s.leftItemInner} children={'•'} />
           <Text style={s.rightItemInner} children={'If exponent have 1 digits, decimal part are 8 places.'} />
         </View>
-        <View style={[ s.eachItemInner, { width: targetWidth } ]}>
+        <View style={s.eachItemInner}>
           <Text style={s.leftItemInner} children={'•'} />
           <Text style={s.rightItemInner} children={'If exponent have 2 digits, decimal part are 7 places. And so..'} />
         </View>
-        <View style={[ s.eachItemInner, { width: targetWidth } ]}>
+        <View style={s.eachItemInner}>
           <Text style={s.leftItemInner} children={'•'} />
           <Text style={s.rightItemInner} children={'If decimal part have trailing zeros, they will be removed.'} />
         </View>
@@ -160,7 +158,7 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
   return (
     <View style={s.mainContainer}>
       <LinearGradient
-        colors={[ `rgba(${colorVariables}, 1)`, 'rgba(255, 255, 255, 1)' ]}
+        colors={[ `rgb(${colorVariables})`, 'rgb(255, 255, 255)' ]}
         style={[ s.linearGradient, { height: '100%', width: '100%' } ]}
         start={[ 0, 1 ]} // left, top
         end={[ 1, 0 ]}   // left, top
@@ -169,11 +167,10 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
       {
         !(state === 'tabletop' && aboutUp) &&
         <LinearGradient
-          colors={[ `rgba(${colorVariables}, 1)`, 'rgba(255, 255, 255, 1)' ]}
+          colors={[ `rgb(${colorVariables})`, 'rgb(255, 255, 255)' ]}
           style={[ s.linearGradient, { height: ins.top, width: '100%', zIndex: 4, opacity: 0.85 }]}
           start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
-          //start={[ 0, state === 'tabletop' ?  hingeBounds.top / ins.top : height / ins.top ]} // left, top
-          end={[ 1, 0 ]}                  // left, top
+          end={[ 1, 0 ]}                                                                                // left, top
         />
       }
 
@@ -182,7 +179,7 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
         onScroll={handleScroll}
         persistentScrollbar={true}
         children={
-          <View style={[ s.background, { width: '100%', marginLeft: ins.left/* , marginBottom: ins.bottom */ } ]}>
+          <View style={[ s.background, { width: '100%', marginLeft: ins.left/* , marginBottom: ins.bottom */, paddingRight: ins.right } ]}>
 
             <View style={[ s.buttonContainer, { marginTop: ins.top + 7 } ]}>
 
@@ -249,7 +246,7 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
         <Pressable
           style={[ s.floatButton, {
             bottom: (state === 'tabletop' && !aboutUp) ? 10 : ins.bottom + 10,
-            right: ins.right + 10
+            right: 10 + ins.right
           } ]}
           onPress={() => onFabPress()}
           children={ <Text style={s.floatButtonText} children={'UP'} /> }

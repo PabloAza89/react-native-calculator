@@ -23,7 +23,7 @@ export const s = StyleSheet.create({
     alignItems: 'center'
   },
   title: {
-    backgroundColor: 'green', // DEV
+    //backgroundColor: 'green', // DEV
     fontWeight: '500',
     fontSize: 24,
     textAlign: 'center',
@@ -69,7 +69,8 @@ export const s = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     includeFontPadding: false,
-    fontWeight: "500"
+    fontWeight: "500",
+    color: 'rgba(0, 0, 0, .54)'
   },
   lowerModal: {
     display: 'flex',

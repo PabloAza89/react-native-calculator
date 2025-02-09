@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useRef, useEffect } from 'react';
+import React, { ReactElement, useState, useRef, useEffect, MutableRefObject } from 'react';
 import { ScrollView, StatusBar, Text, View, Animated,
   useAnimatedValue, Pressable, TouchableHighlight } from 'react-native';
 import { s } from './HomeCSS';
@@ -7,7 +7,7 @@ import OwnButton from '../OwnButton/OwnButton';
 import KnowMore from '../KnowMore/KnowMore';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HomeI } from '../../interfaces/interfaces';
+import { HomeI, counterI, goUpI } from '../../interfaces/interfaces';
 import { portButtons, landButtons } from './Buttons';
 
 const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
@@ -62,12 +62,12 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     <About
       navigation={navigation} vmin={vmin}
       //currWidth={ hingeBounds === undefined ? width : calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
-      // currWidth={
-      //   state === 'book' && calcLeft ? width - hingeBounds.right - ins.right :
-      //   state === 'book' && !calcLeft ? hingeBounds.left - ins.left :
-      //   width
-      // }
-      currWidth={width}
+      currWidth={
+        state === 'book' && calcLeft ? width - hingeBounds.right - ins.right :
+        state === 'book' && !calcLeft ? hingeBounds.left - ins.left :
+        width
+      }
+      //currWidth={width}
       showModal={showModal} updateShowModal={updateShowModal}
       state={state} twoScreens={true}
       switchSide={switchSide} nextScreen={nextScreen} aboutUp={aboutUp}
@@ -192,12 +192,12 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       </View>
     </View>;
 
-  const ModalBackgroundOtherScreen =
+  const ModalForegroundScreen =
     <Animated.View
-      style={[ s.modalBackgroundOtherScreen, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none' } ]}
+      style={[ s.ModalForegroundScreen, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none' } ]}
       children={
         <Pressable
-          style={[ s.modalBackgroundOtherScreenPressable, { paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+          style={[ s.ModalForegroundScreenPressable, { paddingTop: ins.top, paddingBottom: ins.bottom } ]}
           onPress={() => updateShowModal(false)}
         />
       }
@@ -206,6 +206,25 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
   console.log("INS", ins)
+
+  const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
+  const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
+  const goUp: MutableRefObject<goUpI> = useRef({ "0": true, "1": false, "2": true });
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        let newANum = () => setCurrIdx(Math.floor(Math.random() * 3)) // BETWEEN 0 AND 2
+  
+        if (counter[currIdx] > 250) { goUp.current[currIdx.toString() as keyof goUpI] = false; newANum() }
+        else if (counter[currIdx] < 5) { goUp.current[currIdx.toString() as keyof goUpI] = true; newANum() }
+        if (goUp.current[currIdx.toString() as keyof goUpI]) setCounter({ ...counter, [currIdx]: counter[currIdx] + 5 })
+        else setCounter({ ...counter, [currIdx]: counter[currIdx] - 5 })
+      }, 100);
+  
+      return () => clearInterval(interval);
+    }, [counter, currIdx, goUp])
+
+  let colorVariables = `${counter["0"]}, ${counter["1"]}, ${counter["2"]}`
 
   return (
     <View style={s.background}>
@@ -219,7 +238,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
         <View style={s.tabletopContainer}>
           <View /* UPPER SIDE */
-            style={[ s.upperScreenTabletop, { height: hingeBounds.top, width: hingeBounds.right, paddingRight: ins.right } ]}
+            style={[ s.upperScreenTabletop, { height: hingeBounds.top, width: hingeBounds.right, /* paddingRight: ins.right */ } ]}
           >
 
             {
@@ -243,14 +262,13 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
                 }
               />
             }
-            {/* aboutUp */}
 
-            {/* { !showCalc && AboutScreen } */}
+            { ModalForegroundScreen }
             { !showCalc && (aboutUp ? AboutScreen : KnowMoreScreen) }
 
           </View>
           <View /* LOWER SIDE */
-            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom, width: hingeBounds.right, paddingRight: ins.right } ]}
+            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom, width: hingeBounds.right, backgroundColor: `rgba(${colorVariables}, 0.9)` } ]}
           >
 
             {
@@ -266,6 +284,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
               />
             }
 
+            { ModalForegroundScreen }
             { !showCalc && ( aboutUp ? KnowMoreScreen : AboutScreen ) }
 
           </View>
@@ -275,11 +294,11 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
         <View style={s.bookContainer} /* BOOK */>
           <View style={[ s.leftScreenBook, { width: hingeBounds.left - ins.left } ]} /* LEFT SIDE */ >
-            { calcLeft && ModalBackgroundOtherScreen }
+            { ModalForegroundScreen }
             { calcLeft ? PortCalc : ( showKnowMore ? KnowMoreScreen : AboutScreen ) }
           </View>
           <View style={[ s.rightScreenBook, { left: hingeBounds.right - hingeBounds.left, width: width - hingeBounds.right - ins.right } ]} /* RIGHT SIDE */ >
-            { !calcLeft && ModalBackgroundOtherScreen }
+            { ModalForegroundScreen }
             { calcLeft ? ( showKnowMore ? KnowMoreScreen : AboutScreen ) : PortCalc }
           </View>
         </View> :

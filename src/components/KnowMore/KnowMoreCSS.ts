@@ -20,7 +20,8 @@ export const s = StyleSheet.create({
     fontWeight: '500',
     fontSize: 24,
     textAlign: 'center',
-    width: '95%'
+    width: '95%',
+    color: 'rgba(0, 0, 0, .54)'
   },
   leftText: {
     //backgroundColor: 'blue', // DEV
@@ -29,7 +30,8 @@ export const s = StyleSheet.create({
     fontWeight: '500',
     fontSize: 24,
     textAlign: 'left',
-    width: '95%'
+    width: '95%',
+    color: 'rgba(0, 0, 0, .54)'
   },
   eachItem: {
     //backgroundColor: 'green', // DEV
@@ -58,7 +60,8 @@ export const s = StyleSheet.create({
     //backgroundColor: 'lightblue', // DEV
     fontSize: 20,
     textAlign: 'left',
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: 'rgba(0, 0, 0, .54)'
   },
   sn: {
     fontSize: 13
@@ -103,7 +106,8 @@ export const s = StyleSheet.create({
     //backgroundColor: 'lightyellow', // DEV
     fontSize: 20,
     textAlign: 'left',
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: 'rgba(0, 0, 0, .54)'
   },
   floatButton: {
     //backgroundColor: 'red', // DEV

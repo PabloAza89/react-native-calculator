@@ -39,7 +39,7 @@ const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state,
               <View style={s.modal}>
                 <Text
                   numberOfLines={3}
-                  adjustsFontSizeToFit={true}
+                  //adjustsFontSizeToFit={true}
                   style={s.upperModal}
                   children={'You are about to leave this App\nand access an external link\nDo you want to continue ?'}
                 />

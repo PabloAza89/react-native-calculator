@@ -38,23 +38,23 @@ export const s = StyleSheet.create({
     marginTop: '1%'
   },
   secondaryResult: {
-    backgroundColor: 'lightgreen', // DEV
-    color: 'rgba(0, 0, 0, .5)',
+    //backgroundColor: 'lightgreen', // DEV
+    color: 'rgba(0, 0, 0, .54)',
     fontWeight: '500',
     textAlignVertical: 'center',
     includeFontPadding: false,
     height: '100%'
   },
   mainResult: {
-    backgroundColor: 'burlywood', // DEV
-    color: 'rgba(0, 0, 0, .5)',
+    //backgroundColor: 'burlywood', // DEV
+    color: 'rgba(0, 0, 0, .54)',
     fontWeight: '500',
     textAlignVertical: 'center',
     includeFontPadding: false,
     height: '100%'
   },
   parErr: {
-    backgroundColor: 'green', // DEV
+    //backgroundColor: 'green', // DEV
     color: 'red',
     textAlignVertical: 'center',
     includeFontPadding: false,
@@ -75,19 +75,19 @@ export const s = StyleSheet.create({
     borderRadius: 21
   },
   tabletopContainer: { // TABLETOP // TABLETOP // TABLETOP //
-    backgroundColor: 'black', // HINGE COLOR & POSITION
+    backgroundColor: 'black', // HINGE COLOR
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
     height: '100%'
   },
   upperScreenTabletop: {
-    backgroundColor: 'lightyellow', // DEV
+    backgroundColor: 'lightblue', // DEV
     justifyContent: 'center',
     alignItems: 'center'
   },
   lowerScreenTabletop: {
-    backgroundColor: 'lightgreen', // DEV
+    //backgroundColor: '#adb4e6', // DEV // #adb4e6
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -102,7 +102,7 @@ export const s = StyleSheet.create({
     alignContent: 'space-between'
   },
   bookContainer: { // BOOK // BOOK // BOOK // BOOK // BOOK //
-    backgroundColor: 'black', // HINGE COLOR & POSITION
+    backgroundColor: 'black', // HINGE COLOR
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
@@ -119,7 +119,7 @@ export const s = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  modalBackgroundOtherScreen: { // MODAL // MODAL // MODAL //
+  ModalForegroundScreen: { // MODAL // MODAL // MODAL //
     display: 'flex',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
     position: 'absolute',
@@ -127,7 +127,7 @@ export const s = StyleSheet.create({
     width: '100%',
     height: '100%'
   },
-  modalBackgroundOtherScreenPressable: {
+  ModalForegroundScreenPressable: {
     display: 'flex',
     width: '100%',
     height: '100%',
