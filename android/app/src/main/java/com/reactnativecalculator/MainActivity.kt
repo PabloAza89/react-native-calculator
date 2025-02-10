@@ -86,10 +86,23 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     else { orientation = "landscape" }
   }
 
+  override fun onResume() {
+    super.onResume()
+    reactInstanceManager.addReactInstanceEventListener(this)
+  }
+
+  override fun onPause() {
+    super.onPause()
+    reactInstanceManager.removeReactInstanceEventListener(this)
+  }
+
   override fun onReactContextInitialized(context: ReactContext) {
 
     class ListenerCallback : Consumer<WindowLayoutInfo> {
-      override fun accept(newLayoutInfo: WindowLayoutInfo) { if (canUpdate) updateUI("CB", newLayoutInfo) }
+      override fun accept(newLayoutInfo: WindowLayoutInfo) {
+        Log.d("LOG", "[]CALLBACK");
+        if (canUpdate) updateUI("CB", newLayoutInfo)
+      }
     }
 
     val listenerCallback = ListenerCallback()
@@ -134,7 +147,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     //lateinit var windowLayoutInfo: WindowLayoutInfo
 
     //val testVal = incomingWindowLayoutInfo
-    Log.d("LOG", "TEST LOG ${incomingWindowLayoutInfo}");
+    Log.d("LOG", "PREupdateUI ${who} ${incomingWindowLayoutInfo}");
 
     lateinit var job: Job
 

@@ -155,6 +155,8 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
 
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
 
+  console.log("TEST KNOWMORE")
+
   return (
     <View style={s.mainContainer}>
       <LinearGradient

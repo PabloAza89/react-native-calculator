@@ -27,6 +27,8 @@ const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state,
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
+  console.log("TEST ABOUT")
+
   return (
     <View style={s.background}>
       <Animated.View
