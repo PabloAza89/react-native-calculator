@@ -260,7 +260,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   //   goUp()
   // }, [])
 
-  const currentColor = useAnimatedValue(0);
+  let currentColor = useAnimatedValue(0);
 
   const first = 0
   const second = 255
@@ -304,32 +304,59 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   //   valVal.current = 0
   // }
 
+  // const updateValues = () => {
+
+  // }
+
   const startAAA = () => Animated.timing(currentColor, { toValue: 1, duration: 10000, useNativeDriver: true }).start(
     ({finished}) => {
       if (finished) {
-        //setTgt([[0, 0, 255],[255, 0, 255]])
-        //valVal.current = 0
-        //newColors()
-        //startASD()
-        //tgt.current = [[0, 0, 255], [255, 0, 255]]
-        setTgt([[0, 0, 255], [255, 0, 255]])
-        startBBB()
+
+        // currentColor.setValue(0);
+        // setTgt([[0, 0, 255], [255, 0, 255]])
+        // startAAA()
+
+        currentColor.setValue(0);
+        //setTgt([[0, 0, 255], [255, 0, 255]])
+        setTgt(curr => {
+          
+
+          //let neww = curr[1]
+          let targett = [...curr[1]]
+          //neww = [curr[1]]
+          let randomIndex = Math.floor(Math.random() * 3)
+
+          if (curr[1][randomIndex] === 255) {
+            targett[randomIndex] = 0
+          } else {
+            targett[randomIndex] = 255
+          }
+
+          console.log("OLD", [curr[0], curr[1]])
+          console.log("NEW", [curr[1], targett])
+
+          return [curr[1], targett]
+        })
+        startAAA()
+
+
       }
     }
   );
 
-  const startBBB = () => Animated.timing(currentColor, { toValue: 0, duration: 10000, useNativeDriver: true }).start(
-    ({finished}) => {
-      if (finished) {
-        //setTgt([[0, 0, 255],[255, 0, 255]])
-        //valVal.current = 0
-        //newColors()
-        //startASD()
-        setTgt([[0, 255, 0], [0, 255, 255]])
-        startAAA()
-      }
-    }
-  );
+  // const startBBB = () => Animated.timing(currentColor, { toValue: 1, duration: 10000, useNativeDriver: true }).start(
+  //   ({finished}) => {
+  //     if (finished) {
+  //       //setTgt([[0, 0, 255],[255, 0, 255]])
+  //       //valVal.current = 0
+  //       //newColors()
+  //       //startASD()
+  //       currentColor.setValue(0);
+  //       setTgt([[0, 255, 0], [0, 255, 255]])
+  //       startAAA()
+  //     }
+  //   }
+  // );
 
   startAAA()
 
