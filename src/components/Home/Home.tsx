@@ -205,7 +205,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
-  console.log("INS", ins)
+  //console.log("INS", ins)
 
   //const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
   //const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
@@ -214,6 +214,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     let newANum = () => setCurrIdx(Math.floor(Math.random() * 3)) // BETWEEN 0 AND 2
+  //                                    Math.floor(Math.random() * 2) // BETWEEN 0 AND 1
 
   //     if (counter[currIdx] > 250) { goUp.current[currIdx.toString() as keyof goUpI] = false; newANum() }
   //     else if (counter[currIdx] < 5) { goUp.current[currIdx.toString() as keyof goUpI] = true; newANum() }
@@ -261,19 +262,78 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const currentColor = useAnimatedValue(0);
 
+  const first = 0
+  const second = 255
+  const third = 0
+
+  //const curr = [0, 255, 0]
+  //const trgt = [0, 255, 255]
+
+  //const [ tgt, setTgt ] = useState([[0, 255, 0], [0, 255, 255]])
+  
+  //const tgt = useRef([[0, 255, 0], [0, 255, 255]])
+  const [ tgt, setTgt ] = useState([[0, 255, 0], [0, 255, 255]])
+
+  const inputRef = useRef([0, 1])
+
+  //const [ colors, setColors ] = useState([`rgb(${tgt[0][0]}, ${tgt[0][1]}, ${tgt[0][2]})`, `rgb(${tgt[1][0]}, ${tgt[1][1]}, ${tgt[1][2]})`])
+  //const colors = useRef([`rgb(${tgt.current[0][0]}, ${tgt.current[0][1]}, ${tgt.current[0][2]})`, `rgb(${tgt.current[1][0]}, ${tgt.current[1][1]}, ${tgt.current[1][2]})`])
+  //const colors = [`rgb(${tgt.current[0][0]}, ${tgt.current[0][1]}, ${tgt.current[0][2]})`, `rgb(${tgt.current[1][0]}, ${tgt.current[1][1]}, ${tgt.current[1][2]})`]
+
   let qq = currentColor.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['rgb(255, 0, 0)', 'rgb(0, 255, 0)']
+    inputRange: inputRef.current,
+    outputRange: [`rgb(${tgt[0][0]}, ${tgt[0][1]}, ${tgt[0][2]})`, `rgb(${tgt[1][0]}, ${tgt[1][1]}, ${tgt[1][2]})`]
+    //outputRange: colors
   });
 
   // currentColor.interpolate({
   //   inputRange: [0, 1],
-  //   outputRange: ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 0, 1)']
+  //   outputRange: ['rgb(0, 255, 0)', 'rgb(0, 255, 255)']
+  //   outputRange: ['rgb(0, 0, 255)', 'rgb(255, 0, 255)']
   // })
 
   //Animated.timing(currentColor, { toValue: 1, duration: 20000, useNativeDriver: true }).start();
   //const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
-  Animated.timing(currentColor, { toValue: 1, duration: 20000, useNativeDriver: true }).start();
+
+  //console.log("CURRENT", colors[0], "TARGET", colors[1])
+
+  const valVal = useRef(1)
+
+  // const newColors = () => {
+  //   tgt.current = [[0, 0, 255], [255, 0, 255]]
+  //   valVal.current = 0
+  // }
+
+  const startAAA = () => Animated.timing(currentColor, { toValue: 1, duration: 10000, useNativeDriver: true }).start(
+    ({finished}) => {
+      if (finished) {
+        //setTgt([[0, 0, 255],[255, 0, 255]])
+        //valVal.current = 0
+        //newColors()
+        //startASD()
+        //tgt.current = [[0, 0, 255], [255, 0, 255]]
+        setTgt([[0, 0, 255], [255, 0, 255]])
+        startBBB()
+      }
+    }
+  );
+
+  const startBBB = () => Animated.timing(currentColor, { toValue: 0, duration: 10000, useNativeDriver: true }).start(
+    ({finished}) => {
+      if (finished) {
+        //setTgt([[0, 0, 255],[255, 0, 255]])
+        //valVal.current = 0
+        //newColors()
+        //startASD()
+        setTgt([[0, 255, 0], [0, 255, 255]])
+        startAAA()
+      }
+    }
+  );
+
+  startAAA()
+
+
 
   return (
     <View style={s.background}>

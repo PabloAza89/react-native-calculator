@@ -100,7 +100,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     class ListenerCallback : Consumer<WindowLayoutInfo> {
       override fun accept(newLayoutInfo: WindowLayoutInfo) {
-        Log.d("LOG", "[]CALLBACK");
+        //Log.d("LOG", "[]CALLBACK");
         if (canUpdate) updateUI("CB", newLayoutInfo)
       }
     }
@@ -147,7 +147,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     //lateinit var windowLayoutInfo: WindowLayoutInfo
 
     //val testVal = incomingWindowLayoutInfo
-    Log.d("LOG", "PREupdateUI ${who} ${incomingWindowLayoutInfo}");
+    //Log.d("LOG", "PREupdateUI ${who} ${incomingWindowLayoutInfo}");
 
     lateinit var job: Job
 
@@ -169,7 +169,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
 
-      Log.d("LOG", "${who} ${foldingFeature}");
+      //Log.d("LOG", "${who} ${foldingFeature}");
 
       var boundsArr = arrayOf("left", "top", "right", "bottom")
 
