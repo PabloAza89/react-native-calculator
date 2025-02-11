@@ -207,7 +207,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   let currIndex = useAnimatedValue(0);
 
-  const [ c, sC ] = useState([[0, 255, 0], [0, 255, 255]]) // color, setColor
+  const [ c, sC ] = useState([[0, 0, 255], [255, 0, 0]]) // color, setColor
 
   let qq = currIndex.interpolate({
     inputRange: [0, 1],
@@ -215,32 +215,41 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   });
 
   //  ['rgb(0, 255, 0)', 'rgb(0, 255, 255)']
-  //  ['rgb(0, 0, 255)', 'rgb(255, 0, 255)']
+  //  ['rgb(0, 0, 255)', 'rgb(255, 0, 0)']
 
-  const nextColor = () => Animated.timing(currIndex, { toValue: 1, duration: 5100, useNativeDriver: true }).start(
-    ({finished}) => {
-      if (finished) {
-
-        // currentColor.setValue(0);
-        // setTgt([[0, 0, 255], [255, 0, 255]])
-        // startAAA()
-
-        currIndex.setValue(0);
-        sC(curr => {
-          let copy = [...curr[1]]
-          let randomIndex = Math.floor(Math.random() * 3)
-       
-          curr[1][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
-
-          console.log("OLD", [curr[0], curr[1]])
-          console.log("NEW", [curr[1], copy])
-
-          return [curr[1], copy]
-        })
-        nextColor()
+  const nextColor = () => {
+    //currIndex.setValue(0);
+    Animated.timing(currIndex, { toValue: 1, duration: 5100, useNativeDriver: true, isInteraction: false }).start(
+      ({finished}) => {
+        if (finished) {
+  
+          // currentColor.setValue(0);
+          // setTgt([[0, 0, 255], [255, 0, 255]])
+          // startAAA()
+          console.log("FINISHED")
+          
+          // sC(curr => {
+          //   let copy = [...curr[1]]
+          //   let randomIndex = Math.floor(Math.random() * 3)
+         
+          //   curr[1][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
+  
+          //   console.log("OLD", [curr[0], curr[1]])
+          //   console.log("NEW", [curr[1], copy])
+  
+          //   return [curr[1], copy]
+          // })
+          //currIndex.setValue(0);
+          currIndex.resetAnimation();
+          //currIndex.setValue(0);
+          nextColor()
+        }
       }
-    }
-  );
+    );
+
+    
+
+  }
 
 
   nextColor()

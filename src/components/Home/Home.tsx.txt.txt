@@ -205,59 +205,42 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
-  console.log("INS", ins)
+  let currIndex = useAnimatedValue(0);
 
-  const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
-  const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
-  //const goUp: MutableRefObject<goUpI> = useRef({ "0": true, "1": false, "2": true });
+  const [ c, sC ] = useState([[255, 255, 0], [255, 0, 0]]) // color, setColor
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     let newANum = () => setCurrIdx(Math.floor(Math.random() * 3)) // BETWEEN 0 AND 2
 
-  //     if (counter[currIdx] > 250) { goUp.current[currIdx.toString() as keyof goUpI] = false; newANum() }
-  //     else if (counter[currIdx] < 5) { goUp.current[currIdx.toString() as keyof goUpI] = true; newANum() }
-  //     if (goUp.current[currIdx.toString() as keyof goUpI]) setCounter({ ...counter, [currIdx]: counter[currIdx] + 5 })
-  //     else setCounter({ ...counter, [currIdx]: counter[currIdx] - 5 })
-  //   }, 100);
+  //let qq = currIndex
 
-  //   return () => clearInterval(interval);
-  // }, [counter, currIdx, goUp])
+  let qq = currIndex.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['rgb(0, 0, 255)', 'rgb(255, 0, 0)']
+    //outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
+  });
+  
 
-  const first = useAnimatedValue(0);
-  const second = useAnimatedValue(255);
-  const third = useAnimatedValue(0);
+  //  ['rgb(0, 255, 0)', 'rgb(0, 255, 255)']
+  //  ['rgb(0, 47, 255)', 'rgb(255, 0, 0)']
 
-  const asdRef: any = useRef({ 0: first, 1: second, 2: third });
-  let newIndex = 0
-  const newIndexFunc = () => newIndex = Math.floor(Math.random() * 3)
+  //const nextColor = () => {
+    //currIndex.setValue(0);
 
-  let colorVariables = `${first._value}, ${second}, ${third}`
+  //const testASD = () => 
+    
 
-  const goUp = () => Animated.timing(asdRef.current[newIndex], { toValue: 255, duration: 5100, useNativeDriver: true }).start(
-    ({finished}) => {
-      if (finished) {
-        newIndexFunc()
-        if (asdRef.current[newIndex] === 0) goUp()
-        else goDown()
-      }
-    }
-  );
-  const goDown = () => Animated.timing(asdRef.current[newIndex], { toValue: 0, duration: 5100, useNativeDriver: true }).start(
-    ({finished}) => {
-      if (finished) {
-        newIndexFunc()
-        if (asdRef.current[newIndex] === 0) goUp()
-        else goDown()
-      }
-    }
-  );
+    //Animated.timing(currIndex, { toValue: 1, duration: 5100, useNativeDriver: true, isInteraction: false })
+  
+  
 
-  console.log(`colorVariables ${colorVariables}`)
 
-  useEffect(() => {
-    goUp()
-  }, [])
+  Animated.loop(
+    Animated.timing(currIndex, { toValue: 1, duration: 5100, useNativeDriver: true, isInteraction: false })
+  ).start()
+
+  // }
+
+
+  // nextColor()
 
   return (
     <View style={s.background}>
@@ -301,7 +284,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
           </View>
           <Animated.View /* LOWER SIDE */
-            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom, width: hingeBounds.right, backgroundColor: `rgba(${colorVariables}, 0.9)` } ]}
+            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom, width: hingeBounds.right, backgroundColor: qq } ]}
           >
 
             {
