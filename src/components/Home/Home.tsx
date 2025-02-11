@@ -205,110 +205,19 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
-  //console.log("INS", ins)
+  let currIndex = useAnimatedValue(0);
 
-  //const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
-  //const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
-  //const goUp: MutableRefObject<goUpI> = useRef({ "0": true, "1": false, "2": true });
+  const [ c, sC ] = useState([[0, 255, 0], [0, 255, 255]]) // color, setColor
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     let newANum = () => setCurrIdx(Math.floor(Math.random() * 3)) // BETWEEN 0 AND 2
-  //                                    Math.floor(Math.random() * 2) // BETWEEN 0 AND 1
-
-  //     if (counter[currIdx] > 250) { goUp.current[currIdx.toString() as keyof goUpI] = false; newANum() }
-  //     else if (counter[currIdx] < 5) { goUp.current[currIdx.toString() as keyof goUpI] = true; newANum() }
-  //     if (goUp.current[currIdx.toString() as keyof goUpI]) setCounter({ ...counter, [currIdx]: counter[currIdx] + 5 })
-  //     else setCounter({ ...counter, [currIdx]: counter[currIdx] - 5 })
-  //   }, 100);
-
-  //   return () => clearInterval(interval);
-  // }, [counter, currIdx, goUp])
-
-  // const first = useAnimatedValue(0);
-  // const second = useAnimatedValue(255);
-  // const third = useAnimatedValue(0);
-
-  // const asdRef: any = useRef({ 0: first, 1: second, 2: third });
-  // let newIndex = 0
-  // const newIndexFunc = () => newIndex = Math.floor(Math.random() * 3)
-
-  //let colorVariables = `${first._value}, ${second}, ${third}`
-
-  // const goUp = () => Animated.timing(asdRef.current[newIndex], { toValue: 255, duration: 5100, useNativeDriver: true }).start(
-  //   ({finished}) => {
-  //     if (finished) {
-  //       newIndexFunc()
-  //       if (asdRef.current[newIndex] === 0) goUp()
-  //       else goDown()
-  //     }
-  //   }
-  // );
-  // const goDown = () => Animated.timing(asdRef.current[newIndex], { toValue: 0, duration: 5100, useNativeDriver: true }).start(
-  //   ({finished}) => {
-  //     if (finished) {
-  //       newIndexFunc()
-  //       if (asdRef.current[newIndex] === 0) goUp()
-  //       else goDown()
-  //     }
-  //   }
-  // );
-
-  //console.log(`colorVariables ${colorVariables}`)
-
-  // useEffect(() => {
-  //   goUp()
-  // }, [])
-
-  let currentColor = useAnimatedValue(0);
-
-  const first = 0
-  const second = 255
-  const third = 0
-
-  //const curr = [0, 255, 0]
-  //const trgt = [0, 255, 255]
-
-  //const [ tgt, setTgt ] = useState([[0, 255, 0], [0, 255, 255]])
-  
-  //const tgt = useRef([[0, 255, 0], [0, 255, 255]])
-  const [ tgt, setTgt ] = useState([[0, 255, 0], [0, 255, 255]])
-
-  const inputRef = useRef([0, 1])
-
-  //const [ colors, setColors ] = useState([`rgb(${tgt[0][0]}, ${tgt[0][1]}, ${tgt[0][2]})`, `rgb(${tgt[1][0]}, ${tgt[1][1]}, ${tgt[1][2]})`])
-  //const colors = useRef([`rgb(${tgt.current[0][0]}, ${tgt.current[0][1]}, ${tgt.current[0][2]})`, `rgb(${tgt.current[1][0]}, ${tgt.current[1][1]}, ${tgt.current[1][2]})`])
-  //const colors = [`rgb(${tgt.current[0][0]}, ${tgt.current[0][1]}, ${tgt.current[0][2]})`, `rgb(${tgt.current[1][0]}, ${tgt.current[1][1]}, ${tgt.current[1][2]})`]
-
-  let qq = currentColor.interpolate({
-    inputRange: inputRef.current,
-    outputRange: [`rgb(${tgt[0][0]}, ${tgt[0][1]}, ${tgt[0][2]})`, `rgb(${tgt[1][0]}, ${tgt[1][1]}, ${tgt[1][2]})`]
-    //outputRange: colors
+  let qq = currIndex.interpolate({
+    inputRange: [0, 1],
+    outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
   });
 
-  // currentColor.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: ['rgb(0, 255, 0)', 'rgb(0, 255, 255)']
-  //   outputRange: ['rgb(0, 0, 255)', 'rgb(255, 0, 255)']
-  // })
+  //  ['rgb(0, 255, 0)', 'rgb(0, 255, 255)']
+  //  ['rgb(0, 0, 255)', 'rgb(255, 0, 255)']
 
-  //Animated.timing(currentColor, { toValue: 1, duration: 20000, useNativeDriver: true }).start();
-  //const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
-
-  //console.log("CURRENT", colors[0], "TARGET", colors[1])
-
-  const valVal = useRef(1)
-
-  // const newColors = () => {
-  //   tgt.current = [[0, 0, 255], [255, 0, 255]]
-  //   valVal.current = 0
-  // }
-
-  // const updateValues = () => {
-
-  // }
-
-  const startAAA = () => Animated.timing(currentColor, { toValue: 1, duration: 10000, useNativeDriver: true }).start(
+  const nextColor = () => Animated.timing(currIndex, { toValue: 1, duration: 5100, useNativeDriver: true }).start(
     ({finished}) => {
       if (finished) {
 
@@ -316,51 +225,25 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
         // setTgt([[0, 0, 255], [255, 0, 255]])
         // startAAA()
 
-        currentColor.setValue(0);
-        //setTgt([[0, 0, 255], [255, 0, 255]])
-        setTgt(curr => {
-          
-
-          //let neww = curr[1]
-          let targett = [...curr[1]]
-          //neww = [curr[1]]
+        currIndex.setValue(0);
+        sC(curr => {
+          let copy = [...curr[1]]
           let randomIndex = Math.floor(Math.random() * 3)
-
-          if (curr[1][randomIndex] === 255) {
-            targett[randomIndex] = 0
-          } else {
-            targett[randomIndex] = 255
-          }
+       
+          curr[1][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
 
           console.log("OLD", [curr[0], curr[1]])
-          console.log("NEW", [curr[1], targett])
+          console.log("NEW", [curr[1], copy])
 
-          return [curr[1], targett]
+          return [curr[1], copy]
         })
-        startAAA()
-
-
+        nextColor()
       }
     }
   );
 
-  // const startBBB = () => Animated.timing(currentColor, { toValue: 1, duration: 10000, useNativeDriver: true }).start(
-  //   ({finished}) => {
-  //     if (finished) {
-  //       //setTgt([[0, 0, 255],[255, 0, 255]])
-  //       //valVal.current = 0
-  //       //newColors()
-  //       //startASD()
-  //       currentColor.setValue(0);
-  //       setTgt([[0, 255, 0], [0, 255, 255]])
-  //       startAAA()
-  //     }
-  //   }
-  // );
 
-  startAAA()
-
-
+  nextColor()
 
   return (
     <View style={s.background}>
