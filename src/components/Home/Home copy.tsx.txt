@@ -207,40 +207,44 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   let currIndex = useAnimatedValue(0);
 
-  const [ c, sC ] = useState([[255, 255, 0], [255, 0, 0]]) // color, setColor
-
-
-  //let qq = currIndex
+  const [ c, sC ] = useState([[0, 0, 255], [255, 0, 0]]) // color, setColor
 
   let qq = currIndex.interpolate({
     inputRange: [0, 1],
-    outputRange: ['rgb(0, 0, 255)', 'rgb(255, 0, 0)']
-    //outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
+    outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
   });
-  
 
   //  ['rgb(0, 255, 0)', 'rgb(0, 255, 255)']
-  //  ['rgb(0, 47, 255)', 'rgb(255, 0, 0)']
+  //  ['rgb(0, 0, 255)', 'rgb(255, 0, 255)']
 
-  //const nextColor = () => {
+  const nextColor = () => {
     //currIndex.setValue(0);
-
-  //const testASD = () => 
-    
-
-    //Animated.timing(currIndex, { toValue: 1, duration: 5100, useNativeDriver: true, isInteraction: false })
+    Animated.timing(currIndex, { toValue: 1, duration: 5100, useNativeDriver: true, isInteraction: false }).start(
+      ({finished}) => {
+        if (finished) {
+          
+          // sC(curr => {
+          //   let copy = [...curr[1]]
+          //   let randomIndex = Math.floor(Math.random() * 3)
+         
+          //   curr[1][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
   
+          //   console.log("OLD", [curr[0], curr[1]])
+          //   console.log("NEW", [curr[1], copy])
   
+          //   return [curr[1], copy]
+          // })
+          //currIndex.setValue(0);
+          //currIndex.resetAnimation();
+          //currIndex.setValue(0);
+          nextColor()
+        }
+      }
+    )
+  }
 
 
-  Animated.loop(
-    Animated.timing(currIndex, { toValue: 1, duration: 5100, useNativeDriver: true, isInteraction: false })
-  ).start()
-
-  // }
-
-
-  // nextColor()
+  nextColor()
 
   return (
     <View style={s.background}>
