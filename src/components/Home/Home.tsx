@@ -214,42 +214,32 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
   });
 
-  //  ['rgb(0, 255, 0)', 'rgb(0, 255, 255)']
-  //  ['rgb(0, 0, 255)', 'rgb(255, 0, 255)']
+  const inner = (num: any) => {
+    sC(curr => {
+      let copy = [...curr[num]]
+      let randomIndex = Math.floor(Math.random() * 3) // 0, 1 or 2
+      curr[num][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
+      return num === 1 ? [copy, curr[1]] : [curr[0], copy]
+    })
+    nextColor(+Boolean(!num))
+  }
 
   const nextColor = (toValue: number) => {
     Animated.timing(currIndex, { toValue: toValue, duration: 5100, useNativeDriver: true, isInteraction: false }).start(
       ({finished}) => {
-        if (finished) {
-          if (toValue === 1) { // GO 1 TO 0 (left <-- right)
-            sC(curr => {
-              let copy = [...curr[1]]
-              let randomIndex = Math.floor(Math.random() * 3)
-  
-              curr[1][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
-  
-              console.log(`OLD to ${toValue}`, [curr[0], curr[1]])
-              console.log(`NEW to ${toValue}`, [copy, curr[1]])
-              //console.log("NEW A", [curr[1], copy])
-  
-              return [copy, curr[1]]
-            })
-            nextColor(0)
-          } else { // GO 0 TO 1 (left --> right)
-            sC(curr => {
-              let copy = [...curr[0]]
-              let randomIndex = Math.floor(Math.random() * 3)
-  
-              curr[0][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
-  
-              console.log(`OLD to ${toValue}`, [curr[0], curr[1]])
-              console.log(`NEW to ${toValue}`, [curr[0], copy])
-              //console.log("NEW A", [curr[1], copy])
-  
-              return [curr[0], copy]
-            })
-            nextColor(1)
-          }
+        if (finished) { inner(toValue)
+          // if (toValue === 1) { // GO 1 TO 0 (left <-- right)
+          //   inner(1)
+          //   nextColor(0)
+          // } else { // GO 0 TO 1 (left --> right)
+          //   sC(curr => {
+          //     let copy = [...curr[0]]
+          //     let randomIndex = Math.floor(Math.random() * 3)
+          //     curr[0][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
+          //     return [curr[0], copy]
+          //   })
+          //   nextColor(1)
+          // }
         }
       }
     )
