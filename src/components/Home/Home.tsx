@@ -214,7 +214,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
   });
 
-  const inner = (num: any) => {
+  const updateValues = (num: any) => {
     sC(curr => {
       let copy = [...curr[num]]
       let randomIndex = Math.floor(Math.random() * 3) // 0, 1 or 2
@@ -224,28 +224,16 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     nextColor(+Boolean(!num))
   }
 
-  const nextColor = (toValue: number) => {
+  const nextColor = (toValue: number) =>
     Animated.timing(currIndex, { toValue: toValue, duration: 5100, useNativeDriver: true, isInteraction: false }).start(
-      ({finished}) => {
-        if (finished) { inner(toValue)
-          // if (toValue === 1) { // GO 1 TO 0 (left <-- right)
-          //   inner(1)
-          //   nextColor(0)
-          // } else { // GO 0 TO 1 (left --> right)
-          //   sC(curr => {
-          //     let copy = [...curr[0]]
-          //     let randomIndex = Math.floor(Math.random() * 3)
-          //     curr[0][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
-          //     return [curr[0], copy]
-          //   })
-          //   nextColor(1)
-          // }
-        }
-      }
-    )
-  }
+      ({finished}) => finished && updateValues(toValue)
+    );
+  
 
-  nextColor(1)
+  useEffect(() => {
+    nextColor(1)
+    return () => currIndex.stopAnimation()
+  }, [])
 
   return (
     <View style={s.background}>
