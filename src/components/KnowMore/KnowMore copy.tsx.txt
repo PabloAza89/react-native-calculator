@@ -1,8 +1,7 @@
 import { ReactElement, useState, useEffect, useRef, MutableRefObject } from 'react';
 import {
   Text, View, StatusBar, ScrollView, Pressable,
-  InteractionManager, ActivityIndicator, NativeSyntheticEvent, NativeScrollEvent,
-  Animated, useAnimatedValue,
+  InteractionManager, ActivityIndicator, NativeSyntheticEvent, NativeScrollEvent
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -29,22 +28,22 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
 
   const onFabPress = () => scrollRef.current?.scrollTo({ y: 0, animated: true });
 
-  // const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
-  // const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
-  // const goUp: MutableRefObject<goUpI> = useRef({ "0": true, "1": false, "2": true });
+  const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
+  const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
+  const goUp: MutableRefObject<goUpI> = useRef({ "0": true, "1": false, "2": true });
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     let newANum = () => setCurrIdx(Math.floor(Math.random() * 3)) // BETWEEN 0 AND 2
+  useEffect(() => {
+    const interval = setInterval(() => {
+      let newANum = () => setCurrIdx(Math.floor(Math.random() * 3)) // BETWEEN 0 AND 2
 
-  //     if (counter[currIdx] > 250) { goUp.current[currIdx.toString() as keyof goUpI] = false; newANum() }
-  //     else if (counter[currIdx] < 5) { goUp.current[currIdx.toString() as keyof goUpI] = true; newANum() }
-  //     if (goUp.current[currIdx.toString() as keyof goUpI]) setCounter({ ...counter, [currIdx]: counter[currIdx] + 5 })
-  //     else setCounter({ ...counter, [currIdx]: counter[currIdx] - 5 })
-  //   }, 100);
+      if (counter[currIdx] > 250) { goUp.current[currIdx.toString() as keyof goUpI] = false; newANum() }
+      else if (counter[currIdx] < 5) { goUp.current[currIdx.toString() as keyof goUpI] = true; newANum() }
+      if (goUp.current[currIdx.toString() as keyof goUpI]) setCounter({ ...counter, [currIdx]: counter[currIdx] + 5 })
+      else setCounter({ ...counter, [currIdx]: counter[currIdx] - 5 })
+    }, 100);
 
-  //   return () => clearInterval(interval);
-  // }, [counter, currIdx, goUp])
+    return () => clearInterval(interval);
+  }, [counter, currIdx, goUp])
 
   let lazyLoad = [
     <View key={0} style={s.eachItem}>
@@ -150,7 +149,7 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
 
   const [ showButton, setShowButton ] = useState(false)
 
-  //let colorVariables = `${counter["0"]}, ${counter["1"]}, ${counter["2"]}`
+  let colorVariables = `${counter["0"]}, ${counter["1"]}, ${counter["2"]}`
 
   //console.log("INS AAA", ins)
 
@@ -158,60 +157,24 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
 
   console.log("TEST KNOWMORE")
 
-  const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
-
-  //Animated.asd
-
-  let currIndex = useAnimatedValue(0);
-  
-    const [ c, sC ] = useState([[0, 0, 255], [255, 0, 255]]) // color, setColor
-  
-    let qq = currIndex.interpolate({
-      inputRange: [0, 1],
-      outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
-    });
-  
-    const updateValues = (num: any) => {
-      sC(curr => {
-        let copy = [...curr[num]]
-        let randomIndex = Math.floor(Math.random() * 3) // 0, 1 or 2
-        curr[num][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
-        return num === 1 ? [copy, curr[1]] : [curr[0], copy]
-      })
-      nextColor(+Boolean(!num))
-    }
-  
-    const nextColor = (toValue: number) =>
-      Animated.timing(currIndex, { toValue: toValue, duration: 5100, useNativeDriver: true, isInteraction: false }).start(
-        ({finished}) => finished && updateValues(toValue)
-      );
-    
-  
-    //nextColor(1)
-    useEffect(() => {
-      nextColor(1)
-      //loaded && nextColor(1)
-      //return () => currIndex.stopAnimation()
-    }, [])
-
   return (
     <View style={s.mainContainer}>
-      <Animated.View
-            style={{ backgroundColor: qq, height: '100%', width: '100%', position: 'absolute', }}
-          >
+      <LinearGradient
+        colors={[ `rgb(${colorVariables})`, 'rgb(255, 255, 255)' ]}
+        style={[ s.linearGradient, { height: '100%', width: '100%' } ]}
+        start={[ 0, 1 ]} // left, top
+        end={[ 1, 0 ]}   // left, top
+        children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
+      />
+      {
+        !(state === 'tabletop' && aboutUp) &&
         <LinearGradient
-          colors={[ 'rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)' ]}
-          style={[ s.linearGradient, { height: '100%', width: '100%'/* , backgroundColor: `${qq}` */ } ]}
-          start={[ 0, 1 ]} // left, top
-          end={[ 1, 0 ]}   // left, top
-        >
-          
-
-          
-
-          
-        </LinearGradient>
-        </Animated.View>
+          colors={[ `rgb(${colorVariables})`, 'rgb(255, 255, 255)' ]}
+          style={[ s.linearGradient, { height: ins.top, width: '100%', zIndex: 4, opacity: 0.85 }]}
+          start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
+          end={[ 1, 0 ]}                                                                                // left, top
+        />
+      }
 
       <ScrollView
         ref={scrollRef}

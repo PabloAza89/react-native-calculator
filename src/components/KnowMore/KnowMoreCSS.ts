@@ -3,8 +3,10 @@ import { StyleSheet } from 'react-native';
 export const s = StyleSheet.create({
   linearGradient: {
     position: 'absolute',
+    //backgroundColor: 'red',
     left: 0,
-    right: 0
+    right: 0,
+    //transform: [{ backgroundColor: 'red' }]
   },
   mainContainer: {
     height: '100%',
@@ -12,7 +14,8 @@ export const s = StyleSheet.create({
   },
   background: {
     //backgroundColor: 'red', // DEV
-    alignItems: 'center'
+    alignItems: 'center',
+    //transform: [{ rot }]
   },
   centerText: {
     //backgroundColor: 'blue', // DEV

@@ -53,8 +53,8 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const fadeAnim = useAnimatedValue(0);
 
-  const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
-  const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
+  const fadeIn = () => {}//Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
+  const fadeOut = () => {}//Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
 
   const [ OPCQH, setOPCQH ] = useState(0) // onePercentContainerQueryHeight
 
@@ -205,35 +205,37 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
-  let currIndex = useAnimatedValue(0);
+  //let currIndex = useAnimatedValue(0);
 
-  const [ c, sC ] = useState([[0, 0, 255], [255, 0, 255]]) // color, setColor
+  //const [ c, sC ] = useState([[0, 0, 255], [255, 0, 255]]) // color, setColor
 
-  let qq = currIndex.interpolate({
-    inputRange: [0, 1],
-    outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
-  });
+  // let qq = currIndex.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
+  // });
 
-  const updateValues = (num: any) => {
-    sC(curr => {
-      let copy = [...curr[num]]
-      let randomIndex = Math.floor(Math.random() * 3) // 0, 1 or 2
-      curr[num][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
-      return num === 1 ? [copy, curr[1]] : [curr[0], copy]
-    })
-    nextColor(+Boolean(!num))
-  }
+  let qq = 'rgb(255, 255, 255)'
 
-  const nextColor = (toValue: number) =>
-    Animated.timing(currIndex, { toValue: toValue, duration: 5100, useNativeDriver: true, isInteraction: false }).start(
-      ({finished}) => finished && updateValues(toValue)
-    );
+  // const updateValues = (num: any) => {
+  //   sC(curr => {
+  //     let copy = [...curr[num]]
+  //     let randomIndex = Math.floor(Math.random() * 3) // 0, 1 or 2
+  //     curr[num][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
+  //     return num === 1 ? [copy, curr[1]] : [curr[0], copy]
+  //   })
+  //   nextColor(+Boolean(!num))
+  // }
+
+  // const nextColor = (toValue: number) =>
+  //   Animated.timing(currIndex, { toValue: toValue, duration: 5100, useNativeDriver: true, isInteraction: false }).start(
+  //     ({finished}) => finished && updateValues(toValue)
+  //   );
   
 
-  useEffect(() => {
-    nextColor(1)
-    return () => currIndex.stopAnimation()
-  }, [])
+  // useEffect(() => {
+  //   nextColor(1)
+  //   return () => currIndex.stopAnimation()
+  // }, [])
 
   return (
     <View style={s.background}>
