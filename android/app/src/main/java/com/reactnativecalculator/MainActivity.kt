@@ -98,9 +98,15 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   override fun onReactContextInitialized(context: ReactContext) {
 
+      //val wm = this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+      //val resp = wm.currentWindowMetrics?.bounds
+      val test = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
+
+      Log.d("LOG", "CURR WIN ${test}");
+
     class ListenerCallback : Consumer<WindowLayoutInfo> {
       override fun accept(newLayoutInfo: WindowLayoutInfo) {
-        //Log.d("LOG", "[]CALLBACK");
+        Log.d("LOG", "[]CALLBACK");
         if (canUpdate) updateUI("CB", newLayoutInfo)
       }
     }
@@ -203,6 +209,15 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       hingeBoundsMap.putDouble("top", hnoListParsed.top)
       hingeBoundsMap.putDouble("right", hnoListParsed.right)
       hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
+
+      //Log.d("LOG", "windowMap ${windowMap}");
+      //Log.d("LOG", "screenMap ${screenMap}");
+
+      //val wm = reactInstanceManager.currentReactContext?.getSystemService(WindowManager::class.java)
+      // val wm = reactInstanceManager.currentReactContext?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+      // val resp = wm?.currentWindowMetrics?.bounds
+
+      // Log.d("LOG", "CURR WIN ${resp}");
 
       mainMap.putMap("hingeBounds", hingeBoundsMap);
       mainMap.putString("state", state); // fullscreen, tabletop..

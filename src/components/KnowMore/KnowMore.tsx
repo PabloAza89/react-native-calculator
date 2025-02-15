@@ -11,7 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
-const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds }: any): ReactElement => {
+const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds }: any): ReactElement => {
 
   const { navigate } = navigation;
 
@@ -191,27 +191,50 @@ const KnowMore = ({ navigation, opw, height, state, switchSide, twoScreens, next
     useEffect(() => {
       nextColor(1)
       //loaded && nextColor(1)
-      //return () => currIndex.stopAnimation()
+      return () => currIndex.stopAnimation()
     }, [])
+
+  console.log("HEIGHT", height)
+  console.log("INS.TOP", ins.top)
+  console.log("INS.BOTTOM", ins.bottom)
 
   return (
     <View style={s.mainContainer}>
+
       <Animated.View
-            style={{ backgroundColor: qq, height: '100%', width: '100%', position: 'absolute', }}
+        style={[ s.linearGradientWrapper, { backgroundColor: qq } ]}
+        children={
+          <LinearGradient
+            colors={[ 'rgba(0, 0, 0, 0)', 'rgb(255, 255, 255)' ]}
+            style={s.linearGradient}
+            start={[ 0, 1 ]} // left, top
+            end={[ 1, 0 ]}   // left, top
           >
-        <LinearGradient
-          colors={[ 'rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)' ]}
-          style={[ s.linearGradient, { height: '100%', width: '100%'/* , backgroundColor: `${qq}` */ } ]}
-          start={[ 0, 1 ]} // left, top
-          end={[ 1, 0 ]}   // left, top
-        >
-          
+            <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
+          </LinearGradient>
+        }
+      />
+  
 
-          
+        <Animated.View
+          style={[ s.linearGradientWrapper2, { backgroundColor: qq, height: ins.top, width: '100%', zIndex: 4, /* opacity: 0.85 *//* , overflow: 'hidden' */ } ]}
+          children={
+            <LinearGradient
+              colors={[ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]}
+              //style={[s.linearGradient2, { height: 320 + 28, width: '100%' }]}
+              style={[s.linearGradient2, { height: '100%', width: '100%' }]}
+              //start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
+              start={[ 0, (height + ins.bottom )/ ins.top ]} // left, top
+              end={[ 1, 0 ]}                                                                                // left, top
+              // start={[ 0, 1 ]} // left, top
+              // end={[ 1, 0 ]}   // left, top
+            >
+            </LinearGradient>
+          }
+        />
 
-          
-        </LinearGradient>
-        </Animated.View>
+
+
 
       <ScrollView
         ref={scrollRef}

@@ -1,15 +1,33 @@
 import { StyleSheet } from 'react-native';
 
 export const s = StyleSheet.create({
+  linearGradientWrapper: {
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+  },
   linearGradient: {
     position: 'absolute',
-    //backgroundColor: 'red',
     left: 0,
     right: 0,
-    //transform: [{ backgroundColor: 'red' }]
+    height: '100%',
+    width: '100%'
+  },
+  linearGradientWrapper2: {
+    position: 'absolute'
+  },
+  linearGradient2: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
   },
   mainContainer: {
     height: '100%',
+    //height: '100%',
     width: '100%'
   },
   background: {

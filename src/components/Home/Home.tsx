@@ -11,7 +11,7 @@ import { HomeI, counterI, goUpI } from '../../interfaces/interfaces';
 import { portButtons, landButtons } from './Buttons';
 
 const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
-  width, height, route, opw, hingeBounds, showModal, updateShowModal }: any): ReactElement => {
+  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal }: any): ReactElement => {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
   const { navigate } = navigation
@@ -75,7 +75,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const KnowMoreScreen =
     <KnowMore
-      navigation={navigation} opw={opw} height={height}
+      navigation={navigation} /* opw={opw} */ height={height}
       state={state} switchSide={switchSide}
       twoScreens={true} nextScreen={nextScreen}
       aboutUp={aboutUp} hingeBounds={hingeBounds}

@@ -34,6 +34,31 @@ const App = (): ReactElement => {
 
   console.log("width", width)
 
+  // TEST //
+
+  const windowDimensions = Dimensions.get('window');
+  const screenDimensions = Dimensions.get('screen');
+
+  const [dimensions, setDimensions] = useState({
+    window: windowDimensions,
+    screen: screenDimensions,
+  });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      'change',
+      ({window, screen}) => {
+        setDimensions({window, screen});
+      },
+    );
+    return () => subscription?.remove();
+  });
+
+  console.log("WINDOW AAA", windowDimensions)
+  console.log("SCREEN AAA", screenDimensions)
+
+  // TEST //
+
   let navBar = useRef<boolean>(true)
 
   let updateNavBar = async() => {
@@ -46,9 +71,9 @@ const App = (): ReactElement => {
   let opw: number = width / 100 // one percent window width
   let oph: number = height / 100 // one percent window height
   let vmin: number
-  let port: boolean // PORTRAIT
-  if (width > height) { vmin = oph, port = false }
-  else { vmin = opw, port = true }
+  //let port: boolean // PORTRAIT
+  if (width > height) { vmin = oph/* , port = false */ }
+  else { vmin = opw/* , port = true */ }
 
   const navigationRef = useNavigationContainerRef();
 
@@ -152,7 +177,7 @@ const App = (): ReactElement => {
           <Home
             {...props} input={input} setInput={setInput}
             setSecInput={setSecInput} secInput={secInput} vmin={vmin}
-            state={state} width={width} height={windowHeight} opw={opw}
+            state={state} width={width} height={windowHeight} /* opw={opw} */
             hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
           />
         )
@@ -166,7 +191,7 @@ const App = (): ReactElement => {
         )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
-        return <KnowMore {...props} opw={opw} height={height} state={state} />
+        return <KnowMore {...props} /* opw={opw} */ height={height} state={state} />
     }
   }
 
