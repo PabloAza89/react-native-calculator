@@ -137,7 +137,11 @@ const App = (): ReactElement => {
   const [ input, setInput ] = useState("");
   const [ state, setState ] = useState('flat');
   const [ hingeBounds, setHingeBounds ] = useState({ left: 0, top: 0, right: 0, bottom: 0 });
-  const [ windowHeight, setWindowHeight ] = useState(Dimensions.get("screen").height);
+  //const [ windowHeight, setWindowHeight ] = useState(Dimensions.get("screen").height);
+  const [ window, setWindow ] = useState({
+    width: Dimensions.get("screen").width,
+    height: Dimensions.get("screen").height
+  });
 
   useEffect(() => { // ON APP BLUR
     const blur = AppState.addEventListener('blur', () => {
@@ -177,7 +181,7 @@ const App = (): ReactElement => {
           <Home
             {...props} input={input} setInput={setInput}
             setSecInput={setSecInput} secInput={secInput} vmin={vmin}
-            state={state} width={width} height={windowHeight} /* opw={opw} */
+            state={state} width={width} height={window.height} /* opw={opw} */
             hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
           />
         )
@@ -191,7 +195,7 @@ const App = (): ReactElement => {
         )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
-        return <KnowMore {...props} /* opw={opw} */ height={height} state={state} />
+        return <KnowMore {...props} /* opw={opw} */ height={window.height} state={state} />
     }
   }
 
@@ -218,6 +222,7 @@ const App = (): ReactElement => {
       setState(e.state)
       setHingeBounds(e.hingeBounds)
       //setWindowHeight(e.window.bottom - e.window.top)
+      setWindow(e.window)
     });
     return () => LayoutInfoListener.remove();
   }, []);

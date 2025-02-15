@@ -224,7 +224,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
               //style={[s.linearGradient2, { height: 320 + 28, width: '100%' }]}
               style={[s.linearGradient2, { height: '100%', width: '100%' }]}
               //start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
-              start={[ 0, (height + ins.bottom )/ ins.top ]} // left, top
+              start={[ 0, height/ ins.top ]} // left, top
               end={[ 1, 0 ]}                                                                                // left, top
               // start={[ 0, 1 ]} // left, top
               // end={[ 1, 0 ]}   // left, top
