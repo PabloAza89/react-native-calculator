@@ -210,14 +210,14 @@ const App = (): ReactElement => {
   useEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
-      console.log("screen", e.screen)
+      //console.log("screen", e.screen)
       console.log("window", e.window) // WINDOW BOUNDS (APP SIZE)
       console.log("state", e.state) // 'flat' or 'half' or 'closed'
       console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS
 
       setState(e.state)
       setHingeBounds(e.hingeBounds)
-      setWindowHeight(e.window.bottom - e.window.top)
+      //setWindowHeight(e.window.bottom - e.window.top)
     });
     return () => LayoutInfoListener.remove();
   }, []);

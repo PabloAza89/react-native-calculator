@@ -84,7 +84,33 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val firstOrientation = this@MainActivity.resources.configuration.orientation
     if (firstOrientation == Configuration.ORIENTATION_PORTRAIT) { orientation = "portrait" }
     else { orientation = "landscape" }
+
+
+    // lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
+    //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+    //     WindowInfoTracker.getOrCreate(this@MainActivity)
+    //       .windowLayoutInfo(this@MainActivity)
+    //       .collect { data -> updateUI("CB", data) }
+    //   }
+    // }
+
+    // val windowInfoTracker = WindowInfoTracker.getOrCreate(this@MainActivity)
+    
+
+    // fun onWindowLayoutInfoChange() {
+    //   lifecycleScope.launch(Dispatchers.Main) {
+    //       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+    //           windowInfoTracker.windowLayoutInfo(this@MainActivity)
+    //               .collect { value: WindowLayoutInfo -> updateUI("CB", value) }
+    //       }
+    //   }
+    // }
+
+    // onWindowLayoutInfoChange()
+
   }
+
+  
 
   override fun onResume() {
     super.onResume()
@@ -98,15 +124,25 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   override fun onReactContextInitialized(context: ReactContext) {
 
-      //val wm = this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-      //val resp = wm.currentWindowMetrics?.bounds
-      val test = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
+    //val wm = this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    //val resp = wm.currentWindowMetrics?.bounds
+    // val test = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
 
-      Log.d("LOG", "CURR WIN ${test}");
+    // Log.d("LOG", "CURR WIN ${test}");
+
+
+    // lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
+    //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+    //     WindowInfoTracker.getOrCreate(this@MainActivity)
+    //       .windowLayoutInfo(this@MainActivity)
+    //       .collect { data -> updateUI("CB", data) }
+    //   }
+    // }
 
     class ListenerCallback : Consumer<WindowLayoutInfo> {
       override fun accept(newLayoutInfo: WindowLayoutInfo) {
         Log.d("LOG", "[]CALLBACK");
+        //updateUI("CB", newLayoutInfo)
         if (canUpdate) updateUI("CB", newLayoutInfo)
       }
     }
@@ -157,6 +193,10 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     lateinit var job: Job
 
+    // val wm = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
+    // Log.d("LOG", "CURR WIDTH ${wm.width()}");
+    // Log.d("LOG", "CURR HEIGHT ${wm.height()}");
+
     //var preFoldingFeature: FoldingFeature? = null
     //val foldingFeature = preFoldingFeature
 
@@ -173,21 +213,31 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       val boundsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
       val boundsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity).bounds
 
+      val wm = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
+      Log.d("LOG", "CURR WIDTH ${wm.width()}");
+      Log.d("LOG", "CURR HEIGHT ${wm.height()}");
+
+      val wmWidth = wm.width() / dotsPerInch;
+      val wmHeight = wm.height() / dotsPerInch;
+
+      windowMap.putDouble("width", wmWidth);
+      windowMap.putDouble("height", wmHeight);
+
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
 
       //Log.d("LOG", "${who} ${foldingFeature}");
 
-      var boundsArr = arrayOf("left", "top", "right", "bottom")
+      //var boundsArr = arrayOf("left", "top", "right", "bottom")
 
-      for (item in boundsArr) {
-        val pixelsCurr = boundsCurr::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsCurr).toString().toDouble(); // Int --> Double
-        val pixelsMax = boundsMax::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsMax).toString().toDouble(); // Int --> Double
-        val densityIndPixCurr = pixelsCurr / dotsPerInch; // dp = px / (dpi / 160) === px / density
-        val densityIndPixMax = pixelsMax / dotsPerInch; // dp = px / (dpi / 160) === px / density
+      // for (item in boundsArr) {
+      //   val pixelsCurr = boundsCurr::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsCurr).toString().toDouble(); // Int --> Double
+      //   val pixelsMax = boundsMax::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsMax).toString().toDouble(); // Int --> Double
+      //   val densityIndPixCurr = pixelsCurr / dotsPerInch; // dp = px / (dpi / 160) === px / density
+      //   val densityIndPixMax = pixelsMax / dotsPerInch; // dp = px / (dpi / 160) === px / density
 
-        screenMap.putDouble("${item}", densityIndPixMax);
-        windowMap.putDouble("${item}", densityIndPixCurr); // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
-      }
+      //   screenMap.putDouble("${item}", densityIndPixMax);
+      //   windowMap.putDouble("${item}", densityIndPixCurr); // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
+      // }
 
       var state: String = "portrait";
 
@@ -221,7 +271,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
       mainMap.putMap("hingeBounds", hingeBoundsMap);
       mainMap.putString("state", state); // fullscreen, tabletop..
-      mainMap.putMap("screen", screenMap);
+      // mainMap.putMap("screen", screenMap);
+      // mainMap.putMap("window", windowMap);
+
       mainMap.putMap("window", windowMap);
 
       reactInstanceManager.currentReactContext // context.getJSModule()?.emit()
