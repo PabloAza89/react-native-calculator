@@ -204,6 +204,7 @@ const App = (): ReactElement => {
       <Stack.Screen
         name={e}
         key={e}
+        options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" } }} // DEFAULT APP BACKGROUND COLOR
         children={(props) => dynamicImport(props, e)}
       />
     )

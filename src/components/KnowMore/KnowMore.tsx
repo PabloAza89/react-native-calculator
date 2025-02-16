@@ -170,6 +170,11 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       inputRange: [0, 1],
       outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
     });
+
+    let qq2 = currIndex.interpolate({
+      inputRange: [0, 1],
+      outputRange: [`rgba(${c[0][0] * 1}, ${c[0][1]* 1}, ${c[0][2]* 1}, 0.8)`, `rgba(${c[1][0]* 1}, ${c[1][1]* 1}, ${c[1][2]* 1}, 0.8)`]
+    });
   
     const updateValues = (num: any) => {
       sC(curr => {
@@ -202,36 +207,42 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     <View style={s.mainContainer}>
 
       <Animated.View
-        style={[ s.linearGradientWrapper, { backgroundColor: qq } ]}
+        //style={[ s.linearGradientWrapper2, { backgroundColor: qq2, height: ins.top, width: '100%',zIndex: 4 } ]}
+        style={[ s.linearGradientWrapper2, { backgroundColor: qq, height: ins.top, width: '100%',zIndex: 4 ,opacity: 0.85 /* ,opacity: 0.5 */ } ]}
         children={
           <LinearGradient
-            colors={[ 'rgba(0, 0, 0, 0)', 'rgb(255, 255, 255)' ]}
-            style={s.linearGradient}
-            start={[ 0, 1 ]} // left, top
-            end={[ 1, 0 ]}   // left, top
-          >
-            <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
-          </LinearGradient>
+            colors={[ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]}
+            //colors={[ 'rgba(0, 0, 0, 0.15)', 'rgba(255, 255, 255, 0.15)' ]}
+            //style={[s.linearGradient2, { height: 320 + 28, width: '100%' }]}
+            style={[ s.linearGradient2, { height: '100%', width: '100%' } ]}
+            //start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
+            start={[ 0, height / ins.top ]} // left, top
+            end={[ 1, 0 ]}
+            //end={[ 1, 0 ]}                                                                                // left, top
+            // start={[ 0, 1 ]} // left, top
+            // end={[ 1, 0 ]}   // left, top
+          />
+        }
+      />
+
+      <Animated.View
+        //style={[ s.linearGradientWrapper, { backgroundColor: qq/* , opacity: 0.9 */  } ]}
+        style={[ s.linearGradientWrapper, { backgroundColor: qq ,top: ins.top * 1 , opacity: 0.85  } ]}
+        children={
+          <LinearGradient
+            colors={[ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]}
+            style={[s.linearGradient, {  }]}
+            start={[ 0, 1 - (ins.top / height) ]} // left, top
+            end={[ 1, (ins.top / height)*-1 ]}   // left, top
+            //end={[ 1, 0 ]}   // left, top
+            // ins.top / height
+            children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
+          />
         }
       />
   
 
-        <Animated.View
-          style={[ s.linearGradientWrapper2, { backgroundColor: qq, height: ins.top, width: '100%', zIndex: 4, /* opacity: 0.85 *//* , overflow: 'hidden' */ } ]}
-          children={
-            <LinearGradient
-              colors={[ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]}
-              //style={[s.linearGradient2, { height: 320 + 28, width: '100%' }]}
-              style={[s.linearGradient2, { height: '100%', width: '100%' }]}
-              //start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
-              start={[ 0, height/ ins.top ]} // left, top
-              end={[ 1, 0 ]}                                                                                // left, top
-              // start={[ 0, 1 ]} // left, top
-              // end={[ 1, 0 ]}   // left, top
-            >
-            </LinearGradient>
-          }
-        />
+      
 
 
 
