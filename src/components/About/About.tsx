@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AboutI } from '../../interfaces/interfaces';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp }: any): ReactElement => {
+const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp }: any): ReactElement => {
 
   const { navigate } = navigation
 
@@ -94,7 +94,7 @@ const About = ({ navigation, vmin, currWidth, showModal, updateShowModal, state,
             resizeMode={FastImage.resizeMode.contain}
           />
           <AntDesign
-            style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: (((currWidth / 2) - ((vmin * 30) / 2)) / -2) - 20 }}
+            style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: (((width / 2) - ((vmin * 30) / 2)) / -2) - 20 }}
             name='linkedin-square'
             size={40}
             color='rgba(0, 0, 0, .7)'

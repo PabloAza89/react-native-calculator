@@ -28,32 +28,32 @@ const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screen
 
 const App = (): ReactElement => {
 
-  const { width, height } = useWindowDimensions();
+  //const { width, height } = useWindowDimensions();
 
   //console.log("width", width)
 
   // TEST //
 
-  const windowDimensions = Dimensions.get('window');
-  const screenDimensions = Dimensions.get('screen');
+  // const windowDimensionss = Dimensions.get('window');
+  // const screenDimensionss = Dimensions.get('screen');
 
-  const [dimensions, setDimensions] = useState({
-    window: windowDimensions,
-    screen: screenDimensions,
-  });
+  // const [dimensions, setDimensions] = useState({
+  //   window: windowDimensionss,
+  //   screen: screenDimensionss,
+  // });
 
-  useEffect(() => {
-    const subscription = Dimensions.addEventListener(
-      'change',
-      ({window, screen}) => {
-        setDimensions({window, screen});
-      },
-    );
-    return () => subscription?.remove();
-  });
+  // useEffect(() => {
+  //   const subscription = Dimensions.addEventListener(
+  //     'change',
+  //     ({window, screen}) => {
+  //       setDimensions({window, screen});
+  //     },
+  //   );
+  //   return () => subscription?.remove();
+  // });
 
-  console.log("WINDOW AAA", dimensions.window)
-  console.log("SCREEN AAA", dimensions.screen)
+  // console.log("WINDOW AAA", dimensions.window)
+  // console.log("SCREEN AAA", dimensions.screen)
 
   // TEST //
 
@@ -66,12 +66,15 @@ const App = (): ReactElement => {
     else navBar.current = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
   }
 
-  let opw: number = width / 100 // one percent window width
-  let oph: number = height / 100 // one percent window height
-  let vmin: number
+  //let opw: number = width / 100 // one percent window width
+  //let oph: number = height / 100 // one percent window height
+  //let vmin: number
+
+  const [ vmin, setVmin ] = useState<number>(0);
+
   //let port: boolean // PORTRAIT
-  if (width > height) { vmin = oph }
-  else { vmin = opw }
+  //if (width > height) { setvmin = 0 }
+  //else { vmin = 1 }
 
   const navigationRef = useNavigationContainerRef();
 
@@ -178,7 +181,7 @@ const App = (): ReactElement => {
           <Home
             {...props} input={input} setInput={setInput}
             setSecInput={setSecInput} secInput={secInput} vmin={vmin}
-            state={state} width={width} height={window.height}
+            state={state} width={window.width} height={window.height}
             hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
           />
         )
@@ -186,7 +189,7 @@ const App = (): ReactElement => {
         const About = require('./src/components/About/About').default
         return (
           <About
-            {...props} vmin={vmin} currWidth={width} showModal={showModal}
+            {...props} vmin={vmin} width={window.width} showModal={showModal}
             updateShowModal={updateShowModal} state={state} twoScreens={false}
           />
         )
@@ -221,6 +224,7 @@ const App = (): ReactElement => {
       setHingeBounds(e.hingeBounds)
       //setWindowHeight(e.window.bottom - e.window.top)
       setWindow(e.window)
+      setVmin(e.window.width > e.window.height ? e.window.height / 100 : e.window.width / 100)
     });
     return () => LayoutInfoListener.remove();
   }, []);
