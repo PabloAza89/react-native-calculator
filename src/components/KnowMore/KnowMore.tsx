@@ -1,13 +1,13 @@
-import { ReactElement, useState, useEffect, useRef, MutableRefObject } from 'react';
+import { ReactElement, useState, useEffect, useRef } from 'react';
 import {
-  Text, View, StatusBar, ScrollView, Pressable,
-  InteractionManager, ActivityIndicator, NativeSyntheticEvent, NativeScrollEvent,
-  Animated, useAnimatedValue,
+  View, StatusBar, ScrollView, Pressable, InteractionManager, ActivityIndicator,
+  NativeSyntheticEvent, NativeScrollEvent, Animated, useAnimatedValue
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text } from '../Text/Text';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
@@ -16,11 +16,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   const { navigate } = navigation;
 
   useEffect(() => {
-    //(navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
-    //(navigation.getState().routes.at(-1).name === 'KnowMore' && state === 'book') && navigate('Home', { lastRoute: 'KnowMore' })
     (navigation.getState().routes.at(-1).name === 'KnowMore' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'KnowMore' })
-    //console.log("AA VER 11", navigation.getState().routes.at(-1).name)
-    //console.log("AA VER 22", state)
   }, [state])
 
   let ins = useSafeAreaInsets(); // insets
@@ -29,22 +25,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   const onFabPress = () => scrollRef.current?.scrollTo({ y: 0, animated: true });
 
-  // const [ counter, setCounter ] = useState<counterI>({ "0": 0, "1": 250, "2": 0 });
-  // const [ currIdx, setCurrIdx ] = useState(Math.floor(Math.random() * 3)); // CURRENT INDEX A // BETWEEN 0 AND 2
-  // const goUp: MutableRefObject<goUpI> = useRef({ "0": true, "1": false, "2": true });
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     let newANum = () => setCurrIdx(Math.floor(Math.random() * 3)) // BETWEEN 0 AND 2
-
-  //     if (counter[currIdx] > 250) { goUp.current[currIdx.toString() as keyof goUpI] = false; newANum() }
-  //     else if (counter[currIdx] < 5) { goUp.current[currIdx.toString() as keyof goUpI] = true; newANum() }
-  //     if (goUp.current[currIdx.toString() as keyof goUpI]) setCounter({ ...counter, [currIdx]: counter[currIdx] + 5 })
-  //     else setCounter({ ...counter, [currIdx]: counter[currIdx] - 5 })
-  //   }, 100);
-
-  //   return () => clearInterval(interval);
-  // }, [counter, currIdx, goUp])
+  const iconColor = 'rgba(0, 0, 0, .7)'
 
   let lazyLoad = [
     <View key={0} style={s.eachItem}>
@@ -88,7 +69,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       <FontAwesome5
         name='infinity'
         size={30}
-        color='rgba(0, 0, 0, .7)'
+        color={iconColor}
         style={s.leftItem}
       />
       <Text style={s.rightItem} children={'Numbers largers than 1.797693e+307 (positive or negative) are treated as Infinity. After that, every calc will output Infinity, or -Infinity, as applicable.'} />
@@ -97,7 +78,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       <Entypo
         name='new'
         size={30}
-        color='rgba(0, 0, 0, .7)'
+        color={iconColor}
         style={s.leftItem}
       />
       <Text style={s.rightItem} children={'All new input characters are placed to the right.'} />
@@ -106,7 +87,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       <Ionicons
         name='backspace'
         size={40}
-        color='rgba(0, 0, 0, .7)'
+        color={iconColor}
         style={s.leftItem}
       />
       <Text style={s.rightItem} children={'Erase the last character.'} />
@@ -132,7 +113,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       <MaterialIcons
         name='phonelink-erase'
         size={30}
-        color='rgba(0, 0, 0, .7)'
+        color={iconColor}
         style={s.leftItem}
       />
       <Text style={s.rightItem} children={'This App does not have access to your device.'} />
@@ -150,109 +131,81 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   const [ showButton, setShowButton ] = useState(false)
 
-  //let colorVariables = `${counter["0"]}, ${counter["1"]}, ${counter["2"]}`
-
-  //console.log("INS AAA", ins)
-
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
 
-  console.log("TEST KNOWMORE")
-
-  const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
-
-  //Animated.asd
-
   let currIndex = useAnimatedValue(0);
-  
-    const [ c, sC ] = useState([[0, 0, 255], [255, 0, 255]]) // color, setColor
-  
-    let qq = currIndex.interpolate({
-      inputRange: [0, 1],
-      outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
-    });
 
-    let qq2 = currIndex.interpolate({
-      inputRange: [0, 1],
-      outputRange: [`rgba(${c[0][0] * 1}, ${c[0][1]* 1}, ${c[0][2]* 1}, 0.8)`, `rgba(${c[1][0]* 1}, ${c[1][1]* 1}, ${c[1][2]* 1}, 0.8)`]
-    });
+  const [ c, sC ] = useState([[0, 0, 255], [255, 0, 255]]) // color, setColor
+
+  let currentColor = currIndex.interpolate({
+    inputRange: [0, 1],
+    outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
+  });
+
+  const updateValues = (num: any) => {
+    sC(curr => {
+      let copy = [...curr[num]]
+      let randomIndex = Math.floor(Math.random() * 3) // 0, 1 or 2
+      curr[num][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
+      return num === 1 ? [copy, curr[1]] : [curr[0], copy]
+    })
+    nextColor(+Boolean(!num))
+  }
   
-    const updateValues = (num: any) => {
-      sC(curr => {
-        let copy = [...curr[num]]
-        let randomIndex = Math.floor(Math.random() * 3) // 0, 1 or 2
-        curr[num][randomIndex] === 255 ? copy[randomIndex] = 0 : copy[randomIndex] = 255
-        return num === 1 ? [copy, curr[1]] : [curr[0], copy]
-      })
-      nextColor(+Boolean(!num))
-    }
-  
-    const nextColor = (toValue: number) =>
-      Animated.timing(currIndex, { toValue: toValue, duration: 5100, useNativeDriver: true, isInteraction: false }).start(
-        ({finished}) => finished && updateValues(toValue)
-      );
-    
-  
-    //nextColor(1)
-    useEffect(() => {
-      nextColor(1)
-      //loaded && nextColor(1)
-      return () => currIndex.stopAnimation()
-    }, [])
+  const nextColor = (toValue: number) =>
+    Animated.timing(currIndex, { toValue: toValue, duration: 5100, useNativeDriver: true, isInteraction: false }).start(
+      ({finished}) => finished && updateValues(toValue)
+    );
+
+  useEffect(() => {
+    nextColor(1)
+    return () => currIndex.stopAnimation()
+  }, [])
 
   console.log("HEIGHT", height)
   console.log("INS.TOP", ins.top)
   console.log("INS.BOTTOM", ins.bottom)
 
+  const topByHeight = ins.top / height
+  const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
+
   return (
     <View style={s.mainContainer}>
 
-      <Animated.View
-        //style={[ s.linearGradientWrapper2, { backgroundColor: qq2, height: ins.top, width: '100%',zIndex: 4 } ]}
-        style={[ s.linearGradientWrapper2, { backgroundColor: qq, height: ins.top, width: '100%',zIndex: 4 ,opacity: 0.85 /* ,opacity: 0.5 */ } ]}
-        children={
-          <LinearGradient
-            colors={[ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]}
-            //colors={[ 'rgba(0, 0, 0, 0.15)', 'rgba(255, 255, 255, 0.15)' ]}
-            //style={[s.linearGradient2, { height: 320 + 28, width: '100%' }]}
-            style={[ s.linearGradient2, { height: '100%', width: '100%' } ]}
-            //start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
-            start={[ 0, height / ins.top ]} // left, top
-            end={[ 1, 0 ]}
-            //end={[ 1, 0 ]}                                                                                // left, top
-            // start={[ 0, 1 ]} // left, top
-            // end={[ 1, 0 ]}   // left, top
-          />
-        }
-      />
+      {
+        !(state === 'tabletop' && aboutUp) &&
+        <Animated.View
+          style={[ s.linearGradientWrapper, { backgroundColor: currentColor, height: ins.top, zIndex: 4 } ]}
+          children={
+            <LinearGradient
+              colors={linearGradientColors}
+              style={s.linearGradient}
+              start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
+              end={[ 1, 0 ]}                  // left, top
+            />
+          }
+        />
+      }
 
       <Animated.View
-        //style={[ s.linearGradientWrapper, { backgroundColor: qq/* , opacity: 0.9 */  } ]}
-        style={[ s.linearGradientWrapper, { backgroundColor: qq ,top: ins.top * 1 , opacity: 0.85  } ]}
+        style={[ s.linearGradientWrapper, { backgroundColor: currentColor, height: '100%', top: (state === 'tabletop' && aboutUp) ? 0 : ins.top } ]}
         children={
           <LinearGradient
-            colors={[ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]}
-            style={[s.linearGradient, {  }]}
-            start={[ 0, 1 - (ins.top / height) ]} // left, top
-            end={[ 1, (ins.top / height)*-1 ]}   // left, top
-            //end={[ 1, 0 ]}   // left, top
-            // ins.top / height
+            colors={linearGradientColors}
+            style={s.linearGradient}
+            start={[ 0, 1 - topByHeight ]} // left, top
+            end={[ 1, topByHeight * -1 ]}  // left, top
             children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
           />
         }
       />
-  
-
-      
-
-
-
 
       <ScrollView
         ref={scrollRef}
         onScroll={handleScroll}
         persistentScrollbar={true}
         children={
-          <View style={[ s.background, { width: '100%', marginLeft: ins.left/* , marginBottom: ins.bottom */, paddingRight: ins.right } ]}>
+          <View style={[ s.background, { width: '100%', marginLeft: ins.left, paddingRight: ins.right } ]}>
 
             <View style={[ s.buttonContainer, { marginTop: ins.top + 7 } ]}>
 
@@ -261,14 +214,14 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
                 <MaterialCommunityIcons.Button
                   name={ state === 'tabletop' ? 'swap-vertical-bold' : 'swap-horizontal-bold' }
                   size={30}
-                  color='rgba(0, 0, 0, .7)'
+                  color={iconColor}
                   onPress={() => switchSide()}
                   children={ <Text style={s.textInButton} children={'SWITCH\nSCREENS'} /> }
                 /> :
                 <Ionicons.Button
                   name='chevron-back-circle-sharp'
                   size={30}
-                  color='rgba(0, 0, 0, .7)'
+                  color={iconColor}
                   onPress={() => navigate('About')}
                   children={ <Text style={s.textInButton} children={'BACK'} /> }
                 />
@@ -281,7 +234,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
                 <Ionicons.Button
                   name='calculator-sharp'
                   size={30}
-                  color='rgba(0, 0, 0, .7)'
+                  color={iconColor}
                   onPress={() => nextScreen()}
                   children={ <Text style={s.textInButton} children={'HOME'} /> }
                 /> :
@@ -289,7 +242,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
                 <SimpleLineIcons.Button
                   name='question'
                   size={25}
-                  color='rgba(0, 0, 0, .7)'
+                  color={iconColor}
                   onPress={() => nextScreen()}
                   style={{ flex: 1 }}
                   children={ <Text style={s.textInButton} children={'ABOUT'} /> }
@@ -297,7 +250,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
                 <Ionicons.Button
                   name='home'
                   size={30}
-                  color='rgba(0, 0, 0, .7)'
+                  color={iconColor}
                   onPress={() => navigate('Home')}
                   children={ <Text style={s.textInButton} children={'HOME'} /> }
                 />
@@ -308,7 +261,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             <Text style={s.centerText} children={'Welcome to my very first\nAndroid App: A Classic Calculator !'} />
             <Text style={s.leftText} children={'Below I will give you some tips if you have any doubt:'} />
 
-            { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3"/> }
+            { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3" /> }
 
           </View>
         }

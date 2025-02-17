@@ -2,38 +2,22 @@ import { StyleSheet } from 'react-native';
 
 export const s = StyleSheet.create({
   linearGradientWrapper: {
-    height: '100%',
-    width: '100%',
     position: 'absolute',
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 0,
+    width: '100%',
+    opacity: 0.85
   },
   linearGradient: {
     position: 'absolute',
-    left: 0,
-    right: 0,
     height: '100%',
     width: '100%'
   },
-  linearGradientWrapper2: {
-    position: 'absolute'
-  },
-  linearGradient2: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-  },
   mainContainer: {
     height: '100%',
-    //height: '100%',
     width: '100%'
   },
   background: {
     //backgroundColor: 'red', // DEV
-    alignItems: 'center',
-    //transform: [{ rot }]
+    alignItems: 'center'
   },
   centerText: {
     //backgroundColor: 'blue', // DEV
