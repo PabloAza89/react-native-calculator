@@ -3,9 +3,7 @@ import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BootSplash from "react-native-bootsplash";
 import * as Font from 'expo-font';
-import {
-  Image, AppState, Dimensions, useWindowDimensions, NativeModules, NativeEventEmitter
-} from 'react-native';
+import { Image, AppState, Dimensions, useWindowDimensions, NativeModules, NativeEventEmitter } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -32,7 +30,7 @@ const App = (): ReactElement => {
 
   const { width, height } = useWindowDimensions();
 
-  console.log("width", width)
+  //console.log("width", width)
 
   // TEST //
 
@@ -54,8 +52,8 @@ const App = (): ReactElement => {
     return () => subscription?.remove();
   });
 
-  console.log("WINDOW AAA", windowDimensions)
-  console.log("SCREEN AAA", screenDimensions)
+  console.log("WINDOW AAA", dimensions.window)
+  console.log("SCREEN AAA", dimensions.screen)
 
   // TEST //
 
@@ -72,8 +70,8 @@ const App = (): ReactElement => {
   let oph: number = height / 100 // one percent window height
   let vmin: number
   //let port: boolean // PORTRAIT
-  if (width > height) { vmin = oph/* , port = false */ }
-  else { vmin = opw/* , port = true */ }
+  if (width > height) { vmin = oph }
+  else { vmin = opw }
 
   const navigationRef = useNavigationContainerRef();
 
@@ -89,7 +87,6 @@ const App = (): ReactElement => {
 
   useEffect(() => {
     const allPreloads = async () => {
-
       let resInput = await readData("savedInput") // RESPONSE INPUT
       let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
       let resDate = await readData("savedDate") // RESPONSE DATE
@@ -157,7 +154,7 @@ const App = (): ReactElement => {
   }, [input, secInput]);
 
   const saveData = async (key: string, value: string) => {
-    try { await AsyncStorage.setItem(`${key}`, value) }
+    try { await AsyncStorage.setItem(key, value) }
     catch(e) { }
   };
 
@@ -171,7 +168,7 @@ const App = (): ReactElement => {
   const [ showModal, setShowModal ] = useState(false);
   const updateShowModal = (bool: boolean) => setShowModal(bool)
 
-  const { MainActivity, ClassTest } = NativeModules;
+  const { MainActivity } = NativeModules;
 
   const dynamicImport = (props: navigationI, module: any) => {
     switch (module) {
@@ -181,7 +178,7 @@ const App = (): ReactElement => {
           <Home
             {...props} input={input} setInput={setInput}
             setSecInput={setSecInput} secInput={secInput} vmin={vmin}
-            state={state} width={width} height={window.height} /* opw={opw} */
+            state={state} width={width} height={window.height}
             hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
           />
         )
@@ -195,7 +192,7 @@ const App = (): ReactElement => {
         )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
-        return <KnowMore {...props} /* opw={opw} */ height={window.height} state={state} />
+        return <KnowMore {...props} height={window.height} state={state} />
     }
   }
 

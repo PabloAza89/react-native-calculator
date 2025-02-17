@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
-import { Text, TouchableHighlight } from 'react-native';
+import { TouchableHighlight } from 'react-native';
+import { Text } from '../../utils/Text';
 import { s } from './OwnButtonCSS';
 import { Ionicons } from '@expo/vector-icons';
 import { Adder } from '../../utils/Adder';

@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, useRef, useEffect, MutableRefObject } from 'react';
-import { ScrollView, StatusBar, Text, View, Animated,
+import { ScrollView, StatusBar, View, Animated,
   useAnimatedValue, Pressable, TouchableHighlight } from 'react-native';
 import { s } from './HomeCSS';
 import About from '../About/About';
@@ -8,6 +8,7 @@ import KnowMore from '../KnowMore/KnowMore';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeI, counterI, goUpI } from '../../interfaces/interfaces';
+import { Text } from '../../utils/Text';
 import { portButtons, landButtons } from '../../utils/Buttons';
 
 const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,

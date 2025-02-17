@@ -1,7 +1,6 @@
 import { ReactElement, useEffect } from 'react';
-import {
-  Text, View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView
-} from 'react-native';
+import { View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView } from 'react-native';
+import { Text } from '../../utils/Text';
 import { s } from './AboutCSS';
 import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
