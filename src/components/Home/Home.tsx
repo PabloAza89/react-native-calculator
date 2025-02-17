@@ -8,7 +8,7 @@ import KnowMore from '../KnowMore/KnowMore';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeI, counterI, goUpI } from '../../interfaces/interfaces';
-import { portButtons, landButtons } from './Buttons';
+import { portButtons, landButtons } from '../../utils/Buttons';
 
 const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal }: any): ReactElement => {

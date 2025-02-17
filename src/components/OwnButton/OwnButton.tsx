@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { Text, TouchableHighlight } from 'react-native';
 import { s } from './OwnButtonCSS';
 import { Ionicons } from '@expo/vector-icons';
-import { Adder } from '../../functions/adder';
+import { Adder } from '../../utils/Adder';
 import { OwnButtonI } from '../../interfaces/interfaces';
 
 //export function OwnButton({ scrollEnd, parErr, value, input, setInput, smaller, setParErr, setSecInput, vmin }: OwnButtonI): ReactElement {
