@@ -68,6 +68,16 @@ import androidx.core.util.Consumer
 
 //import androidx.window.common.CommonFoldingFeature
 
+import android.os.Build
+import android.view.View
+import androidx.annotation.RequiresApi
+import android.view.WindowInsets
+
+//import android.os.Build
+import android.view.ViewTreeObserver
+import android.widget.LinearLayout
+import com.reactnativecalculator.R
+
 // TEST //
 
 @Suppress("DEPRECATION")
@@ -86,27 +96,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     else { orientation = "landscape" }
 
 
-    // lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
-    //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-    //     WindowInfoTracker.getOrCreate(this@MainActivity)
-    //       .windowLayoutInfo(this@MainActivity)
-    //       .collect { data -> updateUI("CB", data) }
-    //   }
-    // }
-
-    // val windowInfoTracker = WindowInfoTracker.getOrCreate(this@MainActivity)
     
-
-    // fun onWindowLayoutInfoChange() {
-    //   lifecycleScope.launch(Dispatchers.Main) {
-    //       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-    //           windowInfoTracker.windowLayoutInfo(this@MainActivity)
-    //               .collect { value: WindowLayoutInfo -> updateUI("CB", value) }
-    //       }
-    //   }
-    // }
-
-    // onWindowLayoutInfoChange()
 
   }
 
@@ -115,6 +105,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun onResume() {
     super.onResume()
     reactInstanceManager.addReactInstanceEventListener(this)
+
   }
 
   override fun onPause() {
@@ -151,7 +142,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     val windowInfoTracker = WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this@MainActivity))
       
-        
+    val rootView: View = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
 
     val lifecycleEventListener = object: LifecycleEventListener {
       override fun onHostResume() {
@@ -162,10 +153,50 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           listenerCallback
         )
 
+        
+        Log.d("LOG", "ADDED LAYOUT LISTENER");
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(object: ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+              
+
+              @RequiresApi(Build.VERSION_CODES.R)
+              fun getRootWindowInsetsCompatR(rootView: View): Unit? {
+                val insets =
+                    rootView.rootWindowInsets?.getInsets(
+                        WindowInsets.Type.statusBars() or
+                            WindowInsets.Type.displayCutout() or
+                            WindowInsets.Type.navigationBars() or
+                            WindowInsets.Type.captionBar())
+                        ?: return null
+
+                Log.d("LOG", "NEW QQQ ${insets}");
+
+                return null
+                // return EdgeInsets(
+                //     top = insets.top.toFloat(),
+                //     right = insets.right.toFloat(),
+                //     bottom = insets.bottom.toFloat(),
+                //     left = insets.left.toFloat())
+              }
+
+              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getRootWindowInsetsCompatR(rootView) // rootView
+
+              //Log.d("LOG", "TEST TEST TEST ${rootView}");
+              //Log.d("LOG", "TEST TEST TEST ${this}");
+            }
+        })
+
       }
       override fun onHostPause() {
         Log.d("LOG", "REMOVE CALLBACK");
         windowInfoTracker.removeWindowLayoutInfoListener(listenerCallback)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+          rootView.viewTreeObserver.removeOnGlobalLayoutListener(rootView: ViewTreeObserver.OnGlobalLayoutListener!)
+          Log.d("LOG", "REMOVE LAYOUT LISTENER");
+        } else {
+          rootView.viewTreeObserver.removeGlobalOnLayoutListener(rootView: ViewTreeObserver.OnGlobalLayoutListener!)
+          Log.d("LOG", "REMOVE LAYOUT LISTENER");
+        }
       }
       override fun onHostDestroy() { }
     }
@@ -214,14 +245,47 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       val boundsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity).bounds
 
       val wm = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
-      Log.d("LOG", "CURR WIDTH ${wm.width()}");
-      Log.d("LOG", "CURR HEIGHT ${wm.height()}");
+      //Log.d("LOG", "CURR WIDTH ${wm.width()}");
+      //Log.d("LOG", "CURR HEIGHT ${wm.height()}");
 
       val wmWidth = wm.width() / dotsPerInch;
       val wmHeight = wm.height() / dotsPerInch;
 
       windowMap.putDouble("width", wmWidth);
       windowMap.putDouble("height", wmHeight);
+
+      // TEST //
+
+      // val qqq = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
+
+      // @RequiresApi(Build.VERSION_CODES.R)
+      // fun getRootWindowInsetsCompatR(rootView: View): Unit? {
+      //   val insets =
+      //       rootView.rootWindowInsets?.getInsets(
+      //           WindowInsets.Type.statusBars() or
+      //               WindowInsets.Type.displayCutout() or
+      //               WindowInsets.Type.navigationBars() or
+      //               WindowInsets.Type.captionBar())
+      //           ?: return null
+
+      //   Log.d("LOG", "NEW QQQ ${insets}");
+
+      //   return null
+      //   // return EdgeInsets(
+      //   //     top = insets.top.toFloat(),
+      //   //     right = insets.right.toFloat(),
+      //   //     bottom = insets.bottom.toFloat(),
+      //   //     left = insets.left.toFloat())
+      // }
+
+      // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getRootWindowInsetsCompatR(qqq) // rootView
+      // else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) getRootWindowInsetsCompatM(rootView)
+      // else -> getRootWindowInsetsCompatBase(rootView)
+
+      //val qqq = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
+      //Log.d("LOG", "NEW QQQ ${qqq}");
+
+      // TEST //
 
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
 
@@ -297,13 +361,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
     when (newConfig.orientation) {
-      Configuration.ORIENTATION_LANDSCAPE -> { orientation = "landscape" }
-      Configuration.ORIENTATION_PORTRAIT -> { orientation = "portrait" }
+      Configuration.ORIENTATION_LANDSCAPE -> { orientation = "landscape"; Log.d("LOG", "NEW ORIENTATION LANDSCAPE"); }
+      Configuration.ORIENTATION_PORTRAIT -> { orientation = "portrait"; Log.d("LOG", "NEW ORIENTATION PORTRAIT"); }
     }
     when (newConfig.screenLayout) {
       newConfig.screenLayout -> {
         Log.d("LOG", "[]POSITION");
         if (canUpdate) updateUI("POS", null)
+
       }
     }
   }

@@ -63,7 +63,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     <About
       navigation={navigation} vmin={vmin}
       //currWidth={ hingeBounds === undefined ? width : calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
-      currWidth={
+      width={
         state === 'book' && calcLeft ? width - hingeBounds.right - ins.right :
         state === 'book' && !calcLeft ? hingeBounds.left - ins.left :
         width
@@ -236,6 +236,8 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     nextColor(1)
     return () => currIndex.stopAnimation()
   }, [])
+
+  console.log("INS", ins)
 
   return (
     <View style={s.background}>

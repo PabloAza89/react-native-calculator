@@ -9,6 +9,7 @@ import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { StackAnimationTypes } from "react-native-screens";
 import { dimI, navigationI } from './src/interfaces/interfaces';
+import { SafeAreaProvider, initialWindowMetrics, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,10 @@ const App = (): ReactElement => {
   //console.log("width", width)
 
   // TEST //
+
+  //let ins = useSafeAreaInsets(); // insets
+
+  //console.log("initialWindowMetrics", initialWindowMetrics?.insets)
 
   // const windowDimensionss = Dimensions.get('window');
   // const screenDimensionss = Dimensions.get('screen');
@@ -59,7 +64,7 @@ const App = (): ReactElement => {
 
   let navBar = useRef<boolean>(true)
 
-  let updateNavBar = async() => {
+  let updateNavBar = async () => {
     const dim = Object.assign({}, ...(["screen", "window"] as "screen"[] | "window"[]).map((e) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } })) as dimI
 
     if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) navBar.current = true // > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP (Density-independent Pixels)
