@@ -142,7 +142,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     val windowInfoTracker = WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this@MainActivity))
       
-    val rootView: View = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
+    var rootView: View = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
+    lateinit var layoutListener: ViewTreeObserver.OnGlobalLayoutListener
 
     val lifecycleEventListener = object: LifecycleEventListener {
       override fun onHostResume() {
@@ -153,11 +154,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           listenerCallback
         )
 
-        
-        Log.d("LOG", "ADDED LAYOUT LISTENER");
-        rootView.viewTreeObserver.addOnGlobalLayoutListener(object: ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-              
+        layoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+
+         
 
               @RequiresApi(Build.VERSION_CODES.R)
               fun getRootWindowInsetsCompatR(rootView: View): Unit? {
@@ -183,18 +182,24 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
               //Log.d("LOG", "TEST TEST TEST ${rootView}");
               //Log.d("LOG", "TEST TEST TEST ${this}");
-            }
-        })
+            
+
+          //rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+        }
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
+        Log.d("LOG", "ADDED LAYOUT LISTENER");
+
+   
 
       }
       override fun onHostPause() {
         Log.d("LOG", "REMOVE CALLBACK");
         windowInfoTracker.removeWindowLayoutInfoListener(listenerCallback)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-          rootView.viewTreeObserver.removeOnGlobalLayoutListener(rootView: ViewTreeObserver.OnGlobalLayoutListener!)
+          rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
           Log.d("LOG", "REMOVE LAYOUT LISTENER");
         } else {
-          rootView.viewTreeObserver.removeGlobalOnLayoutListener(rootView: ViewTreeObserver.OnGlobalLayoutListener!)
+          rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
           Log.d("LOG", "REMOVE LAYOUT LISTENER");
         }
       }
