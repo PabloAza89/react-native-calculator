@@ -27,7 +27,8 @@ import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
-import com.reactnativecalculator.hnoListParsedClass
+import com.reactnativecalculator.hingeBoundsClass
+import com.reactnativecalculator.currentInsetsClass
 
 import com.zoontek.rnbootsplash.RNBootSplash
 
@@ -77,6 +78,9 @@ import android.view.WindowInsets
 import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import com.reactnativecalculator.R
+
+//import java.awt.Insets
+import android.graphics.Insets 
 
 // TEST //
 
@@ -144,6 +148,11 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       
     var rootView: View = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
     lateinit var layoutListener: ViewTreeObserver.OnGlobalLayoutListener
+    //val currentInsets = currentInsetsClass()
+    //val currentInsets = Insets(int top, int left, int bottom, int right)
+    val currentInsets = Insets.of(0,60,0,60)
+
+                
 
     val lifecycleEventListener = object: LifecycleEventListener {
       override fun onHostResume() {
@@ -154,23 +163,27 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           listenerCallback
         )
 
+
         layoutListener = ViewTreeObserver.OnGlobalLayoutListener {
 
          
 
               @RequiresApi(Build.VERSION_CODES.R)
-              fun getRootWindowInsetsCompatR(rootView: View): Unit? {
+              fun getRootWindowInsetsCompatR(rootView: View): Unit {
                 val insets =
-                    rootView.rootWindowInsets?.getInsets(
-                        WindowInsets.Type.statusBars() or
-                            WindowInsets.Type.displayCutout() or
-                            WindowInsets.Type.navigationBars() or
-                            WindowInsets.Type.captionBar())
-                        ?: return null
+                  rootView.rootWindowInsets?.getInsets(
+                    WindowInsets.Type.statusBars() or
+                    WindowInsets.Type.displayCutout() or
+                    WindowInsets.Type.navigationBars() or
+                    WindowInsets.Type.captionBar()
+                  )
 
-                Log.d("LOG", "NEW QQQ ${insets}");
+                //Log.d("LOG", "NEW QQQ ${insets?.equals(insets) }");
+                //Log.d("LOG", "NEW QQQ ${insets!!::class.simpleName}");
+                Log.d("LOG", "NEW QQQ ${insets?.equals(currentInsets) }");
 
-                return null
+                //return Unit
+                //return null
                 // return EdgeInsets(
                 //     top = insets.top.toFloat(),
                 //     right = insets.right.toFloat(),
@@ -185,6 +198,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
             
 
           //rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+
+          // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+          //   rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+          //   Log.d("LOG", "REMOVE LAYOUT LISTENER >= JELLY BEAN");
+          // } else {
+          //   rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
+          //   Log.d("LOG", "REMOVE LAYOUT LISTENER OTHER");
+          // }
         }
         rootView.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
         Log.d("LOG", "ADDED LAYOUT LISTENER");
@@ -197,10 +218,10 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         windowInfoTracker.removeWindowLayoutInfoListener(listenerCallback)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
           rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
-          Log.d("LOG", "REMOVE LAYOUT LISTENER");
+          Log.d("LOG", "REMOVE LAYOUT LISTENER >= JELLY BEAN");
         } else {
           rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
-          Log.d("LOG", "REMOVE LAYOUT LISTENER");
+          Log.d("LOG", "REMOVE LAYOUT LISTENER OTHER");
         }
       }
       override fun onHostDestroy() { }
@@ -310,13 +331,13 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
       var state: String = "portrait";
 
-      val hnoListParsed = hnoListParsedClass()
+      val hingeBounds = hingeBoundsClass()
 
       if (foldingFeature != null) {
-        hnoListParsed.left = foldingFeature.bounds.left / dotsPerInch
-        hnoListParsed.top = foldingFeature.bounds.top / dotsPerInch
-        hnoListParsed.right = foldingFeature.bounds.right / dotsPerInch
-        hnoListParsed.bottom = foldingFeature.bounds.bottom / dotsPerInch
+        hingeBounds.left = foldingFeature.bounds.left / dotsPerInch
+        hingeBounds.top = foldingFeature.bounds.top / dotsPerInch
+        hingeBounds.right = foldingFeature.bounds.right / dotsPerInch
+        hingeBounds.bottom = foldingFeature.bounds.bottom / dotsPerInch
 
         state = //"landscape"
           if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "fullscreen"
@@ -324,10 +345,10 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           else "book"
       } else { state = orientation }
 
-      hingeBoundsMap.putDouble("left", hnoListParsed.left)
-      hingeBoundsMap.putDouble("top", hnoListParsed.top)
-      hingeBoundsMap.putDouble("right", hnoListParsed.right)
-      hingeBoundsMap.putDouble("bottom", hnoListParsed.bottom)
+      hingeBoundsMap.putDouble("left", hingeBounds.left)
+      hingeBoundsMap.putDouble("top", hingeBounds.top)
+      hingeBoundsMap.putDouble("right", hingeBounds.right)
+      hingeBoundsMap.putDouble("bottom", hingeBounds.bottom)
 
       //Log.d("LOG", "windowMap ${windowMap}");
       //Log.d("LOG", "screenMap ${screenMap}");

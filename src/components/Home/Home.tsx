@@ -27,6 +27,13 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   let ins = useSafeAreaInsets(); // insets
 
+  // const  ins = {
+  //   left: 1,
+  //   top: 1,
+  //   right: 1,
+  //   bottom: 1
+  // }
+
   const [ parErr, setParErr ] = useState(false);
 
   useEffect(() => scrollEnd(), [input])
@@ -233,11 +240,12 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     );
 
   useEffect(() => {
-    nextColor(1)
+    state === 'tabletop' && nextColor(1)
     return () => currIndex.stopAnimation()
-  }, [])
+  }, [state])
 
-  console.log("INS", ins)
+  //console.log("INS", ins)
+  console.log("TEST 123")
 
   return (
     <View style={s.background}>
