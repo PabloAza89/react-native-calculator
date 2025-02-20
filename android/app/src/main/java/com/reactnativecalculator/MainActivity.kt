@@ -180,7 +180,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
               @RequiresApi(Build.VERSION_CODES.R)
               fun getRootWindowInsetsCompatR(rootView: View): Unit {
-                val insets =
+                val newInsets =
                   rootView.rootWindowInsets?.getInsets(
                     WindowInsets.Type.statusBars() or
                     WindowInsets.Type.displayCutout() or
@@ -198,11 +198,17 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
                 //Log.d("LOG", "FIRST IS INIT ${::currentInsets.isInitialized}");
                 
 
-                if (insets !== null) {
-                  if (!::currentInsets.isInitialized || !currentInsets.equals(insets)) {
-                    currentInsets = insets
+                if (newInsets !== null) {
+                  if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) {
+                    currentInsets = newInsets
                     Log.d("LOG", "LAUNCHED NEW VALUE");
-                  } 
+
+                    context // context.getJSModule()?.emit()
+                      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                      ?.emit("TEST", "${currentInsets}")
+
+
+                  }
                 }
 
                 //Log.d("LOG", "SECOND TEST ${::currentInsets.isInitialized}");

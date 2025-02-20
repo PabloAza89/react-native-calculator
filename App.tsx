@@ -231,7 +231,14 @@ const App = (): ReactElement => {
       setWindow(e.window)
       setVmin(e.window.width > e.window.height ? e.window.height / 100 : e.window.width / 100)
     });
-    return () => LayoutInfoListener.remove();
+
+    let testListener = nativeEvent.addListener('TEST', e => {
+      //console.log("screen", e.screen)
+      console.log("TEST RESPONSE", e) // WINDOW BOUNDS (APP SIZE)
+    });
+
+    //return () => LayoutInfoListener.remove();
+    return () => { LayoutInfoListener.remove(); testListener.remove() };
   }, []);
 
   return (
