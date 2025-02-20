@@ -60,6 +60,8 @@ const App = (): ReactElement => {
   // console.log("WINDOW AAA", dimensions.window)
   // console.log("SCREEN AAA", dimensions.screen)
 
+  console.log("APP CONSOLE LOG")
+
   // TEST //
 
   let navBar = useRef<boolean>(true)
@@ -136,6 +138,9 @@ const App = (): ReactElement => {
       })
     }
     allPreloads()
+
+    
+
   }, []);
 
   const [ secInput, setSecInput ] = useState("");
@@ -232,13 +237,13 @@ const App = (): ReactElement => {
       setVmin(e.window.width > e.window.height ? e.window.height / 100 : e.window.width / 100)
     });
 
-    let testListener = nativeEvent.addListener('TEST', e => {
+    let insetsListener = nativeEvent.addListener('insets', e => {
       //console.log("screen", e.screen)
-      console.log("TEST RESPONSE", e) // WINDOW BOUNDS (APP SIZE)
+      console.log("INSETS RESPONSE", e) // WINDOW BOUNDS (APP SIZE)
     });
 
     //return () => LayoutInfoListener.remove();
-    return () => { LayoutInfoListener.remove(); testListener.remove() };
+    return () => { LayoutInfoListener.remove(); insetsListener.remove() };
   }, []);
 
   return (

@@ -25,14 +25,14 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     lastRoute === 'About' && setShowKnowMore(false)
   }, [route])
 
-  let ins = useSafeAreaInsets(); // insets
+  //let ins = useSafeAreaInsets(); // insets
 
-  // const  ins = {
-  //   left: 1,
-  //   top: 1,
-  //   right: 1,
-  //   bottom: 1
-  // }
+  const  ins = {
+    left: 1,
+    top: 1,
+    right: 1,
+    bottom: 1
+  }
 
   const [ parErr, setParErr ] = useState(false);
 

@@ -28,7 +28,7 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
 import com.reactnativecalculator.hingeBoundsClass
-import com.reactnativecalculator.currentInsetsClass
+//import com.reactnativecalculator.currentInsetsClass
 
 import com.zoontek.rnbootsplash.RNBootSplash
 
@@ -80,7 +80,8 @@ import android.widget.LinearLayout
 import com.reactnativecalculator.R
 
 //import java.awt.Insets
-import android.graphics.Insets 
+import android.graphics.Insets
+import kotlin.properties.Delegates
 
 // TEST //
 
@@ -89,7 +90,12 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   var orientation: String = "portrait" // DEFAULT
   var canUpdate: Boolean = true
+  //val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
+  //lateinit var dotsPerInch: Double
+  var dotsPerInch: Double by Delegates.notNull<Double>()
+  //var count: Int by Delegates.notNull<Int>()
   lateinit var currentInsets: Insets
+  //val currentInsets = currentInsetsClass()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
@@ -100,6 +106,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     if (firstOrientation == Configuration.ORIENTATION_PORTRAIT) { orientation = "portrait" }
     else { orientation = "landscape" }
 
+    dotsPerInch = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
+
+    //Log.d("LOG", "A VER ${this@MainActivity.resources.displayMetrics}");
 
     
 
@@ -149,6 +158,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       
     var rootView: View = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
     lateinit var layoutListener: ViewTreeObserver.OnGlobalLayoutListener
+    //val insetsMap = Arguments.createMap()
+    //val hingeBounds = currentInsetsClass()
     //val currentInsets = currentInsetsClass()
     //val currentInsets = Insets(int top, int left, int bottom, int right)
     //lateinit var currentInsets: Insets
@@ -159,8 +170,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     //     // you can also put other local properties that you want to reference here
     //     // in the same object, provided that they are in the same scope
     // }
-
-                
 
     val lifecycleEventListener = object: LifecycleEventListener {
       override fun onHostResume() {
@@ -180,6 +189,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
               @RequiresApi(Build.VERSION_CODES.R)
               fun getRootWindowInsetsCompatR(rootView: View): Unit {
+
+                val insetsMap = Arguments.createMap()
+
                 val newInsets =
                   rootView.rootWindowInsets?.getInsets(
                     WindowInsets.Type.statusBars() or
@@ -202,10 +214,30 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
                   if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) {
                     currentInsets = newInsets
                     Log.d("LOG", "LAUNCHED NEW VALUE");
+                    Log.d("LOG", "LAUNCHED NEW VALUEASD ${dotsPerInch}");
+                    
+                    // currentInsets.left = currentInsets.left / dotsPerInch
+                    // currentInsets.top = currentInsets.top / dotsPerInch
+                    // currentInsets.right = currentInsets.right / dotsPerInch
+                    // currentInsets.bottom = currentInsets.bottom / dotsPerInch
+
+                    insetsMap.putDouble("left", newInsets.left.toDouble() / dotsPerInch)
+                    insetsMap.putDouble("top", newInsets.top.toDouble() / dotsPerInch)
+                    insetsMap.putDouble("right", newInsets.right.toDouble() / dotsPerInch)
+                    insetsMap.putDouble("bottom", newInsets.bottom.toDouble() / dotsPerInch)
+
+                    // insetsMap.putDouble("left", 0.00)
+                    // insetsMap.putDouble("top", 0.00)
+                    // insetsMap.putDouble("right", 0.00)
+                    // insetsMap.putDouble("bottom", 0.00)
+
+                    // context // context.getJSModule()?.emit()
+                    //   .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                    //   ?.emit("insets", insetsMap)
 
                     context // context.getJSModule()?.emit()
                       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                      ?.emit("TEST", "${currentInsets}")
+                      ?.emit("insets", insetsMap)
 
 
                   }
@@ -244,6 +276,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           //   rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
           //   Log.d("LOG", "REMOVE LAYOUT LISTENER OTHER");
           // }
+
+          }
         }
         rootView.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
         Log.d("LOG", "ADDED LAYOUT LISTENER");
@@ -274,8 +308,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   //fun updateUI(windowLayoutInfo: WindowLayoutInfo, context: ReactContext) {
   //fun updateUI(context: ReactContext) {
 
-  
-
   fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?) {
 
     canUpdate = false
@@ -304,7 +336,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       val windowMap = Arguments.createMap()
       val hingeBoundsMap = Arguments.createMap()
 
-      val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
+      //val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
       val boundsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
       val boundsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity).bounds
 
