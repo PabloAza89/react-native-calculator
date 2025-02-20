@@ -78,6 +78,7 @@ const App = (): ReactElement => {
   //let vmin: number
 
   const [ vmin, setVmin ] = useState<number>(0);
+  const [ insets, setInsets ] = useState({ "left": 0, "top": 0, "bottom": 0, "right": 0 });
 
   //let port: boolean // PORTRAIT
   //if (width > height) { setvmin = 0 }
@@ -193,6 +194,7 @@ const App = (): ReactElement => {
             setSecInput={setSecInput} secInput={secInput} vmin={vmin}
             state={state} width={window.width} height={window.height}
             hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
+            ins={insets}
           />
         )
       case "About":
@@ -201,11 +203,12 @@ const App = (): ReactElement => {
           <About
             {...props} vmin={vmin} width={window.width} showModal={showModal}
             updateShowModal={updateShowModal} state={state} twoScreens={false}
+            ins={insets}
           />
         )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
-        return <KnowMore {...props} height={window.height} state={state} />
+        return <KnowMore {...props} height={window.height} state={state} ins={insets} />
     }
   }
 
@@ -240,6 +243,7 @@ const App = (): ReactElement => {
     let insetsListener = nativeEvent.addListener('insets', e => {
       //console.log("screen", e.screen)
       console.log("INSETS RESPONSE", e) // WINDOW BOUNDS (APP SIZE)
+      setInsets(e)
     });
 
     //return () => LayoutInfoListener.remove();

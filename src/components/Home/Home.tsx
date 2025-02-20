@@ -12,7 +12,7 @@ import { Text } from '../../utils/Text';
 import { portButtons, landButtons } from '../../utils/Buttons';
 
 const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
-  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal }: any): ReactElement => {
+  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins }: any): ReactElement => {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
   const { navigate } = navigation
@@ -27,12 +27,12 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   //let ins = useSafeAreaInsets(); // insets
 
-  const  ins = {
-    left: 1,
-    top: 1,
-    right: 1,
-    bottom: 1
-  }
+  // const  ins = {
+  //   left: 1,
+  //   top: 1,
+  //   right: 1,
+  //   bottom: 1
+  // }
 
   const [ parErr, setParErr ] = useState(false);
 
@@ -245,7 +245,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   }, [state])
 
   //console.log("INS", ins)
-  console.log("TEST 123")
+  console.log("HOME CONSOLE LOG")
 
   return (
     <View style={s.background}>

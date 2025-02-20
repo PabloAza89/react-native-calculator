@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AboutI } from '../../interfaces/interfaces';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp }: any): ReactElement => {
+const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins }: any): ReactElement => {
 
   const { navigate } = navigation
 
@@ -17,7 +17,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
     (navigation.getState().routes.at(-1).name === 'About' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'About' })
   }, [state])
 
-  let ins = useSafeAreaInsets();
+  //let ins = useSafeAreaInsets();
 
   const fadeAnim = useAnimatedValue(0);
 

@@ -11,7 +11,7 @@ import { Text } from '../../utils/Text';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
-const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds }: any): ReactElement => {
+const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins }: any): ReactElement => {
 
   const { navigate } = navigation;
 
@@ -19,7 +19,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     (navigation.getState().routes.at(-1).name === 'KnowMore' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'KnowMore' })
   }, [state])
 
-  let ins = useSafeAreaInsets(); // insets
+  //let ins = useSafeAreaInsets(); // insets
 
   const scrollRef = useRef<ScrollView>(null);
 
