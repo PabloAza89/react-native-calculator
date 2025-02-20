@@ -89,6 +89,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   var orientation: String = "portrait" // DEFAULT
   var canUpdate: Boolean = true
+  lateinit var currentInsets: Insets
 
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
@@ -150,7 +151,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     lateinit var layoutListener: ViewTreeObserver.OnGlobalLayoutListener
     //val currentInsets = currentInsetsClass()
     //val currentInsets = Insets(int top, int left, int bottom, int right)
-    val currentInsets = Insets.of(0,60,0,60)
+    //lateinit var currentInsets: Insets
+
+    // val foo = object {
+    //   lateinit var currentInsets: Insets
+    //     //var vIndex = 0
+    //     // you can also put other local properties that you want to reference here
+    //     // in the same object, provided that they are in the same scope
+    // }
 
                 
 
@@ -163,10 +171,12 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           listenerCallback
         )
 
+        
+
 
         layoutListener = ViewTreeObserver.OnGlobalLayoutListener {
 
-         
+              //lateinit var currentInsets: Insets
 
               @RequiresApi(Build.VERSION_CODES.R)
               fun getRootWindowInsetsCompatR(rootView: View): Unit {
@@ -178,9 +188,31 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
                     WindowInsets.Type.captionBar()
                   )
 
+                //val qq = ::currentInsets.isInitialized
+                //val qq = currentInsets.isInitialized
+                //Log.d("LOG", "NEW QQQ ${this::currentInsets.isInitialized}");
+                //Log.d("LOG", "${foo::currentInsets.isInitialized}");
+
+                //val qq = ::currentInsets.isInitialized
+                //Log.d("LOG", "FIRST IS INIT ${::currentInsets.isInitialized}");
+                //Log.d("LOG", "FIRST IS INIT ${::currentInsets.isInitialized}");
+                
+
+                if (insets !== null) {
+                  if (!::currentInsets.isInitialized || !currentInsets.equals(insets)) {
+                    currentInsets = insets
+                    Log.d("LOG", "LAUNCHED NEW VALUE");
+                  } 
+                }
+
+                //Log.d("LOG", "SECOND TEST ${::currentInsets.isInitialized}");
+                Log.d("LOG", "CURRENT ${currentInsets}");
+
+                // Insets.of(0,60,0,60)
+
                 //Log.d("LOG", "NEW QQQ ${insets?.equals(insets) }");
                 //Log.d("LOG", "NEW QQQ ${insets!!::class.simpleName}");
-                Log.d("LOG", "NEW QQQ ${insets?.equals(currentInsets) }");
+                //Log.d("LOG", "NEW QQQ ${insets?.equals(currentInsets) }");
 
                 //return Unit
                 //return null
