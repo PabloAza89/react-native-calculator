@@ -129,20 +129,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   override fun onReactContextInitialized(context: ReactContext) {
 
-    //val wm = this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    //val resp = wm.currentWindowMetrics?.bounds
-    // val test = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
-
-    // Log.d("LOG", "CURR WIN ${test}");
-
-
-    // lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
-    //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-    //     WindowInfoTracker.getOrCreate(this@MainActivity)
-    //       .windowLayoutInfo(this@MainActivity)
-    //       .collect { data -> updateUI("CB", data) }
-    //   }
-    // }
 
     class ListenerCallback : Consumer<WindowLayoutInfo> {
       override fun accept(newLayoutInfo: WindowLayoutInfo) {
@@ -158,18 +144,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       
     var rootView: View = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
     lateinit var layoutListener: ViewTreeObserver.OnGlobalLayoutListener
-    //val insetsMap = Arguments.createMap()
-    //val hingeBounds = currentInsetsClass()
-    //val currentInsets = currentInsetsClass()
-    //val currentInsets = Insets(int top, int left, int bottom, int right)
-    //lateinit var currentInsets: Insets
-
-    // val foo = object {
-    //   lateinit var currentInsets: Insets
-    //     //var vIndex = 0
-    //     // you can also put other local properties that you want to reference here
-    //     // in the same object, provided that they are in the same scope
-    // }
 
     val lifecycleEventListener = object: LifecycleEventListener {
       override fun onHostResume() {
@@ -183,104 +157,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         
 
 
-        layoutListener = ViewTreeObserver.OnGlobalLayoutListener {
 
-              //lateinit var currentInsets: Insets
-
-              @RequiresApi(Build.VERSION_CODES.R)
-              fun getRootWindowInsetsCompatR(rootView: View): Unit {
-
-                val insetsMap = Arguments.createMap()
-
-                val newInsets =
-                  rootView.rootWindowInsets?.getInsets(
-                    WindowInsets.Type.statusBars() or
-                    WindowInsets.Type.displayCutout() or
-                    WindowInsets.Type.navigationBars() or
-                    WindowInsets.Type.captionBar()
-                  )
-
-                //val qq = ::currentInsets.isInitialized
-                //val qq = currentInsets.isInitialized
-                //Log.d("LOG", "NEW QQQ ${this::currentInsets.isInitialized}");
-                //Log.d("LOG", "${foo::currentInsets.isInitialized}");
-
-                //val qq = ::currentInsets.isInitialized
-                //Log.d("LOG", "FIRST IS INIT ${::currentInsets.isInitialized}");
-                //Log.d("LOG", "FIRST IS INIT ${::currentInsets.isInitialized}");
-                
-
-                if (newInsets !== null) {
-                  if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) {
-                    currentInsets = newInsets
-                    Log.d("LOG", "LAUNCHED NEW VALUE");
-                    Log.d("LOG", "LAUNCHED NEW VALUEASD ${dotsPerInch}");
-                    
-                    // currentInsets.left = currentInsets.left / dotsPerInch
-                    // currentInsets.top = currentInsets.top / dotsPerInch
-                    // currentInsets.right = currentInsets.right / dotsPerInch
-                    // currentInsets.bottom = currentInsets.bottom / dotsPerInch
-
-                    insetsMap.putDouble("left", newInsets.left.toDouble() / dotsPerInch)
-                    insetsMap.putDouble("top", newInsets.top.toDouble() / dotsPerInch)
-                    insetsMap.putDouble("right", newInsets.right.toDouble() / dotsPerInch)
-                    insetsMap.putDouble("bottom", newInsets.bottom.toDouble() / dotsPerInch)
-
-                    // insetsMap.putDouble("left", 0.00)
-                    // insetsMap.putDouble("top", 0.00)
-                    // insetsMap.putDouble("right", 0.00)
-                    // insetsMap.putDouble("bottom", 0.00)
-
-                    // context // context.getJSModule()?.emit()
-                    //   .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                    //   ?.emit("insets", insetsMap)
-
-                    context // context.getJSModule()?.emit()
-                      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                      ?.emit("insets", insetsMap)
-
-
-                  }
-                }
-
-                //Log.d("LOG", "SECOND TEST ${::currentInsets.isInitialized}");
-                Log.d("LOG", "CURRENT ${currentInsets}");
-
-                // Insets.of(0,60,0,60)
-
-                //Log.d("LOG", "NEW QQQ ${insets?.equals(insets) }");
-                //Log.d("LOG", "NEW QQQ ${insets!!::class.simpleName}");
-                //Log.d("LOG", "NEW QQQ ${insets?.equals(currentInsets) }");
-
-                //return Unit
-                //return null
-                // return EdgeInsets(
-                //     top = insets.top.toFloat(),
-                //     right = insets.right.toFloat(),
-                //     bottom = insets.bottom.toFloat(),
-                //     left = insets.left.toFloat())
-              }
-
-              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getRootWindowInsetsCompatR(rootView) // rootView
-
-              //Log.d("LOG", "TEST TEST TEST ${rootView}");
-              //Log.d("LOG", "TEST TEST TEST ${this}");
-            
-
-          //rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
-
-          // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-          //   rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
-          //   Log.d("LOG", "REMOVE LAYOUT LISTENER >= JELLY BEAN");
-          // } else {
-          //   rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
-          //   Log.d("LOG", "REMOVE LAYOUT LISTENER OTHER");
-          // }
-
-          }
-        }
-        rootView.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
-        Log.d("LOG", "ADDED LAYOUT LISTENER");
 
    
 
@@ -288,13 +165,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       override fun onHostPause() {
         Log.d("LOG", "REMOVE CALLBACK");
         windowInfoTracker.removeWindowLayoutInfoListener(listenerCallback)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-          rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
-          Log.d("LOG", "REMOVE LAYOUT LISTENER >= JELLY BEAN");
-        } else {
-          rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
-          Log.d("LOG", "REMOVE LAYOUT LISTENER OTHER");
-        }
+        
       }
       override fun onHostDestroy() { }
     }
@@ -305,8 +176,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   }
 
-  //fun updateUI(windowLayoutInfo: WindowLayoutInfo, context: ReactContext) {
-  //fun updateUI(context: ReactContext) {
 
   fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?) {
 

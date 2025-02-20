@@ -6,7 +6,6 @@ import {
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '../../utils/Text';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
