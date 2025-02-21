@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="splashscreen_background">#3737A8</color> <!-- DARK BLUE -->
-  <color name="bar">#3737A8</color> <!-- DARK BLUE -->
-  <color name="transparent">#00000000</color>
+  <color name="darkBlue">#3737A8</color>
 </resources>
