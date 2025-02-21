@@ -1,7 +1,5 @@
 {
   "name": "reactNativeCalculator",
   "displayName": "reactNativeCalculator",
-  "plugins": [
-    "expo-font"
-  ]
+  "plugins": [ "expo-font" ]
 }

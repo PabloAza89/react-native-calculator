@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { StackAnimationTypes } from "react-native-screens";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { dimI, navigationI } from './src/interfaces/interfaces';
 
 const Stack = createNativeStackNavigator();
@@ -18,8 +19,22 @@ const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screen
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
-        navigationBarColor: navBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
-        animation: animation
+        //cardStyle: { backgroundColor: 'transparent' },
+        //navigationBarColor: 'red',
+        // navigationBarColor: navBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
+        //navigationBarColor: 'rgba(0, 0, 0, 0.5)',
+        //navigationBarColor: 'lightblue',
+        navigationBarColor: 'rgba(0, 255, 0, 0.0)',
+        //navigationBarColor: navBar ? 'red' : 'red',
+        animation: animation,
+        //statusBarHidden: false // NO
+        //statusBarStyle: 'dark' // NO
+        //statusBarColor: 'transparent',
+        statusBarTranslucent: true,
+        statusBarStyle: 'dark',
+        //navigationBarColor: true
+        //navigationBarHidden: true
+        //fullScreenGestureEnabled: false
       }}
       children={ screens.map((e: ReactElement) => e) }
     />
@@ -253,8 +268,10 @@ const App = (): ReactElement => {
     <NavigationContainer
       ref={navigationRef}
       initialState={initialState}
-      children={ NavigatorMapper(animation, navBar.current, stackScreens) }
-    />
+      //children={ NavigatorMapper(animation, navBar.current, stackScreens) }
+    >
+      { NavigatorMapper(animation, navBar.current, stackScreens) }
+    </NavigationContainer>
   );
 }
 

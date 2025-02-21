@@ -83,6 +83,8 @@ import com.reactnativecalculator.R
 import android.graphics.Insets
 import kotlin.properties.Delegates
 
+import androidx.core.view.WindowCompat
+
 // TEST //
 
 @Suppress("DEPRECATION")
@@ -100,6 +102,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
+    WindowCompat.setDecorFitsSystemWindows(window, false)
     Log.d("LOG", "EXECUTED CREATE");
 
     val firstOrientation = this@MainActivity.resources.configuration.orientation
