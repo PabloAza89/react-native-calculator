@@ -154,7 +154,51 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           listenerCallback
         )
 
-        
+        layoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+
+          @RequiresApi(Build.VERSION_CODES.R)
+          fun getRootWindowInsetsCompatR(rootView: View): Unit {
+
+            val insetsMap = Arguments.createMap()
+
+            val newInsets =
+              rootView.rootWindowInsets?.getInsets(
+                WindowInsets.Type.statusBars() or
+                WindowInsets.Type.displayCutout() or
+                WindowInsets.Type.navigationBars() or
+                WindowInsets.Type.captionBar()
+              )
+
+            if (newInsets !== null) {
+              if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) {
+                currentInsets = newInsets
+                Log.d("LOG", "LAUNCHED NEW VALUEASD ${dotsPerInch}");
+
+                insetsMap.putDouble("left", newInsets.left.toDouble() / dotsPerInch)
+                insetsMap.putDouble("top", newInsets.top.toDouble() / dotsPerInch)
+                insetsMap.putDouble("right", newInsets.right.toDouble() / dotsPerInch)
+                insetsMap.putDouble("bottom", newInsets.bottom.toDouble() / dotsPerInch)
+
+                context // context.getJSModule()?.emit()
+                  .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                  ?.emit("insets", insetsMap)
+              }
+            }
+
+            Log.d("LOG", "CURRENT ${currentInsets}");
+
+          }
+
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getRootWindowInsetsCompatR(rootView) // rootView
+
+        }
+
+
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
+        Log.d("LOG", "ADDED LAYOUT LISTENER");
+
+
+
 
 
 
@@ -165,6 +209,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       override fun onHostPause() {
         Log.d("LOG", "REMOVE CALLBACK");
         windowInfoTracker.removeWindowLayoutInfoListener(listenerCallback)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+          rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+          Log.d("LOG", "REMOVE LAYOUT LISTENER >= JELLY BEAN");
+        } else {
+          rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
+          Log.d("LOG", "REMOVE LAYOUT LISTENER OTHER");
+        }
         
       }
       override fun onHostDestroy() { }
