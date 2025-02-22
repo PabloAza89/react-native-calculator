@@ -4,7 +4,8 @@ export const s = StyleSheet.create({
   linearGradientWrapper: {
     position: 'absolute',
     width: '100%',
-    opacity: 0.85
+    //opacity: 0.85
+    opacity: 0.45
   },
   linearGradient: {
     position: 'absolute',

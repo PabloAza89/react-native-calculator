@@ -106,7 +106,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     <View
       key={9}
       style={[ s.eachItem, {
-        marginBottom: (state === 'tabletop' && !aboutUp) ? 20 : ins.bottom + 20
+        marginBottom: 10
+        //marginBottom: (state === 'tabletop' && !aboutUp) ? 20 : ins.bottom + 20
       } ]}
     >
       <MaterialIcons
@@ -169,7 +170,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
 
   return (
-    <View style={s.mainContainer}>
+    <View style={[s.mainContainer, { /* paddingBottom: ins.bottom */ }]}>
 
       {
         !(state === 'tabletop' && aboutUp) &&
@@ -203,6 +204,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         ref={scrollRef}
         onScroll={handleScroll}
         persistentScrollbar={true}
+        //style={{ backgroundColor: 'red' }}
+        style={{ overflow: 'visible'/*, backgroundColor: 'red' */ , marginBottom: ins.bottom ,marginTop: ins.top }}
         children={
           <View style={[ s.background, { width: '100%', marginLeft: ins.left, paddingRight: ins.right } ]}>
 
@@ -270,7 +273,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         showButton &&
         <Pressable
           style={[ s.floatButton, {
-            bottom: (state === 'tabletop' && !aboutUp) ? 10 : ins.bottom + 10,
+            bottom: (state === 'tabletop' && !aboutUp) ? 10 : ins.bottom + 7,
             right: 10 + ins.right
           } ]}
           onPress={() => onFabPress()}

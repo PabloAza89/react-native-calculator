@@ -22,8 +22,8 @@ const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screen
         // cardStyle: { backgroundColor: 'transparent' },
         // navigationBarColor: 'red',
         // navigationBarColor: navBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
-        //navigationBarColor: 'rgba(0, 0, 0, 0.5)',
-        navigationBarColor: 'transparent',
+        navigationBarColor: 'rgba(0, 0, 0, 0.2)',
+        //navigationBarColor: 'transparent',
         /* navigationBarColor: 'rgba(0, 255, 0, 0.0)', */
         //navigationBarColor: navBar ? 'red' : 'red',
         animation: animation,
