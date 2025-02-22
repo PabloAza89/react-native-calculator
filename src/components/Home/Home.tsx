@@ -248,7 +248,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   return (
     <View style={s.background}>
-      <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} />
+      {/* <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> */}
       {
         state === 'fullscreen' ?
 

@@ -173,7 +173,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
       {
         !(state === 'tabletop' && aboutUp) &&
-        <Animated.View
+        <Animated.View  // STATUS BAR
           style={[ s.linearGradientWrapper, { backgroundColor: currentColor, height: ins.top, zIndex: 4 } ]}
           children={
             <LinearGradient
@@ -186,7 +186,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         />
       }
 
-      <Animated.View
+      <Animated.View // BACKGROUND
         style={[ s.linearGradientWrapper, { backgroundColor: currentColor, height: '100%', top: (state === 'tabletop' && aboutUp) ? 0 : ins.top } ]}
         children={
           <LinearGradient
@@ -194,7 +194,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             style={s.linearGradient}
             start={[ 0, 1 - topByHeight ]} // left, top
             end={[ 1, topByHeight * -1 ]}  // left, top
-            children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
+            //children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
           />
         }
       />
