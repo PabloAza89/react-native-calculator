@@ -83,7 +83,7 @@ const App = (): ReactElement => {
   let updateNavBar = async () => {
     const dim = Object.assign({}, ...(["screen", "window"] as "screen"[] | "window"[]).map((e) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } })) as dimI
 
-    if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) navBar.current = true // > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP (Density-independent Pixels)
+    if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) navBar.current = true // > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP AT LEAST (Density-independent Pixels)
     else navBar.current = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
   }
 
