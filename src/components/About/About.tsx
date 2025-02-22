@@ -30,10 +30,10 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   return (
     <View style={s.background}>
       <Animated.View
-        style={[ s.backgroundModal, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none' } ]}
+        style={[ s.backgroundModal, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
         children={
           <Pressable
-            style={[ s.backgroundModalButton,  { paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+            style={[ s.backgroundModalButton,  { /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
             onPress={() => updateShowModal(false)}
             children={
               <View style={s.modal}>
@@ -69,9 +69,10 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
       <LinearGradient
         colors={[ 'rgba(18, 56, 117, 0.7)', 'yellow' ]}
         style={s.linearGradient}
+        //style={[s.linearGradient, { backgroundColor: 'red' }]}
         start={[ 0, 1 ]} // left, top
         end={[ 1, 0 ]}   // left, top
-        children={ <StatusBar translucent={true} backgroundColor={'transparent'} /> }
+        //children={ <StatusBar/> }
       />
 
       <ScrollView

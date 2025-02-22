@@ -39,14 +39,16 @@ export const s = StyleSheet.create({
     position: 'absolute'
   },
   backgroundModal: {
+    backgroundColor: 'yellow', // DEV
+    //backgroundColor: 'rgba(0, 0, 0, 0.4)',
     display: 'flex',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     position: 'absolute',
     zIndex: 1000000,
     width: '100%',
     height: '100%',
   },
   backgroundModalButton: {
+    backgroundColor: 'red', // DEV
     display: 'flex',
     width: '100%',
     height: '100%',

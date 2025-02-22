@@ -19,18 +19,21 @@ const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screen
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
-        //cardStyle: { backgroundColor: 'transparent' },
-        //navigationBarColor: 'red',
+        // cardStyle: { backgroundColor: 'transparent' },
+        // navigationBarColor: 'red',
         // navigationBarColor: navBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
         //navigationBarColor: 'rgba(0, 0, 0, 0.5)',
-        //navigationBarColor: 'lightblue',
-        navigationBarColor: 'rgba(0, 255, 0, 0.0)',
+        navigationBarColor: 'transparent',
+        /* navigationBarColor: 'rgba(0, 255, 0, 0.0)', */
         //navigationBarColor: navBar ? 'red' : 'red',
         animation: animation,
+        //statusBarTranslucent: true,
         //statusBarHidden: false // NO
+        //statusBarHidden: true, // NO
         //statusBarStyle: 'dark' // NO
-        //statusBarColor: 'transparent',
-        statusBarTranslucent: true,
+        statusBarColor: 'transparent',
+        //statusBarColor: 'yellow',
+        //statusBarTranslucent: true,
         statusBarStyle: 'dark',
         //navigationBarColor: true
         //navigationBarHidden: true
