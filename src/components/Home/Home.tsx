@@ -78,6 +78,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       showModal={showModal} updateShowModal={updateShowModal}
       state={state} twoScreens={true}
       switchSide={switchSide} nextScreen={nextScreen} aboutUp={aboutUp}
+      ins={ins}
     />;
 
   const KnowMoreScreen =
@@ -85,7 +86,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       navigation={navigation} /* opw={opw} */ height={height}
       state={state} switchSide={switchSide}
       twoScreens={true} nextScreen={nextScreen}
-      aboutUp={aboutUp} hingeBounds={hingeBounds}
+      aboutUp={aboutUp} hingeBounds={hingeBounds} ins={ins}
     />;
 
   const PortButtons =

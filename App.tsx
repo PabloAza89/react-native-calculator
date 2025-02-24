@@ -22,7 +22,7 @@ const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screen
         // cardStyle: { backgroundColor: 'transparent' },
         // navigationBarColor: 'red',
         // navigationBarColor: navBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
-        navigationBarColor: 'rgba(0, 0, 0, 0.2)',
+        navigationBarColor: 'rgba(0, 0, 0, 0)',
         //navigationBarColor: 'transparent',
         /* navigationBarColor: 'rgba(0, 255, 0, 0.0)', */
         //navigationBarColor: navBar ? 'red' : 'red',
@@ -260,7 +260,13 @@ const App = (): ReactElement => {
     let insetsListener = nativeEvent.addListener('insets', e => {
       //console.log("screen", e.screen)
       console.log("INSETS RESPONSE", e) // WINDOW BOUNDS (APP SIZE)
-      setInsets(e)
+      //setInsets(e)
+    });
+
+    let testListener = nativeEvent.addListener('testTest', e => {
+      //console.log("screen", e.screen)
+      console.log("TEST RESP", e) // WINDOW BOUNDS (APP SIZE)
+      //setInsets(e)
     });
 
     //return () => LayoutInfoListener.remove();

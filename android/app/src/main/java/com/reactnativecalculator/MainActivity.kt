@@ -85,6 +85,10 @@ import kotlin.properties.Delegates
 
 import androidx.core.view.WindowCompat
 
+import com.facebook.react.bridge.ReactApplicationContext
+
+//import android.R
+
 // TEST //
 
 @Suppress("DEPRECATION")
@@ -99,25 +103,95 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   lateinit var currentInsets: Insets
   //val currentInsets = currentInsetsClass()
 
+  lateinit var rootView: View
+
+  lateinit var testVar: String
+
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
     WindowCompat.setDecorFitsSystemWindows(window, false)
+    //window.setNavigationBarContrastEnforced(false)
     Log.d("LOG", "EXECUTED CREATE");
 
-    val firstOrientation = this@MainActivity.resources.configuration.orientation
-    if (firstOrientation == Configuration.ORIENTATION_PORTRAIT) { orientation = "portrait" }
-    else { orientation = "landscape" }
+    // val firstOrientation = this@MainActivity.resources.configuration.orientation
+    // if (firstOrientation == Configuration.ORIENTATION_PORTRAIT) { orientation = "portrait" }
+    // else { orientation = "landscape" }
 
     dotsPerInch = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
 
+    //val rooView = findViewById<View>(android.R.id.content)
     //Log.d("LOG", "A VER ${this@MainActivity.resources.displayMetrics}");
+
+    //getPosition()
+
+    // rooView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+    //     override fun onGlobalLayout() {
+          
+    //       Log.d("LOG", "NEW GLOBAL LAYOUT");
+    //       //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");
+
+    //     }
+    // })
+
+    //rootView = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
+
+
+    // val mReactInstanceManager = reactNativeHost.reactInstanceManager
+    // val context = mReactInstanceManager.currentReactContext as ReactApplicationContext
+    // mReactInstanceManager.addReactInstanceEventListener(object : ReactInstanceManager.ReactInstanceEventListener {
+    //     override fun onReactContextInitialized(validContext: ReactContext) {
+    //         // Use validContext here
+    //         validContext // context.getJSModule()?.emit()
+    //           ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+    //           ?.emit("testTest", "this is a response")
+    //     }
+    // })
+
+    rootView = findViewById<View>(android.R.id.content).rootView
+
+    rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+          testVar = "NEW VALUE"
+          Log.d("LOG", "NEW GLOBAL LAYOUT");
+          //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");
+
+          val currOrientation = this@MainActivity.resources.configuration.orientation
+          if (currOrientation == Configuration.ORIENTATION_PORTRAIT) { Log.d("LOG", "OR: PORTRAIT") }
+          else { Log.d("LOG", "OR: LANDSCAPE") }
+          // if (currOrientation == Configuration.ORIENTATION_PORTRAIT) { orientation = "portrait" }
+          // else { orientation = "landscape" }
+
+          if (canUpdate) updateUI("LAY", null)
+
+          // reactInstanceManager.currentReactContext // context.getJSModule()?.emit()
+          //   ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+          //   ?.emit("testTest", "this is a response")
+
+        }
+    })
+
+    //ReactInstanceManager mReactInstanceManager = getReactNativeHost().getReactInstanceManager();
+        //val context = reactInstanceManager.currentReactContext as ReactApplicationContext
+        // reactInstanceManager.addReactInstanceEventListener(object : ReactInstanceManager.ReactInstanceEventListener {
+        //     override fun onReactContextInitialized(validContext: ReactContext) {
+        //        Log.d("LOG", "VALID CONTEXT");
+
+                
+
+                
+
+
+        //     }
+        // })
+
+   
 
     
 
   }
 
-  
+
 
   override fun onResume() {
     super.onResume()
@@ -145,81 +219,55 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     val windowInfoTracker = WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this@MainActivity))
       
-    var rootView: View = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
-    lateinit var layoutListener: ViewTreeObserver.OnGlobalLayoutListener
+    //var rootView: View = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
+    //lateinit var layoutListener: ViewTreeObserver.OnGlobalLayoutListener
+
+    // rootView = findViewById<View>(android.R.id.content).rootView
+
+    // rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+    //     override fun onGlobalLayout() {
+    //       testVar = "NEW VALUE"
+    //       Log.d("LOG", "NEW GLOBAL LAYOUT");
+    //       //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");
+
+    //     }
+    // })
 
     val lifecycleEventListener = object: LifecycleEventListener {
+
+      
       override fun onHostResume() {
         Log.d("LOG", "ADD CALLBACK");
+        //Log.d("LOG", "TEST VALUE ${}");
         windowInfoTracker.addWindowLayoutInfoListener(
           this@MainActivity,
           Executors.newSingleThreadExecutor(),
           listenerCallback
         )
 
-        layoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+        //Log.d("LOG", "TEST VAR: ${testVar}");
 
-          @RequiresApi(Build.VERSION_CODES.R)
-          fun getRootWindowInsetsCompatR(rootView: View): Unit {
+        
+      
 
-            val insetsMap = Arguments.createMap()
+        //Log.d("LOG", "ADDED LAYOUT LISTENER");
+        // Log.d("LOG", "A VER ROOTVIEW ${rootView}");
+        //Log.d("LOG", "A VER LAYOUT LISTENER ${layoutListener}");
 
-            val newInsets =
-              rootView.rootWindowInsets?.getInsets(
-                WindowInsets.Type.statusBars() or
-                WindowInsets.Type.displayCutout() or
-                WindowInsets.Type.navigationBars() or
-                WindowInsets.Type.captionBar()
-              )
-
-            if (newInsets !== null) {
-              if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) {
-                currentInsets = newInsets
-                Log.d("LOG", "LAUNCHED NEW VALUEASD ${dotsPerInch}");
-
-                insetsMap.putDouble("left", newInsets.left.toDouble() / dotsPerInch)
-                insetsMap.putDouble("top", newInsets.top.toDouble() / dotsPerInch)
-                insetsMap.putDouble("right", newInsets.right.toDouble() / dotsPerInch)
-                insetsMap.putDouble("bottom", newInsets.bottom.toDouble() / dotsPerInch)
-
-                context // context.getJSModule()?.emit()
-                  .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                  ?.emit("insets", insetsMap)
-              }
-            }
-
-            Log.d("LOG", "CURRENT ${currentInsets}");
-
-          }
-
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getRootWindowInsetsCompatR(rootView) // rootView
-
-        }
-
-
-        rootView.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
-        Log.d("LOG", "ADDED LAYOUT LISTENER");
-
-
-
-
-
-
-
-   
 
       }
+
       override fun onHostPause() {
         Log.d("LOG", "REMOVE CALLBACK");
         windowInfoTracker.removeWindowLayoutInfoListener(listenerCallback)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-          rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
-          Log.d("LOG", "REMOVE LAYOUT LISTENER >= JELLY BEAN");
-        } else {
-          rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
-          Log.d("LOG", "REMOVE LAYOUT LISTENER OTHER");
-        }
+        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        //   rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+        //   Log.d("LOG", "REMOVE LAYOUT LISTENER >= JELLY BEAN");
+        // } else {
+        //   rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
+        //   Log.d("LOG", "REMOVE LAYOUT LISTENER OTHER");
+        // }
         
       }
       override fun onHostDestroy() { }
@@ -378,20 +426,22 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   }
 
-  override fun onConfigurationChanged(newConfig: Configuration) {
-    super.onConfigurationChanged(newConfig)
-    when (newConfig.orientation) {
-      Configuration.ORIENTATION_LANDSCAPE -> { orientation = "landscape"; Log.d("LOG", "NEW ORIENTATION LANDSCAPE"); }
-      Configuration.ORIENTATION_PORTRAIT -> { orientation = "portrait"; Log.d("LOG", "NEW ORIENTATION PORTRAIT"); }
-    }
-    when (newConfig.screenLayout) {
-      newConfig.screenLayout -> {
-        Log.d("LOG", "[]POSITION");
-        if (canUpdate) updateUI("POS", null)
+  // override fun onConfigurationChanged(newConfig: Configuration) {
+  //   super.onConfigurationChanged(newConfig)
 
-      }
-    }
-  }
+  //   //Log.d("LOG", "TEST aaa ${newConfig}");
+  //   when (newConfig.orientation) {
+  //     Configuration.ORIENTATION_LANDSCAPE -> { orientation = "landscape"; Log.d("LOG", "NEW ORIENTATION LANDSCAPE"); }
+  //     Configuration.ORIENTATION_PORTRAIT -> { orientation = "portrait"; Log.d("LOG", "NEW ORIENTATION PORTRAIT"); }
+  //   }
+  //   when (newConfig.screenLayout) {
+  //     newConfig.screenLayout -> {
+  //       Log.d("LOG", "[]POSITION");
+  //       if (canUpdate) updateUI("POS", null)
+
+  //     }
+  //   }
+  // }
 
   // Returns the name of the main component registered from JavaScript. This is used to schedule rendering of the component.
   override fun getMainComponentName(): String = "reactNativeCalculator"

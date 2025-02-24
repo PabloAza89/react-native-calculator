@@ -7,12 +7,15 @@ import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from '../../utils/Text';
+import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
 const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins }: any): ReactElement => {
 
   const { navigate } = navigation;
+
+  //console.log("SBZ", sbz)
 
   useEffect(() => {
     (navigation.getState().routes.at(-1).name === 'KnowMore' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'KnowMore' })
@@ -23,8 +26,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   const scrollRef = useRef<ScrollView>(null);
 
   const onFabPress = () => scrollRef.current?.scrollTo({ y: 0, animated: true });
-
-  const iconColor = 'rgba(0, 0, 0, .7)'
 
   let lazyLoad = [
     <View key={0} style={s.eachItem}>
@@ -162,9 +163,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     return () => currIndex.stopAnimation()
   }, [])
 
-  console.log("HEIGHT", height)
-  console.log("INS.TOP", ins.top)
-  console.log("INS.BOTTOM", ins.bottom)
+  // console.log("HEIGHT", height)
+  // console.log("INS.TOP", ins.top)
+  // console.log("INS.BOTTOM", ins.bottom)
 
   const topByHeight = ins.top / height
   const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
@@ -209,7 +210,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         children={
           <View style={[ s.background, { width: '100%', marginLeft: ins.left, paddingRight: ins.right } ]}>
 
-            <View style={[ s.buttonContainer, { marginTop: ins.top + 7 } ]}>
+            <View style={[ s.buttonContainer, { marginTop: 0 + 7 } ]}>
 
               {
                 twoScreens ?
