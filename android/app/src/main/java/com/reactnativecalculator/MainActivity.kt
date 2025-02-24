@@ -114,39 +114,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     //window.setNavigationBarContrastEnforced(false)
     Log.d("LOG", "EXECUTED CREATE");
 
-    // val firstOrientation = this@MainActivity.resources.configuration.orientation
-    // if (firstOrientation == Configuration.ORIENTATION_PORTRAIT) { orientation = "portrait" }
-    // else { orientation = "landscape" }
-
     dotsPerInch = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
-
-    //val rooView = findViewById<View>(android.R.id.content)
-    //Log.d("LOG", "A VER ${this@MainActivity.resources.displayMetrics}");
-
-    //getPosition()
-
-    // rooView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-    //     override fun onGlobalLayout() {
-          
-    //       Log.d("LOG", "NEW GLOBAL LAYOUT");
-    //       //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");
-
-    //     }
-    // })
-
-    //rootView = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
-
-
-    // val mReactInstanceManager = reactNativeHost.reactInstanceManager
-    // val context = mReactInstanceManager.currentReactContext as ReactApplicationContext
-    // mReactInstanceManager.addReactInstanceEventListener(object : ReactInstanceManager.ReactInstanceEventListener {
-    //     override fun onReactContextInitialized(validContext: ReactContext) {
-    //         // Use validContext here
-    //         validContext // context.getJSModule()?.emit()
-    //           ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-    //           ?.emit("testTest", "this is a response")
-    //     }
-    // })
 
     rootView = findViewById<View>(android.R.id.content).rootView
 
@@ -154,43 +122,15 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         override fun onGlobalLayout() {
           testVar = "NEW VALUE"
           Log.d("LOG", "NEW GLOBAL LAYOUT");
-          //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");
-
-          val currOrientation = this@MainActivity.resources.configuration.orientation
-          if (currOrientation == Configuration.ORIENTATION_PORTRAIT) { Log.d("LOG", "OR: PORTRAIT") }
-          else { Log.d("LOG", "OR: LANDSCAPE") }
-          // if (currOrientation == Configuration.ORIENTATION_PORTRAIT) { orientation = "portrait" }
-          // else { orientation = "landscape" }
+          //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");          
 
           if (canUpdate) updateUI("LAY", null)
-
-          // reactInstanceManager.currentReactContext // context.getJSModule()?.emit()
-          //   ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-          //   ?.emit("testTest", "this is a response")
 
         }
     })
 
-    //ReactInstanceManager mReactInstanceManager = getReactNativeHost().getReactInstanceManager();
-        //val context = reactInstanceManager.currentReactContext as ReactApplicationContext
-        // reactInstanceManager.addReactInstanceEventListener(object : ReactInstanceManager.ReactInstanceEventListener {
-        //     override fun onReactContextInitialized(validContext: ReactContext) {
-        //        Log.d("LOG", "VALID CONTEXT");
-
-                
-
-                
-
-
-        //     }
-        // })
-
-   
-
-    
 
   }
-
 
 
   override fun onResume() {
@@ -218,24 +158,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val listenerCallback = ListenerCallback()
 
     val windowInfoTracker = WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this@MainActivity))
-      
-    //var rootView: View = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
-    //lateinit var layoutListener: ViewTreeObserver.OnGlobalLayoutListener
-
-    // rootView = findViewById<View>(android.R.id.content).rootView
-
-    // rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-    //     override fun onGlobalLayout() {
-    //       testVar = "NEW VALUE"
-    //       Log.d("LOG", "NEW GLOBAL LAYOUT");
-    //       //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");
-
-    //     }
-    // })
 
     val lifecycleEventListener = object: LifecycleEventListener {
 
-      
       override fun onHostResume() {
         Log.d("LOG", "ADD CALLBACK");
         //Log.d("LOG", "TEST VALUE ${}");
@@ -282,7 +207,55 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?) {
 
-    canUpdate = false
+    canUpdate = false // THIS FUNCTION EXECUTION FLAG
+
+    // BEGIN ORIENTATION //
+    val currOrientation = this@MainActivity.resources.configuration.orientation
+    if (currOrientation == Configuration.ORIENTATION_PORTRAIT) { orientation = "portrait" }
+    else { orientation = "landscape" }
+    // END ORIENTATION //
+
+    // BEGIN INSETS //
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun getRootWindowInsetsCompatR(rootView: View): Unit {
+
+      Log.d("LOG", "EXEC INSIDE");
+
+      val insetsMap = Arguments.createMap()
+
+      val newInsets =
+        rootView.rootWindowInsets?.getInsets(
+          WindowInsets.Type.statusBars() or
+          WindowInsets.Type.displayCutout() or
+          WindowInsets.Type.navigationBars() or
+          WindowInsets.Type.captionBar()
+        )
+
+      if (newInsets !== null) {
+        if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) {
+          currentInsets = newInsets
+          Log.d("LOG", "LAUNCHED NEW VALUEASD ${dotsPerInch}");
+
+          insetsMap.putDouble("left", newInsets.left.toDouble() / dotsPerInch)
+          insetsMap.putDouble("top", newInsets.top.toDouble() / dotsPerInch)
+          insetsMap.putDouble("right", newInsets.right.toDouble() / dotsPerInch)
+          insetsMap.putDouble("bottom", newInsets.bottom.toDouble() / dotsPerInch)
+
+          // context // context.getJSModule()?.emit()
+          //   .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+          //   ?.emit("insets", insetsMap)
+        }
+      }
+
+      Log.d("LOG", "CURRENT ${currentInsets}");
+
+    }
+
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getRootWindowInsetsCompatR(rootView)
+    // END INSETS //
+
     //Log.d("LOG", "EXECUTED updateUI");
 
     //lateinit var windowLayoutInfo: WindowLayoutInfo
@@ -296,8 +269,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     // Log.d("LOG", "CURR WIDTH ${wm.width()}");
     // Log.d("LOG", "CURR HEIGHT ${wm.height()}");
 
-    //var preFoldingFeature: FoldingFeature? = null
-    //val foldingFeature = preFoldingFeature
+    // var preFoldingFeature: FoldingFeature? = null
+    // val foldingFeature = preFoldingFeature
 
     fun collectAndCancel(windowLayoutInfo: WindowLayoutInfo, doJob: Boolean) {
       Log.d("LOG", "${who} ${windowLayoutInfo}");
@@ -415,9 +388,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       canUpdate = true
     }
 
-    if (incomingWindowLayoutInfo != null) collectAndCancel(incomingWindowLayoutInfo, false)
-    else {
-      job = lifecycleScope.launch(Dispatchers.Main) { // Log.d("LOG", "valid context");
+    if (incomingWindowLayoutInfo != null) collectAndCancel(incomingWindowLayoutInfo, false) // AUTO FOLDING FEATURE INFO
+    else { // MANUAL FOLDING FEATURE INFO
+      job = lifecycleScope.launch(Dispatchers.Main) {
         WindowInfoTracker.getOrCreate(this@MainActivity)
           .windowLayoutInfo(this@MainActivity)
           .collect { collectAndCancel(it, true) }
