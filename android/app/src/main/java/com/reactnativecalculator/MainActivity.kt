@@ -216,7 +216,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     // END ORIENTATION //
 
     // BEGIN INSETS //
-
     @RequiresApi(Build.VERSION_CODES.R)
     fun getRootWindowInsetsCompatR(rootView: View): Unit {
 
@@ -283,7 +282,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
       //val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
       val boundsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
-      val boundsMax = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this@MainActivity).bounds
 
       val wm = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
       //Log.d("LOG", "CURR WIDTH ${wm.width()}");
@@ -295,54 +293,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       windowMap.putDouble("width", wmWidth);
       windowMap.putDouble("height", wmHeight);
 
-      // TEST //
-
-      // val qqq = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
-
-      // @RequiresApi(Build.VERSION_CODES.R)
-      // fun getRootWindowInsetsCompatR(rootView: View): Unit? {
-      //   val insets =
-      //       rootView.rootWindowInsets?.getInsets(
-      //           WindowInsets.Type.statusBars() or
-      //               WindowInsets.Type.displayCutout() or
-      //               WindowInsets.Type.navigationBars() or
-      //               WindowInsets.Type.captionBar())
-      //           ?: return null
-
-      //   Log.d("LOG", "NEW QQQ ${insets}");
-
-      //   return null
-      //   // return EdgeInsets(
-      //   //     top = insets.top.toFloat(),
-      //   //     right = insets.right.toFloat(),
-      //   //     bottom = insets.bottom.toFloat(),
-      //   //     left = insets.left.toFloat())
-      // }
-
-      // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getRootWindowInsetsCompatR(qqq) // rootView
-      // else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) getRootWindowInsetsCompatM(rootView)
-      // else -> getRootWindowInsetsCompatBase(rootView)
-
-      //val qqq = this@MainActivity.window.decorView.findViewById<View>(android.R.id.content).rootView
-      //Log.d("LOG", "NEW QQQ ${qqq}");
-
-      // TEST //
 
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
-
-      //Log.d("LOG", "${who} ${foldingFeature}");
-
-      //var boundsArr = arrayOf("left", "top", "right", "bottom")
-
-      // for (item in boundsArr) {
-      //   val pixelsCurr = boundsCurr::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsCurr).toString().toDouble(); // Int --> Double
-      //   val pixelsMax = boundsMax::class.declaredMemberProperties.find { it.name == "${item}" }?.getter?.call(boundsMax).toString().toDouble(); // Int --> Double
-      //   val densityIndPixCurr = pixelsCurr / dotsPerInch; // dp = px / (dpi / 160) === px / density
-      //   val densityIndPixMax = pixelsMax / dotsPerInch; // dp = px / (dpi / 160) === px / density
-
-      //   screenMap.putDouble("${item}", densityIndPixMax);
-      //   windowMap.putDouble("${item}", densityIndPixCurr); // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
-      // }
 
       var state: String = "portrait";
 
@@ -398,23 +350,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     }
 
   }
-
-  // override fun onConfigurationChanged(newConfig: Configuration) {
-  //   super.onConfigurationChanged(newConfig)
-
-  //   //Log.d("LOG", "TEST aaa ${newConfig}");
-  //   when (newConfig.orientation) {
-  //     Configuration.ORIENTATION_LANDSCAPE -> { orientation = "landscape"; Log.d("LOG", "NEW ORIENTATION LANDSCAPE"); }
-  //     Configuration.ORIENTATION_PORTRAIT -> { orientation = "portrait"; Log.d("LOG", "NEW ORIENTATION PORTRAIT"); }
-  //   }
-  //   when (newConfig.screenLayout) {
-  //     newConfig.screenLayout -> {
-  //       Log.d("LOG", "[]POSITION");
-  //       if (canUpdate) updateUI("POS", null)
-
-  //     }
-  //   }
-  // }
 
   // Returns the name of the main component registered from JavaScript. This is used to schedule rendering of the component.
   override fun getMainComponentName(): String = "reactNativeCalculator"
