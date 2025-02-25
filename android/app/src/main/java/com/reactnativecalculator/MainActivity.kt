@@ -255,48 +255,29 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getRootWindowInsetsCompatR(rootView)
     // END INSETS //
 
-    //Log.d("LOG", "EXECUTED updateUI");
-
-    //lateinit var windowLayoutInfo: WindowLayoutInfo
-
-    //val testVal = incomingWindowLayoutInfo
-    //Log.d("LOG", "PREupdateUI ${who} ${incomingWindowLayoutInfo}");
-
     lateinit var job: Job
-
-    // val wm = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
-    // Log.d("LOG", "CURR WIDTH ${wm.width()}");
-    // Log.d("LOG", "CURR HEIGHT ${wm.height()}");
-
-    // var preFoldingFeature: FoldingFeature? = null
-    // val foldingFeature = preFoldingFeature
 
     fun collectAndCancel(windowLayoutInfo: WindowLayoutInfo, doJob: Boolean) {
       Log.d("LOG", "${who} ${windowLayoutInfo}");
       if (doJob) job.cancel()
 
       val mainMap = Arguments.createMap()
-      val screenMap = Arguments.createMap()
       val windowMap = Arguments.createMap()
       val hingeBoundsMap = Arguments.createMap()
 
-      //val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
-      val boundsCurr = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
-
+      // BEGIN WINDOW //
       val wm = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
-      //Log.d("LOG", "CURR WIDTH ${wm.width()}");
-      //Log.d("LOG", "CURR HEIGHT ${wm.height()}");
-
       val wmWidth = wm.width() / dotsPerInch;
       val wmHeight = wm.height() / dotsPerInch;
-
       windowMap.putDouble("width", wmWidth);
       windowMap.putDouble("height", wmHeight);
+      // END WINDOW //
 
 
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
 
-      var state: String = "portrait";
+      //var state: String = "portrait";
+      lateinit var state: String;
 
       val hingeBounds = hingeBoundsClass()
 
@@ -317,19 +298,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       hingeBoundsMap.putDouble("right", hingeBounds.right)
       hingeBoundsMap.putDouble("bottom", hingeBounds.bottom)
 
-      //Log.d("LOG", "windowMap ${windowMap}");
-      //Log.d("LOG", "screenMap ${screenMap}");
-
-      //val wm = reactInstanceManager.currentReactContext?.getSystemService(WindowManager::class.java)
-      // val wm = reactInstanceManager.currentReactContext?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-      // val resp = wm?.currentWindowMetrics?.bounds
-
-      // Log.d("LOG", "CURR WIN ${resp}");
 
       mainMap.putMap("hingeBounds", hingeBoundsMap);
       mainMap.putString("state", state); // fullscreen, tabletop..
-      // mainMap.putMap("screen", screenMap);
-      // mainMap.putMap("window", windowMap);
 
       mainMap.putMap("window", windowMap);
 
