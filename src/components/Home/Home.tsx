@@ -251,7 +251,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     <View style={s.background}>
       {/* <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> */}
       {
-        state === 'fullscreen' ?
+        state === 'flat' ?
 
         PortCalc :
 

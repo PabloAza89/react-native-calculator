@@ -25,6 +25,7 @@ import com.facebook.react.defaults.DefaultReactActivityDelegate
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactContext
+//import com.facebook.react.ReactContext
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
 import com.reactnativecalculator.hingeBoundsClass
@@ -96,10 +97,20 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   var orientation: String = "portrait" // DEFAULT
   var canUpdate: Boolean = true
+  var sendUpdate: Boolean = false
   //val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
   //lateinit var dotsPerInch: Double
   var dotsPerInch: Double by Delegates.notNull<Double>()
   //var count: Int by Delegates.notNull<Int>()
+
+  //val mainMap = Arguments.createMap()
+  //lateinit var windowMutableMap: MutableMap<String, Double>
+  //lateinit var windowMutableMap: MutableMap<String, Int>
+  //lateinit var windowMutableMap = mutableMapOf<String, Int>()
+  //val currentWindow = mutableMapOf<String, Int>()
+  var currentWindow: MutableMap<String, Int> = mutableMapOf()
+  //val windowMap = Arguments.createMap()
+  lateinit var state: String;
   lateinit var currentInsets: Insets
   //val currentInsets = currentInsetsClass()
 
@@ -207,7 +218,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?) {
 
-    canUpdate = false // THIS FUNCTION EXECUTION FLAG
+    canUpdate = false // BEGIN updateUI ~ FLAG
 
     // BEGIN ORIENTATION //
     val currOrientation = this@MainActivity.resources.configuration.orientation
@@ -215,69 +226,92 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     else { orientation = "landscape" }
     // END ORIENTATION //
 
-    // BEGIN INSETS //
-    @RequiresApi(Build.VERSION_CODES.R)
-    fun getRootWindowInsetsCompatR(rootView: View): Unit {
-
-      Log.d("LOG", "EXEC INSIDE");
-
-      val insetsMap = Arguments.createMap()
-
-      val newInsets =
-        rootView.rootWindowInsets?.getInsets(
-          WindowInsets.Type.statusBars() or
-          WindowInsets.Type.displayCutout() or
-          WindowInsets.Type.navigationBars() or
-          WindowInsets.Type.captionBar()
-        )
-
-      if (newInsets !== null) {
-        if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) {
-          currentInsets = newInsets
-          Log.d("LOG", "LAUNCHED NEW VALUEASD ${dotsPerInch}");
-
-          insetsMap.putDouble("left", newInsets.left.toDouble() / dotsPerInch)
-          insetsMap.putDouble("top", newInsets.top.toDouble() / dotsPerInch)
-          insetsMap.putDouble("right", newInsets.right.toDouble() / dotsPerInch)
-          insetsMap.putDouble("bottom", newInsets.bottom.toDouble() / dotsPerInch)
-
-          // context // context.getJSModule()?.emit()
-          //   .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-          //   ?.emit("insets", insetsMap)
-        }
-      }
-
-      Log.d("LOG", "CURRENT ${currentInsets}");
-
-    }
-
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getRootWindowInsetsCompatR(rootView)
-    // END INSETS //
-
+    
     lateinit var job: Job
 
     fun collectAndCancel(windowLayoutInfo: WindowLayoutInfo, doJob: Boolean) {
       Log.d("LOG", "${who} ${windowLayoutInfo}");
-      if (doJob) job.cancel()
+      if (doJob) job.cancel();
 
       val mainMap = Arguments.createMap()
-      val windowMap = Arguments.createMap()
+      //val windowMap = Arguments.createMap()
       val hingeBoundsMap = Arguments.createMap()
+      val insetsMap = Arguments.createMap()
 
       // BEGIN WINDOW //
-      val wm = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
-      val wmWidth = wm.width() / dotsPerInch;
-      val wmHeight = wm.height() / dotsPerInch;
-      windowMap.putDouble("width", wmWidth);
-      windowMap.putDouble("height", wmHeight);
+      val windowBounds = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
+      //val wm2 = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
+      //val wmWidth = windowBounds.width() // / dotsPerInch;
+      //val wmHeight = windowBounds.height() // / dotsPerInch;
+      val newWindow = mutableMapOf("width" to windowBounds.width(), "height" to windowBounds.height())
+      //Log.d("LOG", "wm ${wm.height() / dotsPerInch}");
+      Log.d("LOG", "wm ${currentWindow.isEmpty()}");
+      Log.d("LOG", "222 ${currentWindow.equals(currentWindow)}");
+      Log.d("LOG", "333 ${currentWindow["width"]}");
+      // || !currentInsets.equals(newInsets)
+      //if (currentWindow.isEmpty() || !currentWindow.equals(currentWindow)) { // UPDATE IF NEW VALUES
+      if (
+        currentWindow.isEmpty() || !currentWindow.equals(newWindow)
+      ) { // UPDATE IF NEW VALUES
+        //currentInsets = newInsets
+        currentWindow = newWindow
+        sendUpdate = true
+        //currentWindow.put("width", wmWidth)
+        //currentWindow.put("height", wmHeight)
+        Log.d("LOG", "RESPP ${currentWindow}");
+        Log.d("LOG", "RESPP 2 ${currentWindow.equals(currentWindow)}");
+        Log.d("LOG", "444 ${currentWindow["width"]}");
+      }
+      //Log.d("LOG", "wm2 ${wm2.height() / dotsPerInch}");
+      
+      // windowMap.putDouble("width", currentWindow["width"]!! / dotsPerInch);
+      // windowMap.putDouble("height", currentWindow["height"]!! / dotsPerInch);
+      
+      // windowMapp.putDouble("width", currentWindow["width"]!! / dotsPerInch);
+      // windowMapp.putDouble("height", currentWindow["height"]!! / dotsPerInch);
+      //windowMap = mutableMapOf("width" to wmWidth, "height" to wmHeight)
       // END WINDOW //
+
+      // BEGIN INSETS //
+      @RequiresApi(Build.VERSION_CODES.R)
+      fun getRootWindowInsetsCompatR(rootView: View): Unit {
+
+        Log.d("LOG", "EXEC INSIDE");
+
+        //val insetsMap = Arguments.createMap()
+
+        val newInsets =
+          rootView.rootWindowInsets?.getInsets(
+            WindowInsets.Type.statusBars() or
+            WindowInsets.Type.displayCutout() or
+            WindowInsets.Type.navigationBars() or
+            WindowInsets.Type.captionBar()
+          )
+
+        if (newInsets !== null) {
+          if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) { // UPDATE IF NEW VALUES
+            currentInsets = newInsets
+            sendUpdate = true
+          }
+          insetsMap.putDouble("left", currentInsets.left.toDouble() / dotsPerInch)
+          insetsMap.putDouble("top", currentInsets.top.toDouble() / dotsPerInch)
+          insetsMap.putDouble("right", currentInsets.right.toDouble() / dotsPerInch)
+          insetsMap.putDouble("bottom", currentInsets.bottom.toDouble() / dotsPerInch)
+        }
+
+        Log.d("LOG", "CURRENT ${currentInsets}");
+
+      }
+
+
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getRootWindowInsetsCompatR(rootView)
+      // END INSETS //
 
 
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
 
       //var state: String = "portrait";
-      lateinit var state: String;
+      //lateinit var state: String;
 
       val hingeBounds = hingeBoundsClass()
 
@@ -287,8 +321,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         hingeBounds.right = foldingFeature.bounds.right / dotsPerInch
         hingeBounds.bottom = foldingFeature.bounds.bottom / dotsPerInch
 
-        state = //"landscape"
-          if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "fullscreen"
+        state =
+          if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "flat"
           else if (foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) "tabletop"
           else "book"
       } else { state = orientation }
@@ -298,17 +332,44 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       hingeBoundsMap.putDouble("right", hingeBounds.right)
       hingeBoundsMap.putDouble("bottom", hingeBounds.bottom)
 
+      //Log.d("LOG", "EQUAL WINDOW ${windowMap.equals(windowMap)}");
+      //Log.d("LOG", "EQUAL WINDOW ${windowMap.equals(windowMap)}");
+      //Log.d("LOG", "EQUAL HINGE ${hingeBoundsMap.equals(insetsMap)}");
+      Log.d("LOG", "CURRENT CONTEXT PRE ${reactInstanceManager.currentReactContext}");
+      //if (!windowMutableMap.equals(windowMutableMap)) {
+      if (sendUpdate) {
+        mainMap.putMap("hingeBounds", hingeBoundsMap);
+        mainMap.putString("state", state); // flat, tabletop..
+        //mainMap.putMap("window", windowMap);
+        mainMap.putMap("window", Arguments.createMap().apply {
+          putDouble("width", currentWindow["width"]!! / dotsPerInch);
+          putDouble("height", currentWindow["height"]!! / dotsPerInch);
+        });
+        mainMap.putMap("insets", insetsMap)
 
-      mainMap.putMap("hingeBounds", hingeBoundsMap);
-      mainMap.putString("state", state); // fullscreen, tabletop..
+        Log.d("LOG", "ENTER HERE");
 
-      mainMap.putMap("window", windowMap);
+        Log.d("LOG", "CURRENT CONTEXT ${reactInstanceManager.currentReactContext}");
 
-      reactInstanceManager.currentReactContext // context.getJSModule()?.emit()
-        ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-        ?.emit("LayoutInfo", mainMap)
+        // reactInstanceManager.currentReactContext // context.getJSModule()?.emit()
+        //   ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+        //   ?.emit("LayoutInfo", mainMap)
 
-      canUpdate = true
+        // val mReactInstanceManager = reactNativeHost.reactInstanceManager
+        // val context = mReactInstanceManager.currentReactContext as ReactApplicationContext
+        val context = reactNativeHost.reactInstanceManager.currentReactContext
+        reactInstanceManager.addReactInstanceEventListener(object : ReactInstanceManager.ReactInstanceEventListener {
+            override fun onReactContextInitialized(validContext: ReactContext) {
+                // Use validContext here
+                Log.d("LOG", "VALIDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+            }
+        })
+
+
+        sendUpdate = false
+      }
+
+      canUpdate = true // END updateUI ~ FLAG
     }
 
     if (incomingWindowLayoutInfo != null) collectAndCancel(incomingWindowLayoutInfo, false) // AUTO FOLDING FEATURE INFO

@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState, useRef } from "react";
+import { ReactElement, useEffect, useState, useRef, useLayoutEffect } from "react";
 import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BootSplash from "react-native-bootsplash";
@@ -96,6 +96,8 @@ const App = (): ReactElement => {
 
   const [ vmin, setVmin ] = useState<number>(0);
   const [ insets, setInsets ] = useState({ "left": 0, "top": 0, "bottom": 0, "right": 0 });
+
+  const [ layout, setLayout ] = useState({ "left": 0, "top": 0, "bottom": 0, "right": 0 });
 
   //let port: boolean // PORTRAIT
   //if (width > height) { setvmin = 0 }
@@ -242,35 +244,39 @@ const App = (): ReactElement => {
 
   let initialState = { index: 0, routes: [ { name: 'Home' } ] }; // SET NAVIGATOR INITIAL STATE TO AVOID "UNDEFINED" ON "APP BLUR SAVE LAST ROUTE" (WITHOUT NAVIGATE ANY SCREEN)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
       //console.log("screen", e.screen)
       console.log("window", e.window) // WINDOW BOUNDS (APP SIZE)
       console.log("state", e.state) // 'flat' or 'half' or 'closed'
       console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS
+      console.log("INSETS RESPONSE", e.insets)
+      console.log("LAYOUT", e)
 
       setState(e.state)
       setHingeBounds(e.hingeBounds)
       //setWindowHeight(e.window.bottom - e.window.top)
       setWindow(e.window)
       setVmin(e.window.width > e.window.height ? e.window.height / 100 : e.window.width / 100)
+      setInsets(e.insets)
+      setLayout(e)
     });
 
-    let insetsListener = nativeEvent.addListener('insets', e => {
-      //console.log("screen", e.screen)
-      console.log("INSETS RESPONSE", e) // WINDOW BOUNDS (APP SIZE)
-      //setInsets(e)
-    });
+    // let insetsListener = nativeEvent.addListener('insets', e => {
+    //   //console.log("screen", e.screen)
+    //   console.log("INSETS RESPONSE", e) // WINDOW BOUNDS (APP SIZE)
+    //   //setInsets(e)
+    // });
 
-    let testListener = nativeEvent.addListener('testTest', e => {
-      //console.log("screen", e.screen)
-      console.log("TEST RESP", e) // WINDOW BOUNDS (APP SIZE)
-      //setInsets(e)
-    });
+    // let testListener = nativeEvent.addListener('testTest', e => {
+    //   //console.log("screen", e.screen)
+    //   console.log("TEST RESP", e) // WINDOW BOUNDS (APP SIZE)
+    //   //setInsets(e)
+    // });
 
     //return () => LayoutInfoListener.remove();
-    return () => { LayoutInfoListener.remove(); insetsListener.remove() };
+    return () => { LayoutInfoListener.remove()/* ; insetsListener.remove() */ };
   }, []);
 
   return (
