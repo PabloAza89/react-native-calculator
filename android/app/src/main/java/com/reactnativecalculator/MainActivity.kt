@@ -109,8 +109,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   //lateinit var windowMutableMap = mutableMapOf<String, Int>()
   //val currentWindow = mutableMapOf<String, Int>()
   var currentWindow: MutableMap<String, Int> = mutableMapOf()
+  var currentHingeBounds: MutableMap<String, Int> = mutableMapOf()
   //val windowMap = Arguments.createMap()
-  lateinit var state: String;
+  lateinit var currentState: String;
   lateinit var currentInsets: Insets
   //val currentInsets = currentInsetsClass()
 
@@ -234,42 +235,13 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       if (doJob) job.cancel();
 
       val mainMap = Arguments.createMap()
-      //val windowMap = Arguments.createMap()
-      val hingeBoundsMap = Arguments.createMap()
+      //val hingeBoundsMap = Arguments.createMap()
       val insetsMap = Arguments.createMap()
 
       // BEGIN WINDOW //
       val windowBounds = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
-      //val wm2 = (this@MainActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics.bounds
-      //val wmWidth = windowBounds.width() // / dotsPerInch;
-      //val wmHeight = windowBounds.height() // / dotsPerInch;
       val newWindow = mutableMapOf("width" to windowBounds.width(), "height" to windowBounds.height())
-      //Log.d("LOG", "wm ${wm.height() / dotsPerInch}");
-      Log.d("LOG", "wm ${currentWindow.isEmpty()}");
-      Log.d("LOG", "222 ${currentWindow.equals(currentWindow)}");
-      Log.d("LOG", "333 ${currentWindow["width"]}");
-      // || !currentInsets.equals(newInsets)
-      //if (currentWindow.isEmpty() || !currentWindow.equals(currentWindow)) { // UPDATE IF NEW VALUES
-      if (
-        currentWindow.isEmpty() || !currentWindow.equals(newWindow)
-      ) { // UPDATE IF NEW VALUES
-        //currentInsets = newInsets
-        currentWindow = newWindow
-        sendUpdate = true
-        //currentWindow.put("width", wmWidth)
-        //currentWindow.put("height", wmHeight)
-        Log.d("LOG", "RESPP ${currentWindow}");
-        Log.d("LOG", "RESPP 2 ${currentWindow.equals(currentWindow)}");
-        Log.d("LOG", "444 ${currentWindow["width"]}");
-      }
-      //Log.d("LOG", "wm2 ${wm2.height() / dotsPerInch}");
-      
-      // windowMap.putDouble("width", currentWindow["width"]!! / dotsPerInch);
-      // windowMap.putDouble("height", currentWindow["height"]!! / dotsPerInch);
-      
-      // windowMapp.putDouble("width", currentWindow["width"]!! / dotsPerInch);
-      // windowMapp.putDouble("height", currentWindow["height"]!! / dotsPerInch);
-      //windowMap = mutableMapOf("width" to wmWidth, "height" to wmHeight)
+      if (currentWindow.isEmpty() || !currentWindow.equals(newWindow)) { currentWindow = newWindow; sendUpdate = true }
       // END WINDOW //
 
       // BEGIN INSETS //
@@ -313,24 +285,50 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       //var state: String = "portrait";
       //lateinit var state: String;
 
-      val hingeBounds = hingeBoundsClass()
+      //val hingeBounds = hingeBoundsClass()
+
+      var newHingeBounds: MutableMap<String, Int> = mutableMapOf()
+
+      lateinit var newState: String;
 
       if (foldingFeature != null) {
-        hingeBounds.left = foldingFeature.bounds.left / dotsPerInch
-        hingeBounds.top = foldingFeature.bounds.top / dotsPerInch
-        hingeBounds.right = foldingFeature.bounds.right / dotsPerInch
-        hingeBounds.bottom = foldingFeature.bounds.bottom / dotsPerInch
+        // hingeBounds.left = foldingFeature.bounds.left // / dotsPerInch
+        // hingeBounds.top = foldingFeature.bounds.top // / dotsPerInch
+        // hingeBounds.right = foldingFeature.bounds.right // / dotsPerInch
+        // hingeBounds.bottom = foldingFeature.bounds.bottom // / dotsPerInch
 
-        state =
+        newHingeBounds = mutableMapOf(
+          "left" to foldingFeature.bounds.left,
+          "top" to foldingFeature.bounds.top,
+          "right" to foldingFeature.bounds.right,
+          "bottom" to foldingFeature.bounds.bottom
+        )
+
+        newState =
           if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "flat"
           else if (foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) "tabletop"
           else "book"
-      } else { state = orientation }
+      } else { 
+        newState = orientation
 
-      hingeBoundsMap.putDouble("left", hingeBounds.left)
-      hingeBoundsMap.putDouble("top", hingeBounds.top)
-      hingeBoundsMap.putDouble("right", hingeBounds.right)
-      hingeBoundsMap.putDouble("bottom", hingeBounds.bottom)
+        newHingeBounds = mutableMapOf(
+          "left" to 0,
+          "top" to 0,
+          "right" to 0,
+          "bottom" to 0
+        )
+      }
+
+      if (!::currentState.isInitialized || !currentState.equals(newState)) { currentState = newState; sendUpdate = true }
+
+      if (currentHingeBounds.isEmpty() || !currentHingeBounds.equals(newHingeBounds)) {
+        currentHingeBounds = newHingeBounds; sendUpdate = true
+      }
+
+      // hingeBoundsMap.putDouble("left", hingeBounds.left)
+      // hingeBoundsMap.putDouble("top", hingeBounds.top)
+      // hingeBoundsMap.putDouble("right", hingeBounds.right)
+      // hingeBoundsMap.putDouble("bottom", hingeBounds.bottom)
 
       //Log.d("LOG", "EQUAL WINDOW ${windowMap.equals(windowMap)}");
       //Log.d("LOG", "EQUAL WINDOW ${windowMap.equals(windowMap)}");
@@ -338,32 +336,36 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       Log.d("LOG", "CURRENT CONTEXT PRE ${reactInstanceManager.currentReactContext}");
       //if (!windowMutableMap.equals(windowMutableMap)) {
       if (sendUpdate) {
-        mainMap.putMap("hingeBounds", hingeBoundsMap);
-        mainMap.putString("state", state); // flat, tabletop..
+        //mainMap.putMap("hingeBounds", hingeBoundsMap);
+        mainMap.putMap("hingeBounds", Arguments.createMap().apply {
+          putDouble("left", currentHingeBounds["left"]!!.toDouble() / dotsPerInch)
+          putDouble("top", currentHingeBounds["top"]!!.toDouble() / dotsPerInch)
+          putDouble("right", currentHingeBounds["right"]!!.toDouble() / dotsPerInch)
+          putDouble("bottom", currentHingeBounds["bottom"]!!.toDouble() / dotsPerInch)
+        });
+        mainMap.putString("state", currentState); // flat, tabletop..
         //mainMap.putMap("window", windowMap);
         mainMap.putMap("window", Arguments.createMap().apply {
-          putDouble("width", currentWindow["width"]!! / dotsPerInch);
-          putDouble("height", currentWindow["height"]!! / dotsPerInch);
+          putDouble("width", currentWindow["width"]!! / dotsPerInch)
+          putDouble("height", currentWindow["height"]!! / dotsPerInch)
         });
         mainMap.putMap("insets", insetsMap)
 
-        Log.d("LOG", "ENTER HERE");
-
         Log.d("LOG", "CURRENT CONTEXT ${reactInstanceManager.currentReactContext}");
 
-        // reactInstanceManager.currentReactContext // context.getJSModule()?.emit()
-        //   ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-        //   ?.emit("LayoutInfo", mainMap)
-
-        // val mReactInstanceManager = reactNativeHost.reactInstanceManager
-        // val context = mReactInstanceManager.currentReactContext as ReactApplicationContext
-        val context = reactNativeHost.reactInstanceManager.currentReactContext
-        reactInstanceManager.addReactInstanceEventListener(object : ReactInstanceManager.ReactInstanceEventListener {
-            override fun onReactContextInitialized(validContext: ReactContext) {
-                // Use validContext here
-                Log.d("LOG", "VALIDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+        if (reactInstanceManager.currentReactContext == null) {
+          reactInstanceManager.addReactInstanceEventListener(object: ReactInstanceManager.ReactInstanceEventListener {
+            override fun onReactContextInitialized(context: ReactContext) {
+              context
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                ?.emit("LayoutInfo", mainMap)
             }
-        })
+          })
+        } else {
+          reactInstanceManager.currentReactContext
+            ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+            ?.emit("LayoutInfo", mainMap)
+        }
 
 
         sendUpdate = false
