@@ -95,7 +95,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 @Suppress("DEPRECATION")
 class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
 
-  var orientation: String = "portrait" // DEFAULT
+  lateinit var currentOrientation: String// = "portrait" // DEFAULT
   var canUpdate: Boolean = true
   var sendUpdate: Boolean = false
   //val dotsPerInch: Double = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
@@ -222,9 +222,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     canUpdate = false // BEGIN updateUI ~ FLAG
 
     // BEGIN ORIENTATION //
-    val currOrientation = this@MainActivity.resources.configuration.orientation
-    if (currOrientation == Configuration.ORIENTATION_PORTRAIT) { orientation = "portrait" }
-    else { orientation = "landscape" }
+    val newOrientation = this@MainActivity.resources.configuration.orientation
+    if (newOrientation == Configuration.ORIENTATION_PORTRAIT) { currentOrientation = "portrait" }
+    else { currentOrientation = "landscape" }
     // END ORIENTATION //
 
     
@@ -236,7 +236,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
       val mainMap = Arguments.createMap()
       //val hingeBoundsMap = Arguments.createMap()
-      val insetsMap = Arguments.createMap()
+      //val insetsMap = Arguments.createMap()
 
       // BEGIN WINDOW //
       val windowBounds = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
@@ -261,14 +261,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           )
 
         if (newInsets !== null) {
-          if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) { // UPDATE IF NEW VALUES
-            currentInsets = newInsets
-            sendUpdate = true
-          }
-          insetsMap.putDouble("left", currentInsets.left.toDouble() / dotsPerInch)
-          insetsMap.putDouble("top", currentInsets.top.toDouble() / dotsPerInch)
-          insetsMap.putDouble("right", currentInsets.right.toDouble() / dotsPerInch)
-          insetsMap.putDouble("bottom", currentInsets.bottom.toDouble() / dotsPerInch)
+          if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) { currentInsets = newInsets; sendUpdate = true }
         }
 
         Log.d("LOG", "CURRENT ${currentInsets}");
@@ -308,22 +301,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "flat"
           else if (foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) "tabletop"
           else "book"
-      } else { 
-        newState = orientation
-
-        newHingeBounds = mutableMapOf(
-          "left" to 0,
-          "top" to 0,
-          "right" to 0,
-          "bottom" to 0
-        )
+      } else {
+        newState = currentOrientation
+        newHingeBounds = mutableMapOf("left" to 0, "top" to 0, "right" to 0, "bottom" to 0)
       }
 
       if (!::currentState.isInitialized || !currentState.equals(newState)) { currentState = newState; sendUpdate = true }
 
-      if (currentHingeBounds.isEmpty() || !currentHingeBounds.equals(newHingeBounds)) {
-        currentHingeBounds = newHingeBounds; sendUpdate = true
-      }
+      if (currentHingeBounds.isEmpty() || !currentHingeBounds.equals(newHingeBounds)) { currentHingeBounds = newHingeBounds; sendUpdate = true }
 
       // hingeBoundsMap.putDouble("left", hingeBounds.left)
       // hingeBoundsMap.putDouble("top", hingeBounds.top)
@@ -338,10 +323,10 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       if (sendUpdate) {
         //mainMap.putMap("hingeBounds", hingeBoundsMap);
         mainMap.putMap("hingeBounds", Arguments.createMap().apply {
-          putDouble("left", currentHingeBounds["left"]!!.toDouble() / dotsPerInch)
-          putDouble("top", currentHingeBounds["top"]!!.toDouble() / dotsPerInch)
-          putDouble("right", currentHingeBounds["right"]!!.toDouble() / dotsPerInch)
-          putDouble("bottom", currentHingeBounds["bottom"]!!.toDouble() / dotsPerInch)
+          putDouble("left", currentHingeBounds["left"]!! / dotsPerInch)
+          putDouble("top", currentHingeBounds["top"]!! / dotsPerInch)
+          putDouble("right", currentHingeBounds["right"]!! / dotsPerInch)
+          putDouble("bottom", currentHingeBounds["bottom"]!! / dotsPerInch)
         });
         mainMap.putString("state", currentState); // flat, tabletop..
         //mainMap.putMap("window", windowMap);
@@ -349,7 +334,21 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           putDouble("width", currentWindow["width"]!! / dotsPerInch)
           putDouble("height", currentWindow["height"]!! / dotsPerInch)
         });
-        mainMap.putMap("insets", insetsMap)
+        //mainMap.putMap("insets", insetsMap)
+        mainMap.putMap("insets", Arguments.createMap().apply {
+          putDouble("left", currentInsets.left / dotsPerInch)
+          putDouble("top", currentInsets.top / dotsPerInch)
+          putDouble("right", currentInsets.right / dotsPerInch)
+          putDouble("bottom", currentInsets.bottom / dotsPerInch)
+        });
+        mainMap.putDouble("vmin",
+          if (currentWindow["width"]!! > currentWindow["height"]!!) (currentWindow["height"]!! / dotsPerInch) / 100
+          else (currentWindow["width"]!! / dotsPerInch) / 100
+        );
+        // insetsMap.putDouble("left", currentInsets.left.toDouble() / dotsPerInch)
+        // insetsMap.putDouble("top", currentInsets.top.toDouble() / dotsPerInch)
+        // insetsMap.putDouble("right", currentInsets.right.toDouble() / dotsPerInch)
+        // insetsMap.putDouble("bottom", currentInsets.bottom.toDouble() / dotsPerInch)
 
         Log.d("LOG", "CURRENT CONTEXT ${reactInstanceManager.currentReactContext}");
 

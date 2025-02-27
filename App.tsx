@@ -259,6 +259,7 @@ const App = (): ReactElement => {
       //setWindowHeight(e.window.bottom - e.window.top)
       setWindow(e.window)
       setVmin(e.window.width > e.window.height ? e.window.height / 100 : e.window.width / 100)
+      console.log("NORMAL: ", e.window.width > e.window.height ? e.window.height / 100 : e.window.width / 100)
       setInsets(e.insets)
       setLayout(e)
     });
