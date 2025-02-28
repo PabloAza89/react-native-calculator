@@ -345,10 +345,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           if (currentWindow["width"]!! > currentWindow["height"]!!) (currentWindow["height"]!! / dotsPerInch) / 100
           else (currentWindow["width"]!! / dotsPerInch) / 100
         );
-        // insetsMap.putDouble("left", currentInsets.left.toDouble() / dotsPerInch)
-        // insetsMap.putDouble("top", currentInsets.top.toDouble() / dotsPerInch)
-        // insetsMap.putDouble("right", currentInsets.right.toDouble() / dotsPerInch)
-        // insetsMap.putDouble("bottom", currentInsets.bottom.toDouble() / dotsPerInch)
+        mainMap.putBoolean("tallBar", if (currentInsets.left / dotsPerInch > 47 || currentInsets.right / dotsPerInch > 47 || currentInsets.bottom / dotsPerInch > 47) true else false);
 
         Log.d("LOG", "CURRENT CONTEXT ${reactInstanceManager.currentReactContext}");
 

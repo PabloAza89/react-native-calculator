@@ -13,7 +13,7 @@ import { dimI, navigationI } from './src/interfaces/interfaces';
 
 const Stack = createNativeStackNavigator();
 
-const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screens: ReactElement[]) => {
+const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, screens: ReactElement[]) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -21,8 +21,8 @@ const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screen
         gestureEnabled: false,
         // cardStyle: { backgroundColor: 'transparent' },
         // navigationBarColor: 'red',
-        // navigationBarColor: navBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
-        navigationBarColor: 'rgba(0, 0, 0, 0)',
+        navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
+        //navigationBarColor: 'rgba(0, 0, 0, 0)',
         //navigationBarColor: 'transparent',
         /* navigationBarColor: 'rgba(0, 255, 0, 0.0)', */
         //navigationBarColor: navBar ? 'red' : 'red',
@@ -46,58 +46,29 @@ const NavigatorMapper = (animation: StackAnimationTypes, navBar: boolean, screen
 
 const App = (): ReactElement => {
 
-  //const { width, height } = useWindowDimensions();
-
-  //console.log("width", width)
+  console.log("APP LOG START")
 
   // TEST //
 
-  //let ins = useSafeAreaInsets(); // insets
+  //let navBar = useRef<boolean>(true)
+  //let tallBar = useRef<boolean | undefined>(undefined)
+  let tallBar = useRef<boolean>(false)
 
-  //console.log("initialWindowMetrics", initialWindowMetrics?.insets)
+  // let updateNavBar = async () => {
+  //   const dim = Object.assign({}, ...(["screen", "window"] as "screen"[] | "window"[]).map((e) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } })) as dimI
 
-  // const windowDimensionss = Dimensions.get('window');
-  // const screenDimensionss = Dimensions.get('screen');
+  //   if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) navBar.current = true // > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP AT LEAST (Density-independent Pixels)
+  //   else navBar.current = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
+  // }
 
-  // const [dimensions, setDimensions] = useState({
-  //   window: windowDimensionss,
-  //   screen: screenDimensionss,
-  // });
-
-  // useEffect(() => {
-  //   const subscription = Dimensions.addEventListener(
-  //     'change',
-  //     ({window, screen}) => {
-  //       setDimensions({window, screen});
-  //     },
-  //   );
-  //   return () => subscription?.remove();
-  // });
-
-  // console.log("WINDOW AAA", dimensions.window)
-  // console.log("SCREEN AAA", dimensions.screen)
-
-  console.log("APP CONSOLE LOG")
-
-  // TEST //
-
-  let navBar = useRef<boolean>(true)
-
-  let updateNavBar = async () => {
-    const dim = Object.assign({}, ...(["screen", "window"] as "screen"[] | "window"[]).map((e) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } })) as dimI
-
-    if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) navBar.current = true // > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP AT LEAST (Density-independent Pixels)
-    else navBar.current = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
-  }
-
-  //let opw: number = width / 100 // one percent window width
-  //let oph: number = height / 100 // one percent window height
-  //let vmin: number
-
-  const [ vmin, setVmin ] = useState<number>(0);
-  const [ insets, setInsets ] = useState({ "left": 0, "top": 0, "bottom": 0, "right": 0 });
-
-  const [ layout, setLayout ] = useState({ "left": 0, "top": 0, "bottom": 0, "right": 0 });
+  const [ layout, setLayout ] = useState({
+    "window": {"height": 0, "width": 0},
+    "hingeBounds": {"bottom": 0, "left": 0, "right": 0, "top": 0},
+    "insets": {"bottom": 0, "left": 0, "right":0, "top": 0},
+    "state": "portrait",
+    "vmin": 0,
+    "tallBar": "false"
+  });
 
   //let port: boolean // PORTRAIT
   //if (width > height) { setvmin = 0 }
@@ -116,11 +87,12 @@ const App = (): ReactElement => {
   ]
 
   useEffect(() => {
+    console.log("ENTER USEEFFECT")
     const allPreloads = async () => {
       let resInput = await readData("savedInput") // RESPONSE INPUT
       let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
       let resDate = await readData("savedDate") // RESPONSE DATE
-      let resNavBar = await readData("savedNavBar") // RESPONSE HEIGHT
+      let resTallBar = await readData("savedTallBar") // RESPONSE HEIGHT
       let resRoute = await readData("savedRoute") // RESPONSE ROUTE
 
       if (resInput !== undefined && resInput !== null) setInput(resInput)
@@ -135,21 +107,25 @@ const App = (): ReactElement => {
         ...SimpleLineIcons.font
       })
 
-      async function windowSizeHasChanged() {
+      async function hasANavigationBarOrGesture() {
         if (
           resDate !== undefined && resDate !== null &&
-          resNavBar !== undefined && resNavBar !== null &&
+          resTallBar !== undefined && resTallBar !== null &&
           resRoute !== undefined && resRoute !== null
         ) {
-          await updateNavBar()
-          if (Date.now() - parseInt(resDate) < 60000 && resNavBar !== navBar.current.toString()) {
+          //await updateNavBar()
+
+          console.log("SAVED", resTallBar)
+          console.log("CURRENT", tallBar.current)
+          
+          if (Date.now() - parseInt(resDate) < 60000 && resTallBar !== tallBar.current.toString()) {
             resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
             resRoute === "About" ? navigationRef.dispatch(CommonActions.reset(routes[1])) :
             navigationRef.dispatch(CommonActions.reset(routes[2]))
           } // else console.log("WINDOWS NOT HAS CHANGED.")
         }
       }
-      windowSizeHasChanged()
+      hasANavigationBarOrGesture()
       .then(() => {
         setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW HEIGHT CHANGES
           setAnimation('slide_from_right') // SLIDE SCREEN ANIMATION
@@ -165,26 +141,29 @@ const App = (): ReactElement => {
 
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
-  const [ state, setState ] = useState('flat');
-  const [ hingeBounds, setHingeBounds ] = useState({ left: 0, top: 0, right: 0, bottom: 0 });
-  //const [ windowHeight, setWindowHeight ] = useState(Dimensions.get("screen").height);
-  const [ window, setWindow ] = useState({
-    width: Dimensions.get("screen").width,
-    height: Dimensions.get("screen").height
-  });
 
   useEffect(() => { // ON APP BLUR
-    const blur = AppState.addEventListener('blur', () => {
-      saveData("savedInput", input)
-      saveData("savedSecInput", secInput)
-      saveData("savedDate", Date.now().toString())
-      saveData("savedNavBar", navBar.current.toString())
+    
+    //AppState.addEventListener('blur', () => {
+    const blur = AppState.addEventListener('change', () => {
+      //if (AppState.currentState === '')
+      if (RegExp(/background|inactive/).test(AppState.currentState)) {
+        console.log("BLURRRRRRRRRRRRRRRRRRRRRRR")
+        console.log("a ver state", AppState.currentState)
+        saveData("savedInput", input)
+        saveData("savedSecInput", secInput)
+        saveData("savedDate", Date.now().toString())
+        saveData("savedTallBar", tallBar.current.toString())
 
-      let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
-      saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+        let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
+        saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+      }
+        
+      
     })
     return () => blur.remove();
-  }, [input, secInput]);
+  //}, [input, secInput]);
+  }, []);
 
   const saveData = async (key: string, value: string) => {
     try { await AsyncStorage.setItem(key, value) }
@@ -210,24 +189,24 @@ const App = (): ReactElement => {
         return (
           <Home
             {...props} input={input} setInput={setInput}
-            setSecInput={setSecInput} secInput={secInput} vmin={vmin}
-            state={state} width={window.width} height={window.height}
-            hingeBounds={hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
-            ins={insets}
+            setSecInput={setSecInput} secInput={secInput} vmin={layout.vmin}
+            state={layout.state} width={layout.window.width} height={layout.window.height}
+            hingeBounds={layout.hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
+            ins={layout.insets}
           />
         )
       case "About":
         const About = require('./src/components/About/About').default
         return (
           <About
-            {...props} vmin={vmin} width={window.width} showModal={showModal}
-            updateShowModal={updateShowModal} state={state} twoScreens={false}
-            ins={insets}
+            {...props} vmin={layout.vmin} width={layout.window.width} showModal={showModal}
+            updateShowModal={updateShowModal} state={layout.state} twoScreens={false}
+            ins={layout.insets}
           />
         )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
-        return <KnowMore {...props} height={window.height} state={state} ins={insets} />
+        return <KnowMore {...props} height={layout.window.height} state={layout.state} ins={layout.insets} />
     }
   }
 
@@ -247,47 +226,21 @@ const App = (): ReactElement => {
   useLayoutEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
-      //console.log("screen", e.screen)
-      console.log("window", e.window) // WINDOW BOUNDS (APP SIZE)
-      console.log("state", e.state) // 'flat' or 'half' or 'closed'
-      console.log("hingeBounds", e.hingeBounds) // HINGE BOUNDS
-      console.log("INSETS RESPONSE", e.insets)
       console.log("LAYOUT", e)
-
-      setState(e.state)
-      setHingeBounds(e.hingeBounds)
-      //setWindowHeight(e.window.bottom - e.window.top)
-      setWindow(e.window)
-      setVmin(e.window.width > e.window.height ? e.window.height / 100 : e.window.width / 100)
-      console.log("NORMAL: ", e.window.width > e.window.height ? e.window.height / 100 : e.window.width / 100)
-      setInsets(e.insets)
       setLayout(e)
+      tallBar.current = e.tallBar
     });
-
-    // let insetsListener = nativeEvent.addListener('insets', e => {
-    //   //console.log("screen", e.screen)
-    //   console.log("INSETS RESPONSE", e) // WINDOW BOUNDS (APP SIZE)
-    //   //setInsets(e)
-    // });
-
-    // let testListener = nativeEvent.addListener('testTest', e => {
-    //   //console.log("screen", e.screen)
-    //   console.log("TEST RESP", e) // WINDOW BOUNDS (APP SIZE)
-    //   //setInsets(e)
-    // });
-
-    //return () => LayoutInfoListener.remove();
-    return () => { LayoutInfoListener.remove()/* ; insetsListener.remove() */ };
+    return () => LayoutInfoListener.remove();
   }, []);
+
+  console.log("APP LOG END")
 
   return (
     <NavigationContainer
       ref={navigationRef}
       initialState={initialState}
-      //children={ NavigatorMapper(animation, navBar.current, stackScreens) }
-    >
-      { NavigatorMapper(animation, navBar.current, stackScreens) }
-    </NavigationContainer>
+      children={ NavigatorMapper(animation, tallBar.current, stackScreens) }
+    />
   );
 }
 
