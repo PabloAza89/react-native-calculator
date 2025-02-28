@@ -95,8 +95,8 @@ const App = (): ReactElement => {
       let resTallBar = await readData("savedTallBar") // RESPONSE HEIGHT
       let resRoute = await readData("savedRoute") // RESPONSE ROUTE
 
-      if (resInput !== undefined && resInput !== null) setInput(resInput)
-      if (resSecInput !== undefined && resSecInput !== null) setSecInput(resSecInput)
+      if (typeof resInput === "string") setInput(resInput)
+      if (typeof resSecInput === "string") setSecInput(resSecInput)
 
       await Font.loadAsync({
         ...AntDesign.font,
@@ -107,11 +107,11 @@ const App = (): ReactElement => {
         ...SimpleLineIcons.font
       })
 
-      async function hasANavigationBarOrGesture() {
+      async function navigationBarToGestureOrViceVersa() {
         if (
-          resDate !== undefined && resDate !== null &&
-          resTallBar !== undefined && resTallBar !== null &&
-          resRoute !== undefined && resRoute !== null
+          typeof resDate === "string" &&
+          typeof resTallBar === "string" &&
+          typeof resRoute === "string"
         ) {
           //await updateNavBar()
 
@@ -125,7 +125,7 @@ const App = (): ReactElement => {
           } // else console.log("WINDOWS NOT HAS CHANGED.")
         }
       }
-      hasANavigationBarOrGesture()
+      navigationBarToGestureOrViceVersa()
       .then(() => {
         setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW HEIGHT CHANGES
           setAnimation('slide_from_right') // SLIDE SCREEN ANIMATION
