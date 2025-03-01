@@ -145,16 +145,16 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     rootView = findViewById<View>(android.R.id.content).rootView
 
-    // rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-    //     override fun onGlobalLayout() {
-    //       testVar = "NEW VALUE"
-    //       Log.d("LOG", "NEW GLOBAL LAYOUT");
-    //       //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");          
+    rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+          testVar = "NEW VALUE"
+          Log.d("LOG", "NEW GLOBAL LAYOUT");
+          //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");          
 
-    //       if (canUpdate) updateUI("LAY", null)
+          if (canUpdate) updateUI("LAY", null, true)
 
-    //     }
-    // })
+        }
+    })
 
 
   }
@@ -232,7 +232,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   }
 
 
-  fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?, manual: Boolean): String {
+  fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?, manual: Boolean) {
 
     canUpdate = false // BEGIN updateUI ~ FLAG
 
@@ -410,7 +410,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     //   Log.d("LOG", "ASD");
     // }
 
-    return "RESPONSE FROM NATIVE"
+    //return "RESPONSE FROM NATIVE"
 
     // return Timer("SettingUp", false).schedule(10000) { 
     //   //doSomething()
@@ -443,7 +443,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         //if(canUpdate) updateUI("LAY", null)
         //promise.resolve((this::updateUI)("LAY", null, true)) // OK
         //promise.resolve(call(::updateUI("LAY", null, true))) // OK
-        promise.resolve((activity as MainActivity).updateUI("LAY", null, true)) // OK
+        //promise.resolve((activity as MainActivity).updateUI("LAY", null, true)) // OK
         //(activity as MainActivity).getString // OK
         //omise.resolve("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // OK
       } catch (e: Exception) {
