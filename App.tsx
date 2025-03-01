@@ -49,6 +49,8 @@ const App = (): ReactElement => {
 
   console.log("APP LOG START")
 
+  const { MainActivity, TestModule } = NativeModules;
+
   // TEST //
 
   //let navBar = useRef<boolean>(true)
@@ -81,54 +83,55 @@ const App = (): ReactElement => {
     { index: 0, routes: allRoutes.slice(0, 1) }
   ]
 
-  useEffect(() => {
-    console.log("ENTER USEEFFECT")
-    const allPreloads = async () => {
-      let resInput = await readData("savedInput") // RESPONSE INPUT
-      let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
-      let resDate = await readData("savedDate") // RESPONSE DATE
-      let resTallBar = await readData("savedTallBar") // RESPONSE HEIGHT
-      let resRoute = await readData("savedRoute") // RESPONSE ROUTE
+  // useEffect(() => {
+  //   console.log("ENTER USEEFFECT")
+  //   const allPreloads = async () => {
+  //     let resInput = await readData("savedInput") // RESPONSE INPUT
+  //     let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
+  //     let resDate = await readData("savedDate") // RESPONSE DATE
+  //     let resTallBar = await readData("savedTallBar") // RESPONSE HEIGHT
+  //     let resRoute = await readData("savedRoute") // RESPONSE ROUTE
 
-      if (typeof resInput === "string") setInput(resInput)
-      if (typeof resSecInput === "string") setSecInput(resSecInput)
+  //     if (typeof resInput === "string") setInput(resInput)
+  //     if (typeof resSecInput === "string") setSecInput(resSecInput)
 
-      await Font.loadAsync({
-        ...AntDesign.font,
-        ...Entypo.font,
-        ...FontAwesome5.font,
-        ...Ionicons.font,
-        ...MaterialIcons.font,
-        ...SimpleLineIcons.font
-      })
+  //     await Font.loadAsync({
+  //       ...AntDesign.font,
+  //       ...Entypo.font,
+  //       ...FontAwesome5.font,
+  //       ...Ionicons.font,
+  //       ...MaterialIcons.font,
+  //       ...SimpleLineIcons.font
+  //     })
 
-      async function navigationBarToGestureOrViceVersa() {
-        if (typeof resDate === "string" && typeof resTallBar === "string" && typeof resRoute === "string") {
-          console.log("SAVED", resTallBar)
-          console.log("CURRENT", tallBar.current)
-          console.log("Date.now()", Date.now())
-          console.log("parseInt(resDate)", parseInt(resDate))
-          
-          if (Date.now() - parseInt(resDate) < 60000 && resTallBar !== tallBar.current.toString()) {
-            resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
-            resRoute === "About" ? navigationRef.dispatch(CommonActions.reset(routes[1])) :
-            navigationRef.dispatch(CommonActions.reset(routes[2]))
-          } // else console.log("WINDOWS NOT HAS CHANGED.")
-        }
-      }
-      navigationBarToGestureOrViceVersa()
-      .then(() => {
-        setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW DIMENSIONS CHANGE
-          setAnimation('slide_from_right') // SLIDE SCREEN ANIMATION
-          BootSplash.hide()
-        }, 200) // AVOID ICON BLINKING
-      })
-    }
-    allPreloads()
+  //     async function navigationBarToGestureOrViceVersa() {
+  //       if (typeof resDate === "string" && typeof resTallBar === "string" && typeof resRoute === "string") {
+  //         console.log("SAVED", resTallBar)
+  //         console.log("CURRENT", tallBar.current)
+  //         console.log("Date.now()", Date.now())
+  //         console.log("parseInt(resDate)", parseInt(resDate))
+
+
+  //         if (Date.now() - parseInt(resDate) < 60000 && resTallBar !== tallBar.current.toString()) {
+  //           resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
+  //           resRoute === "About" ? navigationRef.dispatch(CommonActions.reset(routes[1])) :
+  //           navigationRef.dispatch(CommonActions.reset(routes[2]))
+  //         } // else console.log("WINDOWS NOT HAS CHANGED.")
+  //       }
+  //     }
+  //     navigationBarToGestureOrViceVersa()
+  //     .finally(() => {
+  //       setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW DIMENSIONS CHANGE
+  //         setAnimation('slide_from_right') // SLIDE SCREEN ANIMATION
+  //         BootSplash.hide()
+  //       }, 200) // AVOID ICON BLINKING
+  //     })
+  //   }
+  //   allPreloads()
 
     
 
-  }, []);
+  // }, []);
 
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
@@ -170,8 +173,6 @@ const App = (): ReactElement => {
 
   const [ showModal, setShowModal ] = useState(false);
   const updateShowModal = (bool: boolean) => setShowModal(bool)
-
-  const { MainActivity } = NativeModules;
 
   const dynamicImport = (props: navigationI, module: any) => {
     switch (module) {
@@ -220,6 +221,54 @@ const App = (): ReactElement => {
       console.log("LAYOUT", e)
       setLayout(e)
       tallBar.current = e.tallBar
+
+      const allPreloads = async () => {
+        console.log("11111111111111111111111")
+        let resInput = await readData("savedInput") // RESPONSE INPUT
+        let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
+        let resDate = await readData("savedDate") // RESPONSE DATE
+        let resTallBar = await readData("savedTallBar") // RESPONSE HEIGHT
+        let resRoute = await readData("savedRoute") // RESPONSE ROUTE
+  
+        if (typeof resInput === "string") setInput(resInput)
+        if (typeof resSecInput === "string") setSecInput(resSecInput)
+  
+        await Font.loadAsync({
+          ...AntDesign.font,
+          ...Entypo.font,
+          ...FontAwesome5.font,
+          ...Ionicons.font,
+          ...MaterialIcons.font,
+          ...SimpleLineIcons.font
+        })
+  
+        async function navigationBarToGestureOrViceVersa() {
+          console.log("22222222222222222222222222")
+          if (typeof resDate === "string" && typeof resTallBar === "string" && typeof resRoute === "string") {
+            console.log("SAVED", resTallBar)
+            console.log("CURRENT", tallBar.current)
+            console.log("Date.now()", Date.now())
+            console.log("parseInt(resDate)", parseInt(resDate))
+  
+  
+            if (Date.now() - parseInt(resDate) < 60000 && resTallBar !== tallBar.current.toString()) {
+              resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
+              resRoute === "About" ? navigationRef.dispatch(CommonActions.reset(routes[1])) :
+              navigationRef.dispatch(CommonActions.reset(routes[2]))
+            } // else console.log("WINDOWS NOT HAS CHANGED.")
+          }
+        }
+        navigationBarToGestureOrViceVersa()
+        .then(() => {
+          setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW DIMENSIONS CHANGE
+            setAnimation('slide_from_right') // SLIDE SCREEN ANIMATION
+            BootSplash.hide()
+          }, 200) // AVOID ICON BLINKING
+        })
+      }
+      allPreloads()
+
+
     });
     return () => LayoutInfoListener.remove();
   }, []);

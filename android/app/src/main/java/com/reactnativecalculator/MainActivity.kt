@@ -88,6 +88,21 @@ import androidx.core.view.WindowCompat
 
 import com.facebook.react.bridge.ReactApplicationContext
 
+
+import com.facebook.react.ReactPackage
+import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.uimanager.ViewManager
+import com.facebook.react.uimanager.ReactShadowNode
+import com.facebook.react.bridge.NativeModule
+
+import com.facebook.react.bridge.WritableMap
+
+//import android.os.Handler 
+import java.util.Timer
+import kotlin.concurrent.schedule
+
 //import android.R
 
 // TEST //
@@ -130,16 +145,16 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     rootView = findViewById<View>(android.R.id.content).rootView
 
-    rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-        override fun onGlobalLayout() {
-          testVar = "NEW VALUE"
-          Log.d("LOG", "NEW GLOBAL LAYOUT");
-          //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");          
+    // rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+    //     override fun onGlobalLayout() {
+    //       testVar = "NEW VALUE"
+    //       Log.d("LOG", "NEW GLOBAL LAYOUT");
+    //       //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");          
 
-          if (canUpdate) updateUI("LAY", null)
+    //       if (canUpdate) updateUI("LAY", null)
 
-        }
-    })
+    //     }
+    // })
 
 
   }
@@ -163,7 +178,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       override fun accept(newLayoutInfo: WindowLayoutInfo) {
         Log.d("LOG", "[]CALLBACK");
         //updateUI("CB", newLayoutInfo)
-        if (canUpdate) updateUI("CB", newLayoutInfo)
+        if (canUpdate) updateUI("CB", newLayoutInfo, false)
       }
     }
 
@@ -217,7 +232,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   }
 
 
-  fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?) {
+  fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?, manual: Boolean): String {
 
     canUpdate = false // BEGIN updateUI ~ FLAG
 
@@ -357,10 +372,12 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
                 ?.emit("LayoutInfo", mainMap)
             }
           })
+          //return null
         } else {
           reactInstanceManager.currentReactContext
             ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
             ?.emit("LayoutInfo", mainMap)
+          //return null
         }
 
 
@@ -377,6 +394,65 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           .windowLayoutInfo(this@MainActivity)
           .collect { collectAndCancel(it, true) }
       };
+    }
+
+    // TEST
+    
+
+    // Handler().postDelayed({
+    //   // doSomethingHere()
+    //   //"RESPONSE FROM NATIVE"
+    //   //Log.d("LOG", "ASD");
+    // }, 10000)
+
+    // Timer("SettingUp", false).schedule(10000) { 
+    //   //doSomething()
+    //   Log.d("LOG", "ASD");
+    // }
+
+    return "RESPONSE FROM NATIVE"
+
+    // return Timer("SettingUp", false).schedule(10000) { 
+    //   //doSomething()
+    //   return "RESPONSE FROM NATIVE"
+    // }
+
+  }
+
+  class TestPackage : ReactPackage {
+      override fun createViewManagers(
+          reactContext: ReactApplicationContext
+      ): MutableList<ViewManager<View, ReactShadowNode<*>>> = mutableListOf()
+
+      override fun createNativeModules(
+          reactContext: ReactApplicationContext
+      ): MutableList<NativeModule> = listOf(TestModule(reactContext)).toMutableList()
+  }
+
+  class TestModule(reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext) {
+    override fun getName(): String = "TestModule"
+
+    @ReactMethod
+    fun testFunc(promise: Promise) {
+      //Log.d("LOG", "valid context");
+
+      val activity = currentActivity
+
+      try {
+        //promise.resolve((activity as MainActivity).getString()) // OK
+        //if(canUpdate) updateUI("LAY", null)
+        //promise.resolve((this::updateUI)("LAY", null, true)) // OK
+        //promise.resolve(call(::updateUI("LAY", null, true))) // OK
+        promise.resolve((activity as MainActivity).updateUI("LAY", null, true)) // OK
+        //(activity as MainActivity).getString // OK
+        //omise.resolve("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // OK
+      } catch (e: Exception) {
+          promise.reject(e)
+          // pickerPromise?.reject(E_FAILED_TO_SHOW_PICKER, t)
+          // pickerPromise = null
+      }
+
+
     }
 
   }
