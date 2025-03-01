@@ -21,7 +21,8 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
         gestureEnabled: false,
         // cardStyle: { backgroundColor: 'transparent' },
         // navigationBarColor: 'red',
-        navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
+        //navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
+        navigationBarColor: tallBar ? 'red' : 'blue',
         //navigationBarColor: 'rgba(0, 0, 0, 0)',
         //navigationBarColor: 'transparent',
         /* navigationBarColor: 'rgba(0, 255, 0, 0.0)', */
@@ -54,12 +55,6 @@ const App = (): ReactElement => {
   //let tallBar = useRef<boolean | undefined>(undefined)
   let tallBar = useRef<boolean>(false)
 
-  // let updateNavBar = async () => {
-  //   const dim = Object.assign({}, ...(["screen", "window"] as "screen"[] | "window"[]).map((e) => { const { width, height } = Dimensions.get(e); return { [`${e}Width`]: width, [`${e}Height`]: height } })) as dimI
-
-  //   if (dim.screenHeight - dim.windowHeight > 47 || dim.screenWidth - dim.windowWidth > 47) navBar.current = true // > 47: ANDROID SPECIFIES THAT NAVIGATION (ON-SCREEN BUTTONS) BAR MUST BE 48 DP AT LEAST (Density-independent Pixels)
-  //   else navBar.current = false // NO NAVIGATION (ON-SCREEN BUTTONS) BAR PRESENT. ins.bottom WOULD BE ~ 24 DP (GESTURE NAVIGATION)
-  // }
 
   const [ layout, setLayout ] = useState({
     "window": {"height": 0, "width": 0},
@@ -108,15 +103,11 @@ const App = (): ReactElement => {
       })
 
       async function navigationBarToGestureOrViceVersa() {
-        if (
-          typeof resDate === "string" &&
-          typeof resTallBar === "string" &&
-          typeof resRoute === "string"
-        ) {
-          //await updateNavBar()
-
+        if (typeof resDate === "string" && typeof resTallBar === "string" && typeof resRoute === "string") {
           console.log("SAVED", resTallBar)
           console.log("CURRENT", tallBar.current)
+          console.log("Date.now()", Date.now())
+          console.log("parseInt(resDate)", parseInt(resDate))
           
           if (Date.now() - parseInt(resDate) < 60000 && resTallBar !== tallBar.current.toString()) {
             resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
@@ -127,7 +118,7 @@ const App = (): ReactElement => {
       }
       navigationBarToGestureOrViceVersa()
       .then(() => {
-        setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW HEIGHT CHANGES
+        setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW DIMENSIONS CHANGE
           setAnimation('slide_from_right') // SLIDE SCREEN ANIMATION
           BootSplash.hide()
         }, 200) // AVOID ICON BLINKING

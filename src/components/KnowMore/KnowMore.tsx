@@ -133,6 +133,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   const [ showButton, setShowButton ] = useState(false)
 
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
+  const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
+  const topByHeight = ins.top / parsedHeight
+  const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
 
   let currIndex = useAnimatedValue(0);
 
@@ -167,8 +170,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   // console.log("INS.TOP", ins.top)
   // console.log("INS.BOTTOM", ins.bottom)
 
-  const topByHeight = ins.top / height
-  const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
+  
 
   return (
     <View style={[s.mainContainer, { /* paddingBottom: ins.bottom */ }]}>
