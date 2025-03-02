@@ -5,7 +5,11 @@ export const s = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
-    width: '100%'
+    width: '100%',
+    /* paddingRight: 50,
+    paddingLeft: 50, */
+    /* marginRight: 50,
+    marginLeft: 50, */
   },
   linearGradient: {
     position: 'absolute',
@@ -18,9 +22,12 @@ export const s = StyleSheet.create({
     width: '100%'
   },
   scrollViewInner: {
+    backgroundColor: 'red', // DEV
     flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    alignSelf: 'center',
+    //width: 400
   },
   title: {
     //backgroundColor: 'green', // DEV

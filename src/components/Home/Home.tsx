@@ -48,8 +48,10 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%', margin: '2%' }
   const lastButtonLand = { value: "=", parErr: parErr, size: `${92/7}%`, margin: '1%' }
 
-  const parsedWidth = width - ins.left - ins.right
-  const parsedHeight = height - ins.top - ins.bottom
+  const maxLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
+  const maxTopOrBottom = ins.top > ins.bottom ? ins.top * 2 : ins.bottom * 2
+  const parsedWidth = width - maxLeftOrRight
+  const parsedHeight = height - maxTopOrBottom
 
   const [ calcLeft, setCalcLeft ] = useState(true)
   const [ aboutUp, setAboutUp ] = useState(true)
@@ -180,7 +182,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     </>;
 
   const LandCalc =
-    <View style={[ s.outline, { marginBottom: ins.bottom, marginTop: ins.top } ]}>
+    <View style={[ s.outline, { marginBottom: ins.bottom, marginTop: ins.top, /* marginRight: 100, marginLeft: ins.left */ } ]}>
       <View onLayout={e => setOPCQH(e.nativeEvent.layout.height / 100)} style={[ s.contour, { margin: 3, aspectRatio: 7/4, width: parsedWidth - 130, maxHeight: parsedHeight - 30 } ]}>
         <View
           style={[ // `${(11.14/4)*7}%`

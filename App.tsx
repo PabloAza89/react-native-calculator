@@ -22,7 +22,8 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
         // cardStyle: { backgroundColor: 'transparent' },
         // navigationBarColor: 'red',
         //navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
-        navigationBarColor: tallBar ? 'red' : 'blue',
+        //navigationBarColor: tallBar ? 'red' : 'blue',
+        navigationBarColor: tallBar ? 'rgba(255, 0, 0, 0.2)' : 'rgba(0, 0, 255, 0.2)',
         //navigationBarColor: 'rgba(0, 0, 0, 0)',
         //navigationBarColor: 'transparent',
         /* navigationBarColor: 'rgba(0, 255, 0, 0.0)', */
@@ -144,10 +145,13 @@ const App = (): ReactElement => {
       if (RegExp(/background|inactive/).test(AppState.currentState)) {
         console.log("BLURRRRRRRRRRRRRRRRRRRRRRR")
         console.log("a ver state", AppState.currentState)
-        saveData("savedInput", input)
-        saveData("savedSecInput", secInput)
+        saveData("savedInput", input.toString())
+        saveData("savedSecInput", secInput.toString())
         saveData("savedDate", Date.now().toString())
         saveData("savedTallBar", tallBar.current.toString())
+
+        // console.log("SAVING THIS UPPER", secInput)
+        // console.log("SAVING THIS LOWER", input)
 
         let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
         saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
@@ -157,7 +161,8 @@ const App = (): ReactElement => {
     })
     return () => blur.remove();
   //}, [input, secInput]);
-  }, []);
+  //}, []);
+  }, [input, secInput]);
 
   const saveData = async (key: string, value: string) => {
     try { await AsyncStorage.setItem(key, value) }
@@ -218,15 +223,14 @@ const App = (): ReactElement => {
   const runOnceAvailable = useRef(true)
 
   const runOnce = async () => {
-    console.log("11111111111111111111111")
-    let resInput = await readData("savedInput") // RESPONSE INPUT
-    let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
-    let resDate = await readData("savedDate") // RESPONSE DATE
-    let resTallBar = await readData("savedTallBar") // RESPONSE HEIGHT
-    let resRoute = await readData("savedRoute") // RESPONSE ROUTE
+    const resInput = await readData("savedInput") // RESPONSE INPUT
+    const resSecInput = await readData("savedSecInput") // RESPONSE INPUT
+    const resDate = await readData("savedDate") // RESPONSE DATE
+    const resTallBar = await readData("savedTallBar") // RESPONSE HEIGHT
+    const resRoute = await readData("savedRoute") // RESPONSE ROUTE
 
-    if (typeof resInput === "string") setInput(resInput)
-    if (typeof resSecInput === "string") setSecInput(resSecInput)
+    typeof resInput === "string" && setInput(resInput)
+    typeof resSecInput === "string" && setSecInput(resSecInput)
 
     await Font.loadAsync({
       ...AntDesign.font,
@@ -240,12 +244,6 @@ const App = (): ReactElement => {
     async function navigationBarToGestureOrViceVersa() {
       console.log("22222222222222222222222222")
       if (typeof resDate === "string" && typeof resTallBar === "string" && typeof resRoute === "string") {
-        console.log("SAVED", resTallBar)
-        console.log("CURRENT", tallBar.current)
-        console.log("Date.now()", Date.now())
-        console.log("parseInt(resDate)", parseInt(resDate))
-
-
         if (Date.now() - parseInt(resDate) < 60000 && resTallBar !== tallBar.current.toString()) {
           resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
           resRoute === "About" ? navigationRef.dispatch(CommonActions.reset(routes[1])) :
@@ -258,7 +256,7 @@ const App = (): ReactElement => {
       setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW DIMENSIONS CHANGE
         setAnimation('slide_from_right') // SLIDE SCREEN ANIMATION
         BootSplash.hide()
-        firstRunAvailable.current = false
+        runOnceAvailable.current = false
       }, 200) // AVOID ICON BLINKING
     })
   }

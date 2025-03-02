@@ -27,6 +27,9 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
 
   console.log("TEST ABOUT")
 
+  const maxLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
+  const parsedWidth = width - maxLeftOrRight
+
   return (
     <View style={s.background}>
       <Animated.View
@@ -79,7 +82,8 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
         horizontal={false}
         scrollEnabled={true}
         style={s.scrollView}
-        contentContainerStyle={s.scrollViewInner}
+        //contentContainerStyle={s.scrollViewInner}
+        contentContainerStyle={[ s.scrollViewInner, { width: parsedWidth /* marginRight: 100, marginLeft: 100 */ } ]}
         persistentScrollbar={true}
       >
         <View /* SPACE */ style={{ marginBottom: state === 'tabletop' ? ins.top : ins.top * 2 }} />
@@ -94,7 +98,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
             resizeMode={FastImage.resizeMode.contain}
           />
           <AntDesign
-            style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: (((width / 2) - ((vmin * 30) / 2)) / -2) - 20 }}
+            style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: (((parsedWidth / 2) - ((vmin * 30) / 2)) / -2) - 20 }}
             name='linkedin-square'
             size={40}
             color='rgba(0, 0, 0, .7)'
