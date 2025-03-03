@@ -73,7 +73,6 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
       />
 
       <LinearGradient
-        //colors={linearGradientColors}
         colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
         style={[ { height: ins.top, zIndex: 4, position: 'absolute', width: '100%', top: 0, opacity: 0.7} ]}
         start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
