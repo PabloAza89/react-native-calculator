@@ -23,7 +23,8 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
         // navigationBarColor: 'red',
         //navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
         //navigationBarColor: tallBar ? 'red' : 'blue',
-        navigationBarColor: tallBar ? 'rgba(255, 0, 0, 0.2)' : 'rgba(0, 0, 255, 0.2)',
+        //navigationBarColor: tallBar ? 'rgba(255, 0, 0, 0.2)' : 'rgba(0, 0, 255, 0.2)',
+        navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
         //navigationBarColor: 'rgba(0, 0, 0, 0)',
         //navigationBarColor: 'transparent',
         /* navigationBarColor: 'rgba(0, 255, 0, 0.0)', */
@@ -198,7 +199,7 @@ const App = (): ReactElement => {
           <About
             {...props} vmin={layout.vmin} width={layout.window.width} showModal={showModal}
             updateShowModal={updateShowModal} state={layout.state} twoScreens={false}
-            ins={layout.insets}
+            ins={layout.insets} height={layout.window.height}
           />
         )
       case "KnowMore":

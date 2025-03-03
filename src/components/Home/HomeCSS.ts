@@ -79,17 +79,26 @@ export const s = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    height: '100%'
+    height: '100%',
+    //alignSelf: 'center'
+    //alignItems: 'center'
+    //overflow: 'hidden'
+    //overflow: 'scroll'
+    //overflow: 'visible'
   },
   upperScreenTabletop: {
     backgroundColor: 'lightblue', // DEV
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    overflow: 'hidden'
+    //zIndex: 2000000
+    //zIndex: 1
   },
   lowerScreenTabletop: {
     //backgroundColor: '#adb4e6', // DEV // #adb4e6
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    overflow: 'hidden'
   },
   landButtonsContainer: {
     //backgroundColor: 'yellow', // DEV

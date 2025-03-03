@@ -208,9 +208,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         onScroll={handleScroll}
         persistentScrollbar={true}
         //style={{ backgroundColor: 'red' }}
-        style={{ overflow: 'visible'/*, backgroundColor: 'red' */ , marginBottom: ins.bottom ,marginTop: ins.top }}
+        style={{ marginRight: ins.right, marginLeft: ins.left, /* width: 500, */ overflow: 'visible', /*, backgroundColor: 'red' */ marginBottom: ins.bottom ,marginTop: ins.top }}
         children={
-          <View style={[ s.background, { width: '100%', marginLeft: ins.left, paddingRight: ins.right } ]}>
+          <View style={[ s.background, { width: '100%', marginLeft: ins.left, /* paddingRight: ins.right */ } ]}>
 
             <View style={[ s.buttonContainer, { marginTop: 0 + 7 } ]}>
 

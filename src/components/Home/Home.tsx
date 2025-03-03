@@ -80,7 +80,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       showModal={showModal} updateShowModal={updateShowModal}
       state={state} twoScreens={true}
       switchSide={switchSide} nextScreen={nextScreen} aboutUp={aboutUp}
-      ins={ins}
+      ins={ins} height={height} hingeBounds={hingeBounds}
     />;
 
   const KnowMoreScreen =
@@ -261,7 +261,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
         <View style={s.tabletopContainer}>
           <View /* UPPER SIDE */
-            style={[ s.upperScreenTabletop, { height: hingeBounds.top, width: hingeBounds.right, /* paddingRight: ins.right */ } ]}
+            style={[ s.upperScreenTabletop, { height: hingeBounds.top, width: hingeBounds.right /* paddingRight: ins.right */ } ]}
           >
 
             {

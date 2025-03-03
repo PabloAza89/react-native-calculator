@@ -8,7 +8,7 @@ import FastImage from 'react-native-fast-image';
 import { AboutI } from '../../interfaces/interfaces';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins }: any): ReactElement => {
+const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds }: any): ReactElement => {
 
   const { navigate } = navigation
 
@@ -27,8 +27,11 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
 
   console.log("TEST ABOUT")
 
+  const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
   const maxLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
   const parsedWidth = width - maxLeftOrRight
+  const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
+  const topByHeight = ins.top / parsedHeight
 
   return (
     <View style={s.background}>
@@ -70,13 +73,27 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
       />
 
       <LinearGradient
+        //colors={linearGradientColors}
+        colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
+        style={[ { height: ins.top, zIndex: 4, position: 'absolute', width: '100%', top: 0, opacity: 0.7} ]}
+        start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
+        end={[ 1, 0 ]}                  // left, top
+      />
+
+      <LinearGradient  // BACKGROUND
+        colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
+        style={[ { height: '100%', position: 'absolute', width: '100%', top: ins.top, opacity: 0.7 } ]}
+        start={[ 0, 1 - topByHeight ]}
+        end={[ 1, topByHeight * -1 ]}
+      />
+
+      {/* <LinearGradient
         colors={[ 'rgba(18, 56, 117, 0.7)', 'yellow' ]}
         style={s.linearGradient}
-        //style={[s.linearGradient, { backgroundColor: 'red' }]}
-        start={[ 0, 1 ]} // left, top
-        end={[ 1, 0 ]}   // left, top
-        //children={ <StatusBar/> }
-      />
+        start={[ 0, 1 ]}
+        end={[ 1, 0 ]}
+      /> */}
+
 
       <ScrollView
         horizontal={false}

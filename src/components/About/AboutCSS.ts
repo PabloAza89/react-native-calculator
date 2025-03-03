@@ -10,19 +10,19 @@ export const s = StyleSheet.create({
     paddingLeft: 50, */
     /* marginRight: 50,
     marginLeft: 50, */
+    /* zIndex: 2000000, */
   },
   linearGradient: {
     position: 'absolute',
-    left: 0,
-    right: 0,
-    height: '100%'
+    height: '100%',
+    width: '100%'
   },
   scrollView: {
     //backgroundColor: 'red', // DEV
     width: '100%'
   },
   scrollViewInner: {
-    backgroundColor: 'red', // DEV
+    //backgroundColor: 'red', // DEV
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',

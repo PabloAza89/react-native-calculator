@@ -18,7 +18,7 @@ export const s = StyleSheet.create({
   },
   background: {
     //backgroundColor: 'red', // DEV
-    alignItems: 'center'
+    alignItems: 'center',
   },
   centerText: {
     //backgroundColor: 'blue', // DEV
