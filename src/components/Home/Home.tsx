@@ -244,7 +244,27 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   useEffect(() => {
     state === 'tabletop' && nextColor(1)
     return () => currIndex.stopAnimation()
-  }, [state])
+    // if (state === 'tabletop' && !aboutUp) nextColor(1)
+    // else { currIndex.stopAnimation() }
+    //currIndex.stopAnimation()
+    //currIndex.stopAnimation()
+    // !showCalc && aboutUp
+    // if (state === 'tabletop' && showCalc) { //nextColor(1) // START COLORS
+    //   sC([[0, 0, 255], [255, 0, 255]])
+    //   nextColor(1) // START COLORS
+    // } else {
+    //   currIndex.stopAnimation()
+    //   sC([[255, 255, 255], [255, 255, 255]])
+    // }
+    // if (state === 'tabletop' && showCalc) { //nextColor(1) // START COLORS
+    //   sC([[0, 0, 255], [255, 0, 255]])
+    //   nextColor(1) // START COLORS
+    // } else {
+    //   currIndex.stopAnimation()
+    //   sC([[255, 255, 255], [255, 255, 255]])
+    // }
+    // (state === 'tabletop' && showCalc) ? qq : 'white'
+  }, [state, showCalc])
 
   //console.log("INS", ins)
   console.log("HOME CONSOLE LOG")
@@ -291,7 +311,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
           </View>
           <Animated.View /* LOWER SIDE */
-            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom, width: hingeBounds.right, backgroundColor: qq } ]}
+            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom, width: hingeBounds.right, backgroundColor: (state === 'tabletop' && showCalc) ? qq : 'white' } ]}
           >
 
             {
