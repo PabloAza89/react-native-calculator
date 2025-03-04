@@ -101,6 +101,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
         //contentContainerStyle={s.scrollViewInner}
         contentContainerStyle={[ s.scrollViewInner, { width: parsedWidth /* marginRight: 100, marginLeft: 100 */ } ]}
         persistentScrollbar={true}
+        //indicatorStyle={'black'}
       >
         <View /* SPACE */ style={{ marginBottom: state === 'tabletop' ? ins.top : ins.top * 2 }} />
         <Text

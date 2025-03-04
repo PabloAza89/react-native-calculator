@@ -264,7 +264,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     //   sC([[255, 255, 255], [255, 255, 255]])
     // }
     // (state === 'tabletop' && showCalc) ? qq : 'white'
-  }, [state, showCalc])
+  }, [state])
 
   //console.log("INS", ins)
   console.log("HOME CONSOLE LOG")
