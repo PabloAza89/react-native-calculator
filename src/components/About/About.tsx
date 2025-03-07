@@ -72,38 +72,36 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
         }
       />
 
-      <LinearGradient
+      <LinearGradient // STATUS BAR
         colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
-        style={[ { height: ins.top, zIndex: (state === 'tabletop' && aboutUp) ? 4 : 0, position: 'absolute', width: '100%', top: 0, opacity: 0.7 } ]}
+        style={[ { height: ins.top, /* zIndex: (state === 'tabletop' && aboutUp) ? 4 : 0, */ position: 'absolute', width: '100%', top: ins.top *0 , opacity: 0.7 } ]}
         start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
         end={[ 1, 0 ]}
       />
 
       <LinearGradient  // BACKGROUND
         colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
-        style={[ { height: '100%', position: 'absolute', width: '100%', top: ins.top, opacity: 0.7 } ]}
+        style={[ {  height: '100%', position: 'absolute', width: '100%', top: ins.top *1 , opacity: 0.7 } ]}
         start={[ 0, 1 - topByHeight ]}
         end={[ 1, topByHeight * -1 ]}
       />
 
-      {/* <LinearGradient
-        colors={[ 'rgba(18, 56, 117, 0.7)', 'yellow' ]}
-        style={s.linearGradient}
-        start={[ 0, 1 ]}
-        end={[ 1, 0 ]}
-      /> */}
-
-
       <ScrollView
         horizontal={false}
         scrollEnabled={true}
-        style={s.scrollView}
+        style={[ s.scrollView, {
+          
+          //overflow: 'visible',
+          marginTop: ins.top * 1,
+          //marginBottom: ins.bottom * 1,
+          marginBottom: (state === 'tabletop' && aboutUp) ? 0 : ins.bottom, // DONE
+        } ]}
         //contentContainerStyle={s.scrollViewInner}
         contentContainerStyle={[ s.scrollViewInner, { width: parsedWidth /* marginRight: 100, marginLeft: 100 */ } ]}
         persistentScrollbar={true}
         //indicatorStyle={'black'}
       >
-        <View /* SPACE */ style={{ marginBottom: state === 'tabletop' ? ins.top : ins.top * 2 }} />
+        <View /* SPACE */ style={{ /* marginBottom: state === 'tabletop' ? ins.top : ins.top * 2 */ }} />
         <Text
           style={s.title}
           children={'This App is developed by\nJuan Pablo Azambuyo'}
@@ -159,7 +157,8 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
             children={ <Text style={s.textInButtonLower} children={'HOW DOES IT WORK ?'} /> }
           />
         }
-        <View /* SPACE */ style={{ marginBottom: (state === 'tabletop' && aboutUp) ? ins.top : ins.bottom + ins.top }} />
+        <View /* SPACE */ style={{ /* marginBottom: (state === 'tabletop' && aboutUp) ? ins.top : ins.bottom + ins.top */ }} />
+        <View /* SPACE */ style={{ marginBottom: ins.top }} />
       </ScrollView>
     </View>
   );

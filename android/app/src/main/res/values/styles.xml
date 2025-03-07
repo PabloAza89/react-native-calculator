@@ -1,10 +1,12 @@
 <resources>
   <style name="Start" parent="Theme.BootSplash">
+  <item name="bootSplashLogo">@drawable/logo</item>
     <item name="bootSplashBackground">@color/darkBlue</item>
-    <item name="bootSplashLogo">@drawable/logo</item>
     <item name="android:statusBarColor">@color/darkBlue</item>
     <item name="android:navigationBarColor">@color/darkBlue</item>
+    <item name="android:scrollbarThumbVertical">@color/black</item>
     <item name="android:scrollbarSize">4dp</item>
+    <item name="android:scrollbarStyle">insideInset</item>
   </style>
 </resources>
 

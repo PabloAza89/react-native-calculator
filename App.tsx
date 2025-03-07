@@ -204,7 +204,7 @@ const App = (): ReactElement => {
         )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
-        return <KnowMore {...props} height={layout.window.height} state={layout.state} ins={layout.insets} />
+        return <KnowMore {...props} height={layout.window.height} state={layout.state} ins={layout.insets} hingeBounds={layout.hingeBounds} />
     }
   }
 

@@ -103,6 +103,9 @@ import com.facebook.react.bridge.WritableMap
 import java.util.Timer
 import kotlin.concurrent.schedule
 
+import com.facebook.react.uimanager.util.ReactFindViewUtil
+import android.graphics.Color;
+
 //import android.R
 
 // TEST //
@@ -149,7 +152,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         override fun onGlobalLayout() {
           testVar = "NEW VALUE"
           Log.d("LOG", "NEW GLOBAL LAYOUT");
-          //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");          
+          //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");
 
           if (canUpdate) updateUI("LAY", null, true)
 
@@ -197,14 +200,39 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           listenerCallback
         )
 
-        //Log.d("LOG", "TEST VAR: ${testVar}");
+        // Log.d("LOG", "TEST VAR: ${testVar}");
 
-        
-      
+        // val qqq = findViewById<View>(android.R.id.leaderboard)
+        // val qqq = ReactFindViewUtil.findView(root.view, nativeId)
+        // Log.d("LOG", "11111111111111111111111 ${qqq}");
 
-        //Log.d("LOG", "ADDED LAYOUT LISTENER");
+        // Log.d("LOG", "ADDED LAYOUT LISTENER");
         // Log.d("LOG", "A VER ROOTVIEW ${rootView}");
-        //Log.d("LOG", "A VER LAYOUT LISTENER ${layoutListener}");
+        // Log.d("LOG", "A VER LAYOUT LISTENER ${layoutListener}");
+
+        //val www = findViewById<View>(android.R.id.content).rootView // OK
+        //val www = findViewById<View>(R)
+        
+        val www = this@MainActivity.window?.decorView?.rootView
+        val qqq = ReactFindViewUtil.findView(www, "leaderboard")
+        //qqq?.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
+        qqq?.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
+        //qqq?.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
+        //qqq?.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
+        //qqq?.setScrollBarStyle(16777216)
+
+        //qqq?.setBackgroundColor(500000)
+        //qqq?.setBackgroundColor(Color.parseColor("#FFFB00"));
+        qqq?.setScrollBarSize(100)
+        //Log.d("LOG", "11111111111111111111111 ${www}")
+        Log.d("LOG", "RESP 1 ${View.SCROLLBARS_INSIDE_OVERLAY}")
+        Log.d("LOG", "RESP 2 ${View.SCROLLBARS_INSIDE_INSET}")
+        Log.d("LOG", "RESP 3 ${View.SCROLLBARS_OUTSIDE_OVERLAY}")
+        Log.d("LOG", "RESP 4 ${View.SCROLLBARS_OUTSIDE_INSET}")
+        //Log.d("LOG", "11111111111111111111111 ${qqq}")
+        Log.d("LOG", "11111111111111111111111 ${qqq}")
+
+        //Log.d("LOG", "1111 A VER 11111 ${qqq?.getScrollBarStyle()}")
 
 
       }

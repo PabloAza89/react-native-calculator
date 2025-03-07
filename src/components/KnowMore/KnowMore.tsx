@@ -1,7 +1,8 @@
 import { ReactElement, useState, useEffect, useRef } from 'react';
 import {
   View, StatusBar, ScrollView, Pressable, InteractionManager, ActivityIndicator,
-  NativeSyntheticEvent, NativeScrollEvent, Animated, useAnimatedValue
+  NativeSyntheticEvent, NativeScrollEvent, Animated, useAnimatedValue,
+  UIManager, findNodeHandle,
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -155,7 +156,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     })
     nextColor(+Boolean(!num))
   }
-  
+
   const nextColor = (toValue: number) =>
     Animated.timing(currIndex, { toValue: toValue, duration: 5100, useNativeDriver: true, isInteraction: false }).start(
       ({finished}) => finished && updateValues(toValue)
@@ -170,21 +171,45 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   // console.log("INS.TOP", ins.top)
   // console.log("INS.BOTTOM", ins.bottom)
 
-  
+  const createFragment = (viewId: any) => {
+    // UIManager.dispatchViewManagerCommand(
+    //   viewId,
+    //   // we are calling the 'create' command
+    //   UIManager.MyViewManager.Commands.create.toString(),
+    //   [viewId],
+    // )
+    // UIManager.dispatchViewManagerCommand(
+    //   viewId,
+    //   UIManager.MyViewManager.Commands.create.toString(),
+    //   [viewId],
+    // )
+    //console.log("VIEW ID", viewId)
+  }
+
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const viewId = findNodeHandle(ref.current);
+    createFragment(viewId);
+  }, []);
 
   return (
-    <View style={[s.mainContainer, { /* paddingBottom: ins.bottom */ }]}>
+    <View ref={ref} style={[s.mainContainer, { /* paddingBottom: ins.bottom */
+      //paddingTop: 24,
+      //paddingBottom: 24,
+      //padding: 24 * 1,
+    }]}>
 
       {
         !(state === 'tabletop' && aboutUp) &&
-        <Animated.View  // STATUS BAR
+        <Animated.View
           style={[ s.linearGradientWrapper, { backgroundColor: currentColor, height: ins.top, zIndex: 4 } ]}
           children={
             <LinearGradient
               colors={linearGradientColors}
               style={s.linearGradient}
-              start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]} // left, top
-              end={[ 1, 0 ]}                  // left, top
+              start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
+              end={[ 1, 0 ]}
             />
           }
         />
@@ -207,12 +232,44 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         ref={scrollRef}
         onScroll={handleScroll}
         persistentScrollbar={true}
+        //contentOffset={{ x:50, y:50 }}
+        //onScroll={(e) => console.log(e.nativeEvent)}
+        //onScroll={(e) => console.log(e.nativeEvent.contentInset)}
+        //onScroll={(e) => { return e.nativeEvent.contentInset = {top: 100, left: 50, bottom: 0, right: 0} }}
+        //contentInset={{top: 100, left: 50, bottom: 0, right: 0}}
         //style={{ backgroundColor: 'red' }}
-        style={{ marginRight: ins.right, marginLeft: ins.left, /* width: 500, */ overflow: 'visible', /*, backgroundColor: 'red' */ marginBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom, marginTop: ins.top }}
+        style={{
+          // marginTop: 24,
+          //marginBottom: 24,
+          //padding: 24,
+          // paddingBottom: 24,
+          marginRight: ins.right, marginLeft: ins.left, /* width: 500, */ /*, backgroundColor: 'red' */
+          //marginBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom,
+          //marginTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
+          //marginTop: ins.top,
+          //paddingTop: ins.top,
+          //paddingBottom: ins.top * 5,
+          //marginTop: (state === 'tabletop' && aboutUp) ? ins.top : ins.top,
+          // paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0,
+          //paddingBottom: ins.bottom
+          // marginTop: 24,
+          // paddingBottom: 48,
+          //padding: 24 * 1,
+          margin: 24 * 1,
+          //overflow: 'visible',
+        }}
+        
+        contentContainerStyle={[ {
+          /* paddingVertical: 10 */ /* top: ins.top *1, *//* top: ins.top*-1 */
+          // marginTop: 24,
+          // paddingBottom: 24,
+          //padding: 24 * 1,
+        }]}
+        nativeID={"leaderboard"}
         children={
-          <View style={[ s.background, { width: '100%', marginLeft: ins.left, /* paddingRight: ins.right */ } ]}>
+          <View  style={[ s.background, {  width: '100%', marginLeft: ins.left, marginTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
 
-            <View style={[ s.buttonContainer, { marginTop: 0 + 7 } ]}>
+            <View style={[ s.buttonContainer, { marginTop: 7 } ]}>
 
               {
                 twoScreens ?
