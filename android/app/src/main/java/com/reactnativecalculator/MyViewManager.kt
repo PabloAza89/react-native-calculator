@@ -48,7 +48,7 @@ class MyViewManager(
     }
   }
 
-  @ReactPropGroup(names = ["width", "height"], customType = "Style")
+  @ReactPropGroup(names = ["width", "height"], customType = "style")
   fun setStyle(view: FrameLayout, index: Int, value: Int) {
     if (index == 0) propWidth = value
     if (index == 1) propHeight = value

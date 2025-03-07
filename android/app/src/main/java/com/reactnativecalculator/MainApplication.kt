@@ -19,7 +19,7 @@ import com.facebook.soloader.SoLoader
 
 // TEST //
 
-import com.reactnativecalculator.MainActivity.TestPackage
+import com.reactnativecalculator.MyAppPackage
 
 // TEST //
 
@@ -27,7 +27,7 @@ class MainApplication: Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
     ReactNativeHostWrapper(this, object : DefaultReactNativeHost(this) {
-      override fun getPackages(): List<ReactPackage> = PackageList(this).packages.apply { add(TestPackage()); add(MyPackage()) }
+      override fun getPackages(): List<ReactPackage> = PackageList(this).packages.apply { add(MyAppPackage()) }
       override fun getJSMainModuleName(): String = "index"
       override fun getUseDeveloperSupport(): Boolean = BuildConfig.DEBUG
       override val isNewArchEnabled: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED

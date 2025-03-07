@@ -447,43 +447,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
   }
 
-  class TestPackage : ReactPackage {
-      override fun createViewManagers(
-          reactContext: ReactApplicationContext
-      ): MutableList<ViewManager<View, ReactShadowNode<*>>> = mutableListOf()
-
-      override fun createNativeModules(
-          reactContext: ReactApplicationContext
-      ): MutableList<NativeModule> = listOf(TestModule(reactContext)).toMutableList()
-  }
-
-  class TestModule(reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext) {
-    override fun getName(): String = "TestModule"
-
-    @ReactMethod
-    fun testFunc(promise: Promise) {
-      //Log.d("LOG", "valid context");
-
-      val activity = currentActivity
-
-      try {
-        //promise.resolve((activity as MainActivity).getString()) // OK
-        //if(canUpdate) updateUI("LAY", null)
-        //promise.resolve((this::updateUI)("LAY", null, true)) // OK
-        //promise.resolve(call(::updateUI("LAY", null, true))) // OK
-        //promise.resolve((activity as MainActivity).updateUI("LAY", null, true)) // OK
-        //(activity as MainActivity).getString // OK
-        //omise.resolve("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") // OK
-      } catch (e: Exception) {
-          promise.reject(e)
-          // pickerPromise?.reject(E_FAILED_TO_SHOW_PICKER, t)
-          // pickerPromise = null
-      }
-
-
-    }
-
-  }
 
   // Returns the name of the main component registered from JavaScript. This is used to schedule rendering of the component.
   override fun getMainComponentName(): String = "reactNativeCalculator"

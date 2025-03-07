@@ -1,0 +1,48 @@
+import React, {useEffect, useRef} from 'react';
+import {
+  PixelRatio,
+  UIManager,
+  findNodeHandle,
+  requireNativeComponent
+} from 'react-native';
+
+
+//import {MyViewManager} from './MyViewManager';
+const MyViewManager = requireNativeComponent('MyViewManager');
+
+const createFragment = (viewId: any) =>
+  UIManager.dispatchViewManagerCommand(
+    viewId,
+    // we are calling the 'create' command
+    //UIManager.MyViewManager.Commands.create.toString(),
+    UIManager.getViewManagerConfig('MyViewManager').Commands.create,
+    [viewId],
+  );
+
+const KnowMore = () => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const viewId = findNodeHandle(ref.current);
+    createFragment(viewId);
+  }, []);
+
+  return (
+    <MyViewManager
+      style={{
+        // converts dpi to px, provide desired height
+        //height: PixelRatio.getPixelSizeForLayoutSize(200),
+        height: 500,
+        // converts dpi to px, provide desired width
+        //width: PixelRatio.getPixelSizeForLayoutSize(200),
+        width: 500,
+        flex: 1,
+        zIndex: 2000000,
+        //backgroundColor: 'red'
+      }}
+      ref={ref}
+    />
+  );
+};
+
+export default KnowMore;
