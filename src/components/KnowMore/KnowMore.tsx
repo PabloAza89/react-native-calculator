@@ -15,11 +15,22 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from '../../utils/Text';
 import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
+import {MyViewManager} from './MyViewManager';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
+//const MyViewManager = requireNativeComponent('MyViewManager');
+
 const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins }: any): ReactElement => {
 
-  const MyViewManager = requireNativeComponent('MyViewManager');
+  //let MyViewManager: any
+  //const [ MyViewManager, setMyViewManager ] = useState(<View />)
+
+  // const MyViewManager = requireNativeComponent('MyViewManager');
+
+  // useEffect(() => {
+  //   //MyViewManager = requireNativeComponent('MyViewManager');
+  //   setMyViewManager(requireNativeComponent('MyViewManager'))
+  // }, [])
 
   const createFragment = (viewId: any) =>
     UIManager.dispatchViewManagerCommand(
@@ -47,7 +58,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         height: 500,
         // converts dpi to px, provide desired width
         //width: PixelRatio.getPixelSizeForLayoutSize(200),
-        width: 800,
+        width: 500,
         display: 'flex',
         flex: 1,
         zIndex: 2000000,
