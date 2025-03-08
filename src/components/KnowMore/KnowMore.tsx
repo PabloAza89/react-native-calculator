@@ -55,13 +55,24 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       style={{
         // converts dpi to px, provide desired height
         //height: PixelRatio.getPixelSizeForLayoutSize(200),
-        height: 500,
+        height: 800,
         // converts dpi to px, provide desired width
         //width: PixelRatio.getPixelSizeForLayoutSize(200),
         width: 500,
-        display: 'flex',
-        flex: 1,
-        zIndex: 2000000,
+        //color: '#0d00ff'
+        //color: '#0D00FF'
+        //backgroundColor: '#0D00FF'
+        //width: '50%',
+        //display: 'flex',
+        //display: 'none',
+        //backgroundColor: 'red',
+        //backgroundColor: '#FF0063',
+        //backgroundColor: '#FF0063',
+        //backgroundColor: '#64b381',
+        //#64b381
+        //display: 'f',
+        //flex: 1,
+        //zIndex: 2000000,
         //backgroundColor: 'red'
       }}
     />

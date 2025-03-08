@@ -8,6 +8,7 @@
     "debug": "sh ./scripts/debugApk.sh",
     "release": "sh ./scripts/releaseApk.sh",
     "log": "sh ./scripts/log.sh",
+    "clearlog": "sh ./scripts/clearlog.sh",
     "log5554": "sh ./scripts/log5554.sh",
     "log5556": "sh ./scripts/log5556.sh",
     "surface": "sh ./scripts/surface.sh",

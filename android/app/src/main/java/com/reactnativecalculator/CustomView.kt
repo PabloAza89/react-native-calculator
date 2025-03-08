@@ -13,8 +13,9 @@ class CustomView(context: Context) : FrameLayout(context) {
   init {
     // set padding and background color
     this.setPadding(16,16,16,16)
-    this.setBackgroundColor(Color.parseColor("#5FD3F3"))
-
+    //this.setBackgroundColor(Color.parseColor("#5FD3F3"))
+    //this.setBackgroundColor(Color.parseColor("#D186A3"))
+    // #d186a3
     // add default text view
     // this.addView(TextView(context).apply {
     //   text = "Welcome to Android Fragments with React Native."
