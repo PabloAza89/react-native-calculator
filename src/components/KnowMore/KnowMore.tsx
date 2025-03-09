@@ -15,7 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from '../../utils/Text';
 import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
-import {MyViewManager} from './MyViewManager';
+import { MyViewManager } from './MyViewManager';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
 //const MyViewManager = requireNativeComponent('MyViewManager');
@@ -32,14 +32,16 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   //   setMyViewManager(requireNativeComponent('MyViewManager'))
   // }, [])
 
-  const createFragment = (viewId: any) =>
+  const createFragment = (viewId: any) => {
+    console.log("AAA 111", viewId)
     UIManager.dispatchViewManagerCommand(
       viewId,
       // we are calling the 'create' command
       //UIManager.MyViewManager.Commands.create.toString(),
       UIManager.getViewManagerConfig('MyViewManager').Commands.create.toString(),
       [viewId],
-    );
+    )
+  }
 
   const ref = useRef(null);
 
@@ -68,7 +70,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         //backgroundColor: 'red',
         //backgroundColor: '#FF0063',
         //backgroundColor: '#FF0063',
-        //backgroundColor: '#64b381',
+        //backgroundColor: '#ff0063',
+        backgroundColor: '#64b381',
         //#64b381
         //display: 'f',
         //flex: 1,

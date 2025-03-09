@@ -18,11 +18,14 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.ViewProps
 
 import android.graphics.Color
+import kotlin.properties.Delegates
 
 class MyViewManager(private val reactContext: ReactApplicationContext): ViewGroupManager<FrameLayout>() {
-  private var propWidth: Int? = null
-  private var propHeight: Int? = null
+  var propWidth: Int by Delegates.notNull<Int>()
+  var propHeight: Int by Delegates.notNull<Int>()
   private var propBackgroundColor: String? = null
+  var reactNativeViewId: Int by Delegates.notNull<Int>()
+  var parentView: ViewGroup by Delegates.notNull<ViewGroup>()
 
   override fun getName() = REACT_CLASS
 
@@ -32,84 +35,45 @@ class MyViewManager(private val reactContext: ReactApplicationContext): ViewGrou
 
   override fun receiveCommand(root: FrameLayout, commandId: String, args: ReadableArray?) {
     super.receiveCommand(root, commandId, args)
-    val reactNativeViewId = requireNotNull(args).getInt(0)
+    reactNativeViewId = requireNotNull(args).getInt(0)
 
     when (commandId.toInt()) {
-      COMMAND_CREATE -> createFragment(root, reactNativeViewId)
+      COMMAND_CREATE -> {
+        //val parentView = root.findViewById<ViewGroup>(reactNativeViewId)
+        parentView = root.findViewById<ViewGroup>(reactNativeViewId)
+
+        Choreographer.getInstance().postFrameCallback(object: Choreographer.FrameCallback {
+          override fun doFrame(frameTimeNanos: Long) {
+            parentView.measure(
+              View.MeasureSpec.makeMeasureSpec(propWidth, View.MeasureSpec.EXACTLY),
+              View.MeasureSpec.makeMeasureSpec(propHeight, View.MeasureSpec.EXACTLY)
+            )
+            parentView.layout(0, 0, propWidth, propHeight)
+            Choreographer.getInstance().postFrameCallback(this)
+          }
+        })
+
+        val myFragment = MyFragment()
+        val activity = reactContext.currentActivity as FragmentActivity
+        activity.supportFragmentManager
+          .beginTransaction()
+          .replace(reactNativeViewId, myFragment, reactNativeViewId.toString())
+          .commit()
+      }
     }
   }
 
   @ReactPropGroup(names = ["width", "height"], customType = "Style")
   fun setStyle(view: FrameLayout, index: Int, value: Int) {
-    if (index == 0) propWidth = value//.toString().toInt()
-    if (index == 1) propHeight = value//.toString().toInt()
+    if (index == 0) propWidth = value
+    if (index == 1) propHeight = value
   }
-
-  // @ReactProp(name = ViewProps.OPACITY)
-  // override fun setOpacity(view: FrameLayout, opacity: Float) {
-  //   view.setOpacityIfPossible(opacity)
-  // }
 
   @ReactProp(name = "color")
-  fun setColor(view: View, color: String) {
-    //view.setBackgroundColor(Color.parseColor(color))
-    propBackgroundColor = color
-    //view.setBackgroundColor(Color.parseColor("#0D00FF"))
+  fun setColor(view: FrameLayout, color: String) {
+    //val parentView = view.findViewById<ViewGroup>(reactNativeViewId)
+    parentView.setBackgroundColor(Color.parseColor(color))
   }
-
-  fun createFragment(root: FrameLayout, reactNativeViewId: Int) {
-    val parentView = root.findViewById<ViewGroup>(reactNativeViewId)
-    setupLayout(parentView)
-
-    val myFragment = MyFragment()
-    val activity = reactContext.currentActivity as FragmentActivity
-    activity.supportFragmentManager
-        .beginTransaction()
-        .replace(reactNativeViewId, myFragment, reactNativeViewId.toString())
-        .commit()
-  }
-
-  fun setupLayout(view: View) {
-    Choreographer.getInstance().postFrameCallback(object: Choreographer.FrameCallback {
-      override fun doFrame(frameTimeNanos: Long) {
-        //manuallyLayoutChildren(view)
-
-        val width = requireNotNull(propWidth)
-        val height = requireNotNull(propHeight)
-        //val backgroundColor = requireNotNull(propBackgroundColor)
-        
-
-        view.measure(
-          View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-          View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
-        )
-
-        view.layout(0, 0, width, height)
-
-        
-        //view.setBackgroundColor(Color.parseColor("#0D00FF"))
-        //view.setBackgroundColor(Color.parseColor("#0D00FF"))
-        //view.setBackgroundColor(Color.parseColor(backgroundColor))
-        if (propBackgroundColor != null) view.setBackgroundColor(Color.parseColor(propBackgroundColor))
-
-        //view.viewTreeObserver.dispatchOnGlobalLayout()
-        Choreographer.getInstance().postFrameCallback(this)
-      }
-    })
-  }
-
-  // private fun manuallyLayoutChildren(view: View) {
-  //   val width = requireNotNull(propWidth)
-  //   val height = requireNotNull(propHeight)
-
-  //   view.measure(
-  //     View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-  //     View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
-  //   )
-
-  //   view.layout(0, 0, width, height)
-  //   //view.setBackgroundColor(Color.parseColor("#0D00FF"))
-  // }
 
   companion object {
     private const val REACT_CLASS = "MyViewManager"

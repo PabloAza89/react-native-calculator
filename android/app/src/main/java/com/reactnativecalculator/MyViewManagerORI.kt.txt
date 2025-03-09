@@ -13,9 +13,11 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 
+import android.util.Log
+
 class MyViewManager(private val reactContext: ReactApplicationContext): ViewGroupManager<FrameLayout>() {
-  private var propWidth: Any? = null
-  private var propHeight: Any? = null
+  private var propWidth: Int? = null
+  private var propHeight: Int? = null
 
   override fun getName() = REACT_CLASS
 
@@ -27,13 +29,16 @@ class MyViewManager(private val reactContext: ReactApplicationContext): ViewGrou
     super.receiveCommand(root, commandId, args)
     val reactNativeViewId = requireNotNull(args).getInt(0)
 
+    Log.d("LOG", "AAA 111 ${root}");
+    Log.d("LOG", "AAA 222 ${requireNotNull(args).getInt(0)}");
+
     when (commandId.toInt()) {
       COMMAND_CREATE -> createFragment(root, reactNativeViewId)
     }
   }
 
   @ReactPropGroup(names = ["width", "height"], customType = "Style")
-  fun setStyle(view: FrameLayout, index: Int, value: Any) {
+  fun setStyle(view: FrameLayout, index: Int, value: Int) {
     if (index == 0) propWidth = value
     if (index == 1) propHeight = value
   }
