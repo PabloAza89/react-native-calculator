@@ -20,6 +20,8 @@ import com.facebook.react.uimanager.ViewProps
 import android.graphics.Color
 import kotlin.properties.Delegates
 
+import android.util.Log
+
 class MyViewManager(private val reactContext: ReactApplicationContext): ViewGroupManager<FrameLayout>() {
   var propWidth: Int by Delegates.notNull<Int>()
   var propHeight: Int by Delegates.notNull<Int>()
@@ -63,10 +65,25 @@ class MyViewManager(private val reactContext: ReactApplicationContext): ViewGrou
     }
   }
 
-  @ReactPropGroup(names = ["width", "height"], customType = "Style")
+  @ReactPropGroup(names = ["width", "height"])
   fun setStyle(view: FrameLayout, index: Int, value: Int) {
+  //fun setStyle(view: FrameLayout, index: Int, value: Int) {
+
+    //Log.d("LOG", "BBB 111 ${index} || ${value}");
+    //Log.d("LOG", "BBB 111 ${width} || ${height}");
+    //Log.d("LOG", "BBB 111 ${names}");
+
+    //val width = value
+
     if (index == 0) propWidth = value
     if (index == 1) propHeight = value
+
+    // parentView.measure(
+    //   View.MeasureSpec.makeMeasureSpec(propWidth, View.MeasureSpec.EXACTLY),
+    //   View.MeasureSpec.makeMeasureSpec(propHeight, View.MeasureSpec.EXACTLY)
+    // )
+    // parentView.layout(0, 0, propWidth, propHeight)
+
   }
 
   @ReactProp(name = "color")

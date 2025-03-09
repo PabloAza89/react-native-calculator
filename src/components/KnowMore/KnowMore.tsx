@@ -57,7 +57,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       style={{
         // converts dpi to px, provide desired height
         //height: PixelRatio.getPixelSizeForLayoutSize(200),
-        height: 800,
+        height: 1800,
         // converts dpi to px, provide desired width
         //width: PixelRatio.getPixelSizeForLayoutSize(200),
         width: 500,
@@ -71,7 +71,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         //backgroundColor: '#FF0063',
         //backgroundColor: '#FF0063',
         //backgroundColor: '#ff0063',
-        backgroundColor: '#64b381',
+        backgroundColor: 'yellow',
+        //color: 'red',
         //#64b381
         //display: 'f',
         //flex: 1,
