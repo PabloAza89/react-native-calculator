@@ -41,7 +41,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       // we are calling the 'create' command
       //UIManager.MyViewManager.Commands.create.toString(),
       UIManager.getViewManagerConfig('MyViewManager').Commands.create.toString(),
-      [viewId, 500, 500],
+      [viewId],
     )
   }
 
@@ -60,6 +60,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         style={{
           // converts dpi to px, provide desired height
           //height: PixelRatio.getPixelSizeForLayoutSize(200),
+          // height: 100,
           height: 1800,
           // converts dpi to px, provide desired width
           //width: PixelRatio.getPixelSizeForLayoutSize(200),
@@ -75,7 +76,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //backgroundColor: '#FF0063',
           //backgroundColor: '#ff0063',
           //backgroundColor: 'blue',
-          backgroundColor: 'yellow',
+          backgroundColor: 'orange',
+          //display: 'none'
           //color: 'red',
           //#64b381
           //display: 'f',
