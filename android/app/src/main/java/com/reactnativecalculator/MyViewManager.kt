@@ -48,13 +48,11 @@ class MyViewManager(private val reactContext: ReactApplicationContext): ViewGrou
       COMMAND_CREATE -> {
 
 
-        Choreographer.getInstance().postFrameCallback(object: Choreographer.FrameCallback {
-          override fun doFrame(frameTimeNanos: Long) {
-
-
-            Choreographer.getInstance().postFrameCallback(this)
-          }
-        })
+        // Choreographer.getInstance().postFrameCallback(object: Choreographer.FrameCallback {
+        //   override fun doFrame(frameTimeNanos: Long) {
+        //     Choreographer.getInstance().postFrameCallback(this)
+        //   }
+        // })
 
         val myFragment = MyFragment()
         val activity = reactContext.currentActivity as FragmentActivity

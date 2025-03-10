@@ -54,17 +54,19 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
 
   return (
-    <View style={{ width: '100%', height: '100%', display: 'flex', backgroundColor: 'red' }}>
+    <View style={{ width: '100%', height: '100%', display: 'flex', backgroundColor: 'gray' }}>
       <MyViewManager
         ref={ref}
         style={{
           // converts dpi to px, provide desired height
           //height: PixelRatio.getPixelSizeForLayoutSize(200),
           // height: 100,
-          height: 1800,
+          //height: 300,
+          height: '100%',
           // converts dpi to px, provide desired width
           //width: PixelRatio.getPixelSizeForLayoutSize(200),
-          width: 500,
+          //width: 300,
+          width: '100%',
           //color: '#0d00ff'
           //color: '#0D00FF'
           //backgroundColor: '#0D00FF'
@@ -75,8 +77,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //backgroundColor: '#FF0063',
           //backgroundColor: '#FF0063',
           //backgroundColor: '#ff0063',
-          //backgroundColor: 'blue',
-          backgroundColor: 'orange',
+          backgroundColor: 'yellow',
+          //backgroundColor: 'red',
           //display: 'none'
           //color: 'red',
           //#64b381
