@@ -287,6 +287,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       if (currentWindow.isEmpty() || !currentWindow.equals(newWindow)) { currentWindow = newWindow; sendUpdate = true }
       // END WINDOW //
 
+      Log.d("LOG", "wi wi wi ${windowBounds.width()}");
+      Log.d("LOG", "he he he ${windowBounds.height()}");
+
       // BEGIN INSETS //
       @RequiresApi(Build.VERSION_CODES.R)
       fun getRootWindowInsetsCompatR(rootView: View): Unit {

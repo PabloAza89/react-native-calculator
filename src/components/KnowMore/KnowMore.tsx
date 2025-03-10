@@ -16,6 +16,8 @@ import { Text } from '../../utils/Text';
 import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 import { MyViewManager } from './MyViewManager';
+//import { MyCustomView } from './MyViewManager';
+
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
 //const MyViewManager = requireNativeComponent('MyViewManager');
@@ -39,7 +41,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       // we are calling the 'create' command
       //UIManager.MyViewManager.Commands.create.toString(),
       UIManager.getViewManagerConfig('MyViewManager').Commands.create.toString(),
-      [viewId],
+      [viewId, 500, 500],
     )
   }
 
@@ -52,34 +54,41 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
 
   return (
-    <MyViewManager
-      ref={ref}
-      style={{
-        // converts dpi to px, provide desired height
-        //height: PixelRatio.getPixelSizeForLayoutSize(200),
-        height: 1800,
-        // converts dpi to px, provide desired width
-        //width: PixelRatio.getPixelSizeForLayoutSize(200),
-        width: 500,
-        //color: '#0d00ff'
-        //color: '#0D00FF'
-        //backgroundColor: '#0D00FF'
-        //width: '50%',
-        //display: 'flex',
-        //display: 'none',
-        //backgroundColor: 'red',
-        //backgroundColor: '#FF0063',
-        //backgroundColor: '#FF0063',
-        //backgroundColor: '#ff0063',
-        backgroundColor: 'yellow',
-        //color: 'red',
-        //#64b381
-        //display: 'f',
-        //flex: 1,
-        //zIndex: 2000000,
-        //backgroundColor: 'red'
-      }}
-    />
+    <View style={{ width: '100%', height: '100%', display: 'flex', backgroundColor: 'red' }}>
+      <MyViewManager
+        ref={ref}
+        style={{
+          // converts dpi to px, provide desired height
+          //height: PixelRatio.getPixelSizeForLayoutSize(200),
+          height: 1800,
+          // converts dpi to px, provide desired width
+          //width: PixelRatio.getPixelSizeForLayoutSize(200),
+          width: 500,
+          //color: '#0d00ff'
+          //color: '#0D00FF'
+          //backgroundColor: '#0D00FF'
+          //width: '50%',
+          //display: 'flex',
+          //display: 'none',
+          //backgroundColor: 'red',
+          //backgroundColor: '#FF0063',
+          //backgroundColor: '#FF0063',
+          //backgroundColor: '#ff0063',
+          //backgroundColor: 'blue',
+          backgroundColor: 'yellow',
+          //color: 'red',
+          //#64b381
+          //display: 'f',
+          //flex: 1,
+          //zIndex: 2000000,
+          //backgroundColor: 'red'
+        }}
+      >
+        <Text>
+          'Welcome to my very first\nAndroid App: A Classic Calculator !'
+        </Text>
+      </MyViewManager>
+    </View>
   );
 }
 
