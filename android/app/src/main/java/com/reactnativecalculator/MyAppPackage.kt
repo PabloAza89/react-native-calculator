@@ -11,6 +11,8 @@ import com.facebook.react.bridge.NativeModule
 
 import androidx.annotation.NonNull
 
+import com.reactnativecalculator.StackViewManager
+
 class MyAppPackage : ReactPackage {
   // override fun createViewManagers(
   //     reactContext: ReactApplicationContext
@@ -29,7 +31,8 @@ class MyAppPackage : ReactPackage {
     }
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-        return listOf(MyViewManager(reactContext))
+        return listOf(StackViewManager())
+        //return listOf(MyViewManager(reactContext))
     }
 
 }

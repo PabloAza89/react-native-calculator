@@ -1,0 +1,43 @@
+import React, { Component, ReactNode }  from 'react';
+import {requireNativeComponent} from 'react-native';
+
+interface ASD {
+  //children: any
+}
+
+type PropsWithChildren<P = unknown> = P & {
+  children?: ReactNode | undefined;
+};
+
+//export class MyCustomView extends Component<PropsWithChildren<{}>, {}> {
+class MyCustomView extends Component<any> {
+  constructor(props: any) {
+    super(props);
+    //this._onChange = this._onChange.bind(this);
+  }
+  // _onChange(event: any) {
+  //   // if (!this.props.onChangeMessage) {
+  //   //   return;
+  //   // }
+  //   //this.props.onChangeMessage(event.nativeEvent.message);
+  // }
+  render() {
+    //console.log("TTT", this.props.children)
+    return <MyViewManager {...this.props} >{this.props.children}</MyViewManager>;
+  }
+}
+// MyCustomView.propTypes = {
+//   /**
+//    * Callback that is called continuously when the user is dragging the map.
+//    */
+//   onChangeMessage: PropTypes.func,
+//   ...
+// };
+
+// type ChildrenProp = {
+//   children: React.ReactNode;
+// };
+
+
+const MyViewManager = requireNativeComponent('MyViewManager')// as any;
+export default MyCustomView;

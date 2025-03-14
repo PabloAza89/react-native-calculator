@@ -1,4 +1,67 @@
-import {requireNativeComponent} from 'react-native';
+import {
+  useEffect,
+  useRef,
+} from 'react';
+import {
+  requireNativeComponent,
+  UIManager,
+  findNodeHandle,
+  Text,
+  ViewProps,
+} from 'react-native';
 
-export const MyViewManager =
-  requireNativeComponent('MyViewManager') as any;
+
+const StackView = requireNativeComponent<ViewProps>('StackView')// as any
+
+interface IWrapperProps {
+  children?: React.ReactNode | null;
+  onPress?: () => void;
+  testId?: string;
+};
+
+const StackViewComponent = ({ children }: IWrapperProps) => {
+
+  console.log("PROPS", children)
+
+  // const createFragment = (viewId: any) => {
+  //   console.log("AAA 111", viewId)
+  //   UIManager.dispatchViewManagerCommand(
+  //     viewId,
+  //     // we are calling the 'create' command
+  //     //UIManager.MyViewManager.Commands.create.toString(),
+  //     UIManager.getViewManagerConfig('MyViewManager').Commands.create.toString(),
+  //     [viewId],
+  //   )
+  // }
+  
+  // const ref = useRef(null);
+  
+  // useEffect(() => {
+  //   const viewId = findNodeHandle(ref.current);
+  //   createFragment(viewId);
+  // }, []);
+
+  return (
+    <StackView
+      style={{ flex: 1, backgroundColor: 'pink' /* height: 500, width: 500 */ }} /* ref={ref}  *//* {...props} */
+    >
+      { children }
+      {/* <Text>
+        REACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+      </Text> */}
+    </StackView>
+  )
+}
+
+export default StackViewComponent
+
+
+
+// const MyCustomView = requireNativeComponent('MyViewManager') as any
+
+// export default MyCustomView
+
+
+// const StackView = requireNativeComponent('MyViewManager') as any
+
+// export default StackViewComponent

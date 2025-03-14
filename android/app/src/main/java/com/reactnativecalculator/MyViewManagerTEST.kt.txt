@@ -28,28 +28,29 @@ import android.widget.LinearLayout
 //import android.view.ViewGroup
 
 class MyViewManager(private val reactContext: ReactApplicationContext): ViewGroupManager<FrameLayout>() {
-  private var propBackgroundColor: String? = null
-  var reactNativeViewId: Int by Delegates.notNull<Int>()
+  //private var propBackgroundColor: String? = null
+  //var reactNativeViewId: Int by Delegates.notNull<Int>()
 
   override fun getName() = REACT_CLASS
 
-  override fun createViewInstance(reactContext: ThemedReactContext): FrameLayout {
-    val root = LayoutInflater.from(reactContext).inflate(R.layout.layout_container, null) as FrameLayout // as LinearLayout
-    return root
-  }
+  override fun createViewInstance(reactContext: ThemedReactContext) = FrameLayout(reactContext)
+
+  // override fun createViewInstance(reactContext: ThemedReactContext): FrameLayout {
+  //   return LayoutInflater.from(reactContext).inflate(R.layout.layout_container, null) as FrameLayout // as LinearLayout
+  // }
 
   override fun getCommandsMap() = mapOf("create" to COMMAND_CREATE)
 
   override fun receiveCommand(root: FrameLayout, commandId: String, args: ReadableArray?) {
     super.receiveCommand(root, commandId, args)
-    reactNativeViewId = requireNotNull(args).getInt(0)
+    val reactNativeViewId = requireNotNull(args).getInt(0)
 
     when (commandId.toInt()) {
       COMMAND_CREATE -> {
 
-
         // Choreographer.getInstance().postFrameCallback(object: Choreographer.FrameCallback {
         //   override fun doFrame(frameTimeNanos: Long) {
+
         //     Choreographer.getInstance().postFrameCallback(this)
         //   }
         // })

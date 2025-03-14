@@ -1,0 +1,27 @@
+import React from 'react';
+import {requireNativeComponent, HostComponent } from 'react-native';
+
+
+
+class MyCustomView extends React.Component<any> {
+  constructor(props: any) {
+    super(props)
+  }
+  render() {
+    return (
+      <MyViewManager />
+    )
+  }
+    
+}
+
+const MyViewManager = requireNativeComponent('MyViewManager')// as any// as HostComponent<any>
+export default MyCustomView;
+
+// export const MyCustomView: HostComponent<any> = (props: any) => {
+//   return (
+//     <MyViewManager /* {...props} */ />//{props.children}</MyViewManager>
+//   )
+// }
+
+//export default MyCustomView;
