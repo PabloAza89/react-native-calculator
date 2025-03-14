@@ -63,6 +63,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       }}
     >
       <MyCustomView
+        style={{ flex: 1, /* backgroundColor: 'red' */ /* height: 500, width: 500 */ }}
         //style={{ height: 500, width: 500 }}
         //ref={ref}
       >

@@ -19,9 +19,10 @@ interface IWrapperProps {
   testId?: string;
 };
 
-const StackViewComponent = ({ children }: IWrapperProps) => {
+//const StackViewComponent = ({ children, props }: IWrapperProps) => {
+const StackViewComponent = (props: any) => {
 
-  console.log("PROPS", children)
+  console.log("PROPS", props.children)
 
   // const createFragment = (viewId: any) => {
   //   console.log("AAA 111", viewId)
@@ -43,9 +44,10 @@ const StackViewComponent = ({ children }: IWrapperProps) => {
 
   return (
     <StackView
-      style={{ flex: 1, backgroundColor: 'pink' /* height: 500, width: 500 */ }} /* ref={ref}  *//* {...props} */
+      //style={{ flex: 1, backgroundColor: 'pink' /* height: 500, width: 500 */ }} /* ref={ref}  */
+      {...props}
     >
-      { children }
+      { props.children }
       {/* <Text>
         REACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
       </Text> */}

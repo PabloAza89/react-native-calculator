@@ -19,10 +19,10 @@ class StackViewManager : ViewGroupManager<StackView>() {
 
     // MARK :- Children
     override fun addView(parent: StackView, child: View, index: Int) {
-        val params = FrameLayout.LayoutParams(250, 250)
-        params.topMargin = 50 * index
-        params.leftMargin = 50 * index
-        child.layoutParams = params
+        // val params = FrameLayout.LayoutParams(250, 250)
+        // params.topMargin = 50 * index
+        // params.leftMargin = 50 * index
+        // child.layoutParams = params
         //parent.setBackgroundColor(Color.parseColor("#D186A3"))
         parent.setBackgroundColor(Color.parseColor("#a6f263"))
         parent.addView(child, index)
