@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 
 
-const StackView = requireNativeComponent<ViewProps>('StackView')// as any
+//const StackView = requireNativeComponent<ViewProps>('StackView')// as any
+const StackView = requireNativeComponent('MyViewManager')// as any
 
 interface IWrapperProps {
   children?: React.ReactNode | null;

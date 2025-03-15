@@ -68,7 +68,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         //ref={ref}
       >
         <Text>
-          REACTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          REACTAAAAAAAAABBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         </Text>
       </MyCustomView>
     </View>
