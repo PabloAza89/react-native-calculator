@@ -1,4 +1,3 @@
-//package com.childviewtest.stack
 package com.reactnativecalculator
 
 import android.annotation.SuppressLint

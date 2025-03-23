@@ -32,8 +32,9 @@ class MyAppPackage : ReactPackage {
     }
 
     override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
+      //return emptyList()
         //return listOf(StackViewManager())
-        return listOf(MyViewManager())
+        return listOf(MyViewManager(reactContext))
         //return listOf(MyViewManager(reactContext))
     }
 
