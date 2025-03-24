@@ -202,9 +202,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
         // Log.d("LOG", "TEST VAR: ${testVar}");
 
-        // val qqq = findViewById<View>(android.R.id.leaderboard)
+        //val qqq2 = findViewById<View>(android.R.id.leaderboard)
         // val qqq = ReactFindViewUtil.findView(root.view, nativeId)
-        // Log.d("LOG", "11111111111111111111111 ${qqq}");
+        //Log.d("LOG", "LEADERBOARD ${qqq2}");
 
         // Log.d("LOG", "ADDED LAYOUT LISTENER");
         // Log.d("LOG", "A VER ROOTVIEW ${rootView}");
@@ -216,7 +216,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         val www = this@MainActivity.window?.decorView?.rootView
         val qqq = ReactFindViewUtil.findView(www, "leaderboard")
         //qqq?.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
-        qqq?.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
+        //qqq?.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
         //qqq?.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
         //qqq?.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
         //qqq?.setScrollBarStyle(16777216)
@@ -232,7 +232,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         //Log.d("LOG", "11111111111111111111111 ${qqq}")
         Log.d("LOG", "11111111111111111111111 ${qqq}")
 
-        //Log.d("LOG", "1111 A VER 11111 ${qqq?.getScrollBarStyle()}")
+        Log.d("LOG", "CURR STYLE ${qqq?.getScrollBarStyle()}")
 
 
       }

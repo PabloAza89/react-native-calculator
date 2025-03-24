@@ -233,11 +233,10 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         }
       />
 
-      <CustomView
-        // ScrollView
+      <ScrollView
         // CustomView
-        reff={scrollRef}
-        //onScroll={handleScroll}
+        ref={scrollRef}
+        onScroll={handleScroll}
         persistentScrollbar={true}
         //contentOffset={{ x:50, y:50 }}
         //onScroll={(e) => console.log(e.nativeEvent)}
@@ -336,7 +335,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3" /> }
 
           </View>
-          
         }
       />
 

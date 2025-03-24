@@ -3,7 +3,6 @@ import {
   View, StatusBar, ScrollView, Pressable, InteractionManager, ActivityIndicator,
   NativeSyntheticEvent, NativeScrollEvent, Animated, useAnimatedValue,
   UIManager, findNodeHandle,
-  //ReactScrollView
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -11,8 +10,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from '../../utils/Text';
 import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
-
-import CustomView from './CustomView';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
 const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins }: any): ReactElement => {
@@ -174,32 +171,30 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   // console.log("INS.TOP", ins.top)
   // console.log("INS.BOTTOM", ins.bottom)
 
-  // const createFragment = (viewId: any) => {
-  //   // UIManager.dispatchViewManagerCommand(
-  //   //   viewId,
-  //   //   // we are calling the 'create' command
-  //   //   UIManager.MyViewManager.Commands.create.toString(),
-  //   //   [viewId],
-  //   // )
-  //   // UIManager.dispatchViewManagerCommand(
-  //   //   viewId,
-  //   //   UIManager.MyViewManager.Commands.create.toString(),
-  //   //   [viewId],
-  //   // )
-  //   //console.log("VIEW ID", viewId)
-  // }
+  const createFragment = (viewId: any) => {
+    // UIManager.dispatchViewManagerCommand(
+    //   viewId,
+    //   // we are calling the 'create' command
+    //   UIManager.MyViewManager.Commands.create.toString(),
+    //   [viewId],
+    // )
+    // UIManager.dispatchViewManagerCommand(
+    //   viewId,
+    //   UIManager.MyViewManager.Commands.create.toString(),
+    //   [viewId],
+    // )
+    //console.log("VIEW ID", viewId)
+  }
 
-  // const ref = useRef(null);
+  const ref = useRef(null);
 
-  // useEffect(() => {
-  //   const viewId = findNodeHandle(ref.current);
-  //   createFragment(viewId);
-  // }, []);
-
-  //ScrollView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
+  useEffect(() => {
+    const viewId = findNodeHandle(ref.current);
+    createFragment(viewId);
+  }, []);
 
   return (
-    <View /* ref={ref} */ style={[s.mainContainer, { /* paddingBottom: ins.bottom */
+    <View ref={ref} style={[s.mainContainer, { /* paddingBottom: ins.bottom */
       //paddingTop: 24,
       //paddingBottom: 24,
       //padding: 24 * 1,
@@ -233,11 +228,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         }
       />
 
-      <CustomView
-        // ScrollView
-        // CustomView
-        reff={scrollRef}
-        //onScroll={handleScroll}
+      <ScrollView
+        ref={scrollRef}
+        onScroll={handleScroll}
         persistentScrollbar={true}
         //contentOffset={{ x:50, y:50 }}
         //onScroll={(e) => console.log(e.nativeEvent)}
@@ -262,14 +255,11 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           // marginTop: 24,
           // paddingBottom: 48,
           //padding: 24 * 1,
-          //margin: 24 * 1,
+          margin: 24 * 1,
           //overflow: 'visible',
-          paddingTop: 25,
-          //padding: 200,
         }}
         
         contentContainerStyle={[ {
-          //paddingTop: 25,
           /* paddingVertical: 10 */ /* top: ins.top *1, *//* top: ins.top*-1 */
           // marginTop: 24,
           // paddingBottom: 24,
@@ -336,7 +326,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3" /> }
 
           </View>
-          
         }
       />
 

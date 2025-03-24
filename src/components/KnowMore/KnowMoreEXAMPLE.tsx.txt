@@ -74,7 +74,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         width: '50%',
         height: '75%',
         top: 100,
-        padding: 20,
         //backgroundColor: 'yellow',
         //backgroundColor: '#5bdec8', // lightgreen
         // 
@@ -91,7 +90,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         //topMargin: 10,
         //leftMargin: 10,
         //paddingLeft: 10,
-        //padding: 10,
         //padding: '50px',
         //padding: 20,
         //padding: 0,
@@ -142,37 +140,12 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       }}
     >
 
-      <View style={{ display: 'flex', position: 'relative', /* marginLeft: 20, */ backgroundColor: 'red', /* width: '50%' */ /* , height: '4%' */ }}>
-
-        <Text style={{ fontWeight: '800' }} children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text style={{ fontSize: 22 }} children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-<Text children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
-
-      </View>
-        {/* <View style={{ display: 'flex', position: 'relative', backgroundColor: 'yellow', width: 100, height: '10%',  }}>
+      <View style={{ display: 'flex', position: 'relative', /* marginLeft: 20, */ backgroundColor: 'red', width: 40, height: '4%' }}>
         
-      </View> */}
+        </View>
+        <View style={{ display: 'flex', position: 'relative', backgroundColor: 'yellow', width: 100, height: '10%',  }}>
+        
+      </View>
 
     </CustomView>
     </View>
