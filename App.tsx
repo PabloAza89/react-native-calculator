@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState, useRef, useLayoutEffect } from "react";
-import { CommonActions, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import {  CommonActions, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BootSplash from "react-native-bootsplash";
 import * as Font from 'expo-font';
@@ -7,7 +7,7 @@ import { Image, AppState, Dimensions, useWindowDimensions, NativeModules, Native
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
-import { StackAnimationTypes } from "react-native-screens";
+import { StackAnimationTypes, enableScreens } from "react-native-screens";
 //import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { dimI, navigationI } from './src/interfaces/interfaces';
 
@@ -16,31 +16,50 @@ const Stack = createNativeStackNavigator();
 const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, screens: ReactElement[]) => {
   return (
     <Stack.Navigator
+      //cardOverlayEnabled={true}
+      //detachInactiveScreens={false}
+      //id={'asd'}
+      
       screenOptions={{
-        headerShown: false,
-        gestureEnabled: false,
+        
+        //cardOverlayEnabled: true,
+        headerShown: false, // ****************
+        //gestureEnabled: false, // ****************
+        
+        // headerStyle: {
+        //   //headerTransparent: true,
+        //   cardOverlay: true,
+        //   headerTitleStyle: {
+        //     color: 'white',
+        //   },
+        // },
+
         // cardStyle: { backgroundColor: 'transparent' },
         // navigationBarColor: 'red',
         //navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
         //navigationBarColor: tallBar ? 'red' : 'blue',
         //navigationBarColor: tallBar ? 'rgba(255, 0, 0, 0.2)' : 'rgba(0, 0, 255, 0.2)',
-        navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
+        //navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent', // ****************
         //navigationBarColor: 'rgba(0, 0, 0, 0)',
         //navigationBarColor: 'transparent',
         /* navigationBarColor: 'rgba(0, 255, 0, 0.0)', */
         //navigationBarColor: navBar ? 'red' : 'red',
-        animation: animation,
+        //animation: animation, // ****************
         //statusBarTranslucent: true,
         //statusBarHidden: false // NO
         //statusBarHidden: true, // NO
         //statusBarStyle: 'dark' // NO
-        statusBarColor: 'transparent',
+        //statusBarColor: 'transparent', // ****************
         //statusBarColor: 'yellow',
         //statusBarTranslucent: true,
-        statusBarStyle: 'dark',
+        //statusBarStyle: 'dark', // ****************
+        //detachPreviousScreen: false,
+        //backgroundColor: 'transparent',
         //navigationBarColor: true
         //navigationBarHidden: true
         //fullScreenGestureEnabled: false
+        //cardOverlay: true,
+        //cardOverlayEnabled: true
       }}
       children={ screens.map((e: ReactElement) => e) }
     />
@@ -48,6 +67,8 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
 }
 
 const App = (): ReactElement => {
+
+  //enableScreens(true);
 
   console.log("APP LOG START")
 
@@ -213,7 +234,8 @@ const App = (): ReactElement => {
       <Stack.Screen
         name={e}
         key={e}
-        options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" } }} // DEFAULT APP BACKGROUND COLOR
+        //options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" }, /* cardOverlay: true, */ }} // DEFAULT APP BACKGROUND COLOR
+        //options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" }, /* cardOverlay: true, */ }} // DEFAULT APP BACKGROUND COLOR
         children={(props) => dynamicImport(props, e)}
       />
     )

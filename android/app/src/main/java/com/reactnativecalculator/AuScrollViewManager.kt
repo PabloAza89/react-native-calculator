@@ -8,6 +8,8 @@ import com.facebook.react.views.scroll.ReactScrollView
 import com.facebook.react.uimanager.ThemedReactContext
 import android.graphics.Color;
 import android.view.View
+import android.graphics.Canvas;
+import android.view.ViewGroup
 
 class AuScrollViewManager : ReactScrollViewManager() {
 
@@ -32,9 +34,11 @@ class AuScrollViewManager : ReactScrollViewManager() {
         val asd = ReactScrollView(reactContext)
         asd.setBackgroundColor(Color.parseColor("#ff00d9"))
 
-        //asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
+        asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
         //asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
-        asd.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
+        /* asd.setClipChildren(false) */
+        asd.setClipToPadding(false)
+        //asd.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
         //asd.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
         asd.setPadding(50, 50, 50, 50)
 
@@ -45,6 +49,29 @@ class AuScrollViewManager : ReactScrollViewManager() {
 
         return asd
     }
+
+    // fun disableClipOnParents(v: View?) {
+    //     if (v == null) {
+    //         return
+    //     }
+    //     if (v is ViewGroup) {
+    //         v.setClipChildren(false)
+    //         v.setClipToPadding(false)
+    //     }
+    //     disableClipOnParents(v.parent as? View)
+    // }
+
+    // override fun onDrawVerticalScrollBar(
+    //     canvas: Canvas,
+    //     scrollBar: Drawable,
+    //     l: Int,
+    //     t: Int,
+    //     r: Int,
+    //     b: Int
+    // ) {
+    //     scrollBar.setBounds(l, t + mVerticalScrollInset, r, b)
+    //     scrollBar.draw(canvas)
+    // }
 
     // companion object {
     //     const val REACT_CLASS: String = "AuScrollView"

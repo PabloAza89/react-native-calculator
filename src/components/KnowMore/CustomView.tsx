@@ -87,7 +87,7 @@ import { NativeModules, requireNativeComponent, ScrollView, Platform, HostCompon
 // )
 
 const CustomView = (props: any) => {
-  return <ASD /* ref={props.reff} */ {...props}  /* style={props.style} */ /> //{props.children}</ASD>
+  return <ASD /* ref={props.reff} */ {...props}  style={props.style} /> // {props.children}</ASD>
 }
 
 //const ASD = requireNativeComponent('AuScrollView', 'asdasd')
