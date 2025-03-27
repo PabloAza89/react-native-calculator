@@ -14,7 +14,33 @@ import android.view.ViewGroup
 import android.util.Log
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 
+import com.facebook.react.uimanager.ViewProps.PADDING;
+import com.facebook.react.uimanager.ViewProps.PADDING_BOTTOM;
+import com.facebook.react.uimanager.ViewProps.PADDING_END;
+import com.facebook.react.uimanager.ViewProps.PADDING_HORIZONTAL;
+import com.facebook.react.uimanager.ViewProps.PADDING_LEFT;
+import com.facebook.react.uimanager.ViewProps.PADDING_RIGHT;
+import com.facebook.react.uimanager.ViewProps.PADDING_START;
+import com.facebook.react.uimanager.ViewProps.PADDING_TOP;
+import com.facebook.react.uimanager.ViewProps.PADDING_VERTICAL;
+import com.facebook.react.bridge.Dynamic;
+
+import android.util.TypedValue
+import android.content.res.Resources
+
+import kotlin.properties.Delegates
+
 class AuScrollViewManager : ReactScrollViewManager() {
+
+    // var paddingLeft: Int by Delegates.notNull<Int>()
+    // var paddingTop: Int by Delegates.notNull<Int>()
+    // var paddingRight: Int by Delegates.notNull<Int>()
+    // var paddingBottom: Int by Delegates.notNull<Int>()
+
+    var paddingLeft: Int = 0
+    var paddingTop: Int = 0
+    var paddingRight: Int = 0
+    var paddingBottom: Int = 0
 
    //private var mFpsListener: FpsListener? = null
 
@@ -46,7 +72,9 @@ class AuScrollViewManager : ReactScrollViewManager() {
         //asd.setPadding(50, 50, 50, 50)
         //asd.setPadding(0, 0, 0, 0)
         //asd.setPadding(1, 1, 1, 1)
-        asd.setPadding(40, 40, 40, 40)
+        //asd.setPadding(40, 40, 40, 40)
+        //asd.setPadding(40, 40, 40, 40)
+        asd.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
         //asd.setPaddingRelative(40, 40, 40, 40)
         
 
@@ -58,12 +86,42 @@ class AuScrollViewManager : ReactScrollViewManager() {
         return asd
     }
 
-    @ReactPropGroup(names = ["width", "height"], customType = "Style")
-    fun setStyle(view: ReactScrollView, index: Int, value: Int) {
-        // if (index == 0) propWidth = value
-        // if (index == 1) propHeight = value
-        Log.d("LOG", "RECEIVED ${index} ${value}");
+    // fun onLayout() {
+
+    // }
+
+    // @ReactPropGroup(names = ["width", "height"], customType = "Style")
+    // fun setStyle(view: ReactScrollView, index: Int, value: Int) {
+    //     // if (index == 0) propWidth = value
+    //     // if (index == 1) propHeight = value
+    //     Log.d("LOG", "RECEIVED ${index} ${value}");
+    // }
+
+    fun dpToPx(dp: Float): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().displayMetrics).toInt()
+
+    @ReactPropGroup(names = [ "paddingLeft", "paddingTop", "paddingRight", "paddingBottom" ])
+    fun setPaddings(view: ReactScrollView, index: Int, value: Float) {
+        if (index == 0) paddingLeft = dpToPx(value)
+        if (index == 1) paddingTop = dpToPx(value)
+        if (index == 2) paddingRight = dpToPx(value)
+        if (index == 3) paddingBottom = dpToPx(value)
+        Log.d("LOG", "RECEIVED PRE ${index} ${value}");
+
+        Log.d("LOG", "RECEIVED AFTER ${index} ${TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, Resources.getSystem().displayMetrics).toInt()}");
+
+        view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+
+        //view.updateView()
+
+        //TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, Resources.getSystem().displayMetrics).toInt()
+        //Log.d("LOG", "RECEIVED ${padding}");
     }
+
+    // fun dpToPx(dp: Float): Int {
+    //     return TypedValue.applyDimension(
+    //         TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().displayMetrics
+    //     ).toInt()
+    // }
 
     // @ReactPropGroup(names = ["width", "height"], customType = "Style")
     // fun setStyle(view: ReactScrollView, index: Int, value: String) {
