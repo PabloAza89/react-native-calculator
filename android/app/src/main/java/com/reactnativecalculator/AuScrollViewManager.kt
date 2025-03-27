@@ -11,9 +11,12 @@ import android.view.View
 import android.graphics.Canvas;
 import android.view.ViewGroup
 
+import android.util.Log
+import com.facebook.react.uimanager.annotations.ReactPropGroup
+
 class AuScrollViewManager : ReactScrollViewManager() {
 
-   private var mFpsListener: FpsListener? = null
+   //private var mFpsListener: FpsListener? = null
 
     // constructor(context: ReactContext) : this(context, null)
 
@@ -34,13 +37,18 @@ class AuScrollViewManager : ReactScrollViewManager() {
         val asd = ReactScrollView(reactContext)
         asd.setBackgroundColor(Color.parseColor("#ff00d9"))
 
-        asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
-        //asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
+        //asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
+        asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
         /* asd.setClipChildren(false) */
         asd.setClipToPadding(false)
         //asd.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
         //asd.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
-        asd.setPadding(50, 50, 50, 50)
+        //asd.setPadding(50, 50, 50, 50)
+        //asd.setPadding(0, 0, 0, 0)
+        //asd.setPadding(1, 1, 1, 1)
+        asd.setPadding(40, 40, 40, 40)
+        //asd.setPaddingRelative(40, 40, 40, 40)
+        
 
         // Log.d("LOG", "RESP 1 ${View.SCROLLBARS_INSIDE_OVERLAY}")
         // Log.d("LOG", "RESP 2 ${View.SCROLLBARS_INSIDE_INSET}")
@@ -49,6 +57,20 @@ class AuScrollViewManager : ReactScrollViewManager() {
 
         return asd
     }
+
+    @ReactPropGroup(names = ["width", "height"], customType = "Style")
+    fun setStyle(view: ReactScrollView, index: Int, value: Int) {
+        // if (index == 0) propWidth = value
+        // if (index == 1) propHeight = value
+        Log.d("LOG", "RECEIVED ${index} ${value}");
+    }
+
+    // @ReactPropGroup(names = ["width", "height"], customType = "Style")
+    // fun setStyle(view: ReactScrollView, index: Int, value: String) {
+    //     // if (index == 0) propWidth = value
+    //     // if (index == 1) propHeight = value
+    //     Log.d("LOG", "RECEIVED ${index} ${value}");
+    // }
 
     // fun disableClipOnParents(v: View?) {
     //     if (v == null) {

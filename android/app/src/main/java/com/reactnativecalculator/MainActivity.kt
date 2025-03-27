@@ -146,6 +146,8 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     dotsPerInch = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
 
+    Log.d("LOG", "CURRENT DPI ${dotsPerInch}");
+
     rootView = findViewById<View>(android.R.id.content).rootView
 
     rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {

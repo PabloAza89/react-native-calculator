@@ -3,7 +3,7 @@ import {  CommonActions, NavigationContainer, useNavigationContainerRef } from '
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BootSplash from "react-native-bootsplash";
 import * as Font from 'expo-font';
-import { Image, AppState, Dimensions, useWindowDimensions, NativeModules, NativeEventEmitter } from 'react-native';
+import { Image, AppState, Dimensions, useWindowDimensions, NativeModules, NativeEventEmitter, PixelRatio, } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -70,6 +70,8 @@ const App = (): ReactElement => {
 
   //enableScreens(true);
 
+  console.log("PIXEL RATIO", PixelRatio.get())
+
   console.log("APP LOG START")
 
   const { MainActivity, TestModule } = NativeModules;
@@ -87,8 +89,13 @@ const App = (): ReactElement => {
     "insets": {"bottom": 0, "left": 0, "right":0, "top": 0},
     "state": "portrait",
     "vmin": 0,
-    "tallBar": "false"
+    "tallBar": "false",
+    "density": 0
   });
+
+  useEffect(() => {
+    console.log("CURRENT LAYOUT", layout)
+  },[layout])
 
   //let port: boolean // PORTRAIT
   //if (width > height) { setvmin = 0 }
@@ -225,7 +232,12 @@ const App = (): ReactElement => {
         )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
-        return <KnowMore {...props} height={layout.window.height} state={layout.state} ins={layout.insets} hingeBounds={layout.hingeBounds} />
+        return (
+          <KnowMore
+            {...props} height={layout.window.height} state={layout.state} ins={layout.insets}
+            hingeBounds={layout.hingeBounds} density={layout.density}
+          />
+        )
     }
   }
 
@@ -288,7 +300,8 @@ const App = (): ReactElement => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
       console.log("LAYOUT", e)
-      setLayout(e)
+      //setLayout(e)
+      setLayout(Object.assign( {}, e, { "density": PixelRatio.get() } ))
       tallBar.current = e.tallBar
 
       

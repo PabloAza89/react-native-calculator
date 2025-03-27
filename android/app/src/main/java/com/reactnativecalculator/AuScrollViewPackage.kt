@@ -12,17 +12,11 @@ import com.facebook.react.uimanager.ViewManager
 
 class AuScrollViewPackage : ReactPackage {
 
-    override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
-        return emptyList()
-    }
+    override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> = emptyList()
 
     // override fun createJSModules(): List<Class<out JavaScriptModule>> {
     //     return emptyList()
     // }
 
-    override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-        return listOf(
-            AuScrollViewManager()
-        )
-    }
+    override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> = listOf( AuScrollViewManager())
 }

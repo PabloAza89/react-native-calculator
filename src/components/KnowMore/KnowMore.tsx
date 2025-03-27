@@ -29,7 +29,7 @@ import CustomView from './CustomView'; // CLASS
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
 //const MyViewManager = requireNativeComponent('MyViewManager');
 
-const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins }: any): ReactElement => {
+const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins, density }: any): ReactElement => {
 
   //const [ www, setWww ] = useState(false)
 
@@ -108,12 +108,21 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //flex: 1,
           //...padding(50, 50, 50, 50),
           //display: 'flex', position: 'relative',
-          width: '50%',
-          height: '70%',
+          // width: '50%',
+          // height: '70%',
+          width: 200,
+          height: 300,
           top: 100,
-          padding: 20,
+          left: 60,
+          //padding: 40,
+          ...{
+            paddingLeft: 20,
+            paddingTop: 0,
+            paddingRight: 20,
+            paddingBottom: 0,
+          },
           //paddingVertical: 20,
-          overflow: 'visible',
+          //overflow: 'visible',
           //flexGrow: 1,
           //flex: 1,
           //flexGrow: 1,
