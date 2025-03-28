@@ -1,6 +1,4 @@
 
-//package com.ebenum.AuScrollView;
-//package com.reactnativecalculator//.AuScrollView;
 package com.reactnativecalculator
 
 import com.facebook.react.views.scroll.ReactScrollViewManager
@@ -39,7 +37,7 @@ import com.facebook.react.uimanager.Spacing;
 import androidx.core.view.updatePadding
 import androidx.annotation.Px
 
-class AuScrollViewManager : ReactScrollViewManager() {
+class CustomScrollViewManager : ReactScrollViewManager() {
 
     // var paddingLeft: Int by Delegates.notNull<Int>()
     // var paddingTop: Int by Delegates.notNull<Int>()
@@ -72,10 +70,10 @@ class AuScrollViewManager : ReactScrollViewManager() {
         val asd = ReactScrollView(reactContext)
         asd.setBackgroundColor(Color.parseColor("#ff00d9"))
 
-        //asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
-        asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
-        asd.setClipChildren(false)
-        //asd.setClipToPadding(false)
+        asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
+        //asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
+        //asd.setClipChildren(false)
+        asd.setClipToPadding(false)
         //asd.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
         //asd.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
         //asd.setPadding(50, 50, 50, 50)
@@ -215,7 +213,7 @@ class AuScrollViewManager : ReactScrollViewManager() {
     // }
 
     companion object {
-    private const val REACT_CLASS = "AuScrollView"
+    private const val REACT_CLASS = "CustomScrollView"
     private const val COMMAND_CREATE = 1
   }
     

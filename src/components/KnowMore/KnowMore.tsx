@@ -20,7 +20,7 @@ import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 //import { MyViewManager } from './MyViewManager'; // COMP
 //import { MyCustomView } from './MyViewManager'; // CLASS
-import CustomView from './CustomView'; // CLASS
+import CustomScrollView from './CustomScrollView'; // CLASS
 
 //const CustomView = requireNativeComponent<ViewProps>("MyViewManager")
 //const CustomView = requireNativeComponent("MyViewManager") as any
@@ -56,8 +56,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   return (
     <View
-      //overScrollMode='always'
-      //ove
       style={{
         width: '100%',
         height: '90%',
@@ -72,44 +70,13 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         //overflow: 'visible',
         
       }}
-      //removeClippedSubviews={true}
-      //removeClippedSubviews={true}
       
     >
       
-      <CustomView
-        // FlatList
-        // CustomView
-        // ScrollView
-        //scrollEnabled={true}
-        //overScrollMode={'never'}
-        //bounces={true}
-        //overScrollMode='never' // 'never' 'always' 'auto'
-        //padding={"50, 50, 50, 50"}
-        //reff={ref}
-        //removeClippedSubviews={false}
-        //removeClippedSubviews={true}
-        //refreshing={true}
-        //refreshControl
-       /*  refreshControl={
-          <RefreshControl
-            enabled={false}
-            refreshing={false}
-            //onRefresh={onRefresh}
-          />
-        } */
+      <CustomScrollView
         style={{
-          /* zIndex: 1, */
-          //zIndex: 2000000,
-          //mixBlendMode: 'overlay',
           display: 'flex',
           position: 'relative',
-          //pointerEvents: 'box-none',
-          //flex: 1,
-          //...padding(50, 50, 50, 50),
-          //display: 'flex', position: 'relative',
-          // width: '50%',
-          // height: '70%',
           width: 200,
           height: 300,
           top: 100,
@@ -117,97 +84,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //padding: 40, 
           paddingLeft: 12,
           paddingTop: 32,
-          paddingRight: 60,
+          paddingRight: 40,
           paddingBottom: 10,
-       
-          //paddingVertical: 20,
-          //overflow: 'visible',
-          //flexGrow: 1,
-          //flex: 1,
-          //flexGrow: 1,
-          //flexGrow: 1,
-          //paddingBottom: 30,
-          //overflow: 'visible', // 'visible', 'hidden', 'scroll'
-          //flexShrink: -8000,
-          //overflow: ''
-          //padding: 20,
-          //backgroundColor: 'yellow',
-          //backgroundColor: '#5bdec8', // lightgreen
-          // 
-          //flexDirection: "row",
-          //flexDirection: "column",
-          //paddingInline: 50,
-          //paddingVertical: 50,
-          // justifyContent: 'center',
-          // alignItems: 'center',
-          //position: 'absolute',
-          //position: 'relative',
-          //marginTop: 20,
-          //margin: 10,
-          //topMargin: 10,
-          //leftMargin: 10,
-          //paddingLeft: 10,
-          //padding: 10,
-          //padding: '50px',
-          /* padding: 20, */
-          //padding: 0,
-          //padding: 50,
-          //paddingLeft: 50,
-          //padding: { 10, 10, 10, 10 },
-          //padding: { 10, 10, 10, 10 },
-          //padding: '20 20 20 20',
-          //padding: '20dp,20dp,20dp,20dp',
-          //padding: '20,20,20,20',
-          //padding: '20,20,20,20',
-          
-          //padding: 50,
-          // ...{ paddingLeft: 50,
-          //   paddingTop: 50,
-          //   paddingRight: 50,
-          //   paddingBottom: 50 },
-          // ...{ paddingLeft: 50,
-          //   paddingTop: 50,
-          //   paddingRight: 50,
-          //   paddingBottom: 50 },
-          // paddingTop: 10,
-          // paddingLeft: "10dp",
-          // paddingRight: "10dp",
-          // paddingBottom: "10dp",
-          // paddingTop: 10,
-          // paddingLeft: 10,
-          // paddingRight: 10,
-          // paddingBottom: 10,
-          //borderColor: 'red',
-          //borderColor: 'red',
-          //borderTopRightRadius: 30,
-          //borderWidth: 30,
-          //mixBlendMode: "saturation",
-          //outlineColor: 'red',
-          //opacity: 0.5,
-          //color: 'red',
-          //textSize: 100,
-          //top: 10,
-          //left: 10,
-          //fontWeight: 800,
-          //bottom: 50,
-          //padding: [30, 30, 30, 30],
-          //height: 500,
-          //padding: 200,
-          //backgroundColor: 'red'
-          //flexWrap: 'wrap',
         }}
-        contentContainerStyle={[ {
-          /* height: '50%', */
-          //flexGrow: 1,
-          //overflow: 'visible',
-          // flexGrow: 1,
-          // flex: 1,
-          //paddingTop: 25,
-          /* paddingVertical: 10 */ /* top: ins.top *1, *//* top: ins.top*-1 */
-          // marginTop: 24,
-          // paddingBottom: 24,
-          //padding: 24 * 1,
-        }]}
       >
 
         <View style={{ /* height: '50%', */ /* overflow: 'visible', */ /* zIndex: 2, */ display: 'flex', position: 'relative', /* marginLeft: 20, */ backgroundColor: 'red', /* width: '50%' */ /* height: '200%' */ }}>
@@ -238,11 +117,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           <Text style={{ /* zIndex: 3, */ }} children={'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'} />
 
         </View>
-          {/* <View style={{ display: 'flex', position: 'relative', backgroundColor: 'yellow', width: 100, height: '10%',  }}>
-          
-        </View> */}
-
-      </CustomView>
+      </CustomScrollView>
      
     </View>
   );
