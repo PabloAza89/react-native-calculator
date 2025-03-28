@@ -41,7 +41,10 @@ class CustomScrollViewManager : ReactScrollViewManager() {
     return view
   }
 
-  override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) = view.scrollTo(0, 0)
+  //override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) = view.scrollTo(0, 0)
+
+  override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) = view.smoothScrollTo(0, 0)
+  
 
   fun dpToPx(dp: Float): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().displayMetrics).toInt()
 
