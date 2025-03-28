@@ -14,21 +14,30 @@ import android.view.ViewGroup
 import android.util.Log
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 
-import com.facebook.react.uimanager.ViewProps.PADDING;
-import com.facebook.react.uimanager.ViewProps.PADDING_BOTTOM;
-import com.facebook.react.uimanager.ViewProps.PADDING_END;
-import com.facebook.react.uimanager.ViewProps.PADDING_HORIZONTAL;
-import com.facebook.react.uimanager.ViewProps.PADDING_LEFT;
-import com.facebook.react.uimanager.ViewProps.PADDING_RIGHT;
-import com.facebook.react.uimanager.ViewProps.PADDING_START;
-import com.facebook.react.uimanager.ViewProps.PADDING_TOP;
-import com.facebook.react.uimanager.ViewProps.PADDING_VERTICAL;
+// import com.facebook.react.uimanager.ViewProps.PADDING;
+// import com.facebook.react.uimanager.ViewProps.PADDING_BOTTOM;
+// import com.facebook.react.uimanager.ViewProps.PADDING_END;
+// import com.facebook.react.uimanager.ViewProps.PADDING_HORIZONTAL;
+// import com.facebook.react.uimanager.ViewProps.PADDING_LEFT;
+// import com.facebook.react.uimanager.ViewProps.PADDING_RIGHT;
+// import com.facebook.react.uimanager.ViewProps.PADDING_START;
+// import com.facebook.react.uimanager.ViewProps.PADDING_TOP;
+// import com.facebook.react.uimanager.ViewProps.PADDING_VERTICAL;
+
+import com.facebook.react.uimanager.ViewProps
+
 import com.facebook.react.bridge.Dynamic;
 
 import android.util.TypedValue
 import android.content.res.Resources
 
 import kotlin.properties.Delegates
+
+import com.facebook.react.bridge.DynamicFromObject
+import com.facebook.react.uimanager.Spacing;
+
+import androidx.core.view.updatePadding
+import androidx.annotation.Px
 
 class AuScrollViewManager : ReactScrollViewManager() {
 
@@ -65,8 +74,8 @@ class AuScrollViewManager : ReactScrollViewManager() {
 
         //asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
         asd.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
-        /* asd.setClipChildren(false) */
-        asd.setClipToPadding(false)
+        asd.setClipChildren(false)
+        //asd.setClipToPadding(false)
         //asd.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
         //asd.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
         //asd.setPadding(50, 50, 50, 50)
@@ -74,7 +83,7 @@ class AuScrollViewManager : ReactScrollViewManager() {
         //asd.setPadding(1, 1, 1, 1)
         //asd.setPadding(40, 40, 40, 40)
         //asd.setPadding(40, 40, 40, 40)
-        asd.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+        //asd.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
         //asd.setPaddingRelative(40, 40, 40, 40)
         
 
@@ -101,21 +110,69 @@ class AuScrollViewManager : ReactScrollViewManager() {
 
     @ReactPropGroup(names = [ "paddingLeft", "paddingTop", "paddingRight", "paddingBottom" ])
     fun setPaddings(view: ReactScrollView, index: Int, value: Float) {
-        if (index == 0) paddingLeft = dpToPx(value)
-        if (index == 1) paddingTop = dpToPx(value)
-        if (index == 2) paddingRight = dpToPx(value)
-        if (index == 3) paddingBottom = dpToPx(value)
-        Log.d("LOG", "RECEIVED PRE ${index} ${value}");
+        // if (index == 0) paddingLeft = dpToPx(value)
+        // if (index == 1) paddingTop = dpToPx(value)
+        // if (index == 2) paddingRight = dpToPx(value)
+        // if (index == 3) paddingBottom = dpToPx(value)
+        //view.updatePadding(PADDING_TYPES[index] = value);
 
-        Log.d("LOG", "RECEIVED AFTER ${index} ${TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, Resources.getSystem().displayMetrics).toInt()}");
+        if (index == 0) view.updatePadding(left = dpToPx(value))
+        if (index == 1) view.updatePadding(top = dpToPx(value))
+        if (index == 2) view.updatePadding(right = dpToPx(value))
+        if (index == 3) view.updatePadding(bottom = dpToPx(value))
 
-        view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+        //view.updatePadding(left.also { left = value })
+
+        //Log.d("LOG", "RECEIVED PRE ${index} ${value}");
+
+        //Log.d("LOG", "RECEIVED AFTER ${index} ${TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, Resources.getSystem().displayMetrics).toInt()}");
+
+        //view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
 
         //view.updateView()
 
         //TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, Resources.getSystem().displayMetrics).toInt()
         //Log.d("LOG", "RECEIVED ${padding}");
     }
+
+    //private val mTempYogaValue = MutableYogaValue()
+
+    //private val PADDING_TYPES = intArrayOf(
+    // Spacing.ALL, Spacing.LEFT, Spacing.TOP, Spacing.RIGHT, Spacing.BOTTOM
+    // val PADDING_TYPES = intArrayOf(
+    //     Spacing.LEFT, Spacing.TOP, Spacing.RIGHT, Spacing.BOTTOM
+    // )
+
+
+    ////// @ReactPropGroup(names = [ "paddingLeft", "paddingTop", "paddingRight", "paddingBottom" ])
+    // fun setPaddings(view: ReactScrollView, index: Int, value: Int) {
+    //     Log.d("LOG", "RECEIVED INDEX ${index}");
+    //     Log.d("LOG", "RECEIVED VALUE ${value}");
+    //     //view.setContentPadding(PADDING_TYPES[index], value);
+    //     //view.setPadding(PADDING_TYPES[index], value);
+    //     //super.setPaddings(index, value);
+    //     //view.setContentPadding(PADDING_TYPES[index], padding);
+    //     //view.setPadding(index, value)
+    //     //super.setPaddings(index, value);
+    //     //view.setPadding(left, top, right, bottom)
+    //     //view.setPadding(view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom)
+    //     // val asd = "left"
+    //     // if (index == 2) {
+    //     //   view.updatePadding(2 = value)
+    //     // }
+
+    //     //Log.d("LOG", "PPPPARAMETER ${updatePadding.parameters}");
+
+    //     //val dyn = 'left'
+    //     view.updatePadding(if (index == 0) left = value else if (index));
+    //     //view.updatePadding(updatePadding::property.left = value);
+    //     //view.updatePadding(PADDING_TYPES[index] = value);
+        
+
+    //     // Log.d("LOG", "RECEIVED LEFT ${left}");
+    //     // Log.d("LOG", "RECEIVED TOP ${top}");
+    //     //view.setPadding(left, top, right, bottom)
+    // }
 
     // fun dpToPx(dp: Float): Int {
     //     return TypedValue.applyDimension(

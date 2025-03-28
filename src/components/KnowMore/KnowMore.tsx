@@ -116,8 +116,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           left: 60,
           //padding: 40, 
           paddingLeft: 12,
-          paddingTop: 13,
-          paddingRight: 20,
+          paddingTop: 32,
+          paddingRight: 60,
           paddingBottom: 10,
        
           //paddingVertical: 20,

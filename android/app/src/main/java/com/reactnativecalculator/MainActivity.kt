@@ -141,23 +141,14 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
     WindowCompat.setDecorFitsSystemWindows(window, false)
-    //window.setNavigationBarContrastEnforced(false)
-    Log.d("LOG", "EXECUTED CREATE");
 
     dotsPerInch = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
-
-    Log.d("LOG", "CURRENT DPI ${dotsPerInch}");
 
     rootView = findViewById<View>(android.R.id.content).rootView
 
     rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
-          testVar = "NEW VALUE"
-          Log.d("LOG", "NEW GLOBAL LAYOUT");
-          //Log.d("LOG", "NEW GLOBAL VIEW ${rooView}");
-
-          if (canUpdate) updateUI("LAY", null, true)
-
+          if (canUpdate) updateUI(null, true)
         }
     })
 
@@ -181,9 +172,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
     class ListenerCallback : Consumer<WindowLayoutInfo> {
       override fun accept(newLayoutInfo: WindowLayoutInfo) {
-        Log.d("LOG", "[]CALLBACK");
-        //updateUI("CB", newLayoutInfo)
-        if (canUpdate) updateUI("CB", newLayoutInfo, false)
+        if (canUpdate) updateUI(newLayoutInfo, false)
       }
     }
 
@@ -194,49 +183,11 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     val lifecycleEventListener = object: LifecycleEventListener {
 
       override fun onHostResume() {
-        Log.d("LOG", "ADD CALLBACK");
-        //Log.d("LOG", "TEST VALUE ${}");
         windowInfoTracker.addWindowLayoutInfoListener(
           this@MainActivity,
           Executors.newSingleThreadExecutor(),
           listenerCallback
         )
-
-        // Log.d("LOG", "TEST VAR: ${testVar}");
-
-        //val qqq2 = findViewById<View>(android.R.id.leaderboard)
-        // val qqq = ReactFindViewUtil.findView(root.view, nativeId)
-        //Log.d("LOG", "LEADERBOARD ${qqq2}");
-
-        // Log.d("LOG", "ADDED LAYOUT LISTENER");
-        // Log.d("LOG", "A VER ROOTVIEW ${rootView}");
-        // Log.d("LOG", "A VER LAYOUT LISTENER ${layoutListener}");
-
-        //val www = findViewById<View>(android.R.id.content).rootView // OK
-        //val www = findViewById<View>(R)
-        
-        val www = this@MainActivity.window?.decorView?.rootView
-        val qqq = ReactFindViewUtil.findView(www, "leaderboard")
-        //qqq?.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
-        //qqq?.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
-        //qqq?.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
-        //qqq?.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
-        //qqq?.setScrollBarStyle(16777216)
-
-        //qqq?.setBackgroundColor(500000)
-        //qqq?.setBackgroundColor(Color.parseColor("#FFFB00"));
-        qqq?.setScrollBarSize(100)
-        //Log.d("LOG", "11111111111111111111111 ${www}")
-        Log.d("LOG", "RESP 1 ${View.SCROLLBARS_INSIDE_OVERLAY}")
-        Log.d("LOG", "RESP 2 ${View.SCROLLBARS_INSIDE_INSET}")
-        Log.d("LOG", "RESP 3 ${View.SCROLLBARS_OUTSIDE_OVERLAY}")
-        Log.d("LOG", "RESP 4 ${View.SCROLLBARS_OUTSIDE_INSET}")
-        //Log.d("LOG", "11111111111111111111111 ${qqq}")
-        Log.d("LOG", "11111111111111111111111 ${qqq}")
-
-        Log.d("LOG", "CURR STYLE ${qqq?.getScrollBarStyle()}")
-
-
       }
 
       override fun onHostPause() {
@@ -262,7 +213,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
   }
 
 
-  fun updateUI(who: String, incomingWindowLayoutInfo: WindowLayoutInfo?, manual: Boolean) {
+  fun updateUI(incomingWindowLayoutInfo: WindowLayoutInfo?, manual: Boolean) {
 
     canUpdate = false // BEGIN updateUI ~ FLAG
 
@@ -276,12 +227,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
     lateinit var job: Job
 
     fun collectAndCancel(windowLayoutInfo: WindowLayoutInfo, doJob: Boolean) {
-      Log.d("LOG", "${who} ${windowLayoutInfo}");
       if (doJob) job.cancel();
 
       val mainMap = Arguments.createMap()
-      //val hingeBoundsMap = Arguments.createMap()
-      //val insetsMap = Arguments.createMap()
 
       // BEGIN WINDOW //
       val windowBounds = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
@@ -289,16 +237,9 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
       if (currentWindow.isEmpty() || !currentWindow.equals(newWindow)) { currentWindow = newWindow; sendUpdate = true }
       // END WINDOW //
 
-      Log.d("LOG", "wi wi wi ${windowBounds.width()}");
-      Log.d("LOG", "he he he ${windowBounds.height()}");
-
       // BEGIN INSETS //
       @RequiresApi(Build.VERSION_CODES.R)
       fun getRootWindowInsetsCompatR(rootView: View): Unit {
-
-        Log.d("LOG", "EXEC INSIDE");
-
-        //val insetsMap = Arguments.createMap()
 
         val newInsets =
           rootView.rootWindowInsets?.getInsets(
@@ -311,8 +252,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         if (newInsets !== null) {
           if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) { currentInsets = newInsets; sendUpdate = true }
         }
-
-        Log.d("LOG", "CURRENT ${currentInsets}");
 
       }
 
@@ -358,16 +297,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
 
       if (currentHingeBounds.isEmpty() || !currentHingeBounds.equals(newHingeBounds)) { currentHingeBounds = newHingeBounds; sendUpdate = true }
 
-      // hingeBoundsMap.putDouble("left", hingeBounds.left)
-      // hingeBoundsMap.putDouble("top", hingeBounds.top)
-      // hingeBoundsMap.putDouble("right", hingeBounds.right)
-      // hingeBoundsMap.putDouble("bottom", hingeBounds.bottom)
 
-      //Log.d("LOG", "EQUAL WINDOW ${windowMap.equals(windowMap)}");
-      //Log.d("LOG", "EQUAL WINDOW ${windowMap.equals(windowMap)}");
-      //Log.d("LOG", "EQUAL HINGE ${hingeBoundsMap.equals(insetsMap)}");
-      Log.d("LOG", "CURRENT CONTEXT PRE ${reactInstanceManager.currentReactContext}");
-      //if (!windowMutableMap.equals(windowMutableMap)) {
       if (sendUpdate) {
         //mainMap.putMap("hingeBounds", hingeBoundsMap);
         mainMap.putMap("hingeBounds", Arguments.createMap().apply {
@@ -394,8 +324,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           else (currentWindow["width"]!! / dotsPerInch) / 100
         );
         mainMap.putBoolean("tallBar", if (currentInsets.left / dotsPerInch > 47 || currentInsets.right / dotsPerInch > 47 || currentInsets.bottom / dotsPerInch > 47) true else false);
-
-        Log.d("LOG", "CURRENT CONTEXT ${reactInstanceManager.currentReactContext}");
 
         if (reactInstanceManager.currentReactContext == null) {
           reactInstanceManager.addReactInstanceEventListener(object: ReactInstanceManager.ReactInstanceEventListener {
@@ -428,27 +356,6 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
           .collect { collectAndCancel(it, true) }
       };
     }
-
-    // TEST
-    
-
-    // Handler().postDelayed({
-    //   // doSomethingHere()
-    //   //"RESPONSE FROM NATIVE"
-    //   //Log.d("LOG", "ASD");
-    // }, 10000)
-
-    // Timer("SettingUp", false).schedule(10000) { 
-    //   //doSomething()
-    //   Log.d("LOG", "ASD");
-    // }
-
-    //return "RESPONSE FROM NATIVE"
-
-    // return Timer("SettingUp", false).schedule(10000) { 
-    //   //doSomething()
-    //   return "RESPONSE FROM NATIVE"
-    // }
 
   }
 
