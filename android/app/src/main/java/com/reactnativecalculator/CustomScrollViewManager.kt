@@ -41,26 +41,7 @@ class CustomScrollViewManager : ReactScrollViewManager() {
     return view
   }
 
-  override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) {
-    //super.receiveCommand(view, commandId, args)
-    //reactNativeViewId = requireNotNull(args).getInt(0)
-    //val widthTest = args.getInt(1)
-    //val heightTest = args.getInt(2)
-
-    //Log.d("LOG", "INCOMMING COMMAND ${commandId}");
-
-    when (commandId) {
-      COMMAND_CREATE -> {
-        //val parentView = root.findViewById<ViewGroup>(reactNativeViewId)
-        //parentView = root.findViewById<ViewGroup>(reactNativeViewId)
-
-        //Log.d("LOG", "0000 ${parentView.width}");
-        Log.d("LOG", "EXECUTED COMMAND");
-        view.scrollTo(0, 0);
-
-      }
-    }
-  }
+  override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) = view.scrollTo(0, 0)
 
   fun dpToPx(dp: Float): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().displayMetrics).toInt()
 
