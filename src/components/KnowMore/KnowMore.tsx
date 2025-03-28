@@ -249,6 +249,11 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //padding: 24,
           // paddingBottom: 24,
           marginRight: ins.right, marginLeft: ins.left, /* width: 500, */ /*, backgroundColor: 'red' */
+
+          paddingLeft: 0,
+          paddingTop: ins.top,
+          paddingRight: 0,
+          paddingBottom: ins.bottom,
           //marginBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom,
           //marginTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
           //marginTop: ins.top,
@@ -333,8 +338,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             <Text style={s.centerText} children={'Welcome to my very first\nAndroid App: A Classic Calculator !'} />
             <Text style={s.leftText} children={'Below I will give you some tips if you have any doubt:'} />
 
-            {/* { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3" /> } */}
-            { lazyLoad.map(e => e) }
+            { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3" /> }
+            {/* { lazyLoad.map(e => e) } */}
 
           </View>
         }
