@@ -234,7 +234,7 @@ const App = (): ReactElement => {
     })
 
     async function navigationBarToGestureOrViceVersa() {
-      console.log("22222222222222222222222222")
+      //console.log("22222222222222222222222222")
       if (typeof resDate === "string" && typeof resTallBar === "string" && typeof resRoute === "string") {
         if (Date.now() - parseInt(resDate) < 60000 && resTallBar !== tallBar.current.toString()) {
           resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :

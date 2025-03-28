@@ -25,10 +25,13 @@ import com.facebook.react.uimanager.Spacing;
 
 import androidx.core.view.updatePadding
 import androidx.annotation.Px
+import com.facebook.react.bridge.ReadableArray
 
 class CustomScrollViewManager : ReactScrollViewManager() {
 
   override fun getName() = "CustomScrollView"
+
+  override fun getCommandsMap() = mapOf("create" to COMMAND_CREATE)
 
   override fun createViewInstance(reactContext: ThemedReactContext): ReactScrollView {
     val view = ReactScrollView(reactContext)
@@ -36,6 +39,27 @@ class CustomScrollViewManager : ReactScrollViewManager() {
     view.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
     view.setClipToPadding(false)
     return view
+  }
+
+  override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) {
+    //super.receiveCommand(view, commandId, args)
+    //reactNativeViewId = requireNotNull(args).getInt(0)
+    //val widthTest = args.getInt(1)
+    //val heightTest = args.getInt(2)
+
+    //Log.d("LOG", "INCOMMING COMMAND ${commandId}");
+
+    when (commandId) {
+      COMMAND_CREATE -> {
+        //val parentView = root.findViewById<ViewGroup>(reactNativeViewId)
+        //parentView = root.findViewById<ViewGroup>(reactNativeViewId)
+
+        //Log.d("LOG", "0000 ${parentView.width}");
+        Log.d("LOG", "EXECUTED COMMAND");
+        view.scrollTo(0, 0);
+
+      }
+    }
   }
 
   fun dpToPx(dp: Float): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().displayMetrics).toInt()
@@ -46,5 +70,9 @@ class CustomScrollViewManager : ReactScrollViewManager() {
     if (index == 1) view.updatePadding(top = dpToPx(value))
     if (index == 2) view.updatePadding(right = dpToPx(value))
     if (index == 3) view.updatePadding(bottom = dpToPx(value))
+  }
+
+  companion object {
+    private const val COMMAND_CREATE = 1
   }
 }
