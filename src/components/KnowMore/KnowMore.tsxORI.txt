@@ -12,7 +12,7 @@ import { Text } from '../../utils/Text';
 import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
-import CustomView from './CustomView';
+import CustomScrollView from './CustomScrollView';
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
 const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins }: any): ReactElement => {
@@ -170,33 +170,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     return () => currIndex.stopAnimation()
   }, [])
 
-  // console.log("HEIGHT", height)
-  // console.log("INS.TOP", ins.top)
-  // console.log("INS.BOTTOM", ins.bottom)
-
-  // const createFragment = (viewId: any) => {
-  //   // UIManager.dispatchViewManagerCommand(
-  //   //   viewId,
-  //   //   // we are calling the 'create' command
-  //   //   UIManager.MyViewManager.Commands.create.toString(),
-  //   //   [viewId],
-  //   // )
-  //   // UIManager.dispatchViewManagerCommand(
-  //   //   viewId,
-  //   //   UIManager.MyViewManager.Commands.create.toString(),
-  //   //   [viewId],
-  //   // )
-  //   //console.log("VIEW ID", viewId)
-  // }
-
-  // const ref = useRef(null);
-
-  // useEffect(() => {
-  //   const viewId = findNodeHandle(ref.current);
-  //   createFragment(viewId);
-  // }, []);
-
-  //ScrollView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
 
   return (
     <View /* ref={ref} */ style={[s.mainContainer, { /* paddingBottom: ins.bottom */

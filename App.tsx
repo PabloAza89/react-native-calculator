@@ -21,45 +21,12 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
       //id={'asd'}
       
       screenOptions={{
-        
-        //cardOverlayEnabled: true,
-        headerShown: false, // ****************
-        //gestureEnabled: false, // ****************
-        
-        // headerStyle: {
-        //   //headerTransparent: true,
-        //   cardOverlay: true,
-        //   headerTitleStyle: {
-        //     color: 'white',
-        //   },
-        // },
-
-        // cardStyle: { backgroundColor: 'transparent' },
-        // navigationBarColor: 'red',
-        //navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
-        //navigationBarColor: tallBar ? 'red' : 'blue',
-        //navigationBarColor: tallBar ? 'rgba(255, 0, 0, 0.2)' : 'rgba(0, 0, 255, 0.2)',
-        //navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent', // ****************
-        //navigationBarColor: 'rgba(0, 0, 0, 0)',
-        //navigationBarColor: 'transparent',
-        /* navigationBarColor: 'rgba(0, 255, 0, 0.0)', */
-        //navigationBarColor: navBar ? 'red' : 'red',
-        //animation: animation, // ****************
-        //statusBarTranslucent: true,
-        //statusBarHidden: false // NO
-        //statusBarHidden: true, // NO
-        //statusBarStyle: 'dark' // NO
-        //statusBarColor: 'transparent', // ****************
-        //statusBarColor: 'yellow',
-        //statusBarTranslucent: true,
-        //statusBarStyle: 'dark', // ****************
-        //detachPreviousScreen: false,
-        //backgroundColor: 'transparent',
-        //navigationBarColor: true
-        //navigationBarHidden: true
-        //fullScreenGestureEnabled: false
-        //cardOverlay: true,
-        //cardOverlayEnabled: true
+        headerShown: false,
+        gestureEnabled: false,
+        navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
+        animation: animation,
+        statusBarColor: 'transparent',
+        statusBarStyle: 'dark'
       }}
       children={ screens.map((e: ReactElement) => e) }
     />
@@ -68,20 +35,11 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
 
 const App = (): ReactElement => {
 
-  //enableScreens(true);
 
-  console.log("PIXEL RATIO", PixelRatio.get())
+  const { MainActivity } = NativeModules;
 
-  console.log("APP LOG START")
 
-  const { MainActivity, TestModule } = NativeModules;
-
-  // TEST //
-
-  //let navBar = useRef<boolean>(true)
-  //let tallBar = useRef<boolean | undefined>(undefined)
   let tallBar = useRef<boolean>(false)
-
 
   const [ layout, setLayout ] = useState({
     "window": {"height": 0, "width": 0},
@@ -89,8 +47,7 @@ const App = (): ReactElement => {
     "insets": {"bottom": 0, "left": 0, "right":0, "top": 0},
     "state": "portrait",
     "vmin": 0,
-    "tallBar": "false",
-    "density": 0
+    "tallBar": "false"
   });
 
   useEffect(() => {
@@ -235,7 +192,7 @@ const App = (): ReactElement => {
         return (
           <KnowMore
             {...props} height={layout.window.height} state={layout.state} ins={layout.insets}
-            hingeBounds={layout.hingeBounds} density={layout.density}
+            hingeBounds={layout.hingeBounds}
           />
         )
     }
@@ -246,7 +203,7 @@ const App = (): ReactElement => {
       <Stack.Screen
         name={e}
         key={e}
-        //options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" }, /* cardOverlay: true, */ }} // DEFAULT APP BACKGROUND COLOR
+        options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" } }} // DEFAULT APP BACKGROUND COLOR
         //options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" }, /* cardOverlay: true, */ }} // DEFAULT APP BACKGROUND COLOR
         children={(props) => dynamicImport(props, e)}
       />
@@ -300,19 +257,14 @@ const App = (): ReactElement => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
       console.log("LAYOUT", e)
-      //setLayout(e)
-      setLayout(Object.assign( {}, e, { "density": PixelRatio.get() } ))
+      setLayout(e)
+      //setLayout(Object.assign( {}, e, { "density": PixelRatio.get() } ))
       tallBar.current = e.tallBar
 
-      
       if (runOnceAvailable.current) runOnce()
-
-
     });
     return () => LayoutInfoListener.remove();
   }, []);
-
-  console.log("APP LOG END")
 
   return (
     <NavigationContainer
