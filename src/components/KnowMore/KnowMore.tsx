@@ -29,7 +29,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   //const scrollRef = useRef<ScrollView>(null);
 
-  const onFabPress = () => scrollRef.current?.scrollTo({ y: 0, animated: true });
+  //const goUp = () => scrollRef.current?.scrollTo({ y: 0, animated: true });
+
+  const goUp = () => UIManager.dispatchViewManagerCommand(viewId, 0)
 
   let lazyLoad = [
     <View key={0} style={s.eachItem}>
@@ -142,6 +144,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
   const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
+  //const linearGradientColors = [ 'rgba(0, 0, 0, 1)', 'rgba(255, 255, 255, 1)' ]
 
   let currIndex = useAnimatedValue(0);
 
@@ -149,7 +152,16 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   let currentColor = currIndex.interpolate({
     inputRange: [0, 1],
-    outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
+    //outputRange: [`rgba(${c[0][0]}, ${c[0][1]}, ${c[0][2]}, 1)`, `rgba(0, 0, 0, 0)`]
+    //outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
+    outputRange: [`rgba(${c[0][0]}, ${c[0][1]}, ${c[0][2]}, 1)`, `rgba(${c[1][0]}, ${c[1][1]}, ${c[1][2]}, 1)`]
+  });
+
+  let currentColor2 = currIndex.interpolate({
+    inputRange: [0, 1],
+    //outputRange: [`rgba(${c[0][0]}, ${c[0][1]}, ${c[0][2]}, 1)`, `rgba(0, 0, 0, 0)`]
+    //outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
+    outputRange: [`rgba(${c[0][0]}, ${c[0][1]}, ${c[0][2]}, 1)`, `rgba(${c[1][0]}, ${c[1][1]}, ${c[1][2]}, 1)`]
   });
 
   const updateValues = (num: any) => {
@@ -196,38 +208,39 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   /// END CUSTOMSCROLLVIEW ///
 
   return (
-    <View /* ref={ref} */ style={[s.mainContainer, { /* paddingBottom: ins.bottom */
+    <View /* ref={ref} */ style={[s.mainContainer, { /* zIndex: 20, */
+      /* paddingBottom: ins.bottom */
       //paddingTop: 24,
       //paddingBottom: 24,
       //padding: 24 * 1,
     }]}>
 
-      {
-        !(state === 'tabletop' && aboutUp) &&
-        <Animated.View
-          style={[ s.linearGradientWrapper, { backgroundColor: currentColor, height: ins.top, zIndex: 4 } ]}
-          children={
-            <LinearGradient
-              colors={linearGradientColors}
-              style={s.linearGradient}
-              start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
-              end={[ 1, 0 ]}
-            />
-          }
-        />
-      }
 
-      <Animated.View // BACKGROUND
-        style={[ s.linearGradientWrapper, { backgroundColor: currentColor, height: '100%', top: (state === 'tabletop' && aboutUp) ? 0 : ins.top } ]}
-        children={
           <LinearGradient
             colors={linearGradientColors}
-            style={s.linearGradient}
+            style={[s.linearGradient, { /* backgroundColor: 'rgba(0,0,0,0.5)', */  height: ins.top, /* opacity: 0.5, */ zIndex: 13, opacity: 0.99 }]}
+            start={[ 0, height / parsedInsTop ]}
+            end={[ 1, 0 ]}
+            // start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
+            // end={[ 1, 0 ]}
+          />
+      
+
+      
+ 
+          <LinearGradient
+            colors={linearGradientColors}
+            style={[s.linearGradient, { /* backgroundColor: 'red' */ zIndex: 11, top: ins.top, opacity: 0.99 }]}
+            // start={[ 0, 1 ]} // left, top
+            // end={[ 1, 0 ]}  // left, top
             start={[ 0, 1 - topByHeight ]} // left, top
             end={[ 1, topByHeight * -1 ]}  // left, top
-            //children={ <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> }
           />
-        }
+  
+   
+
+      <Animated.View // BACKGROUND
+        style={[ s.linearGradientWrapperDown, { backgroundColor: currentColor, height: '100%', zIndex: 10, top: 0, opacity: 1, } ]}
       />
 
       <CustomScrollView
@@ -248,12 +261,15 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //marginBottom: 24,
           //padding: 24,
           // paddingBottom: 24,
-          marginRight: ins.right, marginLeft: ins.left, /* width: 500, */ /*, backgroundColor: 'red' */
+          //marginRight: ins.right,
+          //marginLeft: ins.left, /* width: 500, */ /*, backgroundColor: 'red' */
 
-          paddingLeft: 0,
+          paddingLeft: ins.left,
           paddingTop: ins.top,
-          paddingRight: 0,
+          paddingRight: ins.right,
           paddingBottom: ins.bottom,
+
+          zIndex: 12,
           //marginBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom,
           //marginTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
           //marginTop: ins.top,
@@ -282,7 +298,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         // }]}
         //nativeID={"leaderboard"}
         children={
-          <View collapsable={false} style={[ s.background, {  width: '100%', marginLeft: ins.left, marginTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
+          <View collapsable={false} style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ marginTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
 
             <View style={[ s.buttonContainer, { marginTop: 7 } ]}>
 
@@ -352,7 +368,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             bottom: (state === 'tabletop' && !aboutUp) ? 10 : ins.bottom + 7,
             right: 10 + ins.right
           } ]}
-          onPress={() => onFabPress()}
+          onPress={() => goUp()}
           children={ <Text style={s.floatButtonText} children={'UP'} /> }
         />
       }
