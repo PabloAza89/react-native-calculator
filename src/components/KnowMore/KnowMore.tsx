@@ -14,6 +14,8 @@ import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 import CustomScrollView from './CustomScrollView';
 
+const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
+
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
 const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins }: any): ReactElement => {
 
@@ -143,8 +145,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
-  const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
-  //const linearGradientColors = [ 'rgba(0, 0, 0, 1)', 'rgba(255, 255, 255, 1)' ]
+  
 
   let currIndex = useAnimatedValue(0);
 
@@ -152,17 +153,23 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   let currentColor = currIndex.interpolate({
     inputRange: [0, 1],
-    //outputRange: [`rgba(${c[0][0]}, ${c[0][1]}, ${c[0][2]}, 1)`, `rgba(0, 0, 0, 0)`]
-    //outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
     outputRange: [`rgba(${c[0][0]}, ${c[0][1]}, ${c[0][2]}, 1)`, `rgba(${c[1][0]}, ${c[1][1]}, ${c[1][2]}, 1)`]
   });
 
-  let currentColor2 = currIndex.interpolate({
-    inputRange: [0, 1],
-    //outputRange: [`rgba(${c[0][0]}, ${c[0][1]}, ${c[0][2]}, 1)`, `rgba(0, 0, 0, 0)`]
-    //outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
-    outputRange: [`rgba(${c[0][0]}, ${c[0][1]}, ${c[0][2]}, 1)`, `rgba(${c[1][0]}, ${c[1][1]}, ${c[1][2]}, 1)`]
-  });
+  //const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 0.9)' ]
+  const gradientTransparent = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
+
+  const gradientTransparentToWhite = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
+
+  const colorrr = 'rgba(255,255,255,1)'
+  //const colorrr = 'rgba(0,0,0,0.1)'
+
+  const opacityyy = 0.7
+
+  // //const colorrr = 'rgba(255,255,255,1)'
+  // //const colorrr = 'rgba(255, 255, 0, 0.99)'
+
+  // const opacityyy = 0.6
 
   const updateValues = (num: any) => {
     sC(curr => {
@@ -216,38 +223,47 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     }]}>
 
 
-          <LinearGradient
-            colors={linearGradientColors}
-            style={[s.linearGradient, { /* backgroundColor: 'rgba(0,0,0,0.5)', */  height: ins.top, /* opacity: 0.5, */ zIndex: 13, opacity: 0.99 }]}
-            start={[ 0, height / parsedInsTop ]}
-            end={[ 1, 0 ]}
-            // start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
-            // end={[ 1, 0 ]}
-          />
-      
 
-      
- 
-          <LinearGradient
-            colors={linearGradientColors}
-            style={[s.linearGradient, { /* backgroundColor: 'red' */ zIndex: 11, top: ins.top, opacity: 0.99 }]}
-            // start={[ 0, 1 ]} // left, top
-            // end={[ 1, 0 ]}  // left, top
-            start={[ 0, 1 - topByHeight ]} // left, top
-            end={[ 1, topByHeight * -1 ]}  // left, top
-          />
-  
-   
 
-      <Animated.View // BACKGROUND
-        style={[ s.linearGradientWrapperDown, { backgroundColor: currentColor, height: '100%', zIndex: 10, top: 0, opacity: 1, } ]}
+
+
+      <AnimatedLinearGradient
+        colors={gradientTransparent}
+        style={[s.linearGradient, { backgroundColor: currentColor, zIndex: 6, top: 0, opacity: 1 }]}
+        // start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
+        // end={[ 1, 0 ]}
+        start={[ 0, 1 ]}
+        end={[ 1, 0 ]}
+        // start={[ 0, 1 - topByHeight ]}
+        // end={[ 1, topByHeight * -1 ]}
       />
 
+      <LinearGradient
+        colors={gradientTransparent}
+        style={{ position: 'absolute', width: '100%', height: ins.top, zIndex: 10, opacity: opacityyy }}
+        start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
+        end={[ 1, 0 ]}
+        // start={[ 0, 1 - topByHeight ]}
+        // end={[ 1, topByHeight * -1 ]}
+        // start={[ 0, 1 ]}
+        // end={[ 1, 0 ]}
+        //style={{ position: 'absolute', width: '100%', height: ins.top, zIndex: 10, backgroundColor: 'rgba(0,0,0,0.1)' }}
+      />
+
+      <LinearGradient
+        colors={gradientTransparent}
+        start={[ 0, 1 - topByHeight ]}
+        end={[ 1, topByHeight * -1 ]}
+        style={{ position: 'absolute', top: ins.top, width: '100%', height: '100%', zIndex: 7, opacity: opacityyy }}
+        //style={{ position: 'absolute', width: '100%', height: ins.top, zIndex: 10, backgroundColor: 'rgba(0,0,0,0.1)' }}
+      />
+
+   {/*    <Animated.View
+        style={[ s.linearGradientWrapperDown, { backgroundColor: currentColor, zIndex: 1 } ]}
+      />
+ */}
       <CustomScrollView
-        // CustomView
-        //ref={scrollRef}
         scrollRef={scrollRef}
-        //onScroll={handleScroll}
         onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) => scrollHandler(e.nativeEvent.contentOffset.y)}
         persistentScrollbar={true}
         //contentOffset={{ x:50, y:50 }}
@@ -269,7 +285,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           paddingRight: ins.right,
           paddingBottom: ins.bottom,
 
-          zIndex: 12,
+          zIndex: 8,
           //marginBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom,
           //marginTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
           //marginTop: ins.top,

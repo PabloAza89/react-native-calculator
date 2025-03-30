@@ -12,8 +12,7 @@ export const s = StyleSheet.create({
   linearGradientWrapperDown: {
     position: 'absolute',
     width: '100%',
-    //opacity: 0.85
-    //opacity: 0.45
+    //height: '100%',
   },
   linearGradient: {
     position: 'absolute',
