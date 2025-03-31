@@ -219,7 +219,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const [ c, sC ] = useState([[0, 0, 255], [255, 0, 255]]) // color, setColor
 
-  let qq = currIndex.interpolate({
+  let currentColor = currIndex.interpolate({
     inputRange: [0, 1],
     outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
   });
@@ -311,7 +311,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
           </View>
           <Animated.View /* LOWER SIDE */
-            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom, width: hingeBounds.right, backgroundColor: (state === 'tabletop' && showCalc) ? qq : 'white' } ]}
+            style={[ s.lowerScreenTabletop, { top: hingeBounds.bottom - hingeBounds.top, height: height - hingeBounds.bottom, width: hingeBounds.right, backgroundColor: (state === 'tabletop' && showCalc) ? currentColor : 'white' } ]}
           >
 
             {

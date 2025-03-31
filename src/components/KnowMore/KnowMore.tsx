@@ -2,7 +2,7 @@ import { ReactElement, useState, useEffect, useRef } from 'react';
 import {
   View, StatusBar, ScrollView, Pressable, InteractionManager, ActivityIndicator,
   NativeSyntheticEvent, NativeScrollEvent, Animated, useAnimatedValue,
-  UIManager, findNodeHandle,
+  UIManager, findNodeHandle, Platform
   //ReactScrollView
 } from 'react-native';
 import { s } from './KnowMoreCSS';
@@ -153,18 +153,20 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   let currentColor = currIndex.interpolate({
     inputRange: [0, 1],
-    outputRange: [`rgba(${c[0][0]}, ${c[0][1]}, ${c[0][2]}, 1)`, `rgba(${c[1][0]}, ${c[1][1]}, ${c[1][2]}, 1)`]
+    outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
   });
 
   //const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 0.9)' ]
-  const gradientTransparent = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
+  const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgb(255, 255, 255)' ]
 
-  const gradientTransparentToWhite = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
+  //const gradientTransparentToWhite = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
 
-  const colorrr = 'rgba(255,255,255,1)'
+  //const colorrr = 'rgba(255,255,255,1)'
   //const colorrr = 'rgba(0,0,0,0.1)'
 
-  const opacityyy = 0.7
+  //const opacityyy = 0.7
+
+  console.log(`Android:${Platform.Version} INS BOTTOM`, ins.bottom)
 
   // //const colorrr = 'rgba(255,255,255,1)'
   // //const colorrr = 'rgba(255, 255, 0, 0.99)'
@@ -214,107 +216,62 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   /// END CUSTOMSCROLLVIEW ///
 
+  // ****** ↓↓↓ BACKGROUND ANIMATION SCHEME ↓↓↓ ******
+  // zIndex
+  //   5     ——             UP BUTTON
+  //   4                 —— GRADIENT + OPACITY (StatusBar)
+  //   3     —————————————— SCROLLVIEW
+  //   2     ————————————   GRADIENT + OPACITY
+  //   1     —————————————— COLORS + GRADIENT
+
   return (
-    <View /* ref={ref} */ style={[s.mainContainer, { /* zIndex: 20, */
-      /* paddingBottom: ins.bottom */
-      //paddingTop: 24,
-      //paddingBottom: 24,
-      //padding: 24 * 1,
-    }]}>
+    <View style={[s.mainContainer]}>
 
-
-
-
-
-
-      <AnimatedLinearGradient
-        colors={gradientTransparent}
-        style={[s.linearGradient, { backgroundColor: currentColor, zIndex: 6, top: 0, opacity: 1 }]}
-        // start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
-        // end={[ 1, 0 ]}
-        start={[ 0, 1 ]}
-        end={[ 1, 0 ]}
-        // start={[ 0, 1 - topByHeight ]}
-        // end={[ 1, topByHeight * -1 ]}
-      />
+      {
+        !(state === 'tabletop' && aboutUp) &&
+        <LinearGradient
+          colors={linearGradientColors}
+          style={[ s.linearGradient, { height: ins.top, zIndex: 4 } ]}
+          start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
+          end={[ 1, 0 ]}
+        />
+      }
 
       <LinearGradient
-        colors={gradientTransparent}
-        style={{ position: 'absolute', width: '100%', height: ins.top, zIndex: 10, opacity: opacityyy }}
-        start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
-        end={[ 1, 0 ]}
-        // start={[ 0, 1 - topByHeight ]}
-        // end={[ 1, topByHeight * -1 ]}
-        // start={[ 0, 1 ]}
-        // end={[ 1, 0 ]}
-        //style={{ position: 'absolute', width: '100%', height: ins.top, zIndex: 10, backgroundColor: 'rgba(0,0,0,0.1)' }}
-      />
-
-      <LinearGradient
-        colors={gradientTransparent}
+        colors={linearGradientColors}
+        style={[ s.linearGradient, { top: (state === 'tabletop' && aboutUp) ? 0 : ins.top } ]}
         start={[ 0, 1 - topByHeight ]}
         end={[ 1, topByHeight * -1 ]}
-        style={{ position: 'absolute', top: ins.top, width: '100%', height: '100%', zIndex: 7, opacity: opacityyy }}
-        //style={{ position: 'absolute', width: '100%', height: ins.top, zIndex: 10, backgroundColor: 'rgba(0,0,0,0.1)' }}
       />
 
-   {/*    <Animated.View
-        style={[ s.linearGradientWrapperDown, { backgroundColor: currentColor, zIndex: 1 } ]}
+      <AnimatedLinearGradient
+        colors={linearGradientColors}
+        style={[ s.animatedLinearGradient, { backgroundColor: currentColor } ]}
+        start={[ 0, 1 ]} // [ XfromLeft, YfromTop ]
+        end={[ 1, 0 ]}   // [ XfromLeft, YfromTop ]
       />
- */}
+
       <CustomScrollView
         scrollRef={scrollRef}
         onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) => scrollHandler(e.nativeEvent.contentOffset.y)}
         persistentScrollbar={true}
-        //contentOffset={{ x:50, y:50 }}
-        //onScroll={(e) => console.log(e.nativeEvent)}
-        //onScroll={(e) => console.log(e.nativeEvent.contentInset)}
-        //onScroll={(e) => { return e.nativeEvent.contentInset = {top: 100, left: 50, bottom: 0, right: 0} }}
-        //contentInset={{top: 100, left: 50, bottom: 0, right: 0}}
-        //style={{ backgroundColor: 'red' }}
         style={{
-          // marginTop: 24,
-          //marginBottom: 24,
-          //padding: 24,
-          // paddingBottom: 24,
-          //marginRight: ins.right,
-          //marginLeft: ins.left, /* width: 500, */ /*, backgroundColor: 'red' */
-
           paddingLeft: ins.left,
-          paddingTop: ins.top,
+          paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
+          // paddingTop: ins.top,
           paddingRight: ins.right,
           paddingBottom: ins.bottom,
-
-          zIndex: 8,
+          zIndex: 3,
           //marginBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom,
           //marginTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
-          //marginTop: ins.top,
-          //paddingTop: ins.top,
-          //paddingBottom: ins.top * 5,
           //marginTop: (state === 'tabletop' && aboutUp) ? ins.top : ins.top,
           // paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0,
-          //paddingBottom: ins.bottom
-          // marginTop: 24,
-          // paddingBottom: 48,
-          //padding: 24 * 1,
-          //margin: 24 * 1,
-          //overflow: 'visible',
-          //paddingTop: 25,
-          //padding: 200,
           width: '100%',
           height: '100%',
         }}
-        
-        // contentContainerStyle={[ {
-        //   //paddingTop: 25,
-        //   /* paddingVertical: 10 */ /* top: ins.top *1, *//* top: ins.top*-1 */
-        //   // marginTop: 24,
-        //   // paddingBottom: 24,
-        //   //padding: 24 * 1,
-        // }]}
-        //nativeID={"leaderboard"}
+
         children={
-          <View collapsable={false} style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ marginTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
+          <View collapsable={false} style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
 
             <View style={[ s.buttonContainer, { marginTop: 7 } ]}>
 
@@ -371,7 +328,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             <Text style={s.leftText} children={'Below I will give you some tips if you have any doubt:'} />
 
             { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3" /> }
-            {/* { lazyLoad.map(e => e) } */}
 
           </View>
         }
@@ -381,8 +337,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         showButton &&
         <Pressable
           style={[ s.floatButton, {
-            bottom: (state === 'tabletop' && !aboutUp) ? 10 : ins.bottom + 7,
-            right: 10 + ins.right
+            bottom: (state === 'tabletop' && !aboutUp) ? 7 : ins.bottom + 7,
+            right: ins.right + 11 // 7+4(scrollBarWidth)
           } ]}
           onPress={() => goUp()}
           children={ <Text style={s.floatButtonText} children={'UP'} /> }

@@ -19,7 +19,7 @@ import androidx.lifecycle.repeatOnLifecycle
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
-import com.facebook.react.ReactInstanceManager
+import com.facebook.react.ReactInstanceManager.ReactInstanceEventListener
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 import com.facebook.react.bridge.Arguments
@@ -111,7 +111,7 @@ import android.graphics.Color;
 // TEST //
 
 @Suppress("DEPRECATION")
-class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
+class MainActivity : ReactActivity(), ReactInstanceEventListener {
 
   lateinit var currentOrientation: String// = "portrait" // DEFAULT
   var canUpdate: Boolean = true
@@ -326,7 +326,7 @@ class MainActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventLis
         mainMap.putBoolean("tallBar", if (currentInsets.left / dotsPerInch > 47 || currentInsets.right / dotsPerInch > 47 || currentInsets.bottom / dotsPerInch > 47) true else false);
 
         if (reactInstanceManager.currentReactContext == null) {
-          reactInstanceManager.addReactInstanceEventListener(object: ReactInstanceManager.ReactInstanceEventListener {
+          reactInstanceManager.addReactInstanceEventListener(object: ReactInstanceEventListener {
             override fun onReactContextInitialized(context: ReactContext) {
               context
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)

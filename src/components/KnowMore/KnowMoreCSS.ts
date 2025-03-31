@@ -1,23 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 export const s = StyleSheet.create({
-  linearGradientWrapperUp: {
-    position: 'absolute',
-    width: '100%',
-    //opacity: 0.85
-    //opacity: 0.45
-    //opacity: 0.45
-    //opacity: 0.4
-  },
-  linearGradientWrapperDown: {
-    position: 'absolute',
-    width: '100%',
-    //height: '100%',
-  },
   linearGradient: {
     position: 'absolute',
     width: '100%',
     height: '100%',
+    zIndex: 2,
+    opacity: 0.7
+  },
+  animatedLinearGradient: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    zIndex: 1
   },
   mainContainer: {
     height: '100%',
@@ -133,7 +128,7 @@ export const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
-    zIndex: 14
+    zIndex: 5
   },
   floatButtonText: {
     fontSize: 16,
