@@ -8,15 +8,13 @@ import FastImage from 'react-native-fast-image';
 import { AboutI } from '../../interfaces/interfaces';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds }: any): ReactElement => {
+const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft }: any): ReactElement => {
 
   const { navigate } = navigation
 
   useEffect(() => {
     (navigation.getState().routes.at(-1).name === 'About' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'About' })
   }, [state])
-
-  //let ins = useSafeAreaInsets();
 
   const fadeAnim = useAnimatedValue(0);
 
@@ -28,8 +26,13 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   console.log("TEST ABOUT")
 
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
-  const maxLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
-  const parsedWidth = width - maxLeftOrRight
+  const maxInsetLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
+  const parsedWidth =
+    state === 'book' && calcLeft ? width - hingeBounds.right - ins.right - maxInsetLeftOrRight :
+    state === 'book' && !calcLeft ? hingeBounds.left - ins.left - maxInsetLeftOrRight :
+    width - maxInsetLeftOrRight
+
+
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
 

@@ -69,25 +69,17 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const AboutScreen =
     <About
-      navigation={navigation} vmin={vmin}
-      //currWidth={ hingeBounds === undefined ? width : calcLeft ? width - hingeBounds.right - ins.right : hingeBounds.left - ins.left }
-      width={
-        state === 'book' && calcLeft ? width - hingeBounds.right - ins.right :
-        state === 'book' && !calcLeft ? hingeBounds.left - ins.left :
-        width
-      }
-      //currWidth={width}
+      navigation={navigation} vmin={vmin} width={width}
       showModal={showModal} updateShowModal={updateShowModal}
-      state={state} twoScreens={true}
-      switchSide={switchSide} nextScreen={nextScreen} aboutUp={aboutUp}
-      ins={ins} height={height} hingeBounds={hingeBounds}
+      state={state} twoScreens={true} switchSide={switchSide}
+      nextScreen={nextScreen} aboutUp={aboutUp} ins={ins}
+      height={height} hingeBounds={hingeBounds} calcLeft={calcLeft}
     />;
 
   const KnowMoreScreen =
     <KnowMore
-      navigation={navigation} /* opw={opw} */ height={height}
-      state={state} switchSide={switchSide}
-      twoScreens={true} nextScreen={nextScreen}
+      navigation={navigation} height={height} state={state}
+      switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
       aboutUp={aboutUp} hingeBounds={hingeBounds} ins={ins}
     />;
 

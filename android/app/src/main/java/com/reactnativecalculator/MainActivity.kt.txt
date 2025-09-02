@@ -82,7 +82,6 @@ import com.reactnativecalculator.R
 
 //import java.awt.Insets
 import android.graphics.Insets
-import android.graphics.Rect
 import kotlin.properties.Delegates
 
 import androidx.core.view.WindowCompat
@@ -106,7 +105,6 @@ import kotlin.concurrent.schedule
 
 import com.facebook.react.uimanager.util.ReactFindViewUtil
 import android.graphics.Color;
-import kotlin.math.min
 
 //import android.R
 
@@ -133,8 +131,7 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
   //val windowMap = Arguments.createMap()
   lateinit var currentState: String;
   //lateinit var currentInsets: Insets
-  //lateinit var currentInsets: Insets
-  lateinit var currentInsets: Rect
+  lateinit var currentInsets: Insets
   //val currentInsets = currentInsetsClass()
 
   lateinit var rootView: View
@@ -257,9 +254,9 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
             WindowInsets.Type.captionBar()
           )
 
-        // if (newInsets !== null) {
-        //   if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) { currentInsets = newInsets; sendUpdate = true }
-        // }
+        if (newInsets !== null) {
+          if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) { currentInsets = newInsets; sendUpdate = true }
+        }
       }
 
       @RequiresApi(Build.VERSION_CODES.M)
@@ -274,21 +271,18 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
         val preInsets = rootView.rootWindowInsets
 
         if (preInsets !== null) {
-          val newInsets = Rect(
-            preInsets.systemWindowInsetLeft,
-            preInsets.systemWindowInsetTop,
-            preInsets.systemWindowInsetRight,
-            min(preInsets.systemWindowInsetBottom, preInsets.stableInsetBottom)
-          )
+          val newInsets = Insets.of(
+            left = preInsets.systemWindowInsetLeft
+            top = preInsets.systemWindowInsetTop,
+            right = preInsets.systemWindowInsetRight,
+            bottom = min(preInsets.systemWindowInsetBottom, preInsets.stableInsetBottom
+          ),
           
-          
-          Log.d("LOG", "TOP ${preInsets.systemWindowInsetTop}");
-          Log.d("LOG", "RIGHT ${preInsets.systemWindowInsetRight}");
-          Log.d("LOG", "BOTTOM ${preInsets.systemWindowInsetBottom}");
-          Log.d("LOG", "LEFT ${preInsets.systemWindowInsetLeft}");
-
-          currentInsets = newInsets; sendUpdate = true
-
+          // )
+          Log.d("LOG", "TOP ${preInsets.systemWindowInsetTop.toFloat()}");
+          Log.d("LOG", "RIGHT ${preInsets.systemWindowInsetRight.toFloat()}");
+          Log.d("LOG", "BOTTOM ${preInsets.systemWindowInsetBottom.toFloat()}");
+          Log.d("LOG", "LEFT ${preInsets.systemWindowInsetLeft.toFloat()}");
         }
         
 

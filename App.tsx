@@ -47,11 +47,11 @@ const App = (): ReactElement => {
     "insets": {"bottom": 0, "left": 0, "right":0, "top": 0},
     "state": "portrait",
     "vmin": 0,
-    "tallBar": "false"
+    "tallBar": "false" // tallNavigationBar
   });
 
   useEffect(() => {
-    console.log("CURRENT LAYOUT", layout)
+    console.log("CURRENT LAYOUT", layout.state)
   },[layout])
 
   //let port: boolean // PORTRAIT
@@ -256,7 +256,8 @@ const App = (): ReactElement => {
   useLayoutEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
-      console.log("LAYOUT", e)
+      //console.log("LAYOUT", e)
+      console.log("LAYOUT", e.state)
       setLayout(e)
       //setLayout(Object.assign( {}, e, { "density": PixelRatio.get() } ))
       tallBar.current = e.tallBar

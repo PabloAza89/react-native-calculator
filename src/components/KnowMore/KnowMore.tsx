@@ -136,8 +136,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     return () => interactionPromise.cancel();
   }, []);
 
-  //const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => e.nativeEvent.contentOffset.y > 100 ? setShowButton(true) : setShowButton(false)
-
   const [ showButton, setShowButton ] = useState(false)
 
   /// BEGIN BACKGROUND ANIMATION ///
@@ -156,22 +154,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     outputRange: [`rgb(${c[0][0]}, ${c[0][1]}, ${c[0][2]})`, `rgb(${c[1][0]}, ${c[1][1]}, ${c[1][2]})`]
   });
 
-  //const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 0.9)' ]
   const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgb(255, 255, 255)' ]
 
-  //const gradientTransparentToWhite = [ 'rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)' ]
-
-  //const colorrr = 'rgba(255,255,255,1)'
-  //const colorrr = 'rgba(0,0,0,0.1)'
-
-  //const opacityyy = 0.7
-
   console.log(`Android:${Platform.Version} INS BOTTOM`, ins.bottom)
-
-  // //const colorrr = 'rgba(255,255,255,1)'
-  // //const colorrr = 'rgba(255, 255, 0, 0.99)'
-
-  // const opacityyy = 0.6
 
   const updateValues = (num: any) => {
     sC(curr => {
@@ -197,8 +182,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   /// BEGIN CUSTOMSCROLLVIEW ///
 
-  //const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => e.nativeEvent.contentOffset.y > 100 ? setShowButton(true) : setShowButton(false)
-
   const scrollRef = useRef<ScrollView>(null);
 
   const [ viewId, setViewId ] = useState<number | null>(0)
@@ -208,10 +191,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   const scrollHandler = (val: number) => {
     val > 100 ? setShowButton(true) : setShowButton(false);
     val < 0 && UIManager.dispatchViewManagerCommand(viewId, 0);
-    // if(val < 0) {
-    //   console.log("REACHED")
-    //   UIManager.dispatchViewManagerCommand(viewId, 0)
-    // }
   }
 
   /// END CUSTOMSCROLLVIEW ///
