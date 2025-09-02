@@ -257,6 +257,21 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
             WindowInsets.Type.captionBar()
           )
 
+        if (newInsets !== null) {
+          val newInsetsToRect = Rect(
+            newInsets.left,
+            newInsets.top,
+            newInsets.right,
+            newInsets.bottom,
+          )
+          currentInsets = newInsetsToRect; sendUpdate = true
+        }
+
+        // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
+
+        //Log.d("LOG", "type ${newInsets!!::class.simpleName}");
+
+        //currentInsets = newInsets; sendUpdate = true
         // if (newInsets !== null) {
         //   if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) { currentInsets = newInsets; sendUpdate = true }
         // }
