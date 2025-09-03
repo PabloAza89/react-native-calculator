@@ -229,7 +229,7 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
 
   fun updateUI(incomingWindowLayoutInfo: WindowLayoutInfo?, manual: Boolean) {
 
-    canUpdate = false // BEGIN updateUI ~ FLAG
+    canUpdate = false // FLAG FOR updateUI()
 
     // BEGIN ORIENTATION //
     val newOrientation = this@MainActivity.resources.configuration.orientation
@@ -258,7 +258,6 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
       // BEGIN INSETS //
       @RequiresApi(Build.VERSION_CODES.R)
       fun getInsetsCompatR(rootView: View): Unit {
-
         val newInsets =
           rootView.rootWindowInsets?.getInsets(
             WindowInsets.Type.statusBars() or
@@ -268,72 +267,25 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
           )
 
         if (newInsets !== null) {
-          val newInsetsToRect = Rect(
-            newInsets.left,
-            newInsets.top,
-            newInsets.right,
-            newInsets.bottom,
-          )
-          currentInsets = newInsetsToRect; sendUpdate = true
+          currentInsets = Rect(newInsets.left, newInsets.top, newInsets.right, newInsets.bottom)
+          sendUpdate = true
         }
-
-        // densityIndPixMax!!::class.simpleName --> RETRIEVE TYPE
-
-        //Log.d("LOG", "type ${newInsets!!::class.simpleName}");
-
-        //currentInsets = newInsets; sendUpdate = true
-        // if (newInsets !== null) {
-        //   if (!::currentInsets.isInitialized || !currentInsets.equals(newInsets)) { currentInsets = newInsets; sendUpdate = true }
-        // }
       }
 
       @RequiresApi(Build.VERSION_CODES.M)
-      //@Suppress("DEPRECATION")
       fun getInsetsCompatM(rootView: View): Unit {
-        // val insets = rootView.rootWindowInsets ?: return null
-        // return EdgeInsets(
-        //     top = insets.systemWindowInsetTop.toFloat(),
-        //     right = insets.systemWindowInsetRight.toFloat(),
-        //     bottom = min(insets.systemWindowInsetBottom, insets.stableInsetBottom).toFloat(),
-        //     left = insets.systemWindowInsetLeft.toFloat())
         val preInsets = rootView.rootWindowInsets
-
         if (preInsets !== null) {
-          val newInsets = Rect(
-            preInsets.systemWindowInsetLeft,
-            preInsets.systemWindowInsetTop,
-            preInsets.systemWindowInsetRight,
-            min(preInsets.systemWindowInsetBottom, preInsets.stableInsetBottom)
-          )
-          
-          
-          Log.d("LOG", "TOP ${preInsets.systemWindowInsetTop}");
-          Log.d("LOG", "RIGHT ${preInsets.systemWindowInsetRight}");
-          Log.d("LOG", "BOTTOM ${preInsets.systemWindowInsetBottom}");
-          Log.d("LOG", "LEFT ${preInsets.systemWindowInsetLeft}");
-
-          currentInsets = newInsets; sendUpdate = true
-
+          currentInsets = Rect(preInsets.systemWindowInsetLeft, preInsets.systemWindowInsetTop, preInsets.systemWindowInsetRight, min(preInsets.systemWindowInsetBottom, preInsets.stableInsetBottom))
+          sendUpdate = true
         }
-        
-
-        //val insets = rootView.rootWindowInsets ?: return null
-        // if (newInsets !== null) {
-        //   Log.d("LOG", "NEW INSETS ${newInsets}");
-        // }
-
-
       }
 
-      //Log.d("LOG", "AAA ENTER HERE");
-
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getInsetsCompatR(rootView) // 11 to 16
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getInsetsCompatR(rootView) // 11 to newest..
       else getInsetsCompatM(rootView) // 6 to 10
-      //else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) getInsetsCompatM(rootView) // 6 to 10
-      //else { Log.d("LOG", "ENTER HERE") } // 1 to 5
-      //else Log.d("LOG", "ENTER HERE");
-      // END INSETS //
+      // 5 or older NOT SUPPORTED
 
+      // END INSETS //
 
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
 
@@ -417,10 +369,10 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
         }
 
 
-        sendUpdate = false
+        sendUpdate = false // RESET UPDATE FLAG
       }
 
-      canUpdate = true // END updateUI ~ FLAG
+      canUpdate = true // FLAG FOR updateUI()
     }
 
     if (incomingWindowLayoutInfo != null) collectAndCancel(incomingWindowLayoutInfo, false) // AUTO FOLDING FEATURE INFO
