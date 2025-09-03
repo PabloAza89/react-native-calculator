@@ -48,10 +48,17 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%', margin: '2%' }
   const lastButtonLand = { value: "=", parErr: parErr, size: `${92/7}%`, margin: '1%' }
 
+  //console.log("HEIGHT HEIGHT", height)
+  //console.log("WIDTH WIDTH", width)
+
   const maxLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
   const maxTopOrBottom = ins.top > ins.bottom ? ins.top * 2 : ins.bottom * 2
-  const parsedWidth = width - maxLeftOrRight
-  const parsedHeight = height - maxTopOrBottom
+
+  const preParsedWidth = width - maxLeftOrRight
+  const preParsedHeight = height - maxTopOrBottom
+
+  const parsedWidth = preParsedWidth > 950 ? 950 : preParsedWidth
+  const parsedHeight = preParsedHeight > 900 ? 900 : preParsedHeight
 
   const [ calcLeft, setCalcLeft ] = useState(true)
   const [ aboutUp, setAboutUp ] = useState(true)
