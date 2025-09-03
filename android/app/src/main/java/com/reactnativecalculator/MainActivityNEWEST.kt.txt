@@ -115,7 +115,6 @@ import kotlin.math.min
 @Suppress("DEPRECATION")
 class MainActivity : ReactActivity(), ReactInstanceEventListener {
 
-  
   lateinit var currentOrientation: String// = "portrait" // DEFAULT
   var canUpdate: Boolean = true
   var sendUpdate: Boolean = false
@@ -143,13 +142,6 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
   lateinit var testVar: String
 
   override fun onCreate(savedInstanceState: Bundle?) {
-
-    // fun asd() {
-    //   Log.d("LOG", "TEST 111")
-    // }
-
-    // asd()
-    
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
     WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -157,8 +149,6 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
     dotsPerInch = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
 
     rootView = findViewById<View>(android.R.id.content).rootView
-
-    
 
     rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
@@ -328,9 +318,8 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
       //Log.d("LOG", "AAA ENTER HERE");
 
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) getInsetsCompatR(rootView) // 11 to 16
-      else getInsetsCompatM(rootView) // 6 to 10
-      //else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) getInsetsCompatM(rootView) // 6 to 10
-      //else { Log.d("LOG", "ENTER HERE") } // 1 to 5
+      else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) getInsetsCompatM(rootView) // 6 to 10
+      else { Log.d("LOG", "ENTER HERE") } // 1 to 5
       //else Log.d("LOG", "ENTER HERE");
       // END INSETS //
 
