@@ -4,19 +4,23 @@ export const s = StyleSheet.create({
   linearGradient: {
     position: 'absolute',
     width: '100%',
-    height: '100%',
-    zIndex: 2,
+    //height: '109%',
+    //height: '59%',
+    //zIndex: 2,
     opacity: 0.7
   },
   animatedLinearGradient: {
     position: 'absolute',
+    //top: 200,
     width: '100%',
+    // testing 109
     height: '100%',
     zIndex: 1
   },
   mainContainer: {
     height: '100%',
-    width: '100%'
+    width: '100%',
+    overflow: 'visible',
   },
   background: {
     //backgroundColor: 'red', // DEV
@@ -128,7 +132,8 @@ export const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
-    zIndex: 5
+    zIndex: 5,
+    overflow: 'visible',
   },
   floatButtonText: {
     fontSize: 16,

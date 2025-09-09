@@ -63,6 +63,15 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Job
 
+
+
+
+//import android.view.ViewGroup
+
+
+
+
+
 @Suppress("DEPRECATION")
 class MainActivity : ReactActivity(), ReactInstanceEventListener {  
   lateinit var currentOrientation: String// = "portrait" // DEFAULT
@@ -88,6 +97,12 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
         if (canUpdate) updateUI(null, true)
       }
     })
+
+    //val rootViewww = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
+    // val rootViewww = findViewById<ViewGroup>(android.R.id.content)
+    // rootViewww.setClipChildren(false)
+    // rootViewww.setClipToPadding(false)
+    //rootView.setClipChildren(false)
   }
 
   override fun onResume() {
@@ -164,6 +179,7 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
       // BEGIN INSETS //
       @RequiresApi(Build.VERSION_CODES.R)
       fun getInsetsCompatR(rootView: View): Unit {
+        //rootView.setClipChildren(false)
         val newInsets =
           rootView.rootWindowInsets?.getInsets(
             WindowInsets.Type.statusBars() or

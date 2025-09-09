@@ -35,16 +35,10 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   const goUp = () => UIManager.dispatchViewManagerCommand(viewId, 0)
 
-  console.log("ins.left", ins.left)
-  console.log("ins.top", ins.top)
-  console.log("ins.right", ins.right)
-  console.log("ins.bottom", ins.bottom)
-  
-
   let lazyLoad = [
-    <View key={0} style={[ s.eachItem, { backgroundColor: 'red', /* top: -40 */ } ]}>
+    <View key={0} style={s.eachItem}>
       <Text style={s.leftItem} children={'-X'} />
-      <Text style={s.rightItem} children={'TEXT ONE. Press it before your number.'} />
+      <Text style={s.rightItem} children={'Negative number. Press it before your number.'} />
     </View>,
     <View key={1} style={s.eachItem}>
       <Text style={s.leftItem} children={'( )'}/>
@@ -114,9 +108,26 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       <Text style={[ s.leftItem, s.dot ]} children={'.'} />
       <Text style={s.rightItem} children={'Decimal numbers can have up to two digits maximum. But decimal results can be more than 2 digits long !'} />
     </View>,
-    <View key={8} style={[ s.eachItem, { backgroundColor: 'green', /* paddingBottom: 24 * -4 */ } ]}>
+    <View key={8} style={s.eachItem}>
       <Text style={s.leftItem} children={'='} />
-      <Text style={s.rightItem} children={`LAST TEXT ('x', '/', '+' or '-') '=' will not work.\nIf calc is valid, result will be shown and, in a smaller upper place, the current calc will be shown.\nIf result or current calc is larger than screen, you can scroll to see entire result/calc.`} />
+      <Text style={s.rightItem} children={`If there is no calc to do ('x', '/', '+' or '-') '=' will not work.\nIf calc is valid, result will be shown and, in a smaller upper place, the current calc will be shown.\nIf result or current calc is larger than screen, you can scroll to see entire result/calc.`} />
+    </View>,
+    <View
+      key={9}
+      style={[ s.eachItem, {
+        marginBottom: 10
+        //marginBottom: 100
+        //paddingBottom: 100
+        //marginBottom: (state === 'tabletop' && !aboutUp) ? 20 : ins.bottom + 20
+      } ]}
+    >
+      <MaterialIcons
+        name='phonelink-erase'
+        size={30}
+        color={iconColor}
+        style={s.leftItem}
+      />
+      <Text style={s.rightItem} children={'This App does not have access to your device.'} />
     </View>
   ]
 
@@ -183,31 +194,55 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     val < 0 && UIManager.dispatchViewManagerCommand(viewId, 0);
   }
 
+  /// END CUSTOMSCROLLVIEW ///
 
+  // ****** ↓↓↓ BACKGROUND ANIMATION SCHEME ↓↓↓ ******
+  // zIndex
+  //   5     ——             UP BUTTON
+  //   4                 —— GRADIENT + OPACITY (StatusBar)
+  //   3     —————————————— SCROLLVIEW
+  //   2     ————————————   GRADIENT + OPACITY
+  //   1     —————————————— COLORS + GRADIENT
 
-  return (      // testing paddingBottom: ins.bottom
+  return (// testing paddingBottom: ins.bottom
+    <View style={[s.mainContainer, { /* paddingBottom: ins.bottom, */ /*  overflow: 'visible' */ }]}>
+
+      {
+        !(state === 'tabletop' && aboutUp) &&
+        <LinearGradient
+          colors={linearGradientColors}
+          style={[ s.linearGradient, { height: ins.top, zIndex: 4, /* overflow: 'visible', */ } ]}
+          start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
+          end={[ 1, 0 ]}
+        />
+      }
+
+      <LinearGradient
+        colors={linearGradientColors}
+        style={[ s.linearGradient, { top: (state === 'tabletop' && aboutUp) ? 0 : ins.top } ]}
+        start={[ 0, 1 - topByHeight ]}
+        end={[ 1, topByHeight * -1 ]}
+      />
+
+      <AnimatedLinearGradient
+        colors={linearGradientColors}
+        style={[ s.animatedLinearGradient, { backgroundColor: currentColor } ]}
+        start={[ 0, 1 ]} // [ XfromLeft, YfromTop ]
+        end={[ 1, 0 ]}   // [ XfromLeft, YfromTop ]
+      />
 
       <CustomScrollView
         scrollRef={scrollRef}
         onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) => scrollHandler(e.nativeEvent.contentOffset.y)}
         persistentScrollbar={true}
-        //paddingTop={30}
-        //paddingBottom={30}
-        //padding={30}
         style={{
-          //display: 'flex',
-          //flexDirection: 'column',
-          //flex: 1,
-          //flexDirection: 'row',
-          //paddingLeft: ins.left,
-          //paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
-          //padding: ins.top * 1,
-          //paddingTop: ins.top * 1,
-          //paddingBottom: ins.bottom * 10,
-          //paddingRight: ins.right,
+          paddingLeft: ins.left,
+          paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
+          // paddingTop: ins.top,
+          paddingRight: ins.right,
           //paddingBottom: ins.bottom,
           //marginBottom: ins.bottom,
-          //paddingBottom: ins.bottom,
+          paddingBottom: ins.bottom,
           //marginBottom: 50,
           zIndex: 3,
           // testing overflow: 'visible',
@@ -218,44 +253,83 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           // paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0,
           width: '100%',
           height: '100%',
-          // paddingTop: 24,
-          // paddingBottom: 24,
-          // marginTop: 24,
-          //marginBottom: 24 * 5,
-          //paddingBottom: 24 * 5,
-          overflow: 'visible',
-          //marginBottom: 24 * 6,
-          //paddingBottom: 24 * 3,
-          //top: 24 * 1
         }}
+
         children={
-          <View collapsable={false} 
-            style={[ s.background, {
-              width: '100%',
-              //height: '166%',
-              //height: '155%',
-              //paddingTop: 24 * -2,
-              //paddingTop: -100,
-              // paddingBottom: 24,
-              //marginTop: 24 * 1,
-              //paddingTop: -200,
-              //marginTop: 24 * 1,
-              //marginBottom: 24 * -6,
-              //paddingBottom: 24 * 6,
-              overflow: 'visible',
-              //paddingBottom: 24 * 8,
-              top: 24 * 2
-            }]}
-          >
+          <View collapsable={false} style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
 
-           
+            <View style={[ s.buttonContainer, { marginTop: 7, /* paddingBottom: 200 */ } ]}>
 
-            {  lazyLoad.map(e => e) }
+              {
+                twoScreens ?
+                <MaterialCommunityIcons.Button
+                  name={ state === 'tabletop' ? 'swap-vertical-bold' : 'swap-horizontal-bold' }
+                  size={30}
+                  color={iconColor}
+                  onPress={() => switchSide()}
+                  children={ <Text style={s.textInButton} children={'SWITCH\nSCREENS'} /> }
+                /> :
+                <Ionicons.Button
+                  name='chevron-back-circle-sharp'
+                  size={30}
+                  color={iconColor}
+                  onPress={() => navigate('About')}
+                  children={ <Text style={s.textInButton} children={'BACK'} /> }
+                />
+              }
+
+              <View style={s.space} />
+
+              {
+                twoScreens && state === 'tabletop' ?
+                <Ionicons.Button
+                  name='calculator-sharp'
+                  size={30}
+                  color={iconColor}
+                  onPress={() => nextScreen()}
+                  children={ <Text style={s.textInButton} children={'HOME'} /> }
+                /> :
+                twoScreens ?
+                <SimpleLineIcons.Button
+                  name='question'
+                  size={25}
+                  color={iconColor}
+                  onPress={() => nextScreen()}
+                  style={{ flex: 1 }}
+                  children={ <Text style={s.textInButton} children={'ABOUT'} /> }
+                /> :
+                <Ionicons.Button
+                  name='home'
+                  size={30}
+                  color={iconColor}
+                  onPress={() => navigate('Home')}
+                  children={ <Text style={s.textInButton} children={'HOME'} /> }
+                />
+              }
+
+            </View>
+
+            <Text style={s.centerText} children={'Welcome to my very first\nAndroid App: A Classic Calculator !'} />
+            <Text style={s.leftText} children={'Below I will give you some tips if you have any doubt:'} />
+
+            { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3" /> }
 
           </View>
         }
       />
-   
+
+      {
+        showButton &&
+        <Pressable
+          style={[ s.floatButton, {
+            bottom: (state === 'tabletop' && !aboutUp) ? 7 : ins.bottom + 7,
+            right: ins.right + 11 // 7+4(scrollBarWidth)
+          } ]}
+          onPress={() => goUp()}
+          children={ <Text style={s.floatButtonText} children={'UP'} /> }
+        />
+      }
+    </View>
   );
 }
 

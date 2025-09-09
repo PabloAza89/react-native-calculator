@@ -8,6 +8,7 @@ export const s = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'visible',
   },
   outline: {
     backgroundColor: 'darkblue'

@@ -69,8 +69,8 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const fadeAnim = useAnimatedValue(0);
 
-  const fadeIn = () => {}//Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
-  const fadeOut = () => {}//Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
+  const fadeIn = () => {} //Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
+  const fadeOut = () => {} //Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
 
   const [ OPCQH, setOPCQH ] = useState(0) // onePercentContainerQueryHeight
 
