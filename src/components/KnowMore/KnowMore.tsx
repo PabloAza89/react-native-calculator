@@ -234,7 +234,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
               width: '100%',
               //height: '166%',
               //height: '155%',
-              //paddingTop: 24 * -2,
+              paddingTop: 24 * 1,
+              paddingBottom: 24 * 2,
               //paddingTop: -100,
               // paddingBottom: 24,
               //marginTop: 24 * 1,
@@ -244,7 +245,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
               //paddingBottom: 24 * 6,
               overflow: 'visible',
               //paddingBottom: 24 * 8,
-              top: 24 * 2
+              //top: 24 * 2
             }]}
           >
 

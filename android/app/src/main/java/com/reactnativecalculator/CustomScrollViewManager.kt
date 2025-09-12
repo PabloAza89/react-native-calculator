@@ -28,7 +28,7 @@ class CustomScrollViewManager : ReactScrollViewManager() {
   override fun createViewInstance(reactContext: ThemedReactContext): ReactScrollView {
     val view = ReactScrollView(reactContext)
     //val view = CCustomScrollView(reactContext)
-    view.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY)
+    view.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY) // **
     //view.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
     //view.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
     //view.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
@@ -36,7 +36,7 @@ class CustomScrollViewManager : ReactScrollViewManager() {
     // left, top, right, bottom
     //view.setPadding(dpToPx(0.0f), dpToPx(24.0f), dpToPx(0.0f), dpToPx(24.0f));
     //view.setPadding(dpToPx(24.0f), dpToPx(0.0f), dpToPx(24.0f), dpToPx(24.0f));
-    view.setPadding(dpToPx(0.0f), dpToPx(24.0f), dpToPx(0.0f), dpToPx(24.0f));
+    //view.setPadding(dpToPx(0.0f), dpToPx(24.0f), dpToPx(0.0f), dpToPx(24.0f));
     //view.setPadding(dpToPx(0.0f), dpToPx(24.0f), dpToPx(0.0f), dpToPx(24.0f));
 
     view.setClipToPadding(false)
@@ -49,9 +49,9 @@ class CustomScrollViewManager : ReactScrollViewManager() {
 
   @ReactPropGroup(names = [ "paddingLeft", "paddingTop", "paddingRight", "paddingBottom" ])
   fun setPaddings(view: ReactScrollView, index: Int, value: Float) {
-    // if (index == 0) view.updatePadding(left = dpToPx(value))
+    if (index == 0) view.updatePadding(left = dpToPx(value))
     // else if (index == 1) view.updatePadding(top = dpToPx(value))
-    // else if (index == 2) view.updatePadding(right = dpToPx(value))
+    else if (index == 2) view.updatePadding(right = dpToPx(value))
     // else if (index == 3) view.updatePadding(bottom = dpToPx(24.0f))
   }
 }
