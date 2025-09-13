@@ -195,6 +195,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         //paddingBottom={30}
         //padding={30}
         style={{
+          backgroundColor: 'lightblue',
           //display: 'flex',
           //flexDirection: 'column',
           //flex: 1,
@@ -226,12 +227,13 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           overflow: 'visible',
           //marginBottom: 24 * 6,
           //paddingBottom: 24 * 3,
-          //top: 24 * 1
+          //top: 24 * 1,
         }}
         children={
           <View collapsable={false} 
             style={[ s.background, {
               width: '100%',
+              backgroundColor: 'yellow',
               //height: '166%',
               //height: '155%',
               paddingTop: 24 * 1,

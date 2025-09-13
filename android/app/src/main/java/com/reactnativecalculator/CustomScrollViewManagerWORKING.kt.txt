@@ -15,38 +15,15 @@ import com.facebook.react.views.scroll.ReactScrollView
 
 
 
-//import android.view.ViewGroup
+import android.view.ViewGroup
 
 
-import android.graphics.Color
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.shapes.RectShape
-import android.graphics.drawable.Drawable
 
 class CustomScrollViewManager : ReactScrollViewManager() {
 
   override fun getName() = "CustomScrollView"
 
   fun dpToPx(dp: Float): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().displayMetrics).toInt()
-
-  fun createScrollbarThumbDrawable(): Drawable {
-    val thumbDrawable = ShapeDrawable(RectShape())
-    thumbDrawable.paint.color = Color.parseColor("#a8378e")
-    thumbDrawable.paint.color = Color.parseColor("#0bd415")
-
-    val drawables = arrayOf(thumbDrawable)
-    val layerDrawable = LayerDrawable(drawables)
-    
-    // Set the size if needed, but the scrollbar thumb's size
-    // is often determined by the view's layout.
-    // thumbDrawable.intrinsicWidth = 10 
-    // thumbDrawable.intrinsicHeight = 100
-    layerDrawable.setLayerInsetTop(0, dpToPx(24.0f))
-    layerDrawable.setLayerInsetBottom(0, dpToPx(24.0f))
-    
-    return layerDrawable
-  }
 
   override fun createViewInstance(reactContext: ThemedReactContext): ReactScrollView {
     val view = ReactScrollView(reactContext)
@@ -63,10 +40,6 @@ class CustomScrollViewManager : ReactScrollViewManager() {
     //view.setPadding(dpToPx(0.0f), dpToPx(24.0f), dpToPx(0.0f), dpToPx(24.0f));
 
     view.setClipToPadding(false)
-
-
-    view.setVerticalScrollbarThumbDrawable(createScrollbarThumbDrawable())
-
     return view
   }
 
@@ -81,9 +54,4 @@ class CustomScrollViewManager : ReactScrollViewManager() {
     else if (index == 2) view.updatePadding(right = dpToPx(value))
     // else if (index == 3) view.updatePadding(bottom = dpToPx(24.0f))
   }
-
-
-
-
-
 }
