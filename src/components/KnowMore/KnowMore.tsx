@@ -194,6 +194,15 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         //paddingTop={30}
         //paddingBottom={30}
         //padding={30}
+        //AAA={22}
+        //BBB={33}
+        // scrollbarPaddingTop={ins.top}
+        // scrollbarPaddingBottom={ins.bottom}
+        //scrollbarPaddingBottom={24*1}
+        //scrollbarPaddingTop={[24*1, 24*2]}
+        //scrollbarPaddingTop="24*1, 24*2"
+        //scrollbarPaddingTop={['apple', 'banana', 'orange']}
+        scrollbarPaddingTop={[0, 24, 0, 48]}
         style={{
           backgroundColor: 'lightblue',
           //display: 'flex',
@@ -204,7 +213,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
           //padding: ins.top * 1,
           //paddingTop: ins.top * 1,
-          //paddingBottom: ins.bottom * 10,
+          //paddingBottom: ins.bottom * 6,
+          //paddingLeft: ins.top * 1,
           //paddingRight: ins.right,
           //paddingBottom: ins.bottom,
           //marginBottom: ins.bottom,
@@ -236,8 +246,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
               backgroundColor: 'yellow',
               //height: '166%',
               //height: '155%',
-              paddingTop: 24 * 1,
-              paddingBottom: 24 * 2,
+              paddingTop: 24 * 1, // this
+              paddingBottom: 24 * 2, // this
               //paddingTop: -100,
               // paddingBottom: 24,
               //marginTop: 24 * 1,
