@@ -19,14 +19,15 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
       //cardOverlayEnabled={true}
       //detachInactiveScreens={false}
       //id={'asd'}
-      
+      //cardStyle: { backgroundColor: 'transparent' }
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
         navigationBarColor: tallBar ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
         animation: animation,
         statusBarColor: 'transparent',
-        statusBarStyle: 'dark'
+        statusBarStyle: 'dark',
+        
       }}
       children={ screens.map((e: ReactElement) => e) }
     />
