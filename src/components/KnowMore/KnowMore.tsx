@@ -183,6 +183,14 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     val < 0 && UIManager.dispatchViewManagerCommand(viewId, 0);
   }
 
+  // const setDimensions = (nativeRef, width, height) => {
+  //   const reactTag = findNodeHandle(nativeRef);
+  //   UIManager.dispatchViewManagerCommand(
+  //     reactTag,
+  //     'setDimensions',
+  //     [width, height]
+  //   );
+  // };
 
 
   return (      // testing paddingBottom: ins.bottom
@@ -194,11 +202,23 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //paddingTop: 24 * 4,
           //paddingBottom: 24 * 4,
           //bottom: 24 * -2,
-          marginTop: 24 * 1,
+          //marginTop: 24 * 1, // former
           //marginBottom: 24 * 3,
-          marginBottom: 84,
+          //marginBottom: 84, // former
           //height: '109%',
-        }}>
+          //width: 390,
+          //height: 800,
+          //width: '80%',
+          //height: '100%',
+          //flex: 1,
+          }}
+        //   onLayout={(event) => {
+        //   const { width, height } = event.nativeEvent.layout;
+        //   // Call the native command with the calculated dimensions
+        //   //setDimensions(scrollRef, width, height);
+        //   setDimensions(scrollRef, 400, 800);
+        // }}
+        >
           <CustomScrollView
             //CustomScrollView
             scrollRef={scrollRef}
@@ -209,6 +229,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
               //console.log("nativeEvent", e.nativeEvent)
             }}
             persistentScrollbar={true}
+            //showsVerticalScrollIndicator={false}
+            //showsHorizontalScrollIndicator={false}
             //paddingTop={30}
             //paddingBottom={30}
             //padding={30}
@@ -242,9 +264,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             // }}
             //
             //
-            //scrollbarPadding={[ins.left * 0, ins.top * 1, ins.right * 0, ins.bottom * 1]}
-            scrollbarPadding={[ins.left * 0, ins.top * 0, ins.right * 0, ins.bottom * 0]}
-            scrollbarAAA={[24 * 0, 24 * 0, 24 * 0, 24 * 0]}
+            scrollbarPadding={[ins.left * 0, ins.top * 1, ins.right * 0, ins.bottom * 1]}
+            //scrollbarPadding={[ins.left * 0, ins.top * 0, ins.right * 0, ins.bottom * 0]}
+            //scrollbarAAA={[24 * 0, 24 * 0, 24 * 0, 24 * 0]}
             contentContainerStyle={{
               //paddingVertical: 50,
               //overflow: 'visible',
@@ -266,17 +288,21 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
               //top: 24 * -5, // test 33
               //paddingTop: 24 * 5, // test 33
             }}
-            overflowInset={[0, 100, 0, 100]}
+            //overflowInset={[0, 100, 0, 100]}
+            //customWidth={400} customHeight={800}
             style={{
               backgroundColor: 'lightblue',
+              width: '100%', // ***
+              height: '100%', // ***
+              //width: 400,
+              //height: 800,
               // paddingLeft: ins.left * 1,
               // paddingTop: ins.top * 1,
               // paddingRight: ins.right * 1,
               //paddingBottom: ins.bottom * -2,
-              paddingBottom: -100,
+              //paddingBottom: -100, // former
               //marginTop: 24 * -1, //
               //marginBottom: 24 * 3, //
-              
               //top: -50,
               //bottom: -50,
               //marginTop: -50,
@@ -317,10 +343,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
               //marginTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
               //marginTop: (state === 'tabletop' && aboutUp) ? ins.top : ins.top,
               // paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0,
-              width: '100%',
-              height: '100%',
-              //width: 400,
-              //height: 800,
               //height: '93%',
               // paddingTop: 24,
               //bottom: 24 * -2,
@@ -344,7 +366,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             <View  //collapsable={false}
               //removeClippedSubviews={true}
                 style={{
-                  marginTop: 24 * -1,
+                  //marginTop: 24 * -1, // former
                   //marginBottom: 24 * -4,
                   //bottom: 24 * -2,
                   overflow: 'visible',

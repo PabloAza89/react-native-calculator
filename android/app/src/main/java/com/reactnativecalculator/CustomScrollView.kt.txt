@@ -1,0 +1,29 @@
+package com.reactnativecalculator
+
+import android.content.Context
+import android.util.AttributeSet
+import android.widget.ScrollView
+import com.reactnativecalculator.R // Replace with your project's R file
+
+class CustomScrollView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ScrollView(context, attrs, defStyleAttr) {
+
+    init {
+        val theme = context.theme
+        val typedArray = theme.obtainStyledAttributes(attrs, R.styleable.CustomScrollView, defStyleAttr, 0)
+        
+        val styleResId = typedArray.getResourceId(R.styleable.CustomScrollView_customScrollViewStyle, -1)
+        if (styleResId != -1) {
+            theme.applyStyle(styleResId, true)
+        }
+        
+        typedArray.recycle()
+        
+        // ... now you can get other attributes which will be styled
+        // For example:
+        // val myStyledColor = typedArray.getColor(...)
+    }
+}

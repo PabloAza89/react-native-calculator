@@ -122,7 +122,8 @@ android {
     }
     buildFeatures {
         buildConfig true
-        viewBinding = true
+        viewBinding true
+        dataBinding true
     }
 }
 

@@ -39,6 +39,15 @@ import android.graphics.drawable.GradientDrawable
 import android.view.ViewGroup
 import android.graphics.Rect
 
+import android.content.Context
+import android.view.ContextThemeWrapper
+//import android.widget.ScrollBarDrawable
+//import android.graphics.drawable.ScrollBarDrawable
+
+//import java.lang.reflect.Constructor;
+import java.lang.reflect.Method
+import java.lang.reflect.Field
+
 class CustomScrollViewManager : ReactScrollViewManager() {
 
   override fun getName() = "CustomScrollView"
@@ -61,6 +70,8 @@ class CustomScrollViewManager : ReactScrollViewManager() {
 
   override fun createViewInstance(reactContext: ThemedReactContext): ReactScrollView {
     val view = ReactScrollView(reactContext) // **
+    //val view = ReactScrollView(reactContext, null, 0, R.style.CustomScrollView) // **
+    //val view = ReactScrollView(ContextThemeWrapper(context, R.style.CustomScrollView))) // **
     //val view = super.createViewInstance(reactContext)
     //val view = CCustomScrollView(reactContext)
     view.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY) // **
@@ -83,7 +94,8 @@ class CustomScrollViewManager : ReactScrollViewManager() {
         ViewGroup.MarginLayoutParams.WRAP_CONTENT
     )
 
-    val bottomMarginPx = 50
+    //val bottomMarginPx = 50
+    val bottomMarginPx = 0
 
     //view.setOverflowInset(int left, int top, int right, int bottom)
     //view.setOverflowInset(dpToPx(48.0), dpToPx(48.0), dpToPx(48.0), dpToPx(48.0))
@@ -108,13 +120,37 @@ class CustomScrollViewManager : ReactScrollViewManager() {
     // else if (index == 3) view.updatePadding(bottom = dpToPx(value.toDouble()))
     //if (index == 3) view.updatePadding(bottom = dpToPx(value.toDouble()))
     //if (index == 3) view.updatePadding(bottom = dpToPx(-120.0))  // x5
-    if (index == 3) view.updatePadding(bottom = dpToPx(-108.0))  // x??
+    //if (index == 3) view.updatePadding(bottom = dpToPx(-108.0))  // x??
     //if (index == 3) view.updatePadding(bottom = dpToPx(-96.0)) // x4
     //if (index == 3) view.updatePadding(bottom = dpToPx(-72.0)) // x3 at square
     //if (index == 3) view.updatePadding(bottom = dpToPx(-48.0)) // x2 at line
     //if (index == 3) view.updatePadding(bottom = dpToPx(-24.0)) // x1 too high
     //view.updatePadding(bottom = dpToPx(96.0))
     //Log.d("LOG", "TEST 1 ${index} ${value}");
+  }
+
+  fun setScrollbarThumbProgrammatically(view: View, drawable: Drawable) {
+
+  try {
+      val mScrollCacheField: Field = View::class.java.getDeclaredField("mScrollCache")
+      mScrollCacheField.isAccessible = true
+      val mScrollCache: Any? = mScrollCacheField.get(view)
+
+      Log.d("LOG", "mScrollCacheField " + mScrollCacheField);
+
+      val scrollBarField: Field = mScrollCache!!::class.java.getDeclaredField("scrollBar")
+      scrollBarField.isAccessible = true
+      val scrollBar: Any? = scrollBarField.get(mScrollCache)
+
+      val method: Method = scrollBar!!::class.java.getDeclaredMethod("setVerticalThumbDrawable", Drawable::class.java)
+      method.isAccessible = true
+      method.invoke(scrollBar, drawable)
+  } catch (e: Exception) {
+      Log.d("LOG", "ERROR " + e);
+      e.printStackTrace()
+  }
+
+
   }
 
   //@ReactPropGroup(names = [ "scrollbarPaddingTop", "scrollbarPaddingBottom" ])
@@ -144,6 +180,53 @@ class CustomScrollViewManager : ReactScrollViewManager() {
       Log.d("LOG", "EQUAL OR MAJOR THAN android 12");
     } else {
       Log.d("LOG", "LESS THAN android 12");
+
+      // val thumbDrawable = ShapeDrawable(RectShape())
+      // thumbDrawable.paint.color = Color.parseColor("#a8378e")
+      // //thumbDrawable.paint.color = Color.parseColor("#0bd415")
+
+      // val drawables = arrayOf(thumbDrawable)
+      // val layerDrawable = LayerDrawable(drawables)
+
+      // layerDrawable.setLayerInset(0, dpToPx(arr.getDouble(0)), dpToPx(arr.getDouble(1)), dpToPx(arr.getDouble(2)), dpToPx(arr.getDouble(3))) // working
+      // //view.updateBackgroundDrawable(layerDrawable) //
+      // //view.setBackground(R.drawable.your_shape) //
+      // view.setBackground(layerDrawable) // working
+      // //view.setBackgroundResource(layerDrawable) //
+
+      //val scrollbarDrawable: Drawable? = ContextCompat.getDrawable(view.context, R.drawable.your_shape) //as? LayerDrawable
+
+      val thumbDrawable = ShapeDrawable(RectShape())
+      thumbDrawable.paint.color = Color.parseColor("#a8378e")
+      //thumbDrawable.paint.color = Color.parseColor("#0bd415")
+
+      val drawables = arrayOf(thumbDrawable)
+      val layerDrawable = LayerDrawable(drawables)
+
+      layerDrawable.setLayerInset(0, dpToPx(arr.getDouble(0)), dpToPx(arr.getDouble(1)), dpToPx(arr.getDouble(2)), dpToPx(arr.getDouble(3))) // working
+      setScrollbarThumbProgrammatically(view, layerDrawable)
+      //setScrollbarThumbProgrammatically(myScrollView, thumbDrawable)
+      //view.setVerticalScrollbarThumbDrawable(layerDrawable) // working
+
+      //view.setScrollBarThumbDrawable(scrollbarDrawable)
+      //myScrollView.setScrollBarThumbDrawable(scrollbarDrawable)
+
+      // if (scrollbarDrawable is LayerDrawable) {
+
+      //   Log.d("LOG", "scrollbarDrawable is LayerDrawable");
+
+      //     // Get the background layer by its ID
+      //     //val backgroundLayer = scrollbarDrawable.findDrawableByLayerId(R.id.scrollbar_background_shape) as? ShapeDrawable
+
+      //     // Get the foreground layer by its ID
+      //     val foregroundLayer = scrollbarDrawable.findDrawableByLayerId(R.id.scrollbar_foreground_shape) as? ShapeDrawable
+          
+      //     // Change the colors dynamically
+      //     //backgroundLayer?.paint?.color = Color.parseColor("#FF0000") // Red background
+      //     foregroundLayer?.paint?.color = Color.parseColor("#0BD415") // Blue foreground
+
+      //     // Note: The system will automatically use the modified drawable for the scrollbar.
+      // }
 
       // view.updatePadding(left = dpToPx(arr.getDouble(0)))
       // view.updatePadding(top = dpToPx(arr.getDouble(1)))
@@ -298,13 +381,13 @@ class CustomScrollViewManager : ReactScrollViewManager() {
 
   @ReactProp(name = "overflowInset")
     fun setOverflowInset(view: ReactScrollView, insetArray: ReadableArray) {
-        if (insetArray != null && insetArray.size() == 4) {
-            val left = insetArray.getInt(0)
-            val top = insetArray.getInt(1)
-            val right = insetArray.getInt(2)
-            val bottom = insetArray.getInt(3)
-            view.setOverflowInset(left, top, right, bottom)
-        }
+        // if (insetArray != null && insetArray.size() == 4) {
+        //     val left = insetArray.getInt(0)
+        //     val top = insetArray.getInt(1)
+        //     val right = insetArray.getInt(2)
+        //     val bottom = insetArray.getInt(3)
+        //     view.setOverflowInset(left, top, right, bottom)
+        // }
     }
 
 

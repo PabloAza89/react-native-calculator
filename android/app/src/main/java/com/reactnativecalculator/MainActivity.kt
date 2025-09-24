@@ -238,6 +238,8 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
 
 
       if (sendUpdate) {
+        Log.d("LOG", "INSETS ${currentInsets}") // test
+        Log.d("LOG", "DPI ${dotsPerInch}") // test
         mainMap.putMap("hingeBounds", Arguments.createMap().apply {
           putDouble("left", currentHingeBounds["left"]!! / dotsPerInch)
           putDouble("top", currentHingeBounds["top"]!! / dotsPerInch)
