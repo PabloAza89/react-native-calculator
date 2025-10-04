@@ -6,7 +6,7 @@
     <item name="android:navigationBarColor">@color/darkBlue</item>
     <!-- <item name="android:scrollbarThumbVertical">@color/black</item> -->
     <!-- <item name="android:scrollbarThumbVertical">@drawable/your_shape</item> -->
-    <!-- <item name="android:scrollbarSize">4dp</item> -->
+    <item name="android:scrollbarSize">4dp</item>
   </style>
 </resources>
 
