@@ -268,7 +268,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             //scrollbarPadding={[0.0, 12.0, 0.0, 48.0]}
             scrollbarPadding={{
               left: ins.left * 1,
-              top: ins.top * 4,
+              top: ins.top * 1,
               right: ins.right * 1,
               bottom: ins.bottom * 1,
             }}
