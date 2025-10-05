@@ -87,11 +87,6 @@ class CustomScrollViewManager : ReactScrollViewManager() {
   fun setDrawableScrollbar(view: ReactScrollView, map: ReadableMap) {
     val thumbDrawable = ShapeDrawable(RectShape()).apply { paint.color = Color.parseColor("#a8378e") }
     val layerDrawable = LayerDrawable(arrayOf(thumbDrawable))
-    //layerDrawable.setLayerInset(0, dpToPx(arr.getDouble("left")), dpToPx(arr.getDouble("top")), dpToPx(arr.getDouble("right")), dpToPx(arr.getDouble("bottom")))
-    // if (padding.hasKey("left")) map.getDouble("left")
-    // if (padding.hasKey("top")) map.getDouble("top")
-    // if (padding.hasKey("right")) map.getDouble("right")
-    // if (padding.hasKey("bottom")) map.getDouble("bottom")
     if (map.hasKey("left")) layerDrawable.setLayerInsetLeft(0, dpToPx(map.getDouble("left")))
     if (map.hasKey("top")) layerDrawable.setLayerInsetTop(0, dpToPx(map.getDouble("top")))
     if (map.hasKey("right")) layerDrawable.setLayerInsetRight(0, dpToPx(map.getDouble("right")))
