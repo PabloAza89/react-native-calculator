@@ -268,17 +268,17 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             //scrollbarPadding={[0.0, 12.0, 0.0, 48.0]}
             scrollbarPadding={{
               left: ins.left * 1,
-              top: ins.top * 1,
+              //top: ins.top * 4,
               right: ins.right * 1,
-              bottom: ins.bottom * 1,
+              //bottom: ins.bottom * 1,
             }}
             //scrollbarPadding={[ins.left * 0, ins.top * 0, ins.right * 0, ins.bottom * 0]}
             //scrollbarPadding={[ins.left * 0, ins.top * 0, ins.right * 0, ins.bottom * 0]}
             //scrollbarAAA={[24 * 0, 24 * 0, 24 * 0, 24 * 0]}
             //shouldRedraw={true}
             contentContainerStyle={{
-              paddingLeft: ins.left,
-              paddingTop: ins.top*1,
+              //paddingLeft: ins.left,
+              //paddingTop: ins.top*1,
               paddingRight: ins.right,
               paddingBottom: ins.bottom * 1,
               //paddingLeft: ins.left,

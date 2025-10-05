@@ -84,10 +84,18 @@ class CustomScrollViewManager : ReactScrollViewManager() {
   }
 
   @ReactProp(name = "scrollbarPadding")
-  fun setDrawableScrollbar(view: ReactScrollView, arr: ReadableMap) {
+  fun setDrawableScrollbar(view: ReactScrollView, map: ReadableMap) {
     val thumbDrawable = ShapeDrawable(RectShape()).apply { paint.color = Color.parseColor("#a8378e") }
     val layerDrawable = LayerDrawable(arrayOf(thumbDrawable))
-    layerDrawable.setLayerInset(0, dpToPx(arr.getDouble("left")), dpToPx(arr.getDouble("top")), dpToPx(arr.getDouble("right")), dpToPx(arr.getDouble("bottom")))
+    //layerDrawable.setLayerInset(0, dpToPx(arr.getDouble("left")), dpToPx(arr.getDouble("top")), dpToPx(arr.getDouble("right")), dpToPx(arr.getDouble("bottom")))
+    // if (padding.hasKey("left")) map.getDouble("left")
+    // if (padding.hasKey("top")) map.getDouble("top")
+    // if (padding.hasKey("right")) map.getDouble("right")
+    // if (padding.hasKey("bottom")) map.getDouble("bottom")
+    if (map.hasKey("left")) layerDrawable.setLayerInsetLeft(0, dpToPx(map.getDouble("left")))
+    if (map.hasKey("top")) layerDrawable.setLayerInsetTop(0, dpToPx(map.getDouble("top")))
+    if (map.hasKey("right")) layerDrawable.setLayerInsetRight(0, dpToPx(map.getDouble("right")))
+    if (map.hasKey("bottom")) layerDrawable.setLayerInsetBottom(0, dpToPx(map.getDouble("bottom")))
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { view.setVerticalScrollbarThumbDrawable(layerDrawable) } // 10 = setVerticalScrollbarThumbDrawable OK
     else { setReflectionScrollbarThumbDrawable(view, layerDrawable) } // reflection
     view.scrollBy(0, 1) // RE-RENDER HELPER
