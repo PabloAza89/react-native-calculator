@@ -206,7 +206,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       }}
       contentContainerStyle={{
         paddingLeft: ins.left * 1,
-        paddingTop: ins.top * 2,
+        paddingTop: ins.top * 1,
         paddingRight: ins.right * 1,
         paddingBottom: ins.bottom * 1,
       }}
