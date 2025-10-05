@@ -9,8 +9,6 @@ import com.facebook.react.uimanager.ViewManager
 
 import android.widget.FrameLayout
 
-import com.reactnativecalculator.CustomScrollViewManager
-
 class CustomScrollViewPackage : ReactPackage {
   override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> = emptyList()
 
