@@ -4,10 +4,7 @@ export const s = StyleSheet.create({
   linearGradient: {
     position: 'absolute',
     width: '100%',
-    //height: '109%',
-    //height: '59%',
-    //zIndex: 2,
-    opacity: 0.7
+
   },
   animatedLinearGradient: {
     position: 'absolute',

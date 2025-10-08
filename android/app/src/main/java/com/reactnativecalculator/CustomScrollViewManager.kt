@@ -85,7 +85,7 @@ class CustomScrollViewManager : ReactScrollViewManager() {
 
   @ReactProp(name = "scrollbarPadding")
   fun setDrawableScrollbar(view: ReactScrollView, map: ReadableMap) {
-    val thumbDrawable = ShapeDrawable(RectShape()).apply { paint.color = Color.parseColor("#a8378e") }
+    val thumbDrawable = ShapeDrawable(RectShape()).apply { paint.color = Color.parseColor("#000000") }
     val layerDrawable = LayerDrawable(arrayOf(thumbDrawable))
     if (map.hasKey("left")) layerDrawable.setLayerInsetLeft(0, dpToPx(map.getDouble("left")))
     if (map.hasKey("top")) layerDrawable.setLayerInsetTop(0, dpToPx(map.getDouble("top")))

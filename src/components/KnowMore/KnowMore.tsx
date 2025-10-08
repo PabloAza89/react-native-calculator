@@ -145,6 +145,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
+  //console.log("parsedHeight", parsedHeight)
+  //console.log("topByHeight", topByHeight)
 
   let currIndex = useAnimatedValue(0);
 
@@ -219,7 +221,11 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
       <LinearGradient
         colors={linearGradientColors}
-        style={[ s.linearGradient, { top: (state === 'tabletop' && aboutUp) ? 0 : ins.top } ]}
+        //colors={['red', 'blue']}
+        //style={[ s.linearGradient, { top: (state === 'tabletop' && aboutUp) ? 0 : ins.top } ]}
+        //style={[ s.linearGradient, { top: 150 } ]}
+        //style={{ display: 'flex', position: 'absolute', height: '100%', width: '100%', top: ins.top, zIndex: 2 }}
+        style={{ display: 'flex', position: 'absolute', height: height - (ins.top*1), width: '100%', top: ins.top, zIndex: 2 }}
         start={[ 0, 1 - topByHeight ]}
         end={[ 1, topByHeight * -1 ]}
       />
@@ -252,6 +258,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top, // THIS
           //paddingRight: ins.right, // THIS
           //paddingBottom: ins.bottom, // THIS
+          //top: 24,
+          //top: ins.top,
+          //paddingTop: ins.top*-1,
           zIndex: 3, // THIS
           // paddingTop: ins.top,
           
