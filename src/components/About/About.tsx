@@ -1,5 +1,5 @@
 import { ReactElement, useEffect } from 'react';
-import { View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView } from 'react-native';
+import { View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView, AppState } from 'react-native';
 import { Text } from '../../utils/Text';
 import { s } from './AboutCSS';
 import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -35,6 +35,27 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
 
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
+
+  useEffect(() => {
+    return () => {console.log("OUTTTTTTTTTTTTTTTTTTTTT");updateShowModal(false)}
+  }, [])
+
+  useEffect(() => { // ON APP BLUR
+      
+      //AppState.addEventListener('blur', () => {
+      const blur = AppState.addEventListener('change', () => {
+        //if (AppState.currentState === '')
+        if (RegExp(/background|inactive/).test(AppState.currentState)) {
+          console.log("OUTT BLURRRR OUTTTTT")
+          updateShowModal(false)
+          
+        }
+          
+        
+      })
+      return () => blur.remove();
+
+    }, []);
 
   return (
     <View style={s.background}>

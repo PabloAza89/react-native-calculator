@@ -213,7 +213,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         !(state === 'tabletop' && aboutUp) &&
         <LinearGradient
           colors={linearGradientColors}
-          style={[ s.linearGradient, { height: ins.top, zIndex: 4, /* overflow: 'visible', */ } ]}
+          style={[ s.linearGradient, { zIndex: 4, height: ins.top } ]}
           start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
           end={[ 1, 0 ]}
         />
@@ -221,11 +221,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
       <LinearGradient
         colors={linearGradientColors}
-        //colors={['red', 'blue']}
-        //style={[ s.linearGradient, { top: (state === 'tabletop' && aboutUp) ? 0 : ins.top } ]}
-        //style={[ s.linearGradient, { top: 150 } ]}
-        //style={{ display: 'flex', position: 'absolute', height: '100%', width: '100%', top: ins.top, zIndex: 2 }}
-        style={{ display: 'flex', position: 'absolute', height: height - (ins.top*1), width: '100%', top: ins.top, zIndex: 2 }}
+        style={[ s.linearGradient, { zIndex: 2, height: height - ins.top, top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
         start={[ 0, 1 - topByHeight ]}
         end={[ 1, topByHeight * -1 ]}
       />
@@ -253,7 +249,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           paddingRight: ins.right,
           paddingBottom: ins.bottom,
         }}
-        style={{
+        style={[ s.customScrollView, {
           //paddingLeft: ins.left, // THIS
           //paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top, // THIS
           //paddingRight: ins.right, // THIS
@@ -261,7 +257,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //top: 24,
           //top: ins.top,
           //paddingTop: ins.top*-1,
-          zIndex: 3, // THIS
           // paddingTop: ins.top,
           
           //paddingBottom: ins.bottom,
@@ -275,9 +270,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           //marginTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
           //marginTop: (state === 'tabletop' && aboutUp) ? ins.top : ins.top,
           // paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0,
-          width: '100%',
-          height: '100%',
-        }}
+          // width: '100%',
+          // height: '100%',
+        }]}
 
         children={
           <View collapsable={false} style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
