@@ -45,6 +45,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
       //AppState.addEventListener('blur', () => {
       const blur = AppState.addEventListener('change', () => {
         //if (AppState.currentState === '')
+        console.log("AppState.currentState", AppState.currentState)
         if (RegExp(/background|inactive/).test(AppState.currentState)) {
           console.log("OUTT BLURRRR OUTTTTT")
           updateShowModal(false)
@@ -53,7 +54,36 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
           
         
       })
-      return () => blur.remove();
+
+      // ANDROID 36 OK Home (background) // Overview (active) // statusBar (active)
+      // ANDROID 34 OK Home (background) // Overview (active) // statusBar (active)
+      // ANDROID 31 OK Home (background) // Overview (active) // statusBar (active)
+      // ANDROID 30 OK Home (background) // Overview (background) // statusBar (active)
+      // ANDROID 29 OK Home (background) // Overview (background) // statusBar (active)
+      // ANDROID 28 OK Home (background) // Overview (background) // statusBar (active)
+      // ANDROID 26 OK Home (background) // Overview (background) // statusBar (active)
+      // ANDROID 23 OK Home (active)     // Overview (active)     // statusBar (active)
+      const blurTEST = AppState.addEventListener('blur', () => { 
+        //if (AppState.currentState === '')
+        console.log("AppState.currentState 12", AppState.currentState)
+        if (RegExp(/background|active/).test(AppState.currentState)) {
+          console.log("12 OUTT BLURRRR OUTTTTT 12")
+          updateShowModal(false)
+          
+        }
+          
+        
+      })
+      //return () => blur.remove();
+
+
+
+      return () => {
+        blur.remove();
+        blurTEST.remove();
+      }
+
+      
 
     }, []);
 
