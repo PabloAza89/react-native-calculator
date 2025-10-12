@@ -127,10 +127,11 @@ const App = (): ReactElement => {
   useEffect(() => { // ON APP BLUR
     
     //AppState.addEventListener('blur', () => {
-    const blur = AppState.addEventListener('change', () => {
+    //const blur = AppState.addEventListener('change', () => {
+    const blur = AppState.addEventListener('blur', () => {
       //if (AppState.currentState === '')
-      if (RegExp(/background|inactive/).test(AppState.currentState)) {
-        console.log("BLURRRRRRRRRRRRRRRRRRRRRRR")
+      //if (RegExp(/background|inactive/).test(AppState.currentState)) {
+        console.log("APP BLURRRRRRRRRRRRRRRRRRRRRRR")
         console.log("a ver state", AppState.currentState)
         saveData("savedInput", input.toString())
         saveData("savedSecInput", secInput.toString())
@@ -142,7 +143,7 @@ const App = (): ReactElement => {
 
         let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
         saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
-      }
+    //  }
         
       
     })
