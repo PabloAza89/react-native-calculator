@@ -125,31 +125,15 @@ const App = (): ReactElement => {
   const [ input, setInput ] = useState("");
 
   useEffect(() => { // ON APP BLUR
-    
-    //AppState.addEventListener('blur', () => {
-    //const blur = AppState.addEventListener('change', () => {
     const blur = AppState.addEventListener('blur', () => {
-      //if (AppState.currentState === '')
-      //if (RegExp(/background|inactive/).test(AppState.currentState)) {
-        console.log("APP BLURRRRRRRRRRRRRRRRRRRRRRR")
-        console.log("a ver state", AppState.currentState)
-        saveData("savedInput", input.toString())
-        saveData("savedSecInput", secInput.toString())
-        saveData("savedDate", Date.now().toString())
-        saveData("savedTallBar", tallBar.current.toString())
-
-        // console.log("SAVING THIS UPPER", secInput)
-        // console.log("SAVING THIS LOWER", input)
-
-        let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
-        saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
-    //  }
-        
-      
+      saveData("savedInput", input.toString())
+      saveData("savedSecInput", secInput.toString())
+      saveData("savedDate", Date.now().toString())
+      saveData("savedTallBar", tallBar.current.toString())
+      let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
+      saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
     })
-    return () => blur.remove();
-  //}, [input, secInput]);
-  //}, []);
+    return () => blur.remove()
   }, [input, secInput]);
 
   const saveData = async (key: string, value: string) => {

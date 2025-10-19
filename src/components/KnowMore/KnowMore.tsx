@@ -206,6 +206,11 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   //   2     ————————————   GRADIENT + OPACITY
   //   1     —————————————— COLORS + GRADIENT
 
+  console.log("ins.left", ins.left)
+  console.log("ins.top", ins.top)
+  console.log("ins.right", ins.right)
+  console.log("ins.bottom", ins.bottom)
+
   return (// testing paddingBottom: ins.bottom
     <View style={[s.mainContainer, { /* paddingBottom: ins.bottom, */ /*  overflow: 'visible' */ }]}>
 

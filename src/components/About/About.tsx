@@ -36,57 +36,23 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
 
-  useEffect(() => {
-    return () => {console.log("OUTTTTTTTTTTTTTTTTTTTTT");updateShowModal(false)}
+  useEffect(() => { // ON LEAVE COMPONENT
+    return () => updateShowModal(false)
   }, [])
 
+  // API: Home:      Overview:                        StatusBar:
+  // 36   background active                           active
+  // 34   background active                           active
+  // 31   background active                           active
+  // 30   background background                       active
+  // 29   background background                       active
+  // 28   background background                       active
+  // 26   background background                       active
+  // 23   active     background (1st) / active (next) active
   useEffect(() => { // ON APP BLUR
-      
-      //AppState.addEventListener('blur', () => {
-      // const blur = AppState.addEventListener('change', () => {
-      //   //if (AppState.currentState === '')
-      //   console.log("AppState.currentState", AppState.currentState)
-      //   if (RegExp(/background|inactive/).test(AppState.currentState)) {
-      //     console.log("OUTT BLURRRR OUTTTTT")
-      //     updateShowModal(false)
-          
-      //   }
-          
-        
-      // })
-
-      // ANDROID 36 OK Home (background) // Overview (active) // statusBar (active)
-      // ANDROID 34 OK Home (background) // Overview (active) // statusBar (active)
-      // ANDROID 31 OK Home (background) // Overview (active) // statusBar (active)
-      // ANDROID 30 OK Home (background) // Overview (background) // statusBar (active)
-      // ANDROID 29 OK Home (background) // Overview (background) // statusBar (active)
-      // ANDROID 28 OK Home (background) // Overview (background) // statusBar (active)
-      // ANDROID 26 OK Home (background) // Overview (background) // statusBar (active)
-      // ANDROID 23 OK Home (active)     // Overview (background/active)     // statusBar (active)
-      const blur = AppState.addEventListener('blur', () => { 
-        //if (AppState.currentState === '')
-        // console.log("AppState.currentState 12", AppState.currentState)
-        // if (RegExp(/background|active/).test(AppState.currentState)) {
-        //   console.log("12 OUTT BLURRRR OUTTTTT 12")
-        //   updateShowModal(false)
-          
-        // }
-          
-        updateShowModal(false)
-        
-      })
-      //return () => blur.remove();
-
-
-
-      return () => {
-        blur.remove();
-        //blurTEST.remove();
-      }
-
-      
-
-    }, []);
+    const blur = AppState.addEventListener('blur', () => updateShowModal(false))
+    return () => blur.remove()
+  }, []);
 
   return (
     <View style={s.background}>

@@ -154,6 +154,7 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
 
   fun updateUI(incomingWindowLayoutInfo: WindowLayoutInfo?, manual: Boolean) {
     canUpdate = false // FLAG FOR updateUI()
+    Log.d("LOG", "incomingWindowLayoutInfo " + incomingWindowLayoutInfo)
 
     // BEGIN ORIENTATION //
     val newOrientation = this@MainActivity.resources.configuration.orientation
@@ -164,7 +165,7 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
     lateinit var job: Job
 
     fun collectAndCancel(windowLayoutInfo: WindowLayoutInfo, doJob: Boolean) {
-      Log.d("LOG", "RESPONSE ${windowLayoutInfo}"); // windowLayoutInfo
+      Log.d("LOG", "RESPONSE " + windowLayoutInfo) // windowLayoutInfo
 
       if (doJob) job.cancel();
 
