@@ -1,12 +1,11 @@
-import { ReactElement, useEffect, useRef } from 'react';
-import { View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView, AppState, findNodeHandle } from 'react-native';
+import { ReactElement, useEffect } from 'react';
+import { View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView, AppState } from 'react-native';
 import { Text } from '../../utils/Text';
 import { s } from './AboutCSS';
-import { Ionicons, AntDesign, MaterialCommunityIcons, createIconSetFromFontello } from '@expo/vector-icons';
+import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import { AboutI } from '../../interfaces/interfaces';
-import CustomScrollView from '../CustomScrollView/CustomScrollView';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
 const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft }: any): ReactElement => {
@@ -54,14 +53,6 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
     const blur = AppState.addEventListener('blur', () => updateShowModal(false))
     return () => blur.remove()
   }, []);
-
-  //const scrollRef = useRef<ScrollView>(null);
-  //useEffect(() => setViewId(findNodeHandle(scrollRef.current)), [])
-
-  console.log("ins.left", ins.left)
-  console.log("ins.top", ins.top)
-  console.log("ins.right", ins.right)
-  console.log("ins.bottom", ins.bottom)
 
   return (
     <View style={s.background}>
@@ -116,33 +107,18 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
         end={[ 1, topByHeight * -1 ]}
       />
 
-      <CustomScrollView
-        //horizontal={false}
-        //scrollEnabled={true}
-        //scrollRef={scrollRef}
-        scrollbarPadding={{
-          left: -50,
-          top: 50,
-          right: 50,
-          bottom: 0,
-          //left: -50,
-        }}
+      <ScrollView
+        horizontal={false}
+        scrollEnabled={true}
         style={[ s.scrollView, {
           
-          //overflow: 'visible',          
+          //overflow: 'visible',
+          marginTop: ins.top * 1,
           //marginBottom: ins.bottom * 1,
-          //marginTop: ins.top * 1, // THIS
-          //marginBottom: (state === 'tabletop' && aboutUp) ? 0 : ins.bottom, // DONE // THIS
+          marginBottom: (state === 'tabletop' && aboutUp) ? 0 : ins.bottom, // DONE
         } ]}
         //contentContainerStyle={s.scrollViewInner}
-        //contentContainerStyle={[ s.scrollViewInner, { width: parsedWidth /* marginRight: 100, marginLeft: 100 */ } ]} // THIS
-        contentContainerStyle={{
-          paddingLeft: 0,
-          paddingTop: 150,
-          paddingRight: 50,
-          paddingBottom: 0,
-        }}
-        //contentContainerStyle={[ s.scrollViewInner, { width: 400 /* marginRight: 100, marginLeft: 100 */ } ]} // CURRENT
+        contentContainerStyle={[ s.scrollViewInner, { width: parsedWidth /* marginRight: 100, marginLeft: 100 */ } ]}
         persistentScrollbar={true}
         //indicatorStyle={'black'}
       >
@@ -204,7 +180,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
         }
         <View /* SPACE */ style={{ /* marginBottom: (state === 'tabletop' && aboutUp) ? ins.top : ins.bottom + ins.top */ }} />
         <View /* SPACE */ style={{ marginBottom: ins.top }} />
-      </CustomScrollView>
+      </ScrollView>
     </View>
   );
 }

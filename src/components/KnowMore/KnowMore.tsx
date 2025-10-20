@@ -12,7 +12,7 @@ import { Text } from '../../utils/Text';
 import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
-import CustomScrollView from './CustomScrollView';
+import CustomScrollView from '../CustomScrollView/CustomScrollView';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -243,18 +243,26 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) => scrollHandler(e.nativeEvent.contentOffset.y)}
         persistentScrollbar={true}
         scrollbarPadding={{
-          left: ins.left * 1,
-          top: ins.top * 1,
-          right: ins.right * 1,
-          bottom: ins.bottom * 1,
+          //left: ins.left * 1,
+          //left: -24,
+          //left: 40,
+          //top: ins.top * 1,
+          top: 24,
+          //right: ins.right * 1,
+          //right: 40,
+          bottom: 48,
+          //bottom: ins.bottom * 1,
         }}
         contentContainerStyle={{
-          paddingLeft: ins.left,
-          paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
-          paddingRight: ins.right,
-          paddingBottom: ins.bottom,
+          //paddingLeft: ins.left,
+          //paddingLeft: 24,
+          paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top, // THIS
+          //paddingRight: ins.right,
+          //paddingRight: 0,
+          paddingBottom: ins.bottom, // THIS
         }}
         style={[ s.customScrollView, {
+          paddingRight: 24,
           //paddingLeft: ins.left, // THIS
           //paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top, // THIS
           //paddingRight: ins.right, // THIS

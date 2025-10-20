@@ -53,6 +53,8 @@ import com.facebook.react.bridge.ReadableMap
 //import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.bridge.UiThreadUtil
 
+import android.graphics.drawable.InsetDrawable
+
 class CustomScrollViewManager : ReactScrollViewManager() {
 
   override fun getName() = "CustomScrollView"
@@ -61,6 +63,10 @@ class CustomScrollViewManager : ReactScrollViewManager() {
 
   override fun createViewInstance(reactContext: ThemedReactContext): ReactScrollView {
     val view = ReactScrollView(reactContext)
+    //view.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY) // **
+    //view.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
+    //view.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
+    //view.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
     view.setClipToPadding(false)
     return view
   }
@@ -85,8 +91,32 @@ class CustomScrollViewManager : ReactScrollViewManager() {
 
   @ReactProp(name = "scrollbarPadding")
   fun setDrawableScrollbar(view: ReactScrollView, map: ReadableMap) {
-    val thumbDrawable = ShapeDrawable(RectShape()).apply { paint.color = Color.parseColor("#000000") }
-    val layerDrawable = LayerDrawable(arrayOf(thumbDrawable))
+    //val thumbDrawable = ShapeDrawable(RectShape()).apply { paint.color = Color.parseColor("#000000") }
+    //val layerDrawable = LayerDrawable(arrayOf(thumbDrawable))
+    // if (map.hasKey("left")) layerDrawable.setLayerInsetLeft(0, dpToPx(map.getDouble("left")))
+    // if (map.hasKey("top")) layerDrawable.setLayerInsetTop(0, dpToPx(map.getDouble("top")))
+    // if (map.hasKey("right")) layerDrawable.setLayerInsetRight(0, dpToPx(map.getDouble("right")))
+    // if (map.hasKey("bottom")) layerDrawable.setLayerInsetBottom(0, dpToPx(map.getDouble("bottom")))
+    //layerDrawable.setLayerInsetLeft(0, 0)
+    // layerDrawable.setLayerInsetTop(0, 150)
+    // layerDrawable.setLayerInsetRight(0, -150)
+    // layerDrawable.setLayerInsetBottom(0, 150)
+    // val insetDrawable = InsetDrawable(
+    //     shapeDrawable,
+    //     0.0f, // left
+    //     0.0f, // top
+    //     0.0f, // right
+    //     0.0f // bottom
+    // )
+    //val layers = arrayOf<Drawable>(insetDrawable)
+    //val qq = LayerDrawable(layers)
+    //val layers = arrayOf<Drawable>(insetDrawable)
+    //val layerDrawable = resources.getDrawable(R.drawable.your_shape, null) as LayerDrawable
+    val layerDrawable = ContextCompat.getDrawable(view.context, R.drawable.thumb) as LayerDrawable
+    //val layerDrawable = view.context.resources.getDrawable(R.drawable.your_shape) as LayerDrawable
+    //val layerDrawable = ContextCompat.getDrawable(view.context, R.drawable.your_shape) as LayerDrawable
+    //Log.d("LOG", "REACT CONTEXT: " + view.context) // test
+    //layerDrawable.setLayerInset(0, 0, 100, 50, 0)
     if (map.hasKey("left")) layerDrawable.setLayerInsetLeft(0, dpToPx(map.getDouble("left")))
     if (map.hasKey("top")) layerDrawable.setLayerInsetTop(0, dpToPx(map.getDouble("top")))
     if (map.hasKey("right")) layerDrawable.setLayerInsetRight(0, dpToPx(map.getDouble("right")))

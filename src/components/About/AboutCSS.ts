@@ -19,14 +19,15 @@ export const s = StyleSheet.create({
   },
   scrollView: {
     //backgroundColor: 'red', // DEV
-    width: '100%'
+    width: '100%', // THIS
+    height: '100%', // NEW
   },
   scrollViewInner: {
     //backgroundColor: 'red', // DEV
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
+    flexGrow: 1, //THIS
+    justifyContent: 'center', //THIS
+    alignItems: 'center', //THIS
+    alignSelf: 'center', //THIS
     //width: 400
   },
   title: {
