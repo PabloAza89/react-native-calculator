@@ -28,7 +28,7 @@
     "expo": "^50.0.0",
     "expo-font": "~11.10.3",
     "expo-linear-gradient": "~12.7.2",
-    "react": "18.2.0",
+    "react": "^18.2.0",
     "react-native": "^0.73.6",
     "react-native-bootsplash": "^5.5.3",
     "react-native-fast-image": "^8.6.3",

@@ -13,6 +13,7 @@ import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 import CustomScrollView from '../CustomScrollView/CustomScrollView';
+import CustomScrollViewB from '../CustomScrollViewB/CustomScrollViewB';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -33,7 +34,17 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   //const goUp = () => scrollRef.current?.scrollTo({ y: 0, animated: true });
 
-  const goUp = () => UIManager.dispatchViewManagerCommand(viewId, 0)
+  //const goUp = () => UIManager.dispatchViewManagerCommand(viewId, 0)
+
+  const goUp = () => {
+    console.log("CLICKED")
+    UIManager.dispatchViewManagerCommand(viewId, 0, [])
+    //console.log("scrollRef.current", scrollRef.current)
+    //scrollRef.current?.scrollToEnd({x: 0, y: 0, animated: true});
+    //scrollRef.current?.scrollToEnd({animated: true});
+    //scrollRef.current?.scrollTo({x: 0, y: 0, animated: true});
+    //scrollRef.current?.scrollTo({y: 0, animated: true});
+  }
 
   let lazyLoad = [
     <View key={0} style={s.eachItem}>
@@ -192,6 +203,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   useEffect(() => setViewId(findNodeHandle(scrollRef.current)), [])
 
   const scrollHandler = (val: number) => {
+    console.log("SCROLLING")
     val > 100 ? setShowButton(true) : setShowButton(false);
     val < 0 && UIManager.dispatchViewManagerCommand(viewId, 0);
   }
@@ -212,7 +224,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   console.log("ins.bottom", ins.bottom)
 
   return (// testing paddingBottom: ins.bottom
-    <View style={[s.mainContainer, { /* paddingBottom: ins.bottom, */ /*  overflow: 'visible' */ }]}>
+    <View style={[s.mainContainer, { flex: 1, /* paddingBottom: ins.bottom, */ /*  overflow: 'visible' */ }]}>
 
       {
         !(state === 'tabletop' && aboutUp) &&
@@ -238,31 +250,35 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         end={[ 1, 0 ]}   // [ XfromLeft, YfromTop ]
       />
 
-      <CustomScrollView
-        scrollRef={scrollRef}
+      <CustomScrollViewB
+        //scrollRef={scrollRef}
+        ref={scrollRef}
         onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) => scrollHandler(e.nativeEvent.contentOffset.y)}
         persistentScrollbar={true}
         scrollbarPadding={{
           //left: ins.left * 1,
           //left: -24,
           //left: 40,
-          //top: ins.top * 1,
-          top: 24,
-          //right: ins.right * 1,
+          left: 0,
+          top: ins.top,
+          //top: 64,
+          right: ins.right,
+          //right: 60,
           //right: 40,
-          bottom: 48,
-          //bottom: ins.bottom * 1,
+          //bottom: 48,
+          bottom: ins.bottom,
         }}
         contentContainerStyle={{
-          //paddingLeft: ins.left,
+          paddingLeft: ins.left,
           //paddingLeft: 24,
-          paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top, // THIS
-          //paddingRight: ins.right,
+          paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top * 1, // THIS
+          paddingRight: ins.right,
+          //paddingRight: 12,
           //paddingRight: 0,
           paddingBottom: ins.bottom, // THIS
         }}
         style={[ s.customScrollView, {
-          paddingRight: 24,
+          //paddingRight: 24,
           //paddingLeft: ins.left, // THIS
           //paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top, // THIS
           //paddingRight: ins.right, // THIS
@@ -287,8 +303,14 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           // height: '100%',
         }]}
 
-        children={
-          <View collapsable={false} style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
+        // children={
+          
+        // }
+      >
+        <View
+          collapsable={false}
+          
+        /* collapsable={false} */ style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
 
             <View style={[ s.buttonContainer, { marginTop: 7, /* paddingBottom: 200 */ } ]}>
 
@@ -347,8 +369,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3" /> }
 
           </View>
-        }
-      />
+      </CustomScrollViewB>
 
       {
         showButton &&

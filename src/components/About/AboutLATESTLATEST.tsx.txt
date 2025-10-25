@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useRef } from 'react';
-import { View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView, AppState, findNodeHandle, StyleSheet, UIManager, Button, requireNativeComponent } from 'react-native';
+import { View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView, AppState, findNodeHandle, StyleSheet } from 'react-native';
 import { Text } from '../../utils/Text';
 import { s } from './AboutCSS';
 import { Ionicons, AntDesign, MaterialCommunityIcons, createIconSetFromFontello } from '@expo/vector-icons';
@@ -7,7 +7,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import { AboutI } from '../../interfaces/interfaces';
 import CustomScrollView from '../CustomScrollView/CustomScrollView';
-import CustomScrollViewB from '../CustomScrollViewB/CustomScrollViewB';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
 const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft }: any): ReactElement => {
@@ -65,56 +64,44 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   // console.log("ins.bottom", ins.bottom)
 
 // const overflowingContent = (
+        
 //     );
-
-  //const NativeScrollView = requireNativeComponent('CustomScrollViewManager');
-  //const NativeScrollView = requireNativeComponent('aRCTScrollVieww');
-
-  const scrollViewRef = useRef(null);
-
-  //const COMMAND_SCROLL_TO_TOP = 'scrollToTop'; // Must match the string key in getCommandsMap()
-  const COMMAND_SCROLL_TO_TOP = 'scrollToEnd'; // Must match the string key in getCommandsMap()
-  
-
-  const CustomScrollViewManagerName = 'CustomScrollViewManager';
-
-  const handleScrollFromNative = () => {
-    // 1. Get the React Native node handle (native tag)
-    const reactTag = findNodeHandle(scrollViewRef.current);
-    //const reactTag = scrollViewRef.current.getNativeTag(); 
-    //console.log("scrollViewRef.current", scrollViewRef.current.getNativeScrollRef())
-    console.log("CLICKEDDDDDDDDDDD")
-      if (reactTag) {
-          console.log("REACT TAG", reactTag)
-          // 2. Dispatch the command to the native ViewManager
-          // Args: (viewTag, commandName, commandArgs)
-          UIManager.dispatchViewManagerCommand(
-              reactTag,
-              //COMMAND_SCROLL_TO_TOP,
-              'scrollToEnd',
-              [], // No additional arguments needed for scroll to top
-          );
-      }
-  };
 
     return (
         <View style={{
           flex: 1,
           backgroundColor: '#f0f0f0',
-          // justifyContent: 'center',ds
+          // justifyContent: 'center',
           // alignContent: 'center',
           //justifyContent: 'center',
         }}>
           
-            <Button 
-              title="Scroll from Kotlin" 
-              onPress={handleScrollFromNative} 
-            />
+          <ScrollView
+                  style={{
+                    //display: 'none',
+                    //pointerEvents: 'box-none',
+                    //backfaceVisibility: 'hidden',
+                    //backgroundColor: 'transparent'
+                  }}
+                  //persistentScrollbar={true}
+                  nestedScrollEnabled={true}
+                  //removeClippedSubviews={false}
+                  //scrollEnabled={false}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{
+                          //flex: 1,
+                          // justifyContent: 'center',
+                          // alignItems: 'center', 
 
-            <CustomScrollViewB
-              //ref={scrollViewRef} // ONE
-              //scrollRef={scrollViewRef} // ONE
-              ref={scrollViewRef} // ONE
+                          flexGrow: 1,
+                          alignItems: 'center',
+                          paddingVertical: 10, // Add a bit of scroll padding
+                          //backgroundColor: 'red',
+                          // justifyContent: 'center',
+                          // alignContent: 'center',
+                      }}
+          >
+            <CustomScrollView
               persistentScrollbar={true}
               //nestedScrollEnabled={true}
               // removeClippedSubviews={false}
@@ -143,19 +130,17 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
                   // justifyContent: 'center',
                   // alignContent: 'center',
                   //justifyContent: 'center',
-                  backgroundColor: 'red',
                 }}
                 contentContainerStyle={{
                     // flexGrow: 1,
                     // justifyContent: 'center',
                     // alignItems: 'center', 
 
-                    flexGrow: 1,
-                    alignItems: 'center',
-                    paddingVertical: 10, // Add a bit of scroll padding
+                    // flexGrow: 1,
+                    // alignItems: 'center',
+                    // paddingVertical: 10, // Add a bit of scroll padding
                     
-                    //backgroundColor: 'beige',
-                    //backgroundColor: 'red',
+                    backgroundColor: 'red',
                     // justifyContent: 'center',
                     // alignContent: 'center',
                 }}
@@ -171,7 +156,6 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
                 // }}
                 // children={
                 // }
-                //persistentScrollbar={true}
             >
               
                 <View  collapsable={false}
@@ -201,8 +185,9 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
                   <Text style={styles.text}>--- End of Content ---</Text>
                 </View>
              
-            </CustomScrollViewB>
-
+            </CustomScrollView>
+          </ScrollView>
+          
         </View>
     );
 }

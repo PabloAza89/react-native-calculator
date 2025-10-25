@@ -210,14 +210,16 @@ const App = (): ReactElement => {
     typeof resInput === "string" && setInput(resInput)
     typeof resSecInput === "string" && setSecInput(resSecInput)
 
-    await Font.loadAsync({
-      ...AntDesign.font,
-      ...Entypo.font,
-      ...FontAwesome5.font,
-      ...Ionicons.font,
-      ...MaterialIcons.font,
-      ...SimpleLineIcons.font
-    })
+    try {
+      await Font.loadAsync({
+        ...AntDesign.font,
+        ...Entypo.font,
+        ...FontAwesome5.font,
+        ...Ionicons.font,
+        ...MaterialIcons.font,
+        ...SimpleLineIcons.font
+      })
+    } catch (error) { console.log(error) }
 
     async function navigationBarToGestureOrViceVersa() {
       //console.log("22222222222222222222222222")

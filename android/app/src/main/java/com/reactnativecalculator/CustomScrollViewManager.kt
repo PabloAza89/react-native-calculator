@@ -55,13 +55,53 @@ import com.facebook.react.bridge.UiThreadUtil
 
 import android.graphics.drawable.InsetDrawable
 
+//import com.reactnativecalculator.MyCustomScrollView
+
+import com.facebook.react.uimanager.PixelUtil
+import com.facebook.react.uimanager.SimpleViewManager
+import android.widget.LinearLayout 
+import com.facebook.react.module.annotations.ReactModule
+import com.facebook.react.uimanager.ViewGroupManager
+
+import com.facebook.react.uimanager.ReactStylesDiffMap
+import com.facebook.react.uimanager.StateWrapper
+//import com.facebook.react.internal.featureflags.ReactNativeFeatureFlags
+
 class CustomScrollViewManager : ReactScrollViewManager() {
+//class CustomScrollViewManager : SimpleViewManager<MyCustomScrollView>() {
+//@ReactModule(name = CustomScrollViewManager.REACT_CLASS)
+//class CustomScrollViewManager : SimpleViewManager<MyCustomScrollView>() {
+//class CustomScrollViewManager : ViewGroupManager<MyCustomScrollView>() {
+//class CustomScrollViewManager : ReactScrollViewManager() {
 
   override fun getName() = "CustomScrollView"
 
+  // override fun prepareToRecycleView(
+  //     reactContext: ThemedReactContext,
+  //     view: ReactScrollView,
+  // ): ReactScrollView? {
+  //   // BaseViewManager
+  //   val preparedView = super.prepareToRecycleView(reactContext, view)
+  //   if (preparedView != null) {
+  //     //preparedView.recycleView()
+  //   }
+  //   return preparedView
+  // }
+
+  // companion object {
+  //       // Must match the name used in JavaScript's requireNativeComponent
+  //       const val REACT_CLASS = "CustomScrollView"
+  //   }
+
+  //   override fun getName(): String = REACT_CLASS
+
   fun dpToPx(dp: Double): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), Resources.getSystem().displayMetrics).toInt()
 
+  // override fun createViewInstance(reactContext: ThemedReactContext): ReactScrollView {
+  //   val view = ReactScrollView(reactContext)
+  //override fun createViewInstance(reactContext: ThemedReactContext): MyCustomScrollView {
   override fun createViewInstance(reactContext: ThemedReactContext): ReactScrollView {
+    //val view = MyCustomScrollView(reactContext)
     val view = ReactScrollView(reactContext)
     //view.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY) // **
     //view.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
@@ -72,6 +112,7 @@ class CustomScrollViewManager : ReactScrollViewManager() {
   }
 
   override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) = view.smoothScrollTo(0, 0)
+  //override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) = view.smoothScrollTo(0, 0)
 
   fun setReflectionScrollbarThumbDrawable(view: View, drawable: Drawable) {
     try {
@@ -117,13 +158,33 @@ class CustomScrollViewManager : ReactScrollViewManager() {
     //val layerDrawable = ContextCompat.getDrawable(view.context, R.drawable.your_shape) as LayerDrawable
     //Log.d("LOG", "REACT CONTEXT: " + view.context) // test
     //layerDrawable.setLayerInset(0, 0, 100, 50, 0)
-    if (map.hasKey("left")) layerDrawable.setLayerInsetLeft(0, dpToPx(map.getDouble("left")))
-    if (map.hasKey("top")) layerDrawable.setLayerInsetTop(0, dpToPx(map.getDouble("top")))
-    if (map.hasKey("right")) layerDrawable.setLayerInsetRight(0, dpToPx(map.getDouble("right")))
-    if (map.hasKey("bottom")) layerDrawable.setLayerInsetBottom(0, dpToPx(map.getDouble("bottom")))
+    // if (map.hasKey("left")) layerDrawable.setLayerInsetLeft(0, dpToPx(map.getDouble("left")))
+    // if (map.hasKey("top")) layerDrawable.setLayerInsetTop(0, dpToPx(map.getDouble("top")))
+    // if (map.hasKey("right")) layerDrawable.setLayerInsetRight(0, dpToPx(map.getDouble("right")))
+    // if (map.hasKey("bottom")) layerDrawable.setLayerInsetBottom(0, dpToPx(map.getDouble("bottom")))
+    layerDrawable.setLayerInset(0, dpToPx(map.getDouble("left")), dpToPx(map.getDouble("top")), dpToPx(map.getDouble("right")), dpToPx(map.getDouble("bottom")))
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { view.setVerticalScrollbarThumbDrawable(layerDrawable) } // 10 = setVerticalScrollbarThumbDrawable OK
     else { setReflectionScrollbarThumbDrawable(view, layerDrawable) } // reflection
     view.scrollBy(0, 1) // RE-RENDER HELPER
     view.scrollBy(0, -1) // RE-RENDER HELPER
   }
+
+  // override fun getContentView(): View? {
+  //     return mContent // mContent is the internal View field
+  // }
+  // override fun updateState(
+  //     view: ReactScrollView,
+  //     props: ReactStylesDiffMap,
+  //     stateWrapper: StateWrapper,
+  // ): Any? {
+  //   view.setStateWrapper(stateWrapper)
+  //   // if (
+  //   //     ReactNativeFeatureFlags.enableViewCulling() ||
+  //   //         ReactNativeFeatureFlags.useTraitHiddenOnAndroid()
+  //   // ) {
+  //   //   ReactScrollViewHelper.loadFabricScrollState(view, stateWrapper)
+  //   // }
+  //   return null
+  // }
+
 }

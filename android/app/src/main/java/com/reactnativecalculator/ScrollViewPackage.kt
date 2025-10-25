@@ -9,13 +9,13 @@ import com.facebook.react.uimanager.ViewManager
 
 import android.widget.FrameLayout
 
-class CustomScrollViewPackage : ReactPackage {
+class ScrollViewPackage : ReactPackage {
   override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> = emptyList()
 
   //override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> = listOf(CustomScrollViewManager())
   override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-    return listOf<ViewManager<*, *>>(
-        CustomScrollViewManager() 
-    )
-}
+    return listOf(
+            ScrollViewManagerModule(reactContext)
+        )
+  }
 }

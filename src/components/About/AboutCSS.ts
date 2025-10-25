@@ -17,17 +17,33 @@ export const s = StyleSheet.create({
     height: '100%',
     width: '100%'
   },
-  scrollView: {
+  customScrollView: {
     //backgroundColor: 'red', // DEV
     width: '100%', // THIS
-    height: '100%', // NEW
+    height: '100%', // THIS
+    //flexGrow: 1,
+    //height: '100%',
+    //flex: 1,
+    //height: '100%', // NEW
+    backgroundColor: 'red',
+    
   },
   scrollViewInner: {
+    //flex: 1,
+    //display: 'flex',
+    //flexDirection: 'column',
     //backgroundColor: 'red', // DEV
-    flexGrow: 1, //THIS
-    justifyContent: 'center', //THIS
-    alignItems: 'center', //THIS
-    alignSelf: 'center', //THIS
+    //flexGrow: 1, //THIS
+    //height: '100%',
+    //width: '100%', //THIS
+    //justifyContent: 'center', //THIS
+    //alignContent: 'center', //no
+    // alignContent: 'space-around', //no
+    //alignContent: 'space-between', //no
+    //alignSelf: 'center', //no
+    //justifyContent: 'center',
+    //alignItems: 'center', //THIS
+    //alignSelf: 'center', // ???
     //width: 400
   },
   title: {
@@ -39,9 +55,12 @@ export const s = StyleSheet.create({
     color: 'rgba(0, 0, 0, .54)'
   },
   imageWrapper: {
+    display: 'flex',
+    position: 'relative',
     //backgroundColor: 'lightcoral', // DEV
-    marginTop: 20,
-    marginBottom: 25
+    //marginTop: 20, // THIS
+    //paddingTop: 20,
+    //marginBottom: 25, // THIS
   },
   iconStyle: {
     position: 'absolute'

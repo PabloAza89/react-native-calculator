@@ -1,0 +1,301 @@
+import { ReactElement, useEffect, useRef } from 'react';
+import { View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView, AppState, findNodeHandle } from 'react-native';
+import { Text } from '../../utils/Text';
+import { s } from './AboutCSS';
+import { Ionicons, AntDesign, MaterialCommunityIcons, createIconSetFromFontello } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import FastImage from 'react-native-fast-image';
+import { AboutI } from '../../interfaces/interfaces';
+import CustomScrollView from '../CustomScrollView/CustomScrollView';
+
+//function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
+const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft }: any): ReactElement => {
+
+  const { navigate } = navigation
+
+  useEffect(() => {
+    (navigation.getState().routes.at(-1).name === 'About' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'About' })
+  }, [state])
+
+  const fadeAnim = useAnimatedValue(0);
+
+  const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
+  const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
+
+  useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
+
+  console.log("TEST ABOUT")
+
+  const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
+  const maxInsetLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
+  const parsedWidth =
+    state === 'book' && calcLeft ? width - hingeBounds.right - ins.right - maxInsetLeftOrRight :
+    state === 'book' && !calcLeft ? hingeBounds.left - ins.left - maxInsetLeftOrRight :
+    width - maxInsetLeftOrRight
+
+
+  const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
+  const topByHeight = ins.top / parsedHeight
+
+  useEffect(() => { // ON LEAVE COMPONENT
+    return () => updateShowModal(false)
+  }, [])
+
+  // API: Home:      Overview:                        StatusBar:
+  // 36   background active                           active
+  // 34   background active                           active
+  // 31   background active                           active
+  // 30   background background                       active
+  // 29   background background                       active
+  // 28   background background                       active
+  // 26   background background                       active
+  // 23   active     background (1st) / active (next) active
+  useEffect(() => { // ON APP BLUR
+    const blur = AppState.addEventListener('blur', () => updateShowModal(false))
+    return () => blur.remove()
+  }, []);
+
+  //const scrollRef = useRef<ScrollView>(null);
+  //useEffect(() => setViewId(findNodeHandle(scrollRef.current)), [])
+
+  // console.log("ins.left", ins.left)
+  // console.log("ins.top", ins.top)
+  // console.log("ins.right", ins.right)
+  // console.log("ins.bottom", ins.bottom)
+
+  return (
+    <View style={s.background}>
+      <Animated.View
+        style={[ s.backgroundModal, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+        children={
+          <Pressable
+            style={[ s.backgroundModalButton,  { /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
+            onPress={() => updateShowModal(false)}
+            children={
+              <View style={s.modal}>
+                <Text
+                  numberOfLines={3}
+                  //adjustsFontSizeToFit={true}
+                  style={s.upperModal}
+                  children={'You are about to leave this App\nand access an external link\nDo you want to continue ?'}
+                />
+                <View style={s.lowerModal}>
+                  <Ionicons.Button
+                    name='close-circle'
+                    size={25}
+                    color='rgba(0, 0, 0, .7)'
+                    onPress={() => updateShowModal(false)}
+                    children={ <Text style={s.buttonModal} children={'CANCEL'} /> }
+                  />
+                  <View style={s.space10} />
+                  <Ionicons.Button
+                    name='checkmark-circle'
+                    size={25}
+                    color='rgba(0, 0, 0, .7)'
+                    onPress={() => { Linking.openURL('https://www.linkedin.com/in/juan-pablo-azambuyo'); updateShowModal(false) }}
+                    children={ <Text style={s.buttonModal} children={'CONTINUE'} /> }
+                  />
+                </View>
+              </View>
+            }
+          />
+        }
+      />
+
+      <LinearGradient // STATUS BAR
+        colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
+        style={[ { height: ins.top, /* zIndex: (state === 'tabletop' && aboutUp) ? 4 : 0, */ position: 'absolute', width: '100%', top: ins.top *0 , opacity: 0.7 } ]}
+        start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
+        end={[ 1, 0 ]}
+      />
+
+      <LinearGradient  // BACKGROUND
+        colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
+        style={[ {  height: '100%', position: 'absolute', width: '100%', top: ins.top *1 , opacity: 0.7 } ]}
+        start={[ 0, 1 - topByHeight ]}
+        end={[ 1, topByHeight * -1 ]}
+      />
+
+      <CustomScrollView
+        //horizontal={false}
+        //scrollEnabled={true}
+        //scrollRef={scrollRef}
+        persistentScrollbar={true}
+        scrollbarPadding={{
+          // left: 0,
+          // top: 0,
+          // right: 0,
+          // bottom: 0,
+          //left: ins.left,
+          top: ins.top,
+          right: ins.right,
+          //bottom: ins.bottom,
+          bottom: (state === 'tabletop' && aboutUp) ? 0 : ins.bottom,
+          //left: -50,
+        }}
+        
+        //contentContainerStyle={s.scrollViewInner}
+        //contentContainerStyle={[ s.scrollViewInner, { width: parsedWidth /* marginRight: 100, marginLeft: 100 */ } ]} // THIS
+        contentContainerStyle={[ /* s.scrollViewInner, */ { 
+          //width: parsedWidth,
+          //width: '100%',
+           paddingLeft: ins.left,
+           //paddingLeft: 80,
+           //paddingTop: ins.top,
+           paddingRight: ins.right,
+           //paddingTop: 50,
+           //paddingBottom: 50,
+           //paddingBottom: 50,
+            //paddingTop: 50,
+            // paddingBottom: 50,
+            // marginTop: 50,
+            // marginBottom: 50,
+           //paddingBottom: (state === 'tabletop' && aboutUp) ? 0 : ins.bottom,
+           flexGrow: 1,
+           //justifyContent: 'center',
+           //marginVertical: 'auto',
+           alignItems: 'center',
+           
+         } ]} // THIS
+        style={[ /* s.customScrollView, */ {
+          //marginVertical: 'auto',
+          //alignItems: 'center',
+          //width: '100%',
+          //overflow: 'visible',
+          //marginBottom: ins.bottom * 1,
+          //marginTop: ins.top * 1, // THIS
+          //  marginTop: 28,
+          //  marginBottom: 28,
+          //paddingTop: 50,
+            // paddingBottom: 50,
+          //marginBottom: (state === 'tabletop' && aboutUp) ? 0 : ins.bottom, // DONE // THIS
+          //flex: 1,
+          
+        } ]}
+        
+        // contentContainerStyle={{
+        //   paddingLeft: 0,
+        //   paddingTop: 0,
+        //   paddingRight: 0,
+        //   paddingBottom: 0,
+        // }}
+        
+        //contentContainerStyle={[ s.scrollViewInner, { width: 400 /* marginRight: 100, marginLeft: 100 */ } ]} // CURRENT
+        //indicatorStyle={'black'}
+      >
+        <View
+          style={{
+            //marginVertical: 'auto',
+            marginTop: 'auto',
+            marginBottom: 'auto', 
+            //alignItems: 'center',
+            //flex: 1,
+            //flex: 1,
+            //flexGrow: 1,
+            //height: '100%',
+            //width: '100%',
+            //flex: 1,
+            //minHeight: '100%',
+            //padding: 20,
+            //width: '80%',
+            backgroundColor: 'yellow',
+            //alignItems: 'center',
+            //paddingTop: 50,
+            //paddingBottom: 50,
+            //alignSelf: 'center',
+            //alignItems: 'center',
+            //justifyContent: 'center', // PROBLEM
+            //justifyContent: 'space-around', // 
+            //justifyContent: 'space-between', //
+            //justifyContent: 'space-evenly', //
+            //alignContent: 'center'
+            //justifyContent: 'center',
+          }}
+        >
+          <Text
+            style={s.title}
+            children={'This App is developed by\nJuan Pablo Azambuyo'}
+          />
+          <View style={s.imageWrapper}>
+            <FastImage
+              style={{ width: vmin * 30, height: vmin * 30, borderRadius: (vmin * 30) / 2 /* 50% */ }}
+              source={ require('../../images/profile.png') }
+              resizeMode={FastImage.resizeMode.contain}
+            />
+            <AntDesign
+              style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: (((parsedWidth / 2) - ((vmin * 30) / 2)) / -2) - 20 }}
+              name='linkedin-square'
+              size={40}
+              color='rgba(0, 0, 0, .7)'
+              onPress={() => updateShowModal(true)}
+            />
+          </View>
+
+          <Text>
+            AAAAAAAAAAAAAAAAAAAA1
+          </Text>
+          <Text>
+            AAAAAAAAAAAAAAAAAAAA2
+          </Text>
+          <Text>
+            AAAAAAAAAAAAAAAAAAAA3
+          </Text>
+          <Text>
+            AAAAAAAAAAAAAAAAAAAA4
+          </Text>
+          <Text>
+            AAAAAAAAAAAAAAAAAAAA5
+          </Text>
+          <Text>
+            AAAAAAAAAAAAAAAAAAAA6
+          </Text>
+          <Text>
+            AAAAAAAAAAAAAAAAAAAA7
+          </Text>
+          <Text>
+            AAAAAAAAAAAAAAAAAAAA8
+          </Text>
+
+          {
+            twoScreens ?
+            <MaterialCommunityIcons.Button
+              name={ state === 'tabletop' ? 'swap-vertical-bold' : 'swap-horizontal-bold' }
+              size={30}
+              color='rgba(0, 0, 0, .7)'
+              onPress={() => switchSide()}
+              children={ <Text style={s.textInButtonUpper} children={'SWITCH\nSCREENS'} /> }
+            /> :
+            <Ionicons.Button
+              name='chevron-back-circle-sharp'
+              size={30}
+              color='rgba(0, 0, 0, .7)'
+              onPress={() => navigate('Home')}
+              children={ <Text style={s.textInButtonUpper} children={'BACK'} /> }
+            />
+          }
+          <View style={s.space25} />
+          {
+            twoScreens ?
+            <Ionicons.Button
+              name={ state === 'tabletop' ? 'calculator-sharp' : 'alert-circle' }
+              size={30}
+              color='rgba(0, 0, 0, .7)'
+              onPress={() => nextScreen()}
+              children={ <Text style={s.textInButtonUpper} children={ state === 'tabletop' ? 'HOME' : 'HOW DOES IT WORK ?' } /> }
+            /> :
+            <Ionicons.Button
+              name='chevron-back-circle-sharp'
+              size={30}
+              color='rgba(0, 0, 0, .7)'
+              onPress={() => navigate('KnowMore')}
+              style={s.buttonAndIconLower}
+              children={ <Text style={s.textInButtonLower} children={'HOW DOES IT WORK ?'} /> }
+            />
+          }
+        </View>
+      </CustomScrollView>
+    </View>
+  );
+}
+
+export default About;

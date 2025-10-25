@@ -1,6 +1,7 @@
-import { requireNativeComponent, View } from 'react-native';
+import { forwardRef } from 'react';
+import { requireNativeComponent, View, ScrollView } from 'react-native';
 
-const CustomScrollView = requireNativeComponent('CustomScrollView')
+//const CustomScrollView = requireNativeComponent('CustomScrollView')
 
 // const CustomScrollViewComponent = (props: any) => {
 //   //console.log("props", props)
@@ -42,21 +43,27 @@ const CustomScrollView = requireNativeComponent('CustomScrollView')
     //    {props.children}
     //  </View>
 
-const CustomScrollViewComponent = (props: any) => {
-  return <CustomScrollView {...props} />
-  //   
-  //console.log("props", props)
-  //const { children, contentContainerStyle, style, scrollRef, scrollbarPadding, ...rest } = props;
-  // return (
-  //   <CustomScrollView {...props} 
-  //     //contentContainerStyle={props.contentContainerStyle}
-  //   >
-  //     {/* <View style={props.contentContainerStyle}> */}
-  //       {props.children}
-  //     {/* </View> */}
-  //   </CustomScrollView>
-  // )
-}
+// const CustomScrollViewB = (props: any) => {
+//   return <ScrollView {...props} /* persistentScrollbar={props.persistentScrollbar} */ /* style={props.style} */ ref={props.scrollRef} />
+//   //   
+//   //console.log("props", props)
+//   //const { children, contentContainerStyle, style, scrollRef, scrollbarPadding, ...rest } = props;
+//   // return (
+//   //   <CustomScrollView {...props} 
+//   //     //contentContainerStyle={props.contentContainerStyle}
+//   //   >
+//   //     {/* <View style={props.contentContainerStyle}> */}
+//   //       {props.children}
+//   //     {/* </View> */}
+//   //   </CustomScrollView>
+//   // )
+// }
+
+//const CustomScrollViewB = (props: any) => {
+const CustomScrollViewB = forwardRef((props: any, ref: any) => {
+  return <ScrollView ref={ref} {...props} />
+  //return <ScrollView {...props} ref={props.scrollRef} />
+})
 
 //export default CustomScrollView;
-export default CustomScrollViewComponent;
+export default CustomScrollViewB;

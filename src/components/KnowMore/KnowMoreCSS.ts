@@ -17,10 +17,6 @@ export const s = StyleSheet.create({
     width: '100%',
     overflow: 'visible',
   },
-  background: {
-    //backgroundColor: 'red', // DEV
-    alignItems: 'center',
-  },
   centerText: {
     //backgroundColor: 'blue', // DEV
     marginTop: 20,
@@ -136,6 +132,10 @@ export const s = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white'
+  },
+  background: {
+    //backgroundColor: 'red', // DEV
+    alignItems: 'center',
   },
   customScrollView: {
     zIndex: 3,
