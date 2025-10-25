@@ -251,67 +251,23 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       />
 
       <CustomScrollViewB
-        //scrollRef={scrollRef}
         ref={scrollRef}
         onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) => scrollHandler(e.nativeEvent.contentOffset.y)}
         persistentScrollbar={true}
         scrollbarPadding={{
-          //left: ins.left * 1,
-          //left: -24,
-          //left: 40,
-          left: 0,
           top: ins.top,
-          //top: 64,
           right: ins.right,
-          //right: 60,
-          //right: 40,
-          //bottom: 48,
           bottom: ins.bottom,
         }}
         contentContainerStyle={{
           paddingLeft: ins.left,
-          //paddingLeft: 24,
           paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top * 1, // THIS
           paddingRight: ins.right,
-          //paddingRight: 12,
-          //paddingRight: 0,
           paddingBottom: ins.bottom, // THIS
         }}
-        style={[ s.customScrollView, {
-          //paddingRight: 24,
-          //paddingLeft: ins.left, // THIS
-          //paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top, // THIS
-          //paddingRight: ins.right, // THIS
-          //paddingBottom: ins.bottom, // THIS
-          //top: 24,
-          //top: ins.top,
-          //paddingTop: ins.top*-1,
-          // paddingTop: ins.top,
-          
-          //paddingBottom: ins.bottom,
-          //marginBottom: ins.bottom,
-          
-          //marginBottom: 50,
-          
-          // testing overflow: 'visible',
-          //overflow: 'visible',
-          //marginBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom,
-          //marginTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top,
-          //marginTop: (state === 'tabletop' && aboutUp) ? ins.top : ins.top,
-          // paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0,
-          // width: '100%',
-          // height: '100%',
-        }]}
-
-        // children={
-          
-        // }
+        style={[ s.customScrollView, {}]}
       >
-        <View
-          collapsable={false}
-          
-        /* collapsable={false} */ style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
-
+        <View style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
             <View style={[ s.buttonContainer, { marginTop: 7, /* paddingBottom: 200 */ } ]}>
 
               {

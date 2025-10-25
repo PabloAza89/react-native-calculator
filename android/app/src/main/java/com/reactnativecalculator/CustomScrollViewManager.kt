@@ -1,118 +1,87 @@
+// Android/app/src/main/java/com/yourpackage/ScrollViewManagerModule.kt
+
 package com.reactnativecalculator
 
-import android.content.res.Resources
-import android.util.Log
-import android.util.TypedValue
-import android.view.View
-
-import androidx.core.view.updatePadding
-
-import com.facebook.react.bridge.ReadableArray
-//import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.uimanager.ThemedReactContext
-import com.facebook.react.uimanager.annotations.ReactPropGroup
-
-import com.facebook.react.views.scroll.ReactScrollViewManager
-import com.facebook.react.views.scroll.ReactScrollView
-
-
-
-//import android.view.ViewGroup
-
-
-import android.graphics.Color
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.shapes.RectShape
-import android.graphics.drawable.Drawable
-import com.facebook.react.uimanager.annotations.ReactProp
-
-import android.os.Build
-
-import com.reactnativecalculator.R
-
-import androidx.core.content.ContextCompat;
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-
-import android.graphics.drawable.GradientDrawable
-
-import android.view.ViewGroup
-import android.graphics.Rect
-
-import android.content.Context
-import android.view.ContextThemeWrapper
-//import android.widget.ScrollBarDrawable
-//import android.graphics.drawable.ScrollBarDrawable
-
-//import java.lang.reflect.Constructor;
-import java.lang.reflect.Method
-import java.lang.reflect.Field
-import com.facebook.react.bridge.ReadableMap
-
-//import com.facebook.react.bridge.UiThreadUtil
-import com.facebook.react.bridge.UiThreadUtil
-
-import android.graphics.drawable.InsetDrawable
-
-//import com.reactnativecalculator.MyCustomScrollView
-
-import com.facebook.react.uimanager.PixelUtil
-import com.facebook.react.uimanager.SimpleViewManager
-import android.widget.LinearLayout 
 import com.facebook.react.module.annotations.ReactModule
+import com.facebook.react.uimanager.SimpleViewManager
+import com.facebook.react.uimanager.ThemedReactContext
+import com.facebook.react.views.scroll.ReactScrollView
+import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.ViewGroupManager
 
-import com.facebook.react.uimanager.ReactStylesDiffMap
-import com.facebook.react.uimanager.StateWrapper
-//import com.facebook.react.internal.featureflags.ReactNativeFeatureFlags
+import android.util.Log
+import android.view.View
+import java.lang.reflect.Field
+import java.lang.reflect.Method
+import android.graphics.drawable.Drawable
+import com.facebook.react.bridge.ReadableMap
+//import com.facebook.react.views.scroll.ReactScrollView
+import androidx.core.content.ContextCompat
+import android.os.Build
+import android.graphics.drawable.LayerDrawable
+import android.util.TypedValue
+import android.content.res.Resources
+import com.facebook.react.bridge.ReadableArray
 
-class CustomScrollViewManager : ReactScrollViewManager() {
-//class CustomScrollViewManager : SimpleViewManager<MyCustomScrollView>() {
-//@ReactModule(name = CustomScrollViewManager.REACT_CLASS)
-//class CustomScrollViewManager : SimpleViewManager<MyCustomScrollView>() {
-//class CustomScrollViewManager : ViewGroupManager<MyCustomScrollView>() {
-//class CustomScrollViewManager : ReactScrollViewManager() {
+//@ReactModule(name = ScrollViewManagerModule.NAME)
+//class ScrollViewManagerModule(reactContext: ReactApplicationContext) : 
+class CustomScrollViewManager(reactContext: ReactApplicationContext) : 
+    ViewGroupManager<ReactScrollView>() {
+    //SimpleViewManager<ReactScrollView>() {
+    
 
-  override fun getName() = "CustomScrollView"
+    // companion object {
+    //     //const val NAME = "CustomScrollViewManager" 
+    //     const val NAME = "RCTScrollView"
+    //     const val COMMAND_SCROLL_TO_TOP = 1 // Unique ID for your command
+    // }
 
-  // override fun prepareToRecycleView(
-  //     reactContext: ThemedReactContext,
-  //     view: ReactScrollView,
-  // ): ReactScrollView? {
-  //   // BaseViewManager
-  //   val preparedView = super.prepareToRecycleView(reactContext, view)
-  //   if (preparedView != null) {
-  //     //preparedView.recycleView()
-  //   }
-  //   return preparedView
-  // }
+    //override fun getName(): String = NAME
+    override fun getName(): String = "RCTScrollView"
 
-  // companion object {
-  //       // Must match the name used in JavaScript's requireNativeComponent
-  //       const val REACT_CLASS = "CustomScrollView"
-  //   }
+    fun dpToPx(dp: Double): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), Resources.getSystem().displayMetrics).toInt()
 
-  //   override fun getName(): String = REACT_CLASS
+    override fun createViewInstance(reactContext: ThemedReactContext): ReactScrollView {
+        // This is what the default React Native ScrollView uses
+        return ReactScrollView(reactContext)
+    }
 
-  fun dpToPx(dp: Double): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), Resources.getSystem().displayMetrics).toInt()
+    // // You can expose properties from JS to Kotlin if needed
+    // @ReactProp(name = "someCustomProp")
+    // fun setSomeCustomProp(view: ReactScrollView, value: Boolean) {
+    //     // example of setting a custom prop
+    // }
 
-  // override fun createViewInstance(reactContext: ThemedReactContext): ReactScrollView {
-  //   val view = ReactScrollView(reactContext)
-  //override fun createViewInstance(reactContext: ThemedReactContext): MyCustomScrollView {
-  override fun createViewInstance(reactContext: ThemedReactContext): ReactScrollView {
-    //val view = MyCustomScrollView(reactContext)
-    val view = ReactScrollView(reactContext)
-    //view.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY) // **
-    //view.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
-    //view.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY)
-    //view.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET)
-    view.setClipToPadding(false)
-    return view
-  }
+    // override fun getCommandsMap(): Map<String, Int> {
+    //     return mapOf(
+    //         "scrollToTop" to COMMAND_SCROLL_TO_TOP
+    //     )
+    // }
 
-  override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) = view.smoothScrollTo(0, 0)
-  //override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) = view.smoothScrollTo(0, 0)
+    override fun receiveCommand(view: ReactScrollView, commandId: Int, args: ReadableArray?) = view.smoothScrollTo(0, 0)
+
+    // override fun receiveCommand(
+    //     root: ReactScrollView,
+    //     commandId: String?,
+    //     args: com.facebook.react.bridge.ReadableArray?
+    // ) {
+    //     super.receiveCommand(root, commandId, args)
+        
+    //     // Convert the command ID string to Int for older RN versions
+    //     Log.d("LOG", "commandId 1: " + commandId)
+    //     //val commandIdInt = commandId?.toIntOrNull() ?: return 
+
+    //     Log.d("LOG", "commandId 2: " + commandId)
+
+    //     when (commandId?.toInt()) {
+    //         COMMAND_SCROLL_TO_TOP -> {
+    //             // The actual Kotlin method to control the ScrollView
+    //             root.smoothScrollTo(0, 0) 
+    //         }
+    //         // Add other commands here (e.g., scroll to offset, scroll to end)
+    //     }
+    // }
 
   fun setReflectionScrollbarThumbDrawable(view: View, drawable: Drawable) {
     try {
@@ -169,22 +138,14 @@ class CustomScrollViewManager : ReactScrollViewManager() {
     view.scrollBy(0, -1) // RE-RENDER HELPER
   }
 
-  // override fun getContentView(): View? {
-  //     return mContent // mContent is the internal View field
-  // }
-  // override fun updateState(
-  //     view: ReactScrollView,
-  //     props: ReactStylesDiffMap,
-  //     stateWrapper: StateWrapper,
-  // ): Any? {
-  //   view.setStateWrapper(stateWrapper)
-  //   // if (
-  //   //     ReactNativeFeatureFlags.enableViewCulling() ||
-  //   //         ReactNativeFeatureFlags.useTraitHiddenOnAndroid()
-  //   // ) {
-  //   //   ReactScrollViewHelper.loadFabricScrollState(view, stateWrapper)
-  //   // }
-  //   return null
-  // }
+  @ReactProp(name = "persistentScrollbar")
+  fun setPersistentScrollbar(view: ReactScrollView, value: Boolean) {
+    //view.isScrollbarFadingEnabled = !value
+    Log.d("LOG", "CURRENT VALUE " + !value)
+    view.setScrollbarFadingEnabled(!value)
+    view.scrollBy(0, 1) // RE-RENDER HELPER
+    view.scrollBy(0, -1) // RE-RENDER HELPER
+  }
+
 
 }

@@ -61,7 +61,18 @@ import { requireNativeComponent, View, ScrollView } from 'react-native';
 
 //const CustomScrollViewB = (props: any) => {
 const CustomScrollViewB = forwardRef((props: any, ref: any) => {
-  return <ScrollView ref={ref} {...props} />
+  return (
+    <ScrollView
+      {...props}
+      ref={ref}
+      scrollbarPadding={{
+        left: props.scrollbarPadding?.left | 0,
+        top: props.scrollbarPadding?.top | 0,
+        right: props.scrollbarPadding?.right | 0,
+        bottom: props.scrollbarPadding?.bottom | 0,
+      }}
+    />
+  )
   //return <ScrollView {...props} ref={props.scrollRef} />
 })
 

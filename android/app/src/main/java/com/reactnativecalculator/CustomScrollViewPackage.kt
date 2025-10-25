@@ -14,8 +14,8 @@ class CustomScrollViewPackage : ReactPackage {
 
   //override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> = listOf(CustomScrollViewManager())
   override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-    return listOf<ViewManager<*, *>>(
-        CustomScrollViewManager() 
-    )
-}
+    return listOf(
+            CustomScrollViewManager(reactContext)
+        )
+  }
 }
