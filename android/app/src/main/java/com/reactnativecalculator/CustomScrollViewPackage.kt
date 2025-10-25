@@ -12,10 +12,5 @@ import android.widget.FrameLayout
 class CustomScrollViewPackage : ReactPackage {
   override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> = emptyList()
 
-  //override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> = listOf(CustomScrollViewManager())
-  override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-    return listOf(
-            CustomScrollViewManager(reactContext)
-        )
-  }
+  override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> = listOf(CustomScrollViewManager(reactContext))
 }

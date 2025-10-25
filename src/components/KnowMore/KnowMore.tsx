@@ -13,7 +13,7 @@ import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 
 import CustomScrollView from '../CustomScrollView/CustomScrollView';
-import CustomScrollViewB from '../CustomScrollViewB/CustomScrollViewB';
+//import CustomScrollViewB from '../CustomScrollViewB/CustomScrollViewB';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -28,23 +28,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     (navigation.getState().routes.at(-1).name === 'KnowMore' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'KnowMore' })
   }, [state])
 
-  //let ins = useSafeAreaInsets(); // insets
-
-  //const scrollRef = useRef<ScrollView>(null);
-
-  //const goUp = () => scrollRef.current?.scrollTo({ y: 0, animated: true });
-
-  //const goUp = () => UIManager.dispatchViewManagerCommand(viewId, 0)
-
-  const goUp = () => {
-    console.log("CLICKED")
-    UIManager.dispatchViewManagerCommand(viewId, 0, [])
-    //console.log("scrollRef.current", scrollRef.current)
-    //scrollRef.current?.scrollToEnd({x: 0, y: 0, animated: true});
-    //scrollRef.current?.scrollToEnd({animated: true});
-    //scrollRef.current?.scrollTo({x: 0, y: 0, animated: true});
-    //scrollRef.current?.scrollTo({y: 0, animated: true});
-  }
+  const goUp = () => UIManager.dispatchViewManagerCommand(viewId, 0)
 
   let lazyLoad = [
     <View key={0} style={s.eachItem}>
@@ -250,7 +234,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         end={[ 1, 0 ]}   // [ XfromLeft, YfromTop ]
       />
 
-      <CustomScrollViewB
+      <CustomScrollView
         ref={scrollRef}
         onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) => scrollHandler(e.nativeEvent.contentOffset.y)}
         persistentScrollbar={true}
@@ -263,11 +247,11 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
           paddingLeft: ins.left,
           paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top * 1, // THIS
           paddingRight: ins.right,
-          paddingBottom: ins.bottom, // THIS
+          paddingBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom * 1, // THIS
         }}
         style={[ s.customScrollView, {}]}
       >
-        <View style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 /* paddingRight: ins.right */ } ]}>
+        <View style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ /* paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 */ /* paddingRight: ins.right */ } ]}>
             <View style={[ s.buttonContainer, { marginTop: 7, /* paddingBottom: 200 */ } ]}>
 
               {
@@ -325,7 +309,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             { loaded ? lazyLoad.map(e => e) : <ActivityIndicator size="large" color="#2196F3" /> }
 
           </View>
-      </CustomScrollViewB>
+      </CustomScrollView>
 
       {
         showButton &&

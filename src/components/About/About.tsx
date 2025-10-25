@@ -7,7 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import { AboutI } from '../../interfaces/interfaces';
 import CustomScrollView from '../CustomScrollView/CustomScrollView';
-import CustomScrollViewB from '../CustomScrollViewB/CustomScrollViewB';
+//import CustomScrollViewB from '../CustomScrollViewB/CustomScrollViewB';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
 const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft }: any): ReactElement => {
@@ -111,7 +111,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               onPress={handleScrollFromNative} 
             />
 
-            <CustomScrollViewB
+            <CustomScrollView
               //ref={scrollViewRef} // ONE
               //scrollRef={scrollViewRef} // ONE
               ref={scrollViewRef} // ONE
@@ -201,7 +201,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
                   <Text style={styles.text}>--- End of Content ---</Text>
                 </View>
              
-            </CustomScrollViewB>
+            </CustomScrollView>
 
         </View>
     );
