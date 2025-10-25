@@ -3,7 +3,6 @@ import {
   View, StatusBar, ScrollView, Pressable, InteractionManager, ActivityIndicator,
   NativeSyntheticEvent, NativeScrollEvent, Animated, useAnimatedValue,
   UIManager, findNodeHandle, Platform
-  //ReactScrollView
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -11,9 +10,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from '../../utils/Text';
 import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
-
 import CustomScrollView from '../CustomScrollView/CustomScrollView';
-//import CustomScrollViewB from '../CustomScrollViewB/CustomScrollViewB';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -21,8 +18,6 @@ const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins }: any): ReactElement => {
 
   const { navigate } = navigation;
-
-  //console.log("SBZ", sbz)
 
   useEffect(() => {
     (navigation.getState().routes.at(-1).name === 'KnowMore' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'KnowMore' })
@@ -109,12 +104,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     </View>,
     <View
       key={9}
-      style={[ s.eachItem, {
-        marginBottom: 10
-        //marginBottom: 100
-        //paddingBottom: 100
-        //marginBottom: (state === 'tabletop' && !aboutUp) ? 20 : ins.bottom + 20
-      } ]}
+      style={[ s.eachItem, { marginBottom: 10 } ]}
     >
       <MaterialIcons
         name='phonelink-erase'
@@ -154,7 +144,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
   const linearGradientColors = [ 'rgba(0, 0, 0, 0)', 'rgb(255, 255, 255)' ]
 
-  console.log(`Android:${Platform.Version} INS BOTTOM`, ins.bottom)
+  //console.log(`Android: ${Platform.Version}, ins.bottom: ${ins.bottom}`)
 
   const updateValues = (num: any) => {
     sC(curr => {
@@ -187,7 +177,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   useEffect(() => setViewId(findNodeHandle(scrollRef.current)), [])
 
   const scrollHandler = (val: number) => {
-    console.log("SCROLLING")
     val > 100 ? setShowButton(true) : setShowButton(false);
     val < 0 && UIManager.dispatchViewManagerCommand(viewId, 0);
   }
@@ -208,7 +197,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   console.log("ins.bottom", ins.bottom)
 
   return (// testing paddingBottom: ins.bottom
-    <View style={[s.mainContainer, { flex: 1, /* paddingBottom: ins.bottom, */ /*  overflow: 'visible' */ }]}>
+    <View style={[s.mainContainer, { flex: 1 }]}>
 
       {
         !(state === 'tabletop' && aboutUp) &&
@@ -239,20 +228,20 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) => scrollHandler(e.nativeEvent.contentOffset.y)}
         persistentScrollbar={true}
         scrollbarPadding={{
-          top: ins.top,
+          top: (state === 'tabletop' && aboutUp) ? 0 : ins.top * 1,
           right: ins.right,
-          bottom: ins.bottom,
+          bottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom * 1,
         }}
         contentContainerStyle={{
           paddingLeft: ins.left,
-          paddingTop: (state === 'tabletop' && aboutUp) ? 0 : ins.top * 1, // THIS
+          paddingTop: ins.top * 1,
           paddingRight: ins.right,
-          paddingBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom * 1, // THIS
+          paddingBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom * 1,
         }}
         style={[ s.customScrollView, {}]}
       >
-        <View style={[ s.background, { width: '100%', /* marginLeft: ins.left, */ /* paddingTop: (state === 'tabletop' && aboutUp) ? ins.top : 0 */ /* paddingRight: ins.right */ } ]}>
-            <View style={[ s.buttonContainer, { marginTop: 7, /* paddingBottom: 200 */ } ]}>
+        <View style={[ s.background, { width: '100%' } ]}>
+            <View style={[ s.buttonContainer, { marginTop: 7 } ]}>
 
               {
                 twoScreens ?
@@ -318,7 +307,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
             bottom: (state === 'tabletop' && !aboutUp) ? 7 : ins.bottom + 7,
             right: ins.right + 11 // 7+4(scrollBarWidth)
           } ]}
-          onPress={() => goUp()}
+          onPress={goUp}
           children={ <Text style={s.floatButtonText} children={'UP'} /> }
         />
       }

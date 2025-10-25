@@ -7,7 +7,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import { AboutI } from '../../interfaces/interfaces';
 import CustomScrollView from '../CustomScrollView/CustomScrollView';
-//import CustomScrollViewB from '../CustomScrollViewB/CustomScrollViewB';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
 const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft }: any): ReactElement => {
@@ -25,15 +24,12 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
-  console.log("TEST ABOUT")
-
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
   const maxInsetLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
   const parsedWidth =
     state === 'book' && calcLeft ? width - hingeBounds.right - ins.right - maxInsetLeftOrRight :
     state === 'book' && !calcLeft ? hingeBounds.left - ins.left - maxInsetLeftOrRight :
     width - maxInsetLeftOrRight
-
 
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
@@ -56,47 +52,6 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
     return () => blur.remove()
   }, []);
 
-  //const scrollRef = useRef<ScrollView>(null);
-  //useEffect(() => setViewId(findNodeHandle(scrollRef.current)), [])
-
-  // console.log("ins.left", ins.left)
-  // console.log("ins.top", ins.top)
-  // console.log("ins.right", ins.right)
-  // console.log("ins.bottom", ins.bottom)
-
-// const overflowingContent = (
-//     );
-
-  //const NativeScrollView = requireNativeComponent('CustomScrollViewManager');
-  //const NativeScrollView = requireNativeComponent('aRCTScrollVieww');
-
-  const scrollViewRef = useRef(null);
-
-  //const COMMAND_SCROLL_TO_TOP = 'scrollToTop'; // Must match the string key in getCommandsMap()
-  const COMMAND_SCROLL_TO_TOP = 'scrollToEnd'; // Must match the string key in getCommandsMap()
-  
-
-  const CustomScrollViewManagerName = 'CustomScrollViewManager';
-
-  const handleScrollFromNative = () => {
-    // 1. Get the React Native node handle (native tag)
-    const reactTag = findNodeHandle(scrollViewRef.current);
-    //const reactTag = scrollViewRef.current.getNativeTag(); 
-    //console.log("scrollViewRef.current", scrollViewRef.current.getNativeScrollRef())
-    console.log("CLICKEDDDDDDDDDDD")
-      if (reactTag) {
-          console.log("REACT TAG", reactTag)
-          // 2. Dispatch the command to the native ViewManager
-          // Args: (viewTag, commandName, commandArgs)
-          UIManager.dispatchViewManagerCommand(
-              reactTag,
-              //COMMAND_SCROLL_TO_TOP,
-              'scrollToEnd',
-              [], // No additional arguments needed for scroll to top
-          );
-      }
-  };
-
     return (
         <View style={{
           flex: 1,
@@ -105,16 +60,10 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
           // alignContent: 'center',
           //justifyContent: 'center',
         }}>
-          
-            <Button 
-              title="Scroll from Kotlin" 
-              onPress={handleScrollFromNative} 
-            />
-
             <CustomScrollView
               //ref={scrollViewRef} // ONE
               //scrollRef={scrollViewRef} // ONE
-              ref={scrollViewRef} // ONE
+              //ref={scrollViewRef} // ONE
               persistentScrollbar={true}
               //nestedScrollEnabled={true}
               // removeClippedSubviews={false}
