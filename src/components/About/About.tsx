@@ -54,102 +54,40 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
 
     return (
         <View style={{
-          flex: 1,
+          /* flex: 1, */
           backgroundColor: '#f0f0f0',
-          // justifyContent: 'center',ds
-          // alignContent: 'center',
-          //justifyContent: 'center',
         }}>
             <CustomScrollView
-              //ref={scrollViewRef} // ONE
-              //scrollRef={scrollViewRef} // ONE
-              //ref={scrollViewRef} // ONE
               persistentScrollbar={true}
-              //nestedScrollEnabled={true}
-              // removeClippedSubviews={false}
-              // scrollEnabled={false}
-              // showsVerticalScrollIndicator={false}
               scrollbarPadding={{
-                    //left: ins.left * 1,
-                    //left: -24,
-                    //left: 40,
-                    left: 0,
-                    top: 0,
-                    //top: 64,
-                    right: 20,
-                    //right: 60,
-                    //right: 40,
-                    //bottom: 48,
-                    bottom: 0,
+                    top: 5,
+                    right: 5,
+                    bottom: 5,
               }}
-              
-                //style={styles.scrollView}
-                //style={{ flex: 1 }}
-                style={{
-                  flex: 1,
-                  flexGrow: 1,
-                  /* justifyContent: 'center', */
-                  // justifyContent: 'center',
-                  // alignContent: 'center',
-                  //justifyContent: 'center',
-                  backgroundColor: 'red',
-                }}
+                style={{}}
                 contentContainerStyle={{
-                    // flexGrow: 1,
-                    // justifyContent: 'center',
-                    // alignItems: 'center', 
-
                     flexGrow: 1,
                     alignItems: 'center',
-                    paddingVertical: 10, // Add a bit of scroll padding
-                    
-                    //backgroundColor: 'beige',
-                    //backgroundColor: 'red',
-                    // justifyContent: 'center',
-                    // alignContent: 'center',
+                    paddingVertical: 10,
                 }}
-                //style={styles.scrollView}
-                // childLayoutProps={{
-                //   // flexGrow: 1, 
-                //   // //collapsable: false,
-                //   // // ⚠️ NOTICE: We REMOVED justifyContent: 'center' here
-                //   // // We can keep alignItems for horizontal centering if needed:
-                //   // alignItems: 'center',
-                //   // paddingVertical: 10, // Add a bit of scroll padding
-                //   // backgroundColor: 'red',
-                // }}
-                // children={
-                // }
-                //persistentScrollbar={true}
             >
               
-                <View  collapsable={false}
+                <View
                   style={{
                       width: '80%',
                       padding: 20,
-                      // backgroundColor: 'white',
-                      //height: 'auto',
                       borderRadius: 8,
-                      //height: 'fit-content',
                       alignItems: 'center',
                       marginTop: 'auto',
                       marginBottom: 'auto',
-                      // paddingTop: 30,
-                      // paddingBottom: 30,
-                      // //height: 'fit-content',
-                      // //justifyContent: 'center',
-                      //justifyContent: 'center',
-                      //
                   }}
-                > 
-                  {/* The auto margins on this child are the key fix! */}
+                >
                   <Text style={styles.text}>--- Top of Content ---</Text>
                   {Array.from({ length: 25 }).map((_, i) => (
                       <Text key={i} style={styles.longText}>Item #{i + 1}</Text>
                   ))}
                   <Text style={styles.text}>--- End of Content ---</Text>
                 </View>
-             
             </CustomScrollView>
 
         </View>
@@ -157,41 +95,12 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
 }
 
 const styles = StyleSheet.create({
-    screenContainer: {
-        flex: 1,
-        //height: '75%',
-        backgroundColor: '#f0f0f0',
-    },
-    contentContainer: {
-        flexGrow: 1, 
-        // ⚠️ NOTICE: We REMOVED justifyContent: 'center' here
-        // We can keep alignItems for horizontal centering if needed:
-        alignItems: 'center', 
-        paddingVertical: 10, // Add a bit of scroll padding
-        backgroundColor: 'red',
-    },
-    
-    // 💡 THE FIX IS HERE: The immediate child inside the ScrollView
-    content: {
-      
-        width: '90%',
-        //padding: 20,
-        backgroundColor: 'white',
-        borderRadius: 8,
-        
-        // Use auto margins for vertical centering instead of parent justifyContent
-        marginTop: 'auto',
-        marginBottom: 'auto', 
-    },
-    
     text: {
         fontSize: 18,
         fontWeight: 'bold',
-        //marginBottom: 10,
     },
     longText: {
         fontSize: 14,
-        //marginVertical: 2,
     }
 });
 

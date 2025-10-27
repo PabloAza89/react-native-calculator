@@ -197,7 +197,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   console.log("ins.bottom", ins.bottom)
 
   return (// testing paddingBottom: ins.bottom
-    <View style={[s.mainContainer, { flex: 1 }]}>
+    <View style={[s.mainContainer, { /* flex: 1 */ }]}>
 
       {
         !(state === 'tabletop' && aboutUp) &&
