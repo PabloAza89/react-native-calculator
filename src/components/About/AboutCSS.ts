@@ -52,15 +52,17 @@ export const s = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     //color: 'red'
-    color: 'rgba(0, 0, 0, .54)'
+    color: 'rgba(0, 0, 0, .54)',
+    marginBottom: 24, // THIS
   },
   imageWrapper: {
     display: 'flex',
     position: 'relative',
     //backgroundColor: 'lightcoral', // DEV
-    //marginTop: 20, // THIS
+    //marginTop: 24, // THIS
+    //marginBottom: 24, // THIS
     //paddingTop: 20,
-    //marginBottom: 25, // THIS
+    marginBottom: 24, // THIS
   },
   iconStyle: {
     position: 'absolute'
@@ -124,31 +126,43 @@ export const s = StyleSheet.create({
     fontWeight: '600',
     fontSize: 14,
     lineHeight: 15,
-    marginLeft: -6,
-    marginRight: 2,
-    height: 30,
+    //marginLeft: -6,
+    //marginRight: 2,
+    //height: 30,
     textAlign: 'center',
-    textAlignVertical: 'center',
-    includeFontPadding: false
+    //textAlignVertical: 'center',
+    //includeFontPadding: false
+    //paddingBottom: 40,
   },
   textInButtonLower: {
     color: 'white',
     fontWeight: '600',
     fontSize: 14,
     lineHeight: 15,
-    marginRight: 4,
-    marginLeft: -4,
-    transform: [{ rotate: '180deg' }]
+    //marginRight: 4,
+    //marginLeft: -4,
+    transform: [{ rotate: '180deg' }],
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    //includeFontPadding: false,
+    //justifyContent: 'flex-start',
+    //alignItems: 'baseline'
+    //alignItems: 'flex-start'
+    //textAlign: 'center',
+    //margin: 4,
+    //height: 30,
+    //marginBottom: 50
   },
-  space10: {
-    width: 10,
-    height: 10,
+  space12: {
+    width: 12,
+    height: 12,
   },
-  space25: {
-    width: 25,
-    height: 25,
+  space24: {
+    width: 24,
+    height: 24,
   },
   buttonAndIconLower: {
-    transform: [{ rotate: '180deg' }]
+    transform: [{ rotate: '180deg' }],
+    //marginTop: 40
   }
 });
