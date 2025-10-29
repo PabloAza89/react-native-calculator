@@ -161,6 +161,14 @@ export const s = StyleSheet.create({
     width: 24,
     height: 24,
   },
+  cswStyle: {
+    width: '100%',
+  },
+  cswContentContainerStyle: {
+    //backgroundColor: 'red', // DEV
+    flexGrow: 1,
+    alignItems: 'center',
+  },
   buttonAndIconLower: {
     transform: [{ rotate: '180deg' }],
     //marginTop: 40

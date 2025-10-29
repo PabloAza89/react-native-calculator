@@ -11,6 +11,7 @@ import { Text } from '../../utils/Text';
 import { scrollBarSize, iconColor } from '../../utils/constants';
 import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
 import CustomScrollView from '../CustomScrollView/CustomScrollView';
+import CustomButton from '../CustomButton/CustomButton';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -245,15 +246,17 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
               {
                 twoScreens ?
-                <MaterialCommunityIcons.Button
+                <CustomButton
+                  type={MaterialCommunityIcons.Button}
                   name={ state === 'tabletop' ? 'swap-vertical-bold' : 'swap-horizontal-bold' }
                   size={30}
                   color={iconColor}
                   onPress={() => switchSide()}
                   children={ <Text style={s.textInButton} children={'SWITCH\nSCREENS'} /> }
                 /> :
-                <Ionicons.Button
-                  name='chevron-back-circle-sharp'
+                <CustomButton
+                  type={Ionicons.Button}
+                  name={'chevron-back-circle-sharp'}
                   size={30}
                   color={iconColor}
                   onPress={() => navigate('About')}
@@ -265,24 +268,26 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
               {
                 twoScreens && state === 'tabletop' ?
-                <Ionicons.Button
-                  name='calculator-sharp'
+                <CustomButton
+                  type={Ionicons.Button}
+                  name={'calculator-sharp'}
                   size={30}
                   color={iconColor}
                   onPress={() => nextScreen()}
                   children={ <Text style={s.textInButton} children={'HOME'} /> }
                 /> :
                 twoScreens ?
-                <SimpleLineIcons.Button
-                  name='question'
+                <CustomButton
+                  type={SimpleLineIcons.Button}
+                  name={'question'}
                   size={25}
                   color={iconColor}
                   onPress={() => nextScreen()}
-                  style={{ flex: 1 }}
                   children={ <Text style={s.textInButton} children={'ABOUT'} /> }
                 /> :
-                <Ionicons.Button
-                  name='home'
+                <CustomButton
+                  type={Ionicons.Button}
+                  name={'home'}
                   size={30}
                   color={iconColor}
                   onPress={() => navigate('Home')}

@@ -11,7 +11,7 @@ import { Text } from '../../utils/Text';
 import { portButtons, landButtons } from '../../utils/Buttons';
 
 const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
-  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins }: any): ReactElement => {
+  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins, verticalInset, horizontalInset }: any): ReactElement => {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
   const { navigate } = navigation
@@ -51,11 +51,14 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   //console.log("HEIGHT HEIGHT", height)
   //console.log("WIDTH WIDTH", width)
 
-  const maxLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
-  const maxTopOrBottom = ins.top > ins.bottom ? ins.top * 2 : ins.bottom * 2
+  //const maxLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
+  //const maxTopOrBottom = ins.top > ins.bottom ? ins.top * 2 : ins.bottom * 2
 
-  const preParsedWidth = width - maxLeftOrRight
-  const preParsedHeight = height - maxTopOrBottom
+  const parsedHorizontalInset = horizontalInset * 2
+  const parsedVerticalInset = verticalInset * 2
+
+  const preParsedWidth = width - parsedHorizontalInset
+  const preParsedHeight = height - parsedVerticalInset
 
   const parsedWidth = preParsedWidth > 950 ? 950 : preParsedWidth
   const parsedHeight = preParsedHeight > 900 ? 900 : preParsedHeight

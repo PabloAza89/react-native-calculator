@@ -10,7 +10,7 @@ import CustomScrollView from '../CustomScrollView/CustomScrollView';
 import CustomButton from '../CustomButton/CustomButton';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft }: any): ReactElement => {
+const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft, verticalInset, horizontalInset }: any): ReactElement => {
 
   const { navigate } = navigation
 
@@ -28,14 +28,16 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   console.log("TEST ABOUT")
 
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
-  const maxInsetLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
-  const preVerticalInset = ins.top > ins.bottom ? ins.top : ins.bottom
-  const verticalInset = preVerticalInset > 24 ? preVerticalInset : 24
+  //const maxInsetLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
+  const parsedHorizontalInset = horizontalInset * 2
+  //horizontalInset
+  //const preVerticalInset = ins.top > ins.bottom ? ins.top : ins.bottom
+  const parsedVerticalInset = verticalInset > 24 ? verticalInset : 24
   //console.log("A VER", (ins.top > ins.bottom ? ins.top : ins.bottom) ? this : 0)
   const parsedWidth =
-    state === 'book' && calcLeft ? width - hingeBounds.right - ins.right - maxInsetLeftOrRight :
-    state === 'book' && !calcLeft ? hingeBounds.left - ins.left - maxInsetLeftOrRight :
-    width - maxInsetLeftOrRight
+    state === 'book' && calcLeft ? width - hingeBounds.right - ins.right - parsedHorizontalInset :
+    state === 'book' && !calcLeft ? hingeBounds.left - ins.left - parsedHorizontalInset :
+    width - parsedHorizontalInset
 
 
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
@@ -62,35 +64,36 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   console.log("INS", ins)
 
   return (
-    <View style={[s.background, { /* flex: 1, */ }]}>
+    <View style={s.background}>
       <Animated.View
         style={[ s.backgroundModal, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
         children={
           <Pressable
-            style={[ s.backgroundModalButton,  { /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
+            style={[ s.backgroundModalButton,  { backgroundColor: 'red', /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
             onPress={() => updateShowModal(false)}
             children={
               <View style={s.modal}>
                 <Text
                   numberOfLines={3}
-                  //adjustsFontSizeToFit={true}
                   style={s.upperModal}
                   children={'You are about to leave this App\nand access an external link\nDo you want to continue ?'}
                 />
                 <View style={s.lowerModal}>
-                  <Ionicons.Button
-                    name='close-circle'
+                  <CustomButton
+                    type={Ionicons.Button}
+                    name={'close-circle'}
                     size={25}
-                    color='rgba(0, 0, 0, .7)'
+                    color={'rgba(0, 0, 0, .7)'}
                     onPress={() => updateShowModal(false)}
                     children={ <Text style={s.buttonModal} children={'CANCEL'} /> }
                   />
-                  <View style={s.space12} />
-                  <Ionicons.Button
-                    name='checkmark-circle'
+                  <CustomButton
+                    type={Ionicons.Button}
+                    name={'checkmark-circle'}
                     size={25}
-                    color='rgba(0, 0, 0, .7)'
+                    color={'rgba(0, 0, 0, .7)'}
                     onPress={() => { Linking.openURL('https://www.linkedin.com/in/juan-pablo-azambuyo'); updateShowModal(false) }}
+                    margin={{ left: 12 }}
                     children={ <Text style={s.buttonModal} children={'CONTINUE'} /> }
                   />
                 </View>
@@ -115,52 +118,24 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
       />
 
       <CustomScrollView
-        //horizontal={false}
-        //scrollEnabled={true}
         persistentScrollbar={true}
         scrollbarPadding={{
           top: (state === 'tabletop' && !aboutUp) ? 0 : ins.top,
           right: ins.right,
           bottom: (state === 'tabletop' && aboutUp) ? 0 : ins.bottom,
-              }}
-        style={[ /* s.scrollView, */ {
-          width: '100%',
-          //overflow: 'visible',
-          //marginTop: ins.top * 1,
-          //marginBottom: ins.bottom * 1,
-          //marginBottom: (state === 'tabletop' && aboutUp) ? 0 : ins.bottom, // DONE
-        } ]}
-        //contentContainerStyle={s.scrollViewInner}
-        contentContainerStyle={[ 
-          //s.scrollViewInner,
-          {
-            //width: parsedWidth,
-            //width: '100%',
-            backgroundColor: 'red', // DEV
-            // marginRight: 100, marginLeft: 100
-            flexGrow: 1,
-            alignItems: 'center',
-            //paddingVertical: 10,
-          }
-        ]}
-        //persistentScrollbar={true}
-        //indicatorStyle={'black'}
+        }}
+        style={s.cswStyle}
+        contentContainerStyle={s.cswContentContainerStyle}
       >
         <View
           style={{
-              //width: '100%',
-              //padding: 230,
-              //borderRadius: 8,
               alignItems: 'center',
               marginTop: 'auto',
               marginBottom: 'auto',
-              paddingTop: verticalInset,//25,
-              paddingBottom: verticalInset, // 52,
-              // paddingTop: (24*4)+ ins.top,//25,
-              // paddingBottom: (24*4) + ins.bottom, // 52,
+              paddingTop: parsedVerticalInset,
+              paddingBottom: parsedVerticalInset,
           }}
         >
-          <View /* SPACE */ style={{ /* marginBottom: state === 'tabletop' ? ins.top : ins.top * 2 */ }} />
           <Text
             style={[s.title, {backgroundColor: 'green'}]}
             children={'This App is developed by\nJuan Pablo Azambuyo'}
@@ -171,40 +146,46 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               source={ require('../../images/profile.png') }
               resizeMode={FastImage.resizeMode.contain}
             />
-            <AntDesign
-              style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: (((parsedWidth / 2) - ((vmin * 30) / 2)) / -2) - 20 }}
-              name='linkedin-square'
+            <CustomButton
+              type={AntDesign}
+              name={'linkedin-square'}
               size={40}
-              color='rgba(0, 0, 0, .7)'
+              color={'rgba(0, 0, 0, .7)'}
               onPress={() => updateShowModal(true)}
+              style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: (((parsedWidth / 2) - ((vmin * 30) / 2)) / -2) - 20 }}
             />
           </View>
 
           {
-            !twoScreens ?
-            <MaterialCommunityIcons.Button
+            twoScreens ?
+            <CustomButton
+              type={MaterialCommunityIcons.Button}
               name={ state === 'tabletop' ? 'swap-vertical-bold' : 'swap-horizontal-bold' }
               size={30}
-              color='rgba(0, 0, 0, .7)'
+              color={'rgba(0, 0, 0, .7)'}
               onPress={() => switchSide()}
+              margin={{ bottom: 24 }}
               children={ <Text style={s.textInButtonUpper} children={'SWITCH\nSCREENS'} /> }
             /> :
-            <Ionicons.Button
-              name='chevron-back-circle-sharp'
+            <CustomButton
+              type={Ionicons.Button}
+              name={'chevron-back-circle-sharp'}
               size={30}
-              color='rgba(0, 0, 0, .7)'
+              color={'rgba(0, 0, 0, .7)'}
               onPress={() => navigate('Home')}
+              margin={{ bottom: 24 }}
               children={ <Text style={s.textInButtonUpper} children={'BACK'} /> }
             />
           }
-          {/* <View style={s.space24} /> */}
           {
             twoScreens ?
-            <Ionicons.Button
+            <CustomButton
+              type={Ionicons.Button}
               name={ state === 'tabletop' ? 'calculator-sharp' : 'alert-circle' }
               size={30}
-              color='rgba(0, 0, 0, .7)'
+              color={'rgba(0, 0, 0, .7)'}
               onPress={() => nextScreen()}
+              iconStyle={s.buttonAndIconLower}
               children={ <Text style={s.textInButtonUpper} children={ state === 'tabletop' ? 'HOME' : 'HOW DOES IT WORK ?' } /> }
             /> :
             <CustomButton
@@ -213,8 +194,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               size={30}
               color={'rgba(0, 0, 0, .7)'}
               onPress={() => navigate('KnowMore')}
-              margin={[0, 0, 0, 0]} // L, T, R, B
-              style={s.buttonAndIconLower}
+              iconStyle={s.buttonAndIconLower}
               children={ <Text style={s.textInButtonLower} children={'HOW DOES IT WORK ?'} /> }
             />
           }

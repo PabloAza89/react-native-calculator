@@ -123,6 +123,8 @@ const App = (): ReactElement => {
 
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
+  const verticalInset = layout.insets.top > layout.insets.bottom ? layout.insets.top : layout.insets.bottom
+  const horizontalInset = layout.insets.left > layout.insets.right ? layout.insets.left : layout.insets.right
 
   useEffect(() => { // ON APP BLUR
     const blur = AppState.addEventListener('blur', () => {
@@ -161,7 +163,7 @@ const App = (): ReactElement => {
             setSecInput={setSecInput} secInput={secInput} vmin={layout.vmin}
             state={layout.state} width={layout.window.width} height={layout.window.height}
             hingeBounds={layout.hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
-            ins={layout.insets}
+            ins={layout.insets} verticalInset={verticalInset} horizontalInset={horizontalInset}
           />
         )
       case "About":
@@ -170,7 +172,8 @@ const App = (): ReactElement => {
           <About
             {...props} vmin={layout.vmin} width={layout.window.width} showModal={showModal}
             updateShowModal={updateShowModal} state={layout.state} twoScreens={false}
-            ins={layout.insets} height={layout.window.height}
+            ins={layout.insets} height={layout.window.height} verticalInset={verticalInset}
+            horizontalInset={horizontalInset}
           />
         )
       case "KnowMore":
