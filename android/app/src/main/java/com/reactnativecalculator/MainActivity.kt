@@ -82,6 +82,8 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
   var currentHingeBounds: MutableMap<String, Int> = mutableMapOf()
   lateinit var currentState: String;
   lateinit var currentInsets: Rect
+  var currentMaxHorizontalInset: Int by Delegates.notNull<Int>()
+  var currentMaxVerticalInset: Int by Delegates.notNull<Int>()
   lateinit var rootView: View
 
   lateinit var testVar: String
@@ -210,6 +212,15 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
 
       // END INSETS //
 
+      // BEGIN VERTICAL & HORIZONTAL INSET //
+
+      if (currentInsets.left > currentInsets.right) currentMaxHorizontalInset = currentInsets.left
+      else currentMaxHorizontalInset = currentInsets.right
+      if (currentInsets.top > currentInsets.bottom) currentMaxVerticalInset = currentInsets.top
+      else currentMaxVerticalInset = currentInsets.bottom
+
+      // END VERTICAL & HORIZONTAL INSET //
+
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
 
       var newHingeBounds: MutableMap<String, Int> = mutableMapOf()
@@ -258,6 +269,8 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
           putDouble("right", currentInsets.right / dotsPerInch)
           putDouble("bottom", currentInsets.bottom / dotsPerInch)
         });
+        mainMap.putDouble("maxHorizontalInset", currentMaxHorizontalInset / dotsPerInch)
+        mainMap.putDouble("maxVerticalInset", currentMaxVerticalInset / dotsPerInch)
         mainMap.putDouble("vmin",
           if (currentWindow["width"]!! > currentWindow["height"]!!) (currentWindow["height"]!! / dotsPerInch) / 100
           else (currentWindow["width"]!! / dotsPerInch) / 100

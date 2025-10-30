@@ -10,7 +10,7 @@ import CustomScrollView from '../CustomScrollView/CustomScrollView';
 import CustomButton from '../CustomButton/CustomButton';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft, verticalInset, horizontalInset }: any): ReactElement => {
+const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft, maxVerticalInset, maxHorizontalInset }: any): ReactElement => {
 
   const { navigate } = navigation
 
@@ -29,15 +29,19 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
 
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
   //const maxInsetLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
-  const parsedHorizontalInset = horizontalInset * 2
+  const parsedHorizontalInset = maxHorizontalInset * 2
   //horizontalInset
   //const preVerticalInset = ins.top > ins.bottom ? ins.top : ins.bottom
-  const parsedVerticalInset = verticalInset > 24 ? verticalInset : 24
+  const parsedVerticalInset = maxVerticalInset > 24 ? maxVerticalInset : 24
   //console.log("A VER", (ins.top > ins.bottom ? ins.top : ins.bottom) ? this : 0)
   const parsedWidth =
     state === 'book' && calcLeft ? width - hingeBounds.right - ins.right - parsedHorizontalInset :
     state === 'book' && !calcLeft ? hingeBounds.left - ins.left - parsedHorizontalInset :
     width - parsedHorizontalInset
+
+  console.log("horizontalInset XXXXXXXXXXXXXXXXXXXX ", maxHorizontalInset)
+  console.log("parsedHorizontalInset XXXXXXXXXXXXXXXXXXXX ", parsedHorizontalInset)
+  console.log("PARSED WIDTH XXXXXXXXXXXXXXXXXXXX ", parsedWidth)
 
 
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
@@ -61,7 +65,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
     return () => blur.remove()
   }, []);
 
-  console.log("INS", ins)
+  console.log("INS ABOUT", ins)
 
   return (
     <View style={s.background}>
@@ -153,6 +157,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               color={'rgba(0, 0, 0, .7)'}
               onPress={() => updateShowModal(true)}
               style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: (((parsedWidth / 2) - ((vmin * 30) / 2)) / -2) - 20 }}
+              //style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: 0 }}
             />
           </View>
 
@@ -185,7 +190,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               size={30}
               color={'rgba(0, 0, 0, .7)'}
               onPress={() => nextScreen()}
-              iconStyle={s.buttonAndIconLower}
+              //iconStyle={s.buttonAndIconLower}
               children={ <Text style={s.textInButtonUpper} children={ state === 'tabletop' ? 'HOME' : 'HOW DOES IT WORK ?' } /> }
             /> :
             <CustomButton

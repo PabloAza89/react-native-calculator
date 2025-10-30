@@ -133,9 +133,11 @@ export const s = StyleSheet.create({
     //textAlignVertical: 'center',
     //includeFontPadding: false
     //paddingBottom: 40,
+    
   },
   textInButtonLower: {
     color: 'white',
+    //color: 'red',
     fontWeight: '600',
     fontSize: 14,
     lineHeight: 15,

@@ -46,13 +46,15 @@ const App = (): ReactElement => {
     "window": {"width": 0, "height": 0},
     "hingeBounds": {"left": 0, "top": 0, "right": 0, "bottom": 0},
     "insets": {"left": 0, "top": 0, "right": 0, "bottom": 0},
+    "maxVerticalInset": 0,
+    "maxHorizontalInset": 0,
     "state": "portrait",
     "vmin": 0,
     "tallBar": "false" // tallNavigationBar
   });
 
   useEffect(() => {
-    console.log("CURRENT LAYOUT", layout.state)
+    console.log("AAAAAAAAAAAAAAAAAA CURRENT LAYOUT", layout.state)
   },[layout])
 
   //let port: boolean // PORTRAIT
@@ -123,8 +125,18 @@ const App = (): ReactElement => {
 
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
-  const verticalInset = layout.insets.top > layout.insets.bottom ? layout.insets.top : layout.insets.bottom
-  const horizontalInset = layout.insets.left > layout.insets.right ? layout.insets.left : layout.insets.right
+  // const verticalInset = layout.insets.top > layout.insets.bottom ? layout.insets.top : layout.insets.bottom
+  // const horizontalInset = layout.insets.left > layout.insets.right ? layout.insets.left : layout.insets.right
+
+  // console.log("HOME horizontalInset", horizontalInset)
+  // console.log("HOME horizontalInset 2222", layout.insets)
+
+  // console.log("RRRRRRRR verticalInset", verticalInset)
+  // console.log("RRRRRRRR horizontalInset", horizontalInset)
+
+  //console.log("RRRRRRRR layout", layout)
+  //console.log("RRRRRRRR layout.horizontalInset", layout.horizontalInset)
+  
 
   useEffect(() => { // ON APP BLUR
     const blur = AppState.addEventListener('blur', () => {
@@ -153,35 +165,46 @@ const App = (): ReactElement => {
   const [ showModal, setShowModal ] = useState(false);
   const updateShowModal = (bool: boolean) => setShowModal(bool)
 
-  const dynamicImport = (props: navigationI, module: any) => {
+  const width = layout.window.width
+  const height = layout.window.height
+  const state = layout.state
+  const ins = layout.insets
+  const hingeBounds = layout.hingeBounds
+  const maxVerticalInset = layout.maxVerticalInset
+  const maxHorizontalInset = layout.maxHorizontalInset
+  const vmin = layout.vmin
+
+  const sharedProps = { width, height, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin }
+
+  const dynamicImport = (nav: navigationI, module: any) => {
     switch (module) {
       case "Home":
         const Home = require('./src/components/Home/Home').default
         return (
           <Home
-            {...props} input={input} setInput={setInput}
-            setSecInput={setSecInput} secInput={secInput} vmin={layout.vmin}
-            state={layout.state} width={layout.window.width} height={layout.window.height}
-            hingeBounds={layout.hingeBounds} showModal={showModal} updateShowModal={updateShowModal}
-            ins={layout.insets} verticalInset={verticalInset} horizontalInset={horizontalInset}
+            {...nav} input={input} setInput={setInput}
+            setSecInput={setSecInput} secInput={secInput} /* vmin={layout.vmin} */
+            /* state={layout.state} */ {...sharedProps} //width={width} height={height}
+            /* hingeBounds={layout.hingeBounds} */ showModal={showModal} updateShowModal={updateShowModal}
+            /* ins={layout.insets} */ /* maxVerticalInset={layout.maxVerticalInset} maxHorizontalInset={layout.maxHorizontalInset} */
           />
         )
       case "About":
         const About = require('./src/components/About/About').default
         return (
           <About
-            {...props} vmin={layout.vmin} width={layout.window.width} showModal={showModal}
-            updateShowModal={updateShowModal} state={layout.state} twoScreens={false}
-            ins={layout.insets} height={layout.window.height} verticalInset={verticalInset}
-            horizontalInset={horizontalInset}
+            {...nav} /* vmin={layout.vmin} */ {...sharedProps} /* width={layout.window.width} */ showModal={showModal}
+            updateShowModal={updateShowModal} /* state={layout.state} */ twoScreens={false}
+            /* ins={layout.insets} */ /* height={layout.window.height} */ /* maxVerticalInset={layout.maxVerticalInset} */
+            /* maxHorizontalInset={layout.maxHorizontalInset} */
           />
         )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
         return (
           <KnowMore
-            {...props} height={layout.window.height} state={layout.state} ins={layout.insets}
-            hingeBounds={layout.hingeBounds}
+            {...nav} {...sharedProps} /* height={layout.window.height} */ /* state={layout.state} */ /* ins={layout.insets} */
+            /* hingeBounds={layout.hingeBounds} */
           />
         )
     }
@@ -194,7 +217,7 @@ const App = (): ReactElement => {
         key={e}
         options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" } }} // DEFAULT APP BACKGROUND COLOR
         //options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" }, /* cardOverlay: true, */ }} // DEFAULT APP BACKGROUND COLOR
-        children={(props) => dynamicImport(props, e)}
+        children={(nav) => dynamicImport(nav, e)}
       />
     )
   })

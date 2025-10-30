@@ -11,8 +11,10 @@ import { Text } from '../../utils/Text';
 import { portButtons, landButtons } from '../../utils/Buttons';
 
 const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
-  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins, verticalInset, horizontalInset }: any): ReactElement => {
+  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins, maxVerticalInset, maxHorizontalInset }: any): ReactElement => {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
+
+  console.log("OOOOOOOOOOO width", width)
 
   const { navigate } = navigation
 
@@ -54,8 +56,8 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   //const maxLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
   //const maxTopOrBottom = ins.top > ins.bottom ? ins.top * 2 : ins.bottom * 2
 
-  const parsedHorizontalInset = horizontalInset * 2
-  const parsedVerticalInset = verticalInset * 2
+  const parsedHorizontalInset = maxHorizontalInset * 2
+  const parsedVerticalInset = maxVerticalInset * 2
 
   const preParsedWidth = width - parsedHorizontalInset
   const preParsedHeight = height - parsedVerticalInset
