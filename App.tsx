@@ -16,10 +16,6 @@ const Stack = createNativeStackNavigator();
 const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, screens: ReactElement[]) => {
   return (
     <Stack.Navigator
-      //cardOverlayEnabled={true}
-      //detachInactiveScreens={false}
-      //id={'asd'}
-      //cardStyle: { backgroundColor: 'transparent' }
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
@@ -27,7 +23,6 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
         animation: animation,
         statusBarColor: 'transparent',
         statusBarStyle: 'dark',
-        
       }}
       children={ screens.map((e: ReactElement) => e) }
     />
@@ -36,9 +31,7 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
 
 const App = (): ReactElement => {
 
-
   const { MainActivity } = NativeModules;
-
 
   let tallBar = useRef<boolean>(false)
 
@@ -53,13 +46,7 @@ const App = (): ReactElement => {
     "tallBar": "false" // tallNavigationBar
   });
 
-  useEffect(() => {
-    console.log("AAAAAAAAAAAAAAAAAA CURRENT LAYOUT", layout.state)
-  },[layout])
-
-  //let port: boolean // PORTRAIT
-  //if (width > height) { setvmin = 0 }
-  //else { vmin = 1 }
+  //useEffect(() => console.log("CURRENT LAYOUT", layout.state), [layout])
 
   const navigationRef = useNavigationContainerRef();
 
@@ -73,70 +60,8 @@ const App = (): ReactElement => {
     { index: 0, routes: allRoutes.slice(0, 1) }
   ]
 
-  // useEffect(() => {
-  //   console.log("ENTER USEEFFECT")
-  //   const allPreloads = async () => {
-  //     let resInput = await readData("savedInput") // RESPONSE INPUT
-  //     let resSecInput = await readData("savedSecInput") // RESPONSE INPUT
-  //     let resDate = await readData("savedDate") // RESPONSE DATE
-  //     let resTallBar = await readData("savedTallBar") // RESPONSE HEIGHT
-  //     let resRoute = await readData("savedRoute") // RESPONSE ROUTE
-
-  //     if (typeof resInput === "string") setInput(resInput)
-  //     if (typeof resSecInput === "string") setSecInput(resSecInput)
-
-  //     await Font.loadAsync({
-  //       ...AntDesign.font,
-  //       ...Entypo.font,
-  //       ...FontAwesome5.font,
-  //       ...Ionicons.font,
-  //       ...MaterialIcons.font,
-  //       ...SimpleLineIcons.font
-  //     })
-
-  //     async function navigationBarToGestureOrViceVersa() {
-  //       if (typeof resDate === "string" && typeof resTallBar === "string" && typeof resRoute === "string") {
-  //         console.log("SAVED", resTallBar)
-  //         console.log("CURRENT", tallBar.current)
-  //         console.log("Date.now()", Date.now())
-  //         console.log("parseInt(resDate)", parseInt(resDate))
-
-
-  //         if (Date.now() - parseInt(resDate) < 60000 && resTallBar !== tallBar.current.toString()) {
-  //           resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
-  //           resRoute === "About" ? navigationRef.dispatch(CommonActions.reset(routes[1])) :
-  //           navigationRef.dispatch(CommonActions.reset(routes[2]))
-  //         } // else console.log("WINDOWS NOT HAS CHANGED.")
-  //       }
-  //     }
-  //     navigationBarToGestureOrViceVersa()
-  //     .finally(() => {
-  //       setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW DIMENSIONS CHANGE
-  //         setAnimation('slide_from_right') // SLIDE SCREEN ANIMATION
-  //         BootSplash.hide()
-  //       }, 200) // AVOID ICON BLINKING
-  //     })
-  //   }
-  //   allPreloads()
-
-    
-
-  // }, []);
-
   const [ secInput, setSecInput ] = useState("");
   const [ input, setInput ] = useState("");
-  // const verticalInset = layout.insets.top > layout.insets.bottom ? layout.insets.top : layout.insets.bottom
-  // const horizontalInset = layout.insets.left > layout.insets.right ? layout.insets.left : layout.insets.right
-
-  // console.log("HOME horizontalInset", horizontalInset)
-  // console.log("HOME horizontalInset 2222", layout.insets)
-
-  // console.log("RRRRRRRR verticalInset", verticalInset)
-  // console.log("RRRRRRRR horizontalInset", horizontalInset)
-
-  //console.log("RRRRRRRR layout", layout)
-  //console.log("RRRRRRRR layout.horizontalInset", layout.horizontalInset)
-  
 
   useEffect(() => { // ON APP BLUR
     const blur = AppState.addEventListener('blur', () => {
@@ -176,37 +101,28 @@ const App = (): ReactElement => {
 
   const sharedProps = { width, height, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin }
 
-  const dynamicImport = (nav: navigationI, module: any) => {
+  const dynamicImport = (nav: navigationI, module: string) => {
     switch (module) {
       case "Home":
         const Home = require('./src/components/Home/Home').default
         return (
           <Home
-            {...nav} input={input} setInput={setInput}
-            setSecInput={setSecInput} secInput={secInput} /* vmin={layout.vmin} */
-            /* state={layout.state} */ {...sharedProps} //width={width} height={height}
-            /* hingeBounds={layout.hingeBounds} */ showModal={showModal} updateShowModal={updateShowModal}
-            /* ins={layout.insets} */ /* maxVerticalInset={layout.maxVerticalInset} maxHorizontalInset={layout.maxHorizontalInset} */
+            {...nav} {...sharedProps} input={input} setInput={setInput}
+            secInput={secInput} setSecInput={setSecInput}
+            showModal={showModal} updateShowModal={updateShowModal}
           />
         )
       case "About":
         const About = require('./src/components/About/About').default
         return (
           <About
-            {...nav} /* vmin={layout.vmin} */ {...sharedProps} /* width={layout.window.width} */ showModal={showModal}
-            updateShowModal={updateShowModal} /* state={layout.state} */ twoScreens={false}
-            /* ins={layout.insets} */ /* height={layout.window.height} */ /* maxVerticalInset={layout.maxVerticalInset} */
-            /* maxHorizontalInset={layout.maxHorizontalInset} */
+            {...nav} {...sharedProps} showModal={showModal}
+            updateShowModal={updateShowModal} twoScreens={false}
           />
         )
       case "KnowMore":
         const KnowMore = require('./src/components/KnowMore/KnowMore').default
-        return (
-          <KnowMore
-            {...nav} {...sharedProps} /* height={layout.window.height} */ /* state={layout.state} */ /* ins={layout.insets} */
-            /* hingeBounds={layout.hingeBounds} */
-          />
-        )
+        return <KnowMore {...nav} {...sharedProps} />
     }
   }
 
@@ -216,7 +132,6 @@ const App = (): ReactElement => {
         name={e}
         key={e}
         options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" } }} // DEFAULT APP BACKGROUND COLOR
-        //options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" }, /* cardOverlay: true, */ }} // DEFAULT APP BACKGROUND COLOR
         children={(nav) => dynamicImport(nav, e)}
       />
     )

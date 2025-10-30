@@ -79,21 +79,16 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const [ OPCQH, setOPCQH ] = useState(0) // onePercentContainerQueryHeight
 
+  const sharedProps = { width, height, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin, nextScreen, switchSide, navigation, aboutUp }
+
   const AboutScreen =
     <About
-      navigation={navigation} vmin={vmin} width={width}
-      showModal={showModal} updateShowModal={updateShowModal}
-      state={state} twoScreens={true} switchSide={switchSide}
-      nextScreen={nextScreen} aboutUp={aboutUp} ins={ins}
-      height={height} hingeBounds={hingeBounds} calcLeft={calcLeft}
+      {...sharedProps} showModal={showModal} updateShowModal={updateShowModal}
+      calcLeft={calcLeft} twoScreens
     />;
 
   const KnowMoreScreen =
-    <KnowMore
-      navigation={navigation} height={height} state={state}
-      switchSide={switchSide} twoScreens={true} nextScreen={nextScreen}
-      aboutUp={aboutUp} hingeBounds={hingeBounds} ins={ins}
-    />;
+    <KnowMore {...sharedProps} twoScreens />;
 
   const PortButtons =
     portButtons.concat(lastButtonPort).map((e, i) =>

@@ -103,10 +103,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
       <Text style={s.leftItem} children={'='} />
       <Text style={s.rightItem} children={`If there is no calc to do ('x', '/', '+' or '-') '=' will not work.\nIf calc is valid, result will be shown and, in a smaller upper place, the current calc will be shown.\nIf result or current calc is larger than screen, you can scroll to see entire result/calc.`} />
     </View>,
-    <View
-      key={9}
-      style={[ s.eachItem, { marginBottom: 10 } ]}
-    >
+    <View key={9} style={[ s.eachItem, { marginBottom: 10 } ]}>
       <MaterialIcons
         name='phonelink-erase'
         size={30}

@@ -28,19 +28,15 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   console.log("TEST ABOUT")
 
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
-  //const maxInsetLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
-  const parsedHorizontalInset = maxHorizontalInset * 2
-  //horizontalInset
-  //const preVerticalInset = ins.top > ins.bottom ? ins.top : ins.bottom
-  const parsedVerticalInset = maxVerticalInset > 24 ? maxVerticalInset : 24
-  //console.log("A VER", (ins.top > ins.bottom ? ins.top : ins.bottom) ? this : 0)
+  const parsedMaxHorizontalInset = maxHorizontalInset * 2
+  const parsedMaxVerticalInset = maxVerticalInset > 24 ? maxVerticalInset : 24
   const parsedWidth =
-    state === 'book' && calcLeft ? width - hingeBounds.right - ins.right - parsedHorizontalInset :
-    state === 'book' && !calcLeft ? hingeBounds.left - ins.left - parsedHorizontalInset :
-    width - parsedHorizontalInset
+    state === 'book' && calcLeft ? width - hingeBounds.right - ins.right - parsedMaxHorizontalInset :
+    state === 'book' && !calcLeft ? hingeBounds.left - ins.left - parsedMaxHorizontalInset :
+    width - parsedMaxHorizontalInset
 
   console.log("horizontalInset XXXXXXXXXXXXXXXXXXXX ", maxHorizontalInset)
-  console.log("parsedHorizontalInset XXXXXXXXXXXXXXXXXXXX ", parsedHorizontalInset)
+  console.log("parsedMaxHorizontalInset XXXXXXXXXXXXXXXXXXXX ", parsedMaxHorizontalInset)
   console.log("PARSED WIDTH XXXXXXXXXXXXXXXXXXXX ", parsedWidth)
 
 
@@ -136,8 +132,8 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               alignItems: 'center',
               marginTop: 'auto',
               marginBottom: 'auto',
-              paddingTop: parsedVerticalInset,
-              paddingBottom: parsedVerticalInset,
+              paddingTop: parsedMaxVerticalInset,
+              paddingBottom: parsedMaxVerticalInset,
           }}
         >
           <Text
