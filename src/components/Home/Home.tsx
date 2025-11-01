@@ -94,7 +94,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   //////////////////////////////////////////////////////
 
-  async function handlePress(value) {
+  function handlePress(value: string) {
   
       if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
   
@@ -273,20 +273,17 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   const PortButtons =
     portButtons.concat(lastButtonPort).map((e, i) =>
       <OwnButton
-        key={i} /* scrollEnd={scrollEnd} */ /* parErr={e.parErr} */ value={e.value} /* input={input} */
-        /* setInput={input} */ /* setParErr={setParErr} */ /* setSecInput={setSecInput} */
-        size={e.size} margin={e.margin} fontSize={OPCQH/1.5} small={e.small}
-        /* update={update} */ handlePress={handlePress}
+        key={i} value={e.value} size={e.size} margin={e.margin} 
+        fontSize={OPCQH/1.5} small={e.small}
+        handlePress={handlePress}
       />
     );
 
   const LandButtons =
     landButtons.concat(lastButtonLand).map((e, i) =>
       <OwnButton
-        key={i} /* scrollEnd={scrollEnd} */ /* parErr={e.parErr} */ value={e.value} /* input={input} */
-        /* setInput={input} */ /* setParErr={setParErr} */ /* setSecInput={setSecInput} */
-        size={e.size} margin={e.margin} fontSize={OPCQH} state={state}
-        /* update={update} */
+        key={i} value={e.value} size={e.size} margin={e.margin}
+         fontSize={OPCQH} state={state}
       />
     );
 
