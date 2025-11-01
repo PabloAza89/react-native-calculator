@@ -61,19 +61,42 @@ const App = (): ReactElement => {
   ]
 
   const [ secInput, setSecInput ] = useState("");
-  const [ input, setInput ] = useState("");
+  //const [ input, setInput ] = useState("");
+  const input = useRef("");
+  const [ _, update ] = useState({});
+
+  const inputt = useRef("");
+
+  // useEffect(() => {
+
+  // }, [])
+
+  const abc = (input: any) => {
+    console.log("EXECUTED, SAVED IMPUT", input.current.toString())
+    saveData("savedInput", input.current.toString())
+    saveData("savedSecInput", secInput.toString())
+    saveData("savedDate", Date.now().toString())
+    saveData("savedTallBar", tallBar.current.toString())
+    let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
+    saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+  }
 
   useEffect(() => { // ON APP BLUR
-    const blur = AppState.addEventListener('blur', () => {
-      saveData("savedInput", input.toString())
-      saveData("savedSecInput", secInput.toString())
-      saveData("savedDate", Date.now().toString())
-      saveData("savedTallBar", tallBar.current.toString())
-      let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
-      saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
-    })
+    console.log("ENTER HERE")
+    const blur = AppState.addEventListener('blur', () => abc(input))
+    //const blur = AppState.addEventListener('blur', () => {
+      // console.log("EXECUTED, SAVED IMPUT", input.toString())
+      // saveData("savedInput", input.toString())
+      // saveData("savedSecInput", secInput.toString())
+      // saveData("savedDate", Date.now().toString())
+      // saveData("savedTallBar", tallBar.current.toString())
+      // let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
+      // saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+    //})
     return () => blur.remove()
-  }, [input, secInput]);
+  //}, [input, secInput]);
+  }, []);
+  //}, [input, secInput]);
 
   const saveData = async (key: string, value: string) => {
     try { await AsyncStorage.setItem(key, value) }
@@ -107,9 +130,10 @@ const App = (): ReactElement => {
         const Home = require('./src/components/Home/Home').default
         return (
           <Home
-            {...nav} {...sharedProps} input={input} setInput={setInput}
+            {...nav} {...sharedProps} input={input} setInput={input}
             secInput={secInput} setSecInput={setSecInput}
             showModal={showModal} updateShowModal={updateShowModal}
+            update={update}
           />
         )
       case "About":
@@ -148,7 +172,9 @@ const App = (): ReactElement => {
     const resTallBar = await readData("savedTallBar") // RESPONSE HEIGHT
     const resRoute = await readData("savedRoute") // RESPONSE ROUTE
 
-    typeof resInput === "string" && setInput(resInput)
+    //typeof resInput === "string" && setInput(resInput)
+    //typeof resInput === "string" && (input.current = "3")
+    typeof resInput === "string" && (input.current = resInput)
     typeof resSecInput === "string" && setSecInput(resSecInput)
 
     try {
@@ -186,7 +212,7 @@ const App = (): ReactElement => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
       //console.log("LAYOUT", e)
-      console.log("LAYOUT", e.state)
+      //console.log("LAYOUT", e.state)
       setLayout(e)
       //setLayout(Object.assign( {}, e, { "density": PixelRatio.get() } ))
       tallBar.current = e.tallBar

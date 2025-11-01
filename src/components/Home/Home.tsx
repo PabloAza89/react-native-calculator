@@ -11,10 +11,12 @@ import { Text } from '../../utils/Text';
 import { portButtons, landButtons } from '../../utils/Buttons';
 
 const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
-  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins, maxVerticalInset, maxHorizontalInset }: any): ReactElement => {
+  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins, maxVerticalInset, maxHorizontalInset, update }: any): ReactElement => {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
-  console.log("OOOOOOOOOOO width", width)
+
+  //console.log("OOOOOOOOOOO width", width)
+  console.log("XXXXXXXXXXXX INPUT", typeof input)
 
   const { navigate } = navigation
 
@@ -37,7 +39,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const [ parErr, setParErr ] = useState(false);
 
-  useEffect(() => scrollEnd(), [input])
+  useEffect(() => scrollEnd(), [input.current])
 
   const scrollRefUpper = useRef<ScrollView>(null);
   const scrollRefCenter = useRef<ScrollView>(null);
@@ -90,21 +92,201 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   const KnowMoreScreen =
     <KnowMore {...sharedProps} twoScreens />;
 
+  //////////////////////////////////////////////////////
+
+  async function handlePress(value) {
+  
+      if (value !== "=") setParErr(false) // RESET ERROR PARENTHESIS
+  
+      /// -----------> BEGIN STOPPERS <----------- ///
+  
+      if (input.current.length === input.current.replace(/ /g,'').length && value === "=") { scrollEnd(); return } // STOP IF INPUT IS "1e+38" or "1e+" or IF THERE IS NO OPERATION SIGN AND ATTEMPT = //
+  
+      if (parErr === true && value === "=") { scrollEnd(); return } // STOP IF PARENTHESIS ERROR IS DISPLAYED & ATTEMPT "=" // OJO ESTE IBA PRIMERO // TEST
+  
+      if (value === "C") { input.current = ""; setSecInput(""); return } // CLEAR INPUT AND STOP
+  
+      let splitted: string[] = input.current.replace(/ /g,'').split("") // OK
+  
+      if (
+        value === "=" &&
+        splitted.filter((e: string) => e === "(").length !== // STOP IF ((( AND ))) AMOUNT ARE UNEQUAL
+        splitted.filter((e: string) => e === ")").length
+      ) { setParErr(true); scrollEnd(); return }
+  
+      if (
+        value === "=" &&
+        splitted.indexOf("x") === -1 &&
+        splitted.indexOf("/") === -1 &&
+        splitted.indexOf("+") === -1 &&
+        splitted.indexOf("-") === -1
+      ) { scrollEnd(); return } // STOP IF "=" IS PRESSED & INPUT DONT HAVE x / + or -
+  
+      if (value === "B") { // Backspace
+        if (input.current.slice(-3) === " x " || // if last input is an operator: "123 + "
+          input.current.slice(-3) === " / " ||
+          input.current.slice(-3) === " + " ||
+          input.current.slice(-3) === " - ") {
+          input.current = input.current.slice(0,-3);
+          setSecInput("");
+          return
+        }
+        else if (input.slice(-8) === "Infinity") { // if last input is Infinity: "Infinity" // TEST
+          input.current = input.current.slice(0,-8)
+          setSecInput("");
+          return
+        }
+        else { // else
+          let seqOne = input.current.split("");
+          seqOne.pop();
+          let seqTwo = seqOne.join("");
+          input.current = seqTwo;
+          setSecInput("");
+          return
+        }
+      } // EDIT PREVIOUS INPUT AND STOP
+  
+      if (
+        (input.current.slice(-3) === " x " ||
+        input.current.slice(-3) === " / " ||
+        input.current.slice(-3) === " + " ||
+        input.current.slice(-3) === " - " ||
+        input.current.slice(-1) === "(") &&
+        (value === "X" ||
+        value === "/" ||
+        value === "+" ||
+        value === "-" ||
+        value === ")" ||
+        value === "." ) // STOP IF ATTEMPT + AND + (REPEATED OPERATORS)
+      ) { scrollEnd(); return }
+  
+      if (
+        input.current.slice(-1) === ")" &&
+        value === "."
+      ) { scrollEnd(); return } // STOP IF ATTEMPT ).
+  
+      if (
+        input.current.slice(-1) === "." &&
+        isNaN(parseInt(value))
+      ) { scrollEnd(); return } // STOP IF ATTEMPT .. or .( or .x
+  
+      if (
+        (!isNaN(parseInt(input.current[input.current.length - 1])) &&
+        !isNaN(parseInt(input.current[input.current.length - 2])) &&
+        input.current[input.current.length - 3] === "." &&
+        !isNaN(parseInt(input.current[input.current.length - 4]))) &&
+        (!isNaN(parseInt(value)) || value === ".")
+      ) { scrollEnd(); return } // STOP IF ATTEMPT 3.999 or 3.77. (floating point number > 2)
+  
+      if (
+        (!isNaN(parseInt(input.current[input.current.length - 1])) &&
+        input.current[input.current.length - 2] === "." &&
+        !isNaN(parseInt(input.current[input.current.length - 3]))) &&
+        value === "."
+      ) { scrollEnd(); return } // STOP IF ATTEMPT 3.9.
+  
+      if (input.current.length === 0) {
+        if (
+          value === "/" ||
+          value === "." ||
+          value === "+" ||
+          value === "-" ||
+          value === "X" ||
+          value === ")"
+        ) return // STOP IF ATTEMPT ) FIRST
+      }
+  
+      if (
+        input.current.slice(-1) === ")" &&
+        value === "("
+      ) { scrollEnd(); return } // STOP IF ATTEMPT )(
+  
+      if (
+        input.current.slice(-1) === ")" &&
+        (!isNaN(parseInt(value)) || value === "N")
+      ) { scrollEnd(); return } // STOP IF ATTEMPT )9 or )N
+  
+      if (
+        !isNaN(parseInt(input.current.slice(-1))) && // last input is a number
+        (value === "(" || value === "N")
+      ) { scrollEnd(); return } // STOP IF ATTEMPT 9( or 9N
+  
+      if (
+        input.current.slice(-1) === "N" && // N = negative value
+        (value === "X" ||
+        value === "/" ||
+        value === "+" ||
+        value === "-" ||
+        value === "." ||
+        value === "(" ||
+        value === ")" ||
+        value === "N")
+      ) { scrollEnd(); return } // STOP IF ATTEMPT N+
+  
+      if (
+        (input.current.slice(-3) === " x " ||
+        input.current.slice(-3) === " / " ||
+        input.current.slice(-3) === " + " ||
+        input.current.slice(-3) === " - " ||
+        input.current.slice(-1) === "(" ||
+        input.current.slice(-1) === "N" ||
+        input.current.length === 0) &&
+        value === "="
+      ) { scrollEnd(); return } // STOP IF ATTEMPT N= or += or ""=
+  
+      if (input.current.includes("Infinity") && value === "=") { input.current = "Infinity"; setSecInput(input.current); scrollEnd(); return } // STOP IF INPUT INCLUDES "INFINITY" & ATTEMPT "=" // TEST
+  
+      if (
+        input.current.slice(-8) === "Infinity" &&
+        (value === "(" ||
+        value === "N" ||
+        !isNaN(parseInt(value)) ||
+        value === ".")
+      ) { scrollEnd(); return } // STOP IF ATTEMPT Infinity( or InfinityN or Infinity9 or Infinity. // TEST
+  
+      /// -----------> END STOPPERS <----------- ///
+  
+      /// -----------> BEGIN CALC <----------- ///
+  
+      //if (value === "=") { Adder({ scrollEnd, input, setInput, setSecInput, setParErr }); return }
+  
+      /// -----------> END CALC <----------- ///
+  
+      /// -----------> BEGIN INPUT UPDATE <----------- ///
+  
+      if (value === "X") { setInput((prev: string) => prev + " x "); setSecInput("") } // set operator with spaces
+      else if (value === "/") { setInput((prev: string) => prev + " / "); setSecInput("") } // set operator with spaces
+      else if (value === "+") { setInput((prev: string) => prev + " + "); setSecInput("") } // set operator with spaces
+      else if (value === "-") { setInput((prev: string) => prev + " - "); setSecInput("") } // set operator with spaces
+      else { input.current = input.current + value; setSecInput("") }
+  
+      console.log("AAAAAAAAAAAAAA")
+      //update(Math.random())
+      update({})
+      //else { setInput((prev: string) => prev + value); setSecInput("") }
+  
+      /// -----------> END INPUT UPDATE <----------- ///
+    }
+
+  /////////////////////////////////////////////////////////
+
   const PortButtons =
     portButtons.concat(lastButtonPort).map((e, i) =>
       <OwnButton
-        key={i} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
-        setInput={setInput} setParErr={setParErr} setSecInput={setSecInput}
+        key={i} /* scrollEnd={scrollEnd} */ /* parErr={e.parErr} */ value={e.value} /* input={input} */
+        /* setInput={input} */ /* setParErr={setParErr} */ /* setSecInput={setSecInput} */
         size={e.size} margin={e.margin} fontSize={OPCQH/1.5} small={e.small}
+        /* update={update} */ handlePress={handlePress}
       />
     );
 
   const LandButtons =
     landButtons.concat(lastButtonLand).map((e, i) =>
       <OwnButton
-        key={i} scrollEnd={scrollEnd} parErr={e.parErr} value={e.value} input={input}
-        setInput={setInput} setParErr={setParErr} setSecInput={setSecInput}
+        key={i} /* scrollEnd={scrollEnd} */ /* parErr={e.parErr} */ value={e.value} /* input={input} */
+        /* setInput={input} */ /* setParErr={setParErr} */ /* setSecInput={setSecInput} */
         size={e.size} margin={e.margin} fontSize={OPCQH} state={state}
+        /* update={update} */
       />
     );
 
@@ -137,7 +319,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               style={{ height: '40%' }}
-              children={ <Text style={[ s.mainResult, { fontSize: OPCQH * 6 } ]} children={ input.replaceAll(/N/g,"-") } /> }
+              children={ <Text style={[ s.mainResult, { fontSize: OPCQH * 6 } ]} children={ input.current.replaceAll(/N/g,"-") } /> }
             />
             <View
               style={{ height: '30%' }}
@@ -172,7 +354,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         style={{ height: '40%' }}
-        children={ <Text style={[ s.mainResult, { fontSize: OPCQH * 9, lineHeight: OPCQH * 9.2 } ]} children={ input.replaceAll(/N/g,"-") } /> }
+        children={ <Text style={[ s.mainResult, { fontSize: OPCQH * 9, lineHeight: OPCQH * 9.2 } ]} children={ input.current.replaceAll(/N/g,"-") } /> }
       />
       <View
         style={{ height: '30%' }}
@@ -203,11 +385,11 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const ModalForegroundScreen =
     <Animated.View
-      style={[ s.ModalForegroundScreen, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none' } ]}
+      style={[ s.ModalForegroundScreen, { backgroundColor: 'orange',opacity: 0/* fadeAnim */, pointerEvents: showModal ? 'auto' : 'none' } ]}
       children={
         <Pressable
-          style={[ s.ModalForegroundScreenPressable, { paddingTop: ins.top, paddingBottom: ins.bottom } ]}
-          onPress={() => updateShowModal(false)}
+          style={[ s.ModalForegroundScreenPressable, {  paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+          onPress={() => {console.log('CLICKED Home');updateShowModal(false)}}
         />
       }
     />
@@ -266,7 +448,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   }, [state])
 
   //console.log("INS", ins)
-  console.log("HOME CONSOLE LOG")
+  //console.log("HOME CONSOLE LOG")
 
   return (
     <View style={s.background}>

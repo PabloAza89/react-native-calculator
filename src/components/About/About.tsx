@@ -25,7 +25,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
-  console.log("TEST ABOUT")
+  //console.log("TEST ABOUT")
 
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
   const parsedMaxHorizontalInset = maxHorizontalInset * 2
@@ -35,17 +35,12 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
     state === 'book' && !calcLeft ? hingeBounds.left - ins.left - parsedMaxHorizontalInset :
     width - parsedMaxHorizontalInset
 
-  console.log("horizontalInset XXXXXXXXXXXXXXXXXXXX ", maxHorizontalInset)
-  console.log("parsedMaxHorizontalInset XXXXXXXXXXXXXXXXXXXX ", parsedMaxHorizontalInset)
-  console.log("PARSED WIDTH XXXXXXXXXXXXXXXXXXXX ", parsedWidth)
-
+  //console.log("horizontalInset XXXXXXXXXXXXXXXXXXXX ", maxHorizontalInset)
+  //console.log("parsedMaxHorizontalInset XXXXXXXXXXXXXXXXXXXX ", parsedMaxHorizontalInset)
+  //console.log("PARSED WIDTH XXXXXXXXXXXXXXXXXXXX ", parsedWidth)
 
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
-
-  useEffect(() => { // ON LEAVE COMPONENT
-    return () => updateShowModal(false)
-  }, [])
 
   // API: Home:      Overview:                        StatusBar:
   // 36   background active                           active
@@ -56,12 +51,10 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   // 28   background background                       active
   // 26   background background                       active
   // 23   active     background (1st) / active (next) active
-  useEffect(() => { // ON APP BLUR
-    const blur = AppState.addEventListener('blur', () => updateShowModal(false))
-    return () => blur.remove()
+  useEffect(() => {
+    const blur = AppState.addEventListener('blur', () => { updateShowModal(false); console.log("CLICKED 1") }) // ON APP BLUR
+    return () => { updateShowModal(false); blur.remove(); console.log("CLICKED 2") } // ON LEAVE COMPONENT
   }, []);
-
-  console.log("INS ABOUT", ins)
 
   return (
     <View style={s.background}>
@@ -69,8 +62,8 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
         style={[ s.backgroundModal, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
         children={
           <Pressable
-            style={[ s.backgroundModalButton,  { backgroundColor: 'red', /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
-            onPress={() => updateShowModal(false)}
+            style={[ s.backgroundModalButton,  { backgroundColor: 'yellow', /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
+            onPress={() => { console.log('CLICKED About'); updateShowModal(false) }}
             children={
               <View style={s.modal}>
                 <Text
@@ -137,7 +130,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
           }}
         >
           <Text
-            style={[s.title, {backgroundColor: 'green'}]}
+            style={[s.title, { /* backgroundColor: 'green' */ }]}
             children={'This App is developed by\nJuan Pablo Azambuyo'}
           />
           <View style={s.imageWrapper}>
