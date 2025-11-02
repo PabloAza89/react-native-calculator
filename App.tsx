@@ -60,9 +60,10 @@ const App = (): ReactElement => {
     { index: 0, routes: allRoutes.slice(0, 1) }
   ]
 
-  const [ secInput, setSecInput ] = useState("");
+  //const [ secInput, setSecInput ] = useState("");
   //const [ input, setInput ] = useState("");
   const input = useRef("");
+  const secInput = useRef("");
   const [ _, update ] = useState({});
 
   const inputt = useRef("");
@@ -74,7 +75,7 @@ const App = (): ReactElement => {
   const abc = (input: any) => {
     console.log("EXECUTED, SAVED IMPUT", input.current.toString())
     saveData("savedInput", input.current.toString())
-    saveData("savedSecInput", secInput.toString())
+    saveData("savedSecInput", secInput.current.toString())
     saveData("savedDate", Date.now().toString())
     saveData("savedTallBar", tallBar.current.toString())
     let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
@@ -131,7 +132,7 @@ const App = (): ReactElement => {
         return (
           <Home
             {...nav} {...sharedProps} input={input} setInput={input}
-            secInput={secInput} setSecInput={setSecInput}
+            secInput={secInput} setSecInput={secInput}
             showModal={showModal} updateShowModal={updateShowModal}
             update={update}
           />
@@ -173,9 +174,10 @@ const App = (): ReactElement => {
     const resRoute = await readData("savedRoute") // RESPONSE ROUTE
 
     //typeof resInput === "string" && setInput(resInput)
-    //typeof resInput === "string" && (input.current = "3")
-    typeof resInput === "string" && (input.current = resInput)
-    typeof resSecInput === "string" && setSecInput(resSecInput)
+    typeof resInput === "string" && (input.current = "32")
+    //typeof resInput === "string" && (input.current = resInput)
+    //typeof resSecInput === "string" && setSecInput(resSecInput)
+    typeof resSecInput === "string" && (secInput.current = resSecInput)
 
     try {
       await Font.loadAsync({

@@ -1,8 +1,9 @@
 import { AdderI, operationI } from '../interfaces/interfaces';
 
-export const Adder = ({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) => {
+//export const Adder = ({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) => {
+export const Adder = ({ scrollEnd, input, setInput, setSecInput, secInput, setParErr }: any) => {
 
-  let init: string[] = input.replace(/ /g,'').split("") // OK
+  let init: string[] = input.current.replace(/ /g,'').split("") // OK
 
   /// -----------> BEGIN NEGATIVE & FLOATING POINT PARSER <----------- ///
 
@@ -203,7 +204,11 @@ export const Adder = ({ scrollEnd, input, setInput, setSecInput, setParErr }: Ad
 
   if (prefix === "-") result?.splice(0,0,"N") // NEGATIVE PARSER
 
-  setSecInput(input)
-  setInput(result?.join(""))
+  // setSecInput(input)
+  // setInput(result?.join(""))
+
+  secInput.current = input.current
+  input.current = result?.join("")
+
   //console.log(result?.join("")) // FINAL RESULT
 }
