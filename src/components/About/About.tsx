@@ -51,10 +51,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   // 28   background background                       active
   // 26   background background                       active
   // 23   active     background (1st) / active (next) active
-  useEffect(() => {
-    const blur = AppState.addEventListener('blur', () => { updateShowModal(false); console.log("CLICKED 1") }) // ON APP BLUR
-    return () => { updateShowModal(false); blur.remove(); console.log("CLICKED 2") } // ON LEAVE COMPONENT
-  }, []);
+  useEffect(() => { return () => updateShowModal(false) }, []); // ON LEAVE COMPONENT
 
   return (
     <View style={s.background}>

@@ -260,7 +260,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       style={[ s.ModalForegroundScreen, { backgroundColor: 'orange',opacity: 0/* fadeAnim */, pointerEvents: showModal ? 'auto' : 'none' } ]}
       children={
         <Pressable
-          style={[ s.ModalForegroundScreenPressable, {  paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+          style={[ s.ModalForegroundScreenPressable, { backgroundColor: 'yellow', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
           onPress={() => {console.log('CLICKED Home');updateShowModal(false)}}
         />
       }

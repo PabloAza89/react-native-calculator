@@ -62,8 +62,8 @@ const App = (): ReactElement => {
   const secInput = useRef(""); // SECONDARY DISPLAY (UPPER)
   const [ _, update ] = useState({}); // DUMMY USESTATE FOR DISPLAY UPDATE
 
-  useEffect(() => { // ON APP BLUR
-    const blur = AppState.addEventListener('blur', () => {
+  useEffect(() => {
+    const blur = AppState.addEventListener('blur', () => { // ON APP BLUR
       console.log("EXECUTED, SAVED IMPUT", input.current.toString())
       saveData("savedInput", input.current.toString())
       saveData("savedSecInput", secInput.current.toString())
@@ -71,6 +71,7 @@ const App = (): ReactElement => {
       saveData("savedTallBar", tallBar.current.toString())
       let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
       saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+      updateShowModal(false)
     })
     return () => blur.remove()
   //}, [input, secInput]);
