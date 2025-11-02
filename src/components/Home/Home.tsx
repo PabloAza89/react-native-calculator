@@ -15,8 +15,6 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins, maxVerticalInset, maxHorizontalInset, update }: any): ReactElement => {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
-
-  //console.log("OOOOOOOOOOO width", width)
   console.log("XXXXXXXXXXXX INPUT", typeof input)
 
   const { navigate } = navigation
@@ -28,15 +26,6 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     lastRoute === 'KnowMore' && setShowKnowMore(true)
     lastRoute === 'About' && setShowKnowMore(false)
   }, [route])
-
-  //let ins = useSafeAreaInsets(); // insets
-
-  // const  ins = {
-  //   left: 1,
-  //   top: 1,
-  //   right: 1,
-  //   bottom: 1
-  // }
 
   const [ parErr, setParErr ] = useState(false);
 
@@ -52,12 +41,6 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const lastButtonPort = { value: "=", parErr: parErr, size: '22.5%', margin: '2%' }
   const lastButtonLand = { value: "=", parErr: parErr, size: `${92/7}%`, margin: '1%' }
-
-  //console.log("HEIGHT HEIGHT", height)
-  //console.log("WIDTH WIDTH", width)
-
-  //const maxLeftOrRight = ins.left > ins.right ? ins.left * 2 : ins.right * 2
-  //const maxTopOrBottom = ins.top > ins.bottom ? ins.top * 2 : ins.bottom * 2
 
   const parsedHorizontalInset = maxHorizontalInset * 2
   const parsedVerticalInset = maxVerticalInset * 2
@@ -84,149 +67,90 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const sharedProps = { width, height, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin, nextScreen, switchSide, navigation, aboutUp }
 
-  const AboutScreen =
-    <About
-      {...sharedProps} showModal={showModal} updateShowModal={updateShowModal}
-      calcLeft={calcLeft} twoScreens
-    />;
-
-  const KnowMoreScreen =
-    <KnowMore {...sharedProps} twoScreens />;
-
-  
-
-  //let qq = return
+  const AboutScreen = <About {...sharedProps} showModal={showModal} updateShowModal={updateShowModal} calcLeft={calcLeft} twoScreens />;
+  const KnowMoreScreen = <KnowMore {...sharedProps} twoScreens />
 
   /// -----------> BEGIN PRE-CALC & CALC (Adder) <----------- ///
 
-  function handlePress(value: string) {
+  function handlePress(kP: string) { // keyPressed
 
-    const scrollAndReturn = () => {
-      scrollEnd(); return
-    }
-  
-      if (value !== "=") setParErr(false) // ALWAYS RESET ERROR PARENTHESIS
-  
-      /// -----------> BEGIN STOPPERS <----------- ///
+    if (kP !== "=") setParErr(false) // ALWAYS RESET ERROR PARENTHESIS
 
+    /// -----------> BEGIN STOPPERS <----------- ///
 
-  
-      
+    const iCC = input.current // inputCurrentCopy
 
- 
-  
-      if (value === "C") { input.current = ""; secInput.current = "" ;update({}); return } // CLEAR INPUT AND STOP
-  
-      let splitted: string[] = input.current.replace(/ /g,'').split("") // OK
-  
-      if (
-        value === "=" &&
-        splitted.filter((e: string) => e === "(").length !== // STOP IF ((( AND ))) AMOUNT ARE UNEQUAL
-        splitted.filter((e: string) => e === ")").length
-      ) { setParErr(true); scrollEnd(); return }
-  
- 
-  
-      if (value === "B") { // Backspace
-        if (input.current.slice(-3) === " x " || // if last input is an operator: "123 + "
-          input.current.slice(-3) === " / " ||
-          input.current.slice(-3) === " + " ||
-          input.current.slice(-3) === " - ") {
-          input.current = input.current.slice(0,-3);
-          secInput.current = ""
-          update({})
-          return
-        }
-        else if (input.current.slice(-8) === "Infinity") { // if last input is Infinity: "Infinity" // TEST
-          input.current = input.current.slice(0,-8)
-          secInput.current = ""
-          update({})
-          return
-        }
-        else { // else
-          let seqOne = input.current.split("");
-          seqOne.pop();
-          let seqTwo = seqOne.join("");
-          input.current = seqTwo;
-          secInput.current = ""
-          update({})
-          return
-        }
-      } // EDIT PREVIOUS INPUT AND STOP
+    if (kP === "C") { input.current = ""; secInput.current = ""; update({}); return } // CLEAR INPUT AND STOP
 
-      if (input.current.length === 0 && ["/", ".","+","-","X",")"].includes(value)) return // STOP IF ATTEMPT ) FIRST
+    const iCS: string[] = iCC.replace(/ /g,'').split("") // inputCurrentSplitted
 
+    if (
+      kP === "=" && iCS.filter((e: string) => e === "(").length !== iCS.filter((e: string) => e === ")").length
+    ) { setParErr(true); scrollEnd(); return } // STOP IF (((( AND )) AMOUNT ARE UNEQUAL
 
-
-
-      if (
-        (input.current.length === input.current.replace(/ /g,'').length && value === "=") || // STOP IF INPUT IS "1e+38" or "1e+" or IF THERE IS NO OPERATION SIGN AND ATTEMPT = //
-        (parErr === true && value === "=") || // STOP IF PARENTHESIS ERROR IS DISPLAYED & ATTEMPT "="
-        (value === "=" && ["x", "/", "+", "-"].every(op => splitted.indexOf(op) === -1)) || // STOP IF "=" IS PRESSED & INPUT DONT HAVE x / + or -
-        ([" x ", " / "," + "," - ","("].includes(input.current.slice(-3)) &&
-          ["X", "/","+","-",")","."].includes(value)) || // STOP IF ATTEMPT + AND + (REPEATED OPERATORS)
-        input.current.slice(-1) === ")" && value === "." || // STOP IF ATTEMPT ).
-        (input.current.slice(-1) === "." && isNaN(parseInt(value))) || // STOP IF ATTEMPT .. or .( or .x
-        (!isNaN(parseInt(input.current[input.current.length - 1])) && !isNaN(parseInt(input.current[input.current.length - 2])) &&
-        input.current[input.current.length - 3] === "." && !isNaN(parseInt(input.current[input.current.length - 4])) &&
-        (!isNaN(parseInt(value)) || value === ".")) || // STOP IF ATTEMPT 3.999 or 3.77. (floating point number > 2)
-        (value === "." && !isNaN(parseInt(input.current[input.current.length - 1])) && input.current[input.current.length - 2] === "." &&
-          !isNaN(parseInt(input.current[input.current.length - 3]))) || // STOP IF ATTEMPT 3.9.
-        (input.current.slice(-1) === ")" && value === "(") || // STOP IF ATTEMPT )(
-        (input.current.slice(-1) === ")" && (!isNaN(parseInt(value)) || value === "N")) || // STOP IF ATTEMPT )9 or )N
-        (["(", "N"].includes(value) && !isNaN(parseInt(input.current.slice(-1)))) || // STOP IF ATTEMPT 9( or 9N
-        (input.current.slice(-1) === "N" && ["X", "/", "+", "-", ".", "(", ")", "N"].includes(value)) || // N = negative value // STOP IF ATTEMPT N+
-        (value === "=" && ([" x ", " / ", " + ", " - "].includes(input.current.slice(-3)) ||
-          ["(", "N"].includes(input.current.slice(-1)) || input.current.length === 0)) || // STOP IF ATTEMPT N= or += or ""
-        (input.current.slice(-8) === "Infinity" && (["(", "N", "."].includes(value) || !isNaN(parseInt(value)))) // STOP IF ATTEMPT Infinity( or InfinityN or Infinity9 or Infinity.
-      ) { scrollEnd(); return }
-
-      
-
-  
-      if (input.current.includes("Infinity") && value === "=") { input.current = "Infinity"; secInput.current = input.current ; scrollEnd(); update({}); return } // STOP IF INPUT INCLUDES "INFINITY" & ATTEMPT "=" // TEST
-  
-      
-  
-      /// -----------> END STOPPERS <----------- ///
-  
-      /// -----------> BEGIN CALC <----------- ///
-  
-      //if (value === "=") { Adder({ scrollEnd, input, setInput, setSecInput, setParErr }); return }
-      if (value === "=") { Adder({ scrollEnd, input, setInput, setSecInput, secInput, setParErr }); update({}); return }
-  
-      /// -----------> END CALC <----------- ///
-  
-      /// -----------> BEGIN INPUT UPDATE <----------- ///
-  
-      // if (value === "X") { setInput((prev: string) => prev + " x "); secInput.current = "" /* setSecInput("") */ } // set operator with spaces
-      // else if (value === "/") { setInput((prev: string) => prev + " / "); secInput.current = "" /* setSecInput("") */ } // set operator with spaces
-      // else if (value === "+") { setInput((prev: string) => prev + " + "); secInput.current = ""/* setSecInput("") */ } // set operator with spaces
-      // else if (value === "-") { setInput((prev: string) => prev + " - "); secInput.current = ""/* setSecInput("") */ } // set operator with spaces
-      // else { input.current = input.current + value; secInput.current = ""/* setSecInput("") */ }
-
-      if (value === "X") { input.current = input.current + " x "; secInput.current = "" /* setSecInput("") */ } // set operator with spaces
-      else if (value === "/") { input.current = input.current + " / "; secInput.current = "" /* setSecInput("") */ } // set operator with spaces
-      else if (value === "+") { input.current = input.current + " + "; secInput.current = ""/* setSecInput("") */ } // set operator with spaces
-      else if (value === "-") { input.current = input.current + " - "; secInput.current = ""/* setSecInput("") */ } // set operator with spaces
-      else { input.current = input.current + value; secInput.current = ""/* setSecInput("") */ }
-  
-      console.log("AAAAAAAAAAAAAA")
-      //update(Math.random())
+    if (kP === "B") { // Backspace
+      if ([" x ", " / "," + "," - "].includes(iCC.slice(-3))) input.current = iCC.slice(0,-3) // if last input is an operator: "123 + "
+      else if (iCC.slice(-8) === "Infinity") input.current = iCC.slice(0,-8) // if last input is Infinity: "Infinity" // TEST
+      else input.current = iCC.slice(0, -1) // else erase last character
+      secInput.current = ""
       update({})
-      //else { setInput((prev: string) => prev + value); setSecInput("") }
-  
-      /// -----------> END INPUT UPDATE <----------- ///
-    }
+      return
+    } // EDIT PREVIOUS INPUT AND STOP
+
+    if (iCC.length === 0 && ["/", ".","+","-","X",")"].includes(kP)) return // STOP IF ATTEMPT ) FIRST
+
+    if (
+      (iCC.length === iCC.replace(/ /g,'').length && kP === "=") || // STOP IF INPUT IS "1e+38" or "1e+" or IF THERE IS NO OPERATION SIGN AND ATTEMPT = //
+      (parErr === true && kP === "=") || // STOP IF PARENTHESIS ERROR IS DISPLAYED & ATTEMPT "="
+      (kP === "=" && ["x", "/", "+", "-"].every(op => iCS.indexOf(op) === -1)) || // STOP IF "=" IS PRESSED & INPUT DONT HAVE x / + or -
+      ([" x ", " / "," + "," - ","("].includes(iCC.slice(-3)) &&
+        ["X", "/","+","-",")","."].includes(kP)) || // STOP IF ATTEMPT + AND + (REPEATED OPERATORS)
+      iCC.slice(-1) === ")" && kP === "." || // STOP IF ATTEMPT ).
+      (iCC.slice(-1) === "." && isNaN(parseInt(kP))) || // STOP IF ATTEMPT .. or .( or .x
+      (!isNaN(parseInt(iCC[iCC.length - 1])) && !isNaN(parseInt(iCC[iCC.length - 2])) &&
+      iCC[iCC.length - 3] === "." && !isNaN(parseInt(iCC[iCC.length - 4])) &&
+      (!isNaN(parseInt(kP)) || kP === ".")) || // STOP IF ATTEMPT 3.999 or 3.77. (floating point number > 2)
+      (kP === "." && !isNaN(parseInt(iCC[iCC.length - 1])) && iCC[iCC.length - 2] === "." &&
+        !isNaN(parseInt(iCC[iCC.length - 3]))) || // STOP IF ATTEMPT 3.9.
+      (iCC.slice(-1) === ")" && kP === "(") || // STOP IF ATTEMPT )(
+      (iCC.slice(-1) === ")" && (!isNaN(parseInt(kP)) || kP === "N")) || // STOP IF ATTEMPT )9 or )N
+      (["(", "N"].includes(kP) && !isNaN(parseInt(iCC.slice(-1)))) || // STOP IF ATTEMPT 9( or 9N
+      (iCC.slice(-1) === "N" && ["X", "/", "+", "-", ".", "(", ")", "N"].includes(kP)) || // N = negative value // STOP IF ATTEMPT N+
+      (kP === "=" && ([" x ", " / ", " + ", " - "].includes(iCC.slice(-3)) ||
+        ["(", "N"].includes(iCC.slice(-1)) || iCC.length === 0)) || // STOP IF ATTEMPT N= or += or ""
+      (iCC.slice(-8) === "Infinity" && (["(", "N", "."].includes(kP) || !isNaN(parseInt(kP)))) // STOP IF ATTEMPT Infinity( or InfinityN or Infinity9 or Infinity.
+    ) { scrollEnd(); return }
+
+    if (iCC.includes("Infinity") && kP === "=") { input.current = "Infinity"; secInput.current = input.current ; scrollEnd(); update({}); return } // STOP IF INPUT INCLUDES "INFINITY" & ATTEMPT "="
+
+    /// -----------> END STOPPERS <----------- ///
+
+    /// -----------> BEGIN CALC <----------- ///
+
+    //if (value === "=") { Adder({ scrollEnd, input, setInput, setSecInput, setParErr }); return }
+    if (kP === "=") { Adder({ scrollEnd, input, setInput, setSecInput, secInput, setParErr }); update({}); return }
+
+    /// -----------> END CALC <----------- ///
+
+    /// -----------> BEGIN INPUT UPDATE <----------- ///
+
+    if (kP === "X") { input.current = iCC + " x "; secInput.current = "" } // set operator with spaces
+    else if (kP === "/") { input.current = iCC + " / "; secInput.current = "" } // set operator with spaces
+    else if (kP === "+") { input.current = iCC + " + "; secInput.current = "" } // set operator with spaces
+    else if (kP === "-") { input.current = iCC + " - "; secInput.current = "" } // set operator with spaces
+    else { input.current = iCC + kP; secInput.current = "" }
+    update({})
+
+    /// -----------> END INPUT UPDATE <----------- ///
+  }
 
   /// -----------> END PRE-CALC & CALC (Adder) <----------- ///
 
   const PortButtons =
     portButtons.concat(lastButtonPort).map((e, i) =>
       <OwnButton
-        key={i} value={e.value} size={e.size} margin={e.margin} 
-        fontSize={OPCQH/1.5} small={e.small}
-        handlePress={handlePress}
+        key={i} value={e.value} size={e.size} margin={e.margin}
+        fontSize={OPCQH/1.5} small={e.small} handlePress={handlePress}
       />
     );
 
@@ -234,7 +158,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     landButtons.concat(lastButtonLand).map((e, i) =>
       <OwnButton
         key={i} value={e.value} size={e.size} margin={e.margin}
-         fontSize={OPCQH} state={state}
+        fontSize={OPCQH} state={state}
       />
     );
 
@@ -373,30 +297,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   useEffect(() => {
     state === 'tabletop' && nextColor(1)
     return () => currIndex.stopAnimation()
-    // if (state === 'tabletop' && !aboutUp) nextColor(1)
-    // else { currIndex.stopAnimation() }
-    //currIndex.stopAnimation()
-    //currIndex.stopAnimation()
-    // !showCalc && aboutUp
-    // if (state === 'tabletop' && showCalc) { //nextColor(1) // START COLORS
-    //   sC([[0, 0, 255], [255, 0, 255]])
-    //   nextColor(1) // START COLORS
-    // } else {
-    //   currIndex.stopAnimation()
-    //   sC([[255, 255, 255], [255, 255, 255]])
-    // }
-    // if (state === 'tabletop' && showCalc) { //nextColor(1) // START COLORS
-    //   sC([[0, 0, 255], [255, 0, 255]])
-    //   nextColor(1) // START COLORS
-    // } else {
-    //   currIndex.stopAnimation()
-    //   sC([[255, 255, 255], [255, 255, 255]])
-    // }
-    // (state === 'tabletop' && showCalc) ? qq : 'white'
   }, [state])
-
-  //console.log("INS", ins)
-  //console.log("HOME CONSOLE LOG")
 
   return (
     <View style={s.background}>

@@ -14,7 +14,7 @@ const OwnButton = ({ value, size, margin, fontSize, small, state, handlePress }:
       underlayColor="#dddddd"
       activeOpacity={1}
       style={[ state === 'tabletop' ? s.ownButtonTabletop : s.ownButton, { width: size, marginLeft: margin } ]}
-      onPress={() => handlePress(value)}
+      onPress={() => handlePress(value)} // value = keyPressed = kP
       children={
         <Text
           style={[ s.text, { fontSize: small ? fontSize * 10 : fontSize * 12 } ]}

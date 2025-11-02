@@ -46,8 +46,6 @@ const App = (): ReactElement => {
     "tallBar": "false" // tallNavigationBar
   });
 
-  //useEffect(() => console.log("CURRENT LAYOUT", layout.state), [layout])
-
   const navigationRef = useNavigationContainerRef();
 
   const [ animation, setAnimation ] = useState<StackAnimationTypes>('none'); // NO INITIAL SCREEN ANIMATION
@@ -60,40 +58,20 @@ const App = (): ReactElement => {
     { index: 0, routes: allRoutes.slice(0, 1) }
   ]
 
-  //const [ secInput, setSecInput ] = useState("");
-  //const [ input, setInput ] = useState("");
-  const input = useRef("");
-  const secInput = useRef("");
-  const [ _, update ] = useState({});
-
-  const inputt = useRef("");
-
-  // useEffect(() => {
-
-  // }, [])
-
-  const abc = (input: any) => {
-    console.log("EXECUTED, SAVED IMPUT", input.current.toString())
-    saveData("savedInput", input.current.toString())
-    saveData("savedSecInput", secInput.current.toString())
-    saveData("savedDate", Date.now().toString())
-    saveData("savedTallBar", tallBar.current.toString())
-    let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
-    saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
-  }
+  const input = useRef(""); // MAIN DISPLAY (CENTER)
+  const secInput = useRef(""); // SECONDARY DISPLAY (UPPER)
+  const [ _, update ] = useState({}); // DUMMY USESTATE FOR DISPLAY UPDATE
 
   useEffect(() => { // ON APP BLUR
-    console.log("ENTER HERE")
-    const blur = AppState.addEventListener('blur', () => abc(input))
-    //const blur = AppState.addEventListener('blur', () => {
-      // console.log("EXECUTED, SAVED IMPUT", input.toString())
-      // saveData("savedInput", input.toString())
-      // saveData("savedSecInput", secInput.toString())
-      // saveData("savedDate", Date.now().toString())
-      // saveData("savedTallBar", tallBar.current.toString())
-      // let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
-      // saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
-    //})
+    const blur = AppState.addEventListener('blur', () => {
+      console.log("EXECUTED, SAVED IMPUT", input.current.toString())
+      saveData("savedInput", input.current.toString())
+      saveData("savedSecInput", secInput.current.toString())
+      saveData("savedDate", Date.now().toString())
+      saveData("savedTallBar", tallBar.current.toString())
+      let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
+      saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
+    })
     return () => blur.remove()
   //}, [input, secInput]);
   }, []);
@@ -173,10 +151,7 @@ const App = (): ReactElement => {
     const resTallBar = await readData("savedTallBar") // RESPONSE HEIGHT
     const resRoute = await readData("savedRoute") // RESPONSE ROUTE
 
-    //typeof resInput === "string" && setInput(resInput)
-    typeof resInput === "string" && (input.current = "32")
-    //typeof resInput === "string" && (input.current = resInput)
-    //typeof resSecInput === "string" && setSecInput(resSecInput)
+    typeof resInput === "string" && (input.current = resInput)
     typeof resSecInput === "string" && (secInput.current = resSecInput)
 
     try {
@@ -191,7 +166,6 @@ const App = (): ReactElement => {
     } catch (error) { console.log(error) }
 
     async function navigationBarToGestureOrViceVersa() {
-      //console.log("22222222222222222222222222")
       if (typeof resDate === "string" && typeof resTallBar === "string" && typeof resRoute === "string") {
         if (Date.now() - parseInt(resDate) < 60000 && resTallBar !== tallBar.current.toString()) {
           resRoute === "KnowMore" ? navigationRef.dispatch(CommonActions.reset(routes[0])) :
@@ -213,12 +187,8 @@ const App = (): ReactElement => {
   useLayoutEffect(() => {
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
-      //console.log("LAYOUT", e)
-      //console.log("LAYOUT", e.state)
       setLayout(e)
-      //setLayout(Object.assign( {}, e, { "density": PixelRatio.get() } ))
       tallBar.current = e.tallBar
-
       if (runOnceAvailable.current) runOnce()
     });
     return () => LayoutInfoListener.remove();
