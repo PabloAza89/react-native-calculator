@@ -69,10 +69,10 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const [ OPCQH, setOPCQH ] = useState(0) // onePercentContainerQueryHeight
 
-  const sharedProps = { width, height:height/2, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin, nextScreen, switchSide, navigation, aboutUp }
+  const sharedProps = { width, height, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin, nextScreen, switchSide, navigation, aboutUp }
 
   const AboutScreen = <About {...sharedProps} showModal={showModal} updateShowModal={updateShowModal} calcLeft={calcLeft} twoScreens />;
-  const KnowMoreScreen = <KnowMore {...sharedProps} twoScreens />
+  const KnowMoreScreen = (currentHeight: any) => <KnowMore {...{...sharedProps, height: currentHeight}} twoScreens />
 
   /// -----------> BEGIN PRE-CALC & CALC (Adder) <----------- ///
 
@@ -341,7 +341,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
             }
 
             { ModalForegroundScreen }
-            { !showCalc && (aboutUp ? AboutScreen : KnowMoreScreen) }
+            { !showCalc && (aboutUp ? AboutScreen : (KnowMoreScreen(hingeBounds.top))) }
 
           </View>
           <Animated.View /* LOWER SIDE */
@@ -362,7 +362,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
             }
 
             { ModalForegroundScreen }
-            { !showCalc && ( aboutUp ? KnowMoreScreen : AboutScreen ) }
+            { !showCalc && ( aboutUp ? KnowMoreScreen(height - hingeBounds.bottom) : AboutScreen ) }
 
           </Animated.View>
         </View> :
@@ -372,11 +372,11 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
         <View style={s.bookContainer} /* BOOK */>
           <View style={[ s.eachSideBook, { width: hingeBounds.left - ins.left } ]} /* LEFT SIDE */ >
             { ModalForegroundScreen }
-            { calcLeft ? PortCalc : ( showKnowMore ? KnowMoreScreen : AboutScreen ) }
+            { calcLeft ? PortCalc : ( showKnowMore ? KnowMoreScreen(height) : AboutScreen ) }
           </View>
           <View style={[ s.eachSideBook, { left: hingeBounds.right - hingeBounds.left, width: width - hingeBounds.right - ins.right } ]} /* RIGHT SIDE */ >
             { ModalForegroundScreen }
-            { calcLeft ? ( showKnowMore ? KnowMoreScreen : AboutScreen ) : PortCalc }
+            { calcLeft ? ( showKnowMore ? KnowMoreScreen(height) : AboutScreen ) : PortCalc }
           </View>
         </View> :
 

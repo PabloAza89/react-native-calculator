@@ -191,7 +191,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   //   4                 —— GRADIENT + OPACITY (StatusBar)
   //   3     —————————————— SCROLLVIEW
   //   2     ————————————   GRADIENT + OPACITY
-  //   1     —————————————— COLORS + GRADIENT
+  //   1     —————————————— ANIMATED COLORS + GRADIENT
 
   // console.log("ins.left", ins.left)
   // console.log("ins.top", ins.top)
@@ -202,25 +202,27 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
     <View style={[s.mainContainer, { /* flex: 1 */ }]}>
 
       {
-        !(state === 'tabletop' && aboutUp) &&
+        !(state === 'tabletop' && aboutUp) && // STATUS BAR
         <LinearGradient
           colors={linearGradientColors}
           style={[ s.linearGradient, { zIndex: 4, height: ins.top } ]}
-          start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
+          //start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
+          start={[ 0, height / parsedInsTop ]}
           end={[ 1, 0 ]}
         />
       }
 
       <LinearGradient
-        colors={linearGradientColors}
+        colors={linearGradientColors} // BODY
         //style={[ s.linearGradient, { zIndex: 2, height: (height/1) - ins.top, top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
-        style={[ s.linearGradient, { zIndex: 2, height: '95%', top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
+        //style={[ s.linearGradient, { zIndex: 2, height: (state === 'tabletop' && aboutUp) ? 0 : height - ins.top, top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
+        style={[ s.linearGradient, { zIndex: 2 },  (state === 'tabletop' && aboutUp) ? { height: 0, top: 0 } : { height: height - ins.top, top: ins.top } ]}
         start={[ 0, 1 - topByHeight ]}
         end={[ 1, topByHeight * -1 ]}
       />
 
       <AnimatedLinearGradient
-        colors={linearGradientColors}
+        colors={linearGradientColors} // ENTIRE WINDOW
         style={[ s.animatedLinearGradient, { backgroundColor: currentColor } ]}
         start={[ 0, 1 ]} // [ XfromLeft, YfromTop ]
         end={[ 1, 0 ]}   // [ XfromLeft, YfromTop ]
