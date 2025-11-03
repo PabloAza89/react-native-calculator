@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const s = StyleSheet.create({
   background: {
-    //backgroundColor: 'lightblue',
+    backgroundColor: 'lightblue',
     position: 'relative',
     width: '100%',
     height: '100%',
@@ -118,13 +118,7 @@ export const s = StyleSheet.create({
     width: '100%',
     height: '100%'
   },
-  leftScreenBook: {
-    //backgroundColor: 'lightblue',
-    //flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  rightScreenBook: {
+  eachSideBook: {
     backgroundColor: 'lightblue',
     justifyContent: 'center',
     alignItems: 'center'

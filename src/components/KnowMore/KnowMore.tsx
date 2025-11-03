@@ -2,7 +2,7 @@ import { ReactElement, useState, useEffect, useRef } from 'react';
 import {
   View, StatusBar, ScrollView, Pressable, InteractionManager, ActivityIndicator,
   NativeSyntheticEvent, NativeScrollEvent, Animated, useAnimatedValue,
-  UIManager, findNodeHandle, Platform
+  UIManager, findNodeHandle, Platform, Dimensions
 } from 'react-native';
 import { s } from './KnowMoreCSS';
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -17,6 +17,10 @@ const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
 const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins }: any): ReactElement => {
+
+  //const { height: screenHeight } = Dimensions.get('window');
+  //console.log("screenHeight", screenHeight)
+  console.log("XXXXXXXXXXXX height KNOWMORE", height)
 
   const { navigate } = navigation;
 
@@ -209,7 +213,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
       <LinearGradient
         colors={linearGradientColors}
-        style={[ s.linearGradient, { zIndex: 2, height: height - ins.top, top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
+        //style={[ s.linearGradient, { zIndex: 2, height: (height/1) - ins.top, top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
+        style={[ s.linearGradient, { zIndex: 2, height: '95%', top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
         start={[ 0, 1 - topByHeight ]}
         end={[ 1, topByHeight * -1 ]}
       />
