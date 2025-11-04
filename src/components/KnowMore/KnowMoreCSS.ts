@@ -76,15 +76,20 @@ export const s = StyleSheet.create({
     color: 'white',
     fontWeight: '600',
     fontSize: 14,
-    lineHeight: 15,
-    marginLeft: -6,
-    marginRight: 2,
     textAlign: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+  },
+  oneLine: {
+    lineHeight: 30,
+    height: 32,
+  },
+  twoLines: {
+    lineHeight: 16,
+    height: 32,
   },
   space: {
-    width: 25,
-    height: 25
+    width: 24,
+    height: 24
   },
   buttonContainer: {
     //backgroundColor: 'green', // DEV

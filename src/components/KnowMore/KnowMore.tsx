@@ -16,11 +16,13 @@ import CustomButton from '../CustomButton/CustomButton';
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
-const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins }: any): ReactElement => {
+const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins, maxVerticalInset }: any): ReactElement => {
 
   //const { height: screenHeight } = Dimensions.get('window');
   //console.log("screenHeight", screenHeight)
   console.log("XXXXXXXXXXXX height KNOWMORE", height)
+  console.log("XXXXXXXXXXXX ins", ins)
+  console.log("XXXXXXXXXXXX state", state)
 
   const { navigate } = navigation;
 
@@ -216,7 +218,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         colors={linearGradientColors} // BODY
         //style={[ s.linearGradient, { zIndex: 2, height: (height/1) - ins.top, top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
         //style={[ s.linearGradient, { zIndex: 2, height: (state === 'tabletop' && aboutUp) ? 0 : height - ins.top, top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
-        style={[ s.linearGradient, { zIndex: 2 },  (state === 'tabletop' && aboutUp) ? { height: 0, top: 0 } : { height: height - ins.top, top: ins.top } ]}
+        style={[ s.linearGradient, { zIndex: 2 },  (state === 'tabletop' && aboutUp) ? { height: 0, top: 0 } : { height: height - (ins.top*1), top: ins.top } ]}
         start={[ 0, 1 - topByHeight ]}
         end={[ 1, topByHeight * -1 ]}
       />
@@ -239,7 +241,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         }}
         contentContainerStyle={{
           paddingLeft: ins.left,
-          paddingTop: ins.top * 1,
+          //paddingTop: ins.top * 1, // HERE
+          paddingTop: (state === 'tabletop' && aboutUp) ? 24 : ins.top * 1, // HERE
           paddingRight: ins.right,
           paddingBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom * 1,
         }}
@@ -256,7 +259,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
                   size={30}
                   color={iconColor}
                   onPress={() => switchSide()}
-                  children={ <Text style={s.textInButton} children={'SWITCH\nSCREENS'} /> }
+                  margin={{ right: 12 }}
+                  children={ <Text style={[ s.textInButton, s.twoLines ]} children={'SWITCH\nSCREENS'} /> }
                 /> :
                 <CustomButton
                   type={Ionicons.Button}
@@ -264,11 +268,12 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
                   size={30}
                   color={iconColor}
                   onPress={() => navigate('About')}
-                  children={ <Text style={s.textInButton} children={'BACK'} /> }
+                  margin={{ right: 12 }}
+                  children={ <Text style={[ s.textInButton, s.oneLine ]} children={'BACK'} /> }
                 />
               }
 
-              <View style={s.space} />
+              {/* <View style={s.space} /> */}
 
               {
                 twoScreens && state === 'tabletop' ?
@@ -278,7 +283,9 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
                   size={30}
                   color={iconColor}
                   onPress={() => nextScreen()}
-                  children={ <Text style={s.textInButton} children={'HOME'} /> }
+                  margin={{ left: 12 }}
+                  //style={{ height: 30, backgroundColor: 'red' }}
+                  children={ <Text style={[ s.textInButton, s.oneLine ]} children={'HOME'} /> }
                 /> :
                 twoScreens ?
                 <CustomButton
@@ -287,7 +294,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
                   size={25}
                   color={iconColor}
                   onPress={() => nextScreen()}
-                  children={ <Text style={s.textInButton} children={'ABOUT'} /> }
+                  margin={{ left: 12 }}
+                  children={ <Text style={[ s.textInButton, s.oneLine ]} children={'ABOUT'} /> }
                 /> :
                 <CustomButton
                   type={Ionicons.Button}
@@ -295,7 +303,8 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
                   size={30}
                   color={iconColor}
                   onPress={() => navigate('Home')}
-                  children={ <Text style={s.textInButton} children={'HOME'} /> }
+                  margin={{ left: 12 }}
+                  children={ <Text style={[ s.textInButton, s.oneLine ]} children={'HOME'} /> }
                 />
               }
 

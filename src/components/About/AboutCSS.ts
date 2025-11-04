@@ -133,7 +133,21 @@ export const s = StyleSheet.create({
     //textAlignVertical: 'center',
     //includeFontPadding: false
     //paddingBottom: 40,
-    
+  },
+  textInButton: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 14,
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
+  oneLine: {
+    lineHeight: 30,
+    height: 32,
+  },
+  twoLines: {
+    lineHeight: 16,
+    height: 32,
   },
   textInButtonLower: {
     color: 'white',

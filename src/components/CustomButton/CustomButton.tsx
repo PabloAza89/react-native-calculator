@@ -10,7 +10,6 @@ const CustomButton = (props: any) => {
         marginTop: props.margin?.top | 0,
         marginRight: props.margin?.right | 0,
         marginBottom: props.margin?.bottom | 0,
-        
       }]}
     >
       <props.type

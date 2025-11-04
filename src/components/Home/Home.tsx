@@ -154,7 +154,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     portButtons.concat(lastButtonPort).map((e, i) =>
       <OwnButton
         key={i} value={e.value} size={e.size} margin={e.margin}
-        fontSize={OPCQH/1.5} small={e.small} handlePress={handlePress}
+        fontSize={OPCQH/1.5} handlePress={handlePress} small={e.small}
       />
     );
 
@@ -162,7 +162,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     landButtons.concat(lastButtonLand).map((e, i) =>
       <OwnButton
         key={i} value={e.value} size={e.size} margin={e.margin}
-        fontSize={OPCQH} state={state}
+        fontSize={OPCQH} handlePress={handlePress} state={state}
       />
     );
 

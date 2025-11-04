@@ -156,7 +156,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               color={'rgba(0, 0, 0, .7)'}
               onPress={() => switchSide()}
               margin={{ bottom: 24 }}
-              children={ <Text style={s.textInButtonUpper} children={'SWITCH\nSCREENS'} /> }
+              children={ <Text style={[ s.textInButton, s.twoLines ]} children={'SWITCH\nSCREENS'} /> }
             /> :
             <CustomButton
               type={Ionicons.Button}
@@ -165,7 +165,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               color={'rgba(0, 0, 0, .7)'}
               onPress={() => navigate('Home')}
               margin={{ bottom: 24 }}
-              children={ <Text style={s.textInButtonUpper} children={'BACK'} /> }
+              children={ <Text style={[ s.textInButton, s.oneLine ]} children={'BACK'} /> }
             />
           }
           {
@@ -177,7 +177,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               color={'rgba(0, 0, 0, .7)'}
               onPress={() => nextScreen()}
               //iconStyle={s.buttonAndIconLower}
-              children={ <Text style={s.textInButtonUpper} children={ state === 'tabletop' ? 'HOME' : 'HOW DOES IT WORK ?' } /> }
+              children={ <Text style={[ s.textInButton, s.oneLine ]} children={ state === 'tabletop' ? 'HOME' : 'HOW DOES IT WORK ?' } /> }
             /> :
             <CustomButton
               type={Ionicons.Button}
@@ -186,7 +186,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               color={'rgba(0, 0, 0, .7)'}
               onPress={() => navigate('KnowMore')}
               iconStyle={s.buttonAndIconLower}
-              children={ <Text style={s.textInButtonLower} children={'HOW DOES IT WORK ?'} /> }
+              children={ <Text style={[ s.textInButton, s.oneLine, { transform: [{ rotate: '180deg' }] } ]} children={'HOW DOES IT WORK ?'} /> }
             />
           }
         </View>
