@@ -242,14 +242,14 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
         contentContainerStyle={{
           paddingLeft: ins.left,
           //paddingTop: ins.top * 1, // HERE
-          paddingTop: (state === 'tabletop' && aboutUp) ? 24 : ins.top * 1, // HERE
+          paddingTop: ins.top === 0 || (state === 'tabletop' && aboutUp) ? 24 : ins.top * 1, // HERE
           paddingRight: ins.right,
           paddingBottom: (state === 'tabletop' && !aboutUp) ? 0 : ins.bottom * 1,
         }}
         style={[ s.customScrollView, {}]}
       >
         <View style={[ s.background, { width: '100%' } ]}>
-            <View style={[ s.buttonContainer, { marginTop: 7 } ]}>
+            <View style={[ s.buttonContainer, { marginTop: ins.top === 0 || (state === 'tabletop' && aboutUp) ? 0 : 7 } ]}>
 
               {
                 twoScreens ?
