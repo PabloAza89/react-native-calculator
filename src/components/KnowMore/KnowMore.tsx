@@ -22,7 +22,7 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
   //console.log("screenHeight", screenHeight)
   console.log("XXXXXXXXXXXX height KNOWMORE", height)
   console.log("XXXXXXXXXXXX ins", ins)
-  console.log("XXXXXXXXXXXX state", state)
+
 
   const { navigate } = navigation;
 

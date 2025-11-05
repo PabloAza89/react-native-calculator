@@ -102,6 +102,8 @@ const App = (): ReactElement => {
   const maxHorizontalInset = layout.maxHorizontalInset
   const vmin = layout.vmin
 
+    console.log("XXXXXXXXXXXX state", state)
+
   const sharedProps = { width, height, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin }
 
   const dynamicImport = (nav: navigationI, module: string) => {

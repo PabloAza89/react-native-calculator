@@ -85,8 +85,8 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
   var currentMaxHorizontalInset: Int by Delegates.notNull<Int>()
   var currentMaxVerticalInset: Int by Delegates.notNull<Int>()
   lateinit var rootView: View
-
-  lateinit var testVar: String
+  lateinit var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener
+  //lateinit var testVar: String
 
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // initialize the splash screen
@@ -94,11 +94,19 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
     WindowCompat.setDecorFitsSystemWindows(window, false)
     dotsPerInch = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
     rootView = findViewById<View>(android.R.id.content).rootView
-    rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+    // rootView = findViewById<View>(android.R.id.content).rootView
+    // rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+    //   override fun onGlobalLayout() {
+    //     if (canUpdate) updateUI(null, true)
+    //   }
+    // })
+
+    globalLayoutListener = object: ViewTreeObserver.OnGlobalLayoutListener {
       override fun onGlobalLayout() {
-        if (canUpdate) updateUI(null, true)
+        Log.d("LOG", "NEW INFO OBSERVER");
+        if (canUpdate) updateUI(null) // true
       }
-    })
+    }
 
     //val rootViewww = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
     // val rootViewww = findViewById<ViewGroup>(android.R.id.content)
@@ -120,7 +128,8 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
   override fun onReactContextInitialized(context: ReactContext) {
     class ListenerCallback : Consumer<WindowLayoutInfo> {
       override fun accept(newLayoutInfo: WindowLayoutInfo) {
-        if (canUpdate) updateUI(newLayoutInfo, false)
+        Log.d("LOG", "NEW INFO CALLBACK");
+        if (canUpdate) updateUI(newLayoutInfo) // false
       }
     }
 
@@ -130,36 +139,54 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
 
     val lifecycleEventListener = object: LifecycleEventListener {
       override fun onHostResume() {
+        Log.d("LOG", "onHostResume");
         windowInfoTracker.addWindowLayoutInfoListener(
           this@MainActivity,
           Executors.newSingleThreadExecutor(),
           listenerCallback
         )
+        //rootView = findViewById<View>(android.R.id.content).rootView
+        // rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        //   override fun onGlobalLayout() {
+        //     if (canUpdate) updateUI(null, true)
+        //   }
+        // })
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
       }
 
       override fun onHostPause() {
-        Log.d("LOG", "REMOVE CALLBACK");
+        Log.d("LOG", "onHostPause");
         windowInfoTracker.removeWindowLayoutInfoListener(listenerCallback)
+        rootView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
 
-        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) { // 16 to now
         //   rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
         //   Log.d("LOG", "REMOVE LAYOUT LISTENER >= JELLY BEAN");
         // } else {
-        //   rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener)
+        //   rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener) // 1 a 16
         //   Log.d("LOG", "REMOVE LAYOUT LISTENER OTHER");
         // }
       }
-      override fun onHostDestroy() { }
+      override fun onHostDestroy() {
+        Log.d("LOG", "onHostDestroy");
+      }
     }
     context.addLifecycleEventListener(lifecycleEventListener)
   }
 
-  fun updateUI(incomingWindowLayoutInfo: WindowLayoutInfo?, manual: Boolean) {
+  fun updateUI(incomingWindowLayoutInfo: WindowLayoutInfo?) { //manual: Boolean
+    //Log.d("LOG", "isInMultiWindowMode: " + this@MainActivity.isInMultiWindowMode)
+    Log.d("LOG", "incomingWindowLayoutInfo " + incomingWindowLayoutInfo)
     canUpdate = false // FLAG FOR updateUI()
     Log.d("LOG", "incomingWindowLayoutInfo " + incomingWindowLayoutInfo)
 
+    val mainActivity = this@MainActivity
+
+    // MULTI-WINDOW //
+    val multiWindow = mainActivity.isInMultiWindowMode
+
     // BEGIN ORIENTATION //
-    val newOrientation = this@MainActivity.resources.configuration.orientation
+    val newOrientation = mainActivity.resources.configuration.orientation
     if (newOrientation == Configuration.ORIENTATION_PORTRAIT) { currentOrientation = "portrait" }
     else { currentOrientation = "landscape" }
     // END ORIENTATION //
@@ -174,7 +201,7 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
       val mainMap = Arguments.createMap()
 
       // BEGIN WINDOW //
-      val windowBounds = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
+      val windowBounds = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(mainActivity).bounds
       val newWindow = mutableMapOf("width" to windowBounds.width(), "height" to windowBounds.height())
       if (currentWindow.isEmpty() || !currentWindow.equals(newWindow)) { currentWindow = newWindow; sendUpdate = true }
       // END WINDOW //
@@ -236,7 +263,7 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
         )
 
         newState =
-          if (foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) "flat"
+          if ((foldingFeature.state == FoldingFeature.State.FLAT && foldingFeature.occlusionType == FoldingFeature.OcclusionType.NONE) || multiWindow) "flat"
           else if (foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) "tabletop"
           else "book"
       } else {
@@ -298,8 +325,8 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
     if (incomingWindowLayoutInfo != null) collectAndCancel(incomingWindowLayoutInfo, false) // AUTO FOLDING FEATURE INFO
     else { // MANUAL FOLDING FEATURE INFO
       job = lifecycleScope.launch(Dispatchers.Main) {
-        WindowInfoTracker.getOrCreate(this@MainActivity)
-          .windowLayoutInfo(this@MainActivity)
+        WindowInfoTracker.getOrCreate(mainActivity)
+          .windowLayoutInfo(mainActivity)
           .collect { collectAndCancel(it, true) }
       };
     }
