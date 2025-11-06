@@ -182,8 +182,8 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
 
     val mainActivity = this@MainActivity
 
-    // MULTI-WINDOW //
-    val multiWindow = mainActivity.isInMultiWindowMode
+    // MULTI-WINDOW // 24
+    val multiWindow = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) mainActivity.isInMultiWindowMode else false
 
     // BEGIN ORIENTATION //
     val newOrientation = mainActivity.resources.configuration.orientation

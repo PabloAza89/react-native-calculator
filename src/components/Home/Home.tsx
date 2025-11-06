@@ -82,50 +82,55 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
     /// -----------> BEGIN STOPPERS <----------- ///
 
-    const iCC = input.current // inputCurrentCopy
+    const iC = input.current // inputCurrent
 
     if (kP === "C") { input.current = ""; secInput.current = ""; update({}); return } // CLEAR INPUT AND STOP
 
-    const iCS: string[] = iCC.replace(/ /g,'').split("") // inputCurrentSplitted
+    const iCS: string[] = iC.replace(/ /g,'').split("") // inputCurrentSplitted
 
-    if (
-      kP === "=" && iCS.filter((e: string) => e === "(").length !== iCS.filter((e: string) => e === ")").length
-    ) { setParErr(true); scrollEnd(); return } // STOP IF (((( AND )) AMOUNT ARE UNEQUAL
+    // if (
+    //   kP === "=" && iCS.filter((e: string) => e === "(").length !== iCS.filter((e: string) => e === ")").length
+    // ) { setParErr(true); scrollEnd(); return } // STOP IF (((( AND )) AMOUNT ARE UNEQUAL
 
     if (kP === "B") { // Backspace
-      if ([" x ", " / "," + "," - "].includes(iCC.slice(-3))) input.current = iCC.slice(0,-3) // if last input is an operator: "123 + "
-      else if (iCC.slice(-8) === "Infinity") input.current = iCC.slice(0,-8) // if last input is Infinity: "Infinity" // TEST
-      else input.current = iCC.slice(0, -1) // else erase last character
+      if ([" x ", " / "," + "," - "].includes(iC.slice(-3))) input.current = iC.slice(0,-3) // if last input is an operator: "123 + "
+      else if (iC.slice(-8) === "Infinity") input.current = iC.slice(0,-8) // if last input is Infinity: "Infinity" // TEST
+      else input.current = iC.slice(0, -1) // else erase last character
       secInput.current = ""
       update({})
       return
     } // EDIT PREVIOUS INPUT AND STOP
 
-    if (iCC.length === 0 && ["/", ".","+","-","X",")"].includes(kP)) return // STOP IF ATTEMPT ) FIRST
+    //if (iC.length === 0 && ["/", ".","+","-","X",")"].includes(kP)) return // STOP IF ATTEMPT ) FIRST
 
     if (
-      (iCC.length === iCC.replace(/ /g,'').length && kP === "=") || // STOP IF INPUT IS "1e+38" or "1e+" or IF THERE IS NO OPERATION SIGN AND ATTEMPT = //
+      (iC.length === 0 && ["/", ".","+","-","X",")"].includes(kP)) || // STOP IF ATTEMPT ) FIRST
+      (iC.length === iC.replace(/ /g,'').length && kP === "=") || // STOP IF INPUT IS "1e+38" or "1e+" or IF THERE IS NO OPERATION SIGN AND ATTEMPT = //
       (parErr === true && kP === "=") || // STOP IF PARENTHESIS ERROR IS DISPLAYED & ATTEMPT "="
       (kP === "=" && ["x", "/", "+", "-"].every(op => iCS.indexOf(op) === -1)) || // STOP IF "=" IS PRESSED & INPUT DONT HAVE x / + or -
-      ([" x ", " / "," + "," - ","("].includes(iCC.slice(-3)) &&
+      ([" x ", " / "," + "," - ","("].includes(iC.slice(-3)) &&
         ["X", "/","+","-",")","."].includes(kP)) || // STOP IF ATTEMPT + AND + (REPEATED OPERATORS)
-      iCC.slice(-1) === ")" && kP === "." || // STOP IF ATTEMPT ).
-      (iCC.slice(-1) === "." && isNaN(parseInt(kP))) || // STOP IF ATTEMPT .. or .( or .x
-      (!isNaN(parseInt(iCC[iCC.length - 1])) && !isNaN(parseInt(iCC[iCC.length - 2])) &&
-      iCC[iCC.length - 3] === "." && !isNaN(parseInt(iCC[iCC.length - 4])) &&
+      iC.slice(-1) === ")" && kP === "." || // STOP IF ATTEMPT ).
+      (iC.slice(-1) === "." && isNaN(parseInt(kP))) || // STOP IF ATTEMPT .. or .( or .x
+      (!isNaN(parseInt(iC[iC.length - 1])) && !isNaN(parseInt(iC[iC.length - 2])) &&
+      iC[iC.length - 3] === "." && !isNaN(parseInt(iC[iC.length - 4])) &&
       (!isNaN(parseInt(kP)) || kP === ".")) || // STOP IF ATTEMPT 3.999 or 3.77. (floating point number > 2)
-      (kP === "." && !isNaN(parseInt(iCC[iCC.length - 1])) && iCC[iCC.length - 2] === "." &&
-        !isNaN(parseInt(iCC[iCC.length - 3]))) || // STOP IF ATTEMPT 3.9.
-      (iCC.slice(-1) === ")" && kP === "(") || // STOP IF ATTEMPT )(
-      (iCC.slice(-1) === ")" && (!isNaN(parseInt(kP)) || kP === "N")) || // STOP IF ATTEMPT )9 or )N
-      (["(", "N"].includes(kP) && !isNaN(parseInt(iCC.slice(-1)))) || // STOP IF ATTEMPT 9( or 9N
-      (iCC.slice(-1) === "N" && ["X", "/", "+", "-", ".", "(", ")", "N"].includes(kP)) || // N = negative value // STOP IF ATTEMPT N+
-      (kP === "=" && ([" x ", " / ", " + ", " - "].includes(iCC.slice(-3)) ||
-        ["(", "N"].includes(iCC.slice(-1)) || iCC.length === 0)) || // STOP IF ATTEMPT N= or += or ""
-      (iCC.slice(-8) === "Infinity" && (["(", "N", "."].includes(kP) || !isNaN(parseInt(kP)))) // STOP IF ATTEMPT Infinity( or InfinityN or Infinity9 or Infinity.
+      (kP === "." && !isNaN(parseInt(iC[iC.length - 1])) && iC[iC.length - 2] === "." &&
+        !isNaN(parseInt(iC[iC.length - 3]))) || // STOP IF ATTEMPT 3.9.
+      (iC.slice(-1) === ")" && kP === "(") || // STOP IF ATTEMPT )(
+      (iC.slice(-1) === ")" && (!isNaN(parseInt(kP)) || kP === "N")) || // STOP IF ATTEMPT )9 or )N
+      (["(", "N"].includes(kP) && !isNaN(parseInt(iC.slice(-1)))) || // STOP IF ATTEMPT 9( or 9N
+      (iC.slice(-1) === "N" && ["X", "/", "+", "-", ".", "(", ")", "N"].includes(kP)) || // N = negative value // STOP IF ATTEMPT N+
+      (kP === "=" && ([" x ", " / ", " + ", " - "].includes(iC.slice(-3)) ||
+        ["(", "N"].includes(iC.slice(-1)) || iC.length === 0)) || // STOP IF ATTEMPT N= or += or ""
+      (iC.slice(-8) === "Infinity" && (["(", "N", "."].includes(kP) || !isNaN(parseInt(kP)))) // STOP IF ATTEMPT Infinity( or InfinityN or Infinity9 or Infinity.
     ) { scrollEnd(); return }
 
-    if (iCC.includes("Infinity") && kP === "=") { input.current = "Infinity"; secInput.current = input.current ; scrollEnd(); update({}); return } // STOP IF INPUT INCLUDES "INFINITY" & ATTEMPT "="
+    if (
+      kP === "=" && iCS.filter((e: string) => e === "(").length !== iCS.filter((e: string) => e === ")").length
+    ) { setParErr(true); scrollEnd(); return } // STOP IF (((( AND )) AMOUNT ARE UNEQUAL
+
+    if (iC.includes("Infinity") && kP === "=") { input.current = "Infinity"; secInput.current = input.current ; scrollEnd(); update({}); return } // STOP IF INPUT INCLUDES "INFINITY" & ATTEMPT "="
 
     /// -----------> END STOPPERS <----------- ///
 
@@ -138,11 +143,11 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
     /// -----------> BEGIN INPUT UPDATE <----------- ///
 
-    if (kP === "X") { input.current = iCC + " x "; secInput.current = "" } // set operator with spaces
-    else if (kP === "/") { input.current = iCC + " / "; secInput.current = "" } // set operator with spaces
-    else if (kP === "+") { input.current = iCC + " + "; secInput.current = "" } // set operator with spaces
-    else if (kP === "-") { input.current = iCC + " - "; secInput.current = "" } // set operator with spaces
-    else { input.current = iCC + kP; secInput.current = "" }
+    if (kP === "X") { input.current = iC + " x "; secInput.current = "" } // set operator with spaces
+    else if (kP === "/") { input.current = iC + " / "; secInput.current = "" } // set operator with spaces
+    else if (kP === "+") { input.current = iC + " + "; secInput.current = "" } // set operator with spaces
+    else if (kP === "-") { input.current = iC + " - "; secInput.current = "" } // set operator with spaces
+    else { input.current = iC + kP; secInput.current = "" }
     update({})
 
     /// -----------> END INPUT UPDATE <----------- ///
