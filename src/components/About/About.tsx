@@ -38,24 +38,21 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
 
-  // API: Home:      Overview:                        StatusBar:
-  // 36   background active                           active
-  // 34   background active                           active
-  // 31   background active                           active
-  // 30   background background                       active
-  // 29   background background                       active
-  // 28   background background                       active
-  // 26   background background                       active
-  // 23   active     background (1st) / active (next) active
   useEffect(() => { return () => updateShowModal(false) }, []); // ON LEAVE COMPONENT
+
+  // ****** ↓↓↓ BACKGROUND SCHEME ↓↓↓ ******
+  // zIndex
+  //   3                 —— GRADIENT + OPACITY (StatusBar)
+  //   2     —————————————— SCROLLVIEW
+  //   1     ————————————   GRADIENT + OPACITY
 
   return (
     <View style={s.background}>
       <Animated.View
-        style={[ s.backgroundModal, { backgroundColor: twoScreens ? 'transparent' : 'rgba(0, 0, 0, 0.4)', opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+        style={[ s.modalForegroundAbout/* s.backgroundModal */, { backgroundColor: twoScreens ? 'transparent' : 'rgba(0, 0, 0, 0.4)', opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
         children={
           <Pressable
-            style={[ s.backgroundModalButton,  { /* backgroundColor: 'yellow', */ /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
+            style={[ s.modalForegroundAboutPressable/* s.backgroundModalButton */,  { /* backgroundColor: 'yellow', */ /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
             onPress={() => { console.log('CLICKED About'); updateShowModal(false) }}
             //onPress={() => { if (!twoScreens) {console.log('CLICKED About'); updateShowModal(false)} }}
             children={
@@ -92,14 +89,14 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
 
       <LinearGradient // STATUS BAR
         colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
-        style={[ { height: ins.top, /* zIndex: (state === 'tabletop' && aboutUp) ? 4 : 0, */ position: 'absolute', width: '100%', top: ins.top *0 , opacity: 0.7 } ]}
+        style={[ { height: ins.top, zIndex: 3, position: 'absolute', width: '100%', top: ins.top *0 , opacity: 0.7 } ]}
         start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
         end={[ 1, 0 ]}
       />
 
       <LinearGradient  // BACKGROUND
         colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
-        style={[ {  height: '100%', position: 'absolute', width: '100%', top: ins.top *1 , opacity: 0.7 } ]}
+        style={[ {  zIndex: 1, height: '100%', position: 'absolute', width: '100%', top: ins.top *1 , opacity: 0.7 } ]}
         start={[ 0, 1 - topByHeight ]}
         end={[ 1, topByHeight * -1 ]}
       />
@@ -111,7 +108,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
           right: ins.right,
           bottom: (state === 'tabletop' && aboutUp) ? 0 : ins.bottom,
         }}
-        style={s.cswStyle}
+        style={[s.cswStyle, { zIndex: 2 }]}
         contentContainerStyle={s.cswContentContainerStyle}
       >
         <View

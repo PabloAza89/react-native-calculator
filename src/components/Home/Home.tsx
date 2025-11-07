@@ -273,12 +273,18 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       </View>
     </View>;
 
-  const ModalForegroundScreen =
+  // ****** ↓↓↓ MODAL SCHEME ↓↓↓ ******
+  // zIndex
+  // 1000001 ———————————— modalForegroundAbout
+  // 1000000 ———————————— modalForegroundHome
+  // ...     ———————————— ...rest of the App
+
+  const ModalForegroundHome =
     <Animated.View
-      style={[ s.ModalForegroundScreen, { /* backgroundColor: 'orange', */opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none' } ]}
+      style={[ s.modalForegroundHome, { /* backgroundColor: 'orange', */opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none' } ]}
       children={
         <Pressable
-          style={[ s.ModalForegroundScreenPressable, { /* backgroundColor: 'yellow', */ paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+          style={[ s.modalForegroundHomePressable, { /* backgroundColor: 'yellow', */ paddingTop: ins.top, paddingBottom: ins.bottom } ]}
           onPress={() => {console.log('CLICKED Home');updateShowModal(false)}}
         />
       }
@@ -363,7 +369,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
             }
 
             {/* { ModalForegroundScreen } */}
-            { ModalForegroundScreen }
+            { ModalForegroundHome }
             { !showCalc && (aboutUp ? AboutScreen : (KnowMoreScreen(hingeBounds.top))) }
 
           </View>
@@ -385,7 +391,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
             }
 
             {/* { ModalForegroundScreen } */}
-            { ModalForegroundScreen }
+            { ModalForegroundHome }
             { !showCalc && ( aboutUp ? KnowMoreScreen(height - hingeBounds.bottom) : AboutScreen ) }
 
           </Animated.View>
@@ -396,12 +402,12 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
         <View style={s.bookContainer} /* BOOK */>
           <View style={[ s.eachSideBook, { width: hingeBounds.left - ins.left } ]} /* LEFT SIDE */ >
             {/* { calcLeft && ModalForegroundScreen } */}
-            { ModalForegroundScreen }
+            { ModalForegroundHome }
             { calcLeft ? PortCalc : ( showKnowMore ? KnowMoreScreen(height) : AboutScreen ) }
           </View>
           <View style={[ s.eachSideBook, { left: hingeBounds.right - hingeBounds.left, width: width - hingeBounds.right - ins.right } ]} /* RIGHT SIDE */ >
             {/* { !calcLeft && ModalForegroundScreen } */}
-            { ModalForegroundScreen }
+            { ModalForegroundHome }
             { calcLeft ? ( showKnowMore ? KnowMoreScreen(height) : AboutScreen ) : PortCalc }
           </View>
         </View> :

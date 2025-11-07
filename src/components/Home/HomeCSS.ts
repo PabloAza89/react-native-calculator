@@ -92,8 +92,6 @@ export const s = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden'
-    //zIndex: 2000000
-    //zIndex: 1
   },
   lowerScreenTabletop: {
     //backgroundColor: '#adb4e6', // DEV // #adb4e6
@@ -123,22 +121,19 @@ export const s = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  ModalForegroundScreen: { // MODAL // MODAL // MODAL //
+  modalForegroundHome: { // MODAL // MODAL // MODAL //
     display: 'flex',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
     position: 'absolute',
-    //zIndex: 1000000,
-    zIndex: 999999,
-    //zIndex: 2000002,
+    zIndex: 1000000,
     width: '100%',
     height: '100%'
   },
-  ModalForegroundScreenPressable: {
+  modalForegroundHomePressable: {
     display: 'flex',
     width: '100%',
     height: '100%',
     justifyContent: 'center',
-    //zIndex: 2000003,
     alignItems: 'center'
   }
 });

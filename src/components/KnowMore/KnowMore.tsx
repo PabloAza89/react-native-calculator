@@ -216,8 +216,6 @@ const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens
 
       <LinearGradient
         colors={linearGradientColors} // BODY
-        //style={[ s.linearGradient, { zIndex: 2, height: (height/1) - ins.top, top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
-        //style={[ s.linearGradient, { zIndex: 2, height: (state === 'tabletop' && aboutUp) ? 0 : height - ins.top, top: (state === 'tabletop' && aboutUp) ? 0 : ins.top }]}
         style={[ s.linearGradient, { zIndex: 2 },  (state === 'tabletop' && aboutUp) ? { height: 0, top: 0 } : { height: height - (ins.top*1), top: ins.top } ]}
         start={[ 0, 1 - topByHeight ]}
         end={[ 1, topByHeight * -1 ]}

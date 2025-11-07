@@ -6,11 +6,6 @@ export const s = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
     width: '100%',
-    /* paddingRight: 50,
-    paddingLeft: 50, */
-    /* marginRight: 50,
-    marginLeft: 50, */
-    /* zIndex: 2000000, */
   },
   linearGradient: {
     position: 'absolute',
@@ -67,23 +62,20 @@ export const s = StyleSheet.create({
   iconStyle: {
     position: 'absolute'
   },
-  backgroundModal: {
+  modalForegroundAbout: {
     //backgroundColor: 'yellow', // DEV
     //backgroundColor: 'rgba(0, 0, 0, 0.4)',
     display: 'flex',
     position: 'absolute',
-    //zIndex: 1000000,
-    zIndex: 2000000,
+    zIndex: 1000001,
     width: '100%',
     height: '100%',
   },
-  backgroundModalButton: {
+  modalForegroundAboutPressable: {
     //backgroundColor: 'red', // DEV
     display: 'flex',
     width: '100%',
     height: '100%',
-    //zIndex: 1000000,
-    zIndex: 2000001,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -91,8 +83,6 @@ export const s = StyleSheet.create({
     display: 'flex',
     position: 'relative',
     opacity: 1,
-    //zIndex: 2000001,
-    //zIndex: 2000002,
     backgroundColor: 'white',
     padding: 10,
     borderRadius: 10

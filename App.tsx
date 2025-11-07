@@ -11,7 +11,6 @@ import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIco
 import { StackAnimationTypes, enableScreens } from "react-native-screens";
 //import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { dimI, navigationI } from './src/interfaces/interfaces';
-import { s } from './AppCSS';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +24,7 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
         animation: animation,
         statusBarColor: 'transparent',
         statusBarStyle: 'dark',
-        //contentStyle: { backgroundColor: "red", zIndex: 60000005, position: 'absolute' }
+        //contentStyle: { backgroundColor: "red", position: 'absolute' }
       }}
       //children={ screens.map((e: ReactElement) => e) }
       children={ 
@@ -37,7 +36,7 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
   )
 }
 
-// <View style={{backgroundColor: 'red', /* zIndex: 4000002, */ position: 'absolute', width: '100%', height: '100%'}}>
+// <View style={{backgroundColor: 'red', position: 'absolute', width: '100%', height: '100%'}}>
 
 const App = (): ReactElement => {
 
@@ -72,6 +71,15 @@ const App = (): ReactElement => {
   const secInput = useRef(""); // SECONDARY DISPLAY (UPPER)
   const [ _, update ] = useState({}); // DUMMY USESTATE FOR DISPLAY UPDATE
 
+  // API: Home:      Overview:                        StatusBar:
+  // 36   background active                           active
+  // 34   background active                           active
+  // 31   background active                           active
+  // 30   background background                       active
+  // 29   background background                       active
+  // 28   background background                       active
+  // 26   background background                       active
+  // 23   active     background (1st) / active (next) active
   useEffect(() => {
     const blur = AppState.addEventListener('blur', () => { // ON APP BLUR
       saveData("savedInput", input.current.toString())
