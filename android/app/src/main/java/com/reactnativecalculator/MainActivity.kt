@@ -1,23 +1,10 @@
 package com.reactnativecalculator
 
-import android.content.Context
-import android.content.Context.SENSOR_SERVICE
 import android.content.res.Configuration
-import android.graphics.Insets
 import android.graphics.Rect
-import android.hardware.display.DisplayManager
-import android.hardware.SensorManager
-import android.hardware.Sensor
-import android.hardware.SensorEventListener
-import android.hardware.SensorEvent
 import android.os.Bundle
 import android.os.Build
-import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
-import android.view.WindowManager
-import android.view.Display
-import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.WindowInsets
@@ -25,27 +12,23 @@ import android.view.WindowInsets
 import androidx.annotation.RequiresApi
 import androidx.core.util.Consumer
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.window.java.layout.WindowInfoTrackerCallbackAdapter
 import androidx.window.layout.WindowInfoTracker
 import androidx.window.layout.WindowMetricsCalculator
 import androidx.window.layout.WindowLayoutInfo
 import androidx.window.layout.FoldingFeature
-import androidx.window.layout.DisplayFeature
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 
-import com.facebook.react.ReactActivity
-import com.facebook.react.ReactActivityDelegate
-import com.facebook.react.ReactInstanceManager.ReactInstanceEventListener
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
-import com.facebook.react.defaults.DefaultReactActivityDelegate
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactContext
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
+import com.facebook.react.defaults.DefaultReactActivityDelegate
 import com.facebook.react.modules.core.DeviceEventManagerModule
+import com.facebook.react.ReactActivity
+import com.facebook.react.ReactActivityDelegate
+import com.facebook.react.ReactInstanceManager.ReactInstanceEventListener
 
-import com.reactnativecalculator.hingeBoundsClass
 import com.reactnativecalculator.R
 
 import com.zoontek.rnbootsplash.RNBootSplash
@@ -56,25 +39,15 @@ import java.util.concurrent.Executors
 
 import kotlin.math.min
 import kotlin.properties.Delegates
-import kotlin.reflect.full.declaredMemberProperties
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Job
 
-
-
-
-//import android.view.ViewGroup
-
-
-
-
-
 @Suppress("DEPRECATION")
-class MainActivity : ReactActivity(), ReactInstanceEventListener {  
-  lateinit var currentOrientation: String// = "portrait" // DEFAULT
+class MainActivity : ReactActivity(), ReactInstanceEventListener {
+  lateinit var currentOrientation: String
   var canUpdate: Boolean = true
   var sendUpdate: Boolean = false
   var dotsPerInch: Double by Delegates.notNull<Double>()
@@ -86,33 +59,19 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
   var currentMaxVerticalInset: Int by Delegates.notNull<Int>()
   lateinit var rootView: View
   lateinit var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener
-  //lateinit var testVar: String
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    RNBootSplash.init(this, R.style.Start); // initialize the splash screen
+    RNBootSplash.init(this, R.style.Start); // Initialize SplashScreen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
     WindowCompat.setDecorFitsSystemWindows(window, false)
     dotsPerInch = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
     rootView = findViewById<View>(android.R.id.content).rootView
-    // rootView = findViewById<View>(android.R.id.content).rootView
-    // rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-    //   override fun onGlobalLayout() {
-    //     if (canUpdate) updateUI(null, true)
-    //   }
-    // })
 
     globalLayoutListener = object: ViewTreeObserver.OnGlobalLayoutListener {
       override fun onGlobalLayout() {
-        Log.d("LOG", "NEW INFO OBSERVER");
-        if (canUpdate) updateUI(null) // true
+        if (canUpdate) updateUI(null)
       }
     }
-
-    //val rootViewww = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
-    // val rootViewww = findViewById<ViewGroup>(android.R.id.content)
-    // rootViewww.setClipChildren(false)
-    // rootViewww.setClipToPadding(false)
-    //rootView.setClipChildren(false)
   }
 
   override fun onResume() {
@@ -128,8 +87,7 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
   override fun onReactContextInitialized(context: ReactContext) {
     class ListenerCallback : Consumer<WindowLayoutInfo> {
       override fun accept(newLayoutInfo: WindowLayoutInfo) {
-        Log.d("LOG", "NEW INFO CALLBACK");
-        if (canUpdate) updateUI(newLayoutInfo) // false
+        if (canUpdate) updateUI(newLayoutInfo)
       }
     }
 
@@ -139,46 +97,26 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
 
     val lifecycleEventListener = object: LifecycleEventListener {
       override fun onHostResume() {
-        Log.d("LOG", "onHostResume");
         windowInfoTracker.addWindowLayoutInfoListener(
           this@MainActivity,
           Executors.newSingleThreadExecutor(),
           listenerCallback
         )
-        //rootView = findViewById<View>(android.R.id.content).rootView
-        // rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-        //   override fun onGlobalLayout() {
-        //     if (canUpdate) updateUI(null, true)
-        //   }
-        // })
         rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
       }
 
       override fun onHostPause() {
-        Log.d("LOG", "onHostPause");
         windowInfoTracker.removeWindowLayoutInfoListener(listenerCallback)
         rootView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
-
-        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) { // 16 to now
-        //   rootView.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
-        //   Log.d("LOG", "REMOVE LAYOUT LISTENER >= JELLY BEAN");
-        // } else {
-        //   rootView.viewTreeObserver.removeGlobalOnLayoutListener(layoutListener) // 1 a 16
-        //   Log.d("LOG", "REMOVE LAYOUT LISTENER OTHER");
-        // }
       }
-      override fun onHostDestroy() {
-        Log.d("LOG", "onHostDestroy");
-      }
+      override fun onHostDestroy() { }
     }
     context.addLifecycleEventListener(lifecycleEventListener)
   }
 
   fun updateUI(incomingWindowLayoutInfo: WindowLayoutInfo?) { //manual: Boolean
-    //Log.d("LOG", "isInMultiWindowMode: " + this@MainActivity.isInMultiWindowMode)
-    Log.d("LOG", "incomingWindowLayoutInfo " + incomingWindowLayoutInfo)
+    Log.d("LOG", "incomingWindowLayoutInfo: " + incomingWindowLayoutInfo)
     canUpdate = false // FLAG FOR updateUI()
-    Log.d("LOG", "incomingWindowLayoutInfo " + incomingWindowLayoutInfo)
 
     val mainActivity = this@MainActivity
 
@@ -194,8 +132,6 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
     lateinit var job: Job
 
     fun collectAndCancel(windowLayoutInfo: WindowLayoutInfo, doJob: Boolean) {
-      Log.d("LOG", "RESPONSE " + windowLayoutInfo) // windowLayoutInfo
-
       if (doJob) job.cancel();
 
       val mainMap = Arguments.createMap()
@@ -209,7 +145,6 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
       // BEGIN INSETS //
       @RequiresApi(Build.VERSION_CODES.R)
       fun getInsetsCompatR(rootView: View): Unit {
-        //rootView.setClipChildren(false)
         val newInsets =
           rootView.rootWindowInsets?.getInsets(
             WindowInsets.Type.statusBars() or
@@ -240,12 +175,10 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
       // END INSETS //
 
       // BEGIN VERTICAL & HORIZONTAL INSET //
-
       if (currentInsets.left > currentInsets.right) currentMaxHorizontalInset = currentInsets.left
       else currentMaxHorizontalInset = currentInsets.right
       if (currentInsets.top > currentInsets.bottom) currentMaxVerticalInset = currentInsets.top
       else currentMaxVerticalInset = currentInsets.bottom
-
       // END VERTICAL & HORIZONTAL INSET //
 
       val foldingFeature = windowLayoutInfo.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull()
@@ -275,10 +208,7 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
 
       if (currentHingeBounds.isEmpty() || !currentHingeBounds.equals(newHingeBounds)) { currentHingeBounds = newHingeBounds; sendUpdate = true }
 
-
       if (sendUpdate) {
-        Log.d("LOG", "INSETS ${currentInsets}") // test
-        Log.d("LOG", "DPI ${dotsPerInch}") // test
         mainMap.putMap("hingeBounds", Arguments.createMap().apply {
           putDouble("left", currentHingeBounds["left"]!! / dotsPerInch)
           putDouble("top", currentHingeBounds["top"]!! / dotsPerInch)
@@ -332,10 +262,8 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
     }
   }
 
-  // Returns the name of the main component registered from JavaScript. This is used to schedule rendering of the component.
   override fun getMainComponentName(): String = "reactNativeCalculator"
 
-  // Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate] which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
   override fun createReactActivityDelegate(): ReactActivityDelegate =
     ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED, DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled))
 }
