@@ -125,11 +125,11 @@ export const s = StyleSheet.create({
   },
   ModalForegroundScreen: { // MODAL // MODAL // MODAL //
     display: 'flex',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    position: 'absolute',
+    //backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'red',
+    //position: 'absolute',
     //zIndex: 1000000,
-    zIndex: 999999,
-    //zIndex: 2000002,
+    zIndex: 4000002,
     width: '100%',
     height: '100%'
   },
@@ -138,7 +138,7 @@ export const s = StyleSheet.create({
     width: '100%',
     height: '100%',
     justifyContent: 'center',
-    //zIndex: 2000003,
+    zIndex: 4000003,
     alignItems: 'center'
   }
 });

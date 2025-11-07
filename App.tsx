@@ -1,15 +1,17 @@
-import { ReactElement, useEffect, useState, useRef, useLayoutEffect } from "react";
+import React, { ReactElement, useEffect, useState, useRef, useLayoutEffect } from "react";
 import {  CommonActions, NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BootSplash from "react-native-bootsplash";
 import * as Font from 'expo-font';
-import { Image, AppState, Dimensions, useWindowDimensions, NativeModules, NativeEventEmitter, PixelRatio, } from 'react-native';
+import { Image, AppState, Dimensions, useWindowDimensions, NativeModules, NativeEventEmitter,
+  PixelRatio, View, Animated, useAnimatedValue, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 import { AntDesign, Entypo, FontAwesome5, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { StackAnimationTypes, enableScreens } from "react-native-screens";
 //import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { dimI, navigationI } from './src/interfaces/interfaces';
+import { s } from './AppCSS';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,11 +25,19 @@ const NavigatorMapper = (animation: StackAnimationTypes, tallBar: boolean, scree
         animation: animation,
         statusBarColor: 'transparent',
         statusBarStyle: 'dark',
+        //contentStyle: { backgroundColor: "red", zIndex: 60000005, position: 'absolute' }
       }}
-      children={ screens.map((e: ReactElement) => e) }
+      //children={ screens.map((e: ReactElement) => e) }
+      children={ 
+        
+          screens.map((e: ReactElement) => e)
+        
+      }
     />
   )
 }
+
+// <View style={{backgroundColor: 'red', /* zIndex: 4000002, */ position: 'absolute', width: '100%', height: '100%'}}>
 
 const App = (): ReactElement => {
 
@@ -64,7 +74,6 @@ const App = (): ReactElement => {
 
   useEffect(() => {
     const blur = AppState.addEventListener('blur', () => { // ON APP BLUR
-      console.log("EXECUTED, SAVED IMPUT", input.current.toString())
       saveData("savedInput", input.current.toString())
       saveData("savedSecInput", secInput.current.toString())
       saveData("savedDate", Date.now().toString())
@@ -74,9 +83,7 @@ const App = (): ReactElement => {
       updateShowModal(false)
     })
     return () => blur.remove()
-  //}, [input, secInput]);
   }, []);
-  //}, [input, secInput]);
 
   const saveData = async (key: string, value: string) => {
     try { await AsyncStorage.setItem(key, value) }
@@ -93,6 +100,10 @@ const App = (): ReactElement => {
   const [ showModal, setShowModal ] = useState(false);
   const updateShowModal = (bool: boolean) => setShowModal(bool)
 
+  const fadeAnim = useAnimatedValue(0); // ORIGINAL
+  const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
+  const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
+
   const width = layout.window.width
   const height = layout.window.height
   const state = layout.state
@@ -102,9 +113,7 @@ const App = (): ReactElement => {
   const maxHorizontalInset = layout.maxHorizontalInset
   const vmin = layout.vmin
 
-    console.log("XXXXXXXXXXXX state", state)
-
-  const sharedProps = { width, height, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin }
+  const sharedProps = { width, height, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin, fadeAnim, fadeIn, fadeOut }
 
   const dynamicImport = (nav: navigationI, module: string) => {
     switch (module) {
@@ -132,14 +141,30 @@ const App = (): ReactElement => {
     }
   }
 
+  //const fadeAnim = useAnimatedValue(0); // ORIGINAL
+
+  // const ModalForegroundScreen =
+  //   <Animated.View
+  //     style={[ s.ModalForegroundScreen, { /* backgroundColor: 'orange', */opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none' } ]}
+  //     children={
+  //       <Pressable
+  //         style={[ s.ModalForegroundScreenPressable, { /* backgroundColor: 'yellow', */ paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+  //         onPress={() => {console.log('CLICKED Home');updateShowModal(false)}}
+  //       />
+  //     }
+  //   />
+
   let stackScreens: ReactElement[] = [ "Home", "About", "KnowMore" ].map((e: string) => {
     return (
-      <Stack.Screen
-        name={e}
-        key={e}
-        options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" } }} // DEFAULT APP BACKGROUND COLOR
-        children={(nav) => dynamicImport(nav, e)}
-      />
+      
+        <Stack.Screen
+          name={e}
+          key={e}
+          options={{ contentStyle: { backgroundColor: "rgb(255, 255, 255)" } }} // DEFAULT APP BACKGROUND COLOR
+          //children={(nav) => dynamicImport(nav, e)}
+          children={(nav) => dynamicImport(nav, e)}
+        />
+      
     )
   })
 
@@ -201,6 +226,7 @@ const App = (): ReactElement => {
     <NavigationContainer
       ref={navigationRef}
       initialState={initialState}
+      //children={ NavigatorMapper(animation, tallBar.current, stackScreens) }
       children={ NavigatorMapper(animation, tallBar.current, stackScreens) }
     />
   );

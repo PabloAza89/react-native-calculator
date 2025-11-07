@@ -69,10 +69,11 @@ export const s = StyleSheet.create({
   },
   backgroundModal: {
     //backgroundColor: 'yellow', // DEV
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    //backgroundColor: 'rgba(0, 0, 0, 0.4)',
     display: 'flex',
     position: 'absolute',
-    zIndex: 1000000,
+    //zIndex: 1000000,
+    zIndex: 2000000,
     width: '100%',
     height: '100%',
   },
@@ -81,6 +82,8 @@ export const s = StyleSheet.create({
     display: 'flex',
     width: '100%',
     height: '100%',
+    //zIndex: 1000000,
+    zIndex: 2000001,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -88,7 +91,8 @@ export const s = StyleSheet.create({
     display: 'flex',
     position: 'relative',
     opacity: 1,
-    zIndex: 1000001,
+    //zIndex: 2000001,
+    //zIndex: 2000002,
     backgroundColor: 'white',
     padding: 10,
     borderRadius: 10

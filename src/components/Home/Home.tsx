@@ -12,10 +12,25 @@ import { portButtons, landButtons } from '../../utils/Buttons';
 import { Adder } from '../../utils/Adder';
 
 const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
-  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins, maxVerticalInset, maxHorizontalInset, update }: any): ReactElement => {
+  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins, maxVerticalInset, maxHorizontalInset, update, fadeAnim, fadeIn, fadeOut }: any): ReactElement => {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
+  // useEffect(() => {
+  //   updateShowModal(false)
+  //   // return () => {
+  //   //   updateShowModal(false)
+  //   // }
+  // },[])
   //console.log("XXXXXXXXXXXX INPUT", typeof input)
+
+  //const fadeAnim = useAnimatedValue(0);
+  //let fadeAnim: any
+
+  
+  // useEffect(() => {
+  //   fadeAnim = useAnimatedValue(0);
+  //   Animated.timing(fadeAnim, { toValue: 0, duration: 0, useNativeDriver: true }).start();
+  // }, [])
 
   console.log("XXXXXXXXXXXX height HOME", height)
   console.log("XXXXXXXXXXXX hingeBounds", hingeBounds)
@@ -62,14 +77,17 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
   const switchSide = () => state === 'tabletop' ? setAboutUp(!aboutUp) : setCalcLeft(!calcLeft)
   const nextScreen = () => state === 'tabletop' ? setShowCalc(true) : setShowKnowMore(!showKnowMore)
 
-  const fadeAnim = useAnimatedValue(0);
+  // const fadeAnim = useAnimatedValue(0); // ORIGINAL
+  // const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
+  // const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
 
-  const fadeIn = () => {} //Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
-  const fadeOut = () => {} //Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
+  // const fadeIn = () => {}
+  // const fadeOut = () => {}
+  
 
   const [ OPCQH, setOPCQH ] = useState(0) // onePercentContainerQueryHeight
 
-  const sharedProps = { width, height, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin, nextScreen, switchSide, navigation, aboutUp }
+  const sharedProps = { width, height, state, ins, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin, nextScreen, switchSide, navigation, aboutUp, fadeAnim, fadeIn, fadeOut }
 
   const AboutScreen = <About {...sharedProps} showModal={showModal} updateShowModal={updateShowModal} calcLeft={calcLeft} twoScreens />;
   const KnowMoreScreen = (currentHeight: any) => <KnowMore {...{...sharedProps, height: currentHeight}} twoScreens />
@@ -88,10 +106,6 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
     const iCS: string[] = iC.replace(/ /g,'').split("") // inputCurrentSplitted
 
-    // if (
-    //   kP === "=" && iCS.filter((e: string) => e === "(").length !== iCS.filter((e: string) => e === ")").length
-    // ) { setParErr(true); scrollEnd(); return } // STOP IF (((( AND )) AMOUNT ARE UNEQUAL
-
     if (kP === "B") { // Backspace
       if ([" x ", " / "," + "," - "].includes(iC.slice(-3))) input.current = iC.slice(0,-3) // if last input is an operator: "123 + "
       else if (iC.slice(-8) === "Infinity") input.current = iC.slice(0,-8) // if last input is Infinity: "Infinity" // TEST
@@ -100,8 +114,6 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
       update({})
       return
     } // EDIT PREVIOUS INPUT AND STOP
-
-    //if (iC.length === 0 && ["/", ".","+","-","X",")"].includes(kP)) return // STOP IF ATTEMPT ) FIRST
 
     if (
       (iC.length === 0 && ["/", ".","+","-","X",")"].includes(kP)) || // STOP IF ATTEMPT ) FIRST
@@ -135,10 +147,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     /// -----------> END STOPPERS <----------- ///
 
     /// -----------> BEGIN CALC <----------- ///
-
-    //if (value === "=") { Adder({ scrollEnd, input, setInput, setSecInput, setParErr }); return }
     if (kP === "=") { Adder({ scrollEnd, input, setInput, setSecInput, secInput, setParErr }); update({}); return }
-
     /// -----------> END CALC <----------- ///
 
     /// -----------> BEGIN INPUT UPDATE <----------- ///
@@ -266,10 +275,10 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   const ModalForegroundScreen =
     <Animated.View
-      style={[ s.ModalForegroundScreen, { backgroundColor: 'orange',opacity: 0/* fadeAnim */, pointerEvents: showModal ? 'auto' : 'none' } ]}
+      style={[ s.ModalForegroundScreen, { /* backgroundColor: 'orange', */opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none' } ]}
       children={
         <Pressable
-          style={[ s.ModalForegroundScreenPressable, { backgroundColor: 'yellow', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+          style={[ s.ModalForegroundScreenPressable, { /* backgroundColor: 'yellow', */ paddingTop: ins.top, paddingBottom: ins.bottom } ]}
           onPress={() => {console.log('CLICKED Home');updateShowModal(false)}}
         />
       }
@@ -308,9 +317,17 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     return () => currIndex.stopAnimation()
   }, [state])
 
+  // useEffect(() => {
+  //   return () => {
+  //     //updateShowModal(false)
+  //     Animated.timing(fadeAnim, { toValue: 0, duration: 0, useNativeDriver: true }).start();
+  //   }
+  // },[])
+
   return (
     <View style={s.background}>
       {/* <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'} /> */}
+      {/* { ModalForegroundScreen } */}
       {
         state === 'flat' ?
 
@@ -345,6 +362,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
               />
             }
 
+            {/* { ModalForegroundScreen } */}
             { ModalForegroundScreen }
             { !showCalc && (aboutUp ? AboutScreen : (KnowMoreScreen(hingeBounds.top))) }
 
@@ -366,6 +384,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
               />
             }
 
+            {/* { ModalForegroundScreen } */}
             { ModalForegroundScreen }
             { !showCalc && ( aboutUp ? KnowMoreScreen(height - hingeBounds.bottom) : AboutScreen ) }
 
@@ -376,10 +395,12 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
         <View style={s.bookContainer} /* BOOK */>
           <View style={[ s.eachSideBook, { width: hingeBounds.left - ins.left } ]} /* LEFT SIDE */ >
+            {/* { calcLeft && ModalForegroundScreen } */}
             { ModalForegroundScreen }
             { calcLeft ? PortCalc : ( showKnowMore ? KnowMoreScreen(height) : AboutScreen ) }
           </View>
           <View style={[ s.eachSideBook, { left: hingeBounds.right - hingeBounds.left, width: width - hingeBounds.right - ins.right } ]} /* RIGHT SIDE */ >
+            {/* { !calcLeft && ModalForegroundScreen } */}
             { ModalForegroundScreen }
             { calcLeft ? ( showKnowMore ? KnowMoreScreen(height) : AboutScreen ) : PortCalc }
           </View>

@@ -10,7 +10,7 @@ import CustomScrollView from '../CustomScrollView/CustomScrollView';
 import CustomButton from '../CustomButton/CustomButton';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft, maxVerticalInset, maxHorizontalInset }: any): ReactElement => {
+const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft, maxVerticalInset, maxHorizontalInset, fadeAnim, fadeIn, fadeOut }: any): ReactElement => {
 
   const { navigate } = navigation
 
@@ -18,14 +18,14 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
     (navigation.getState().routes.at(-1).name === 'About' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'About' })
   }, [state])
 
-  const fadeAnim = useAnimatedValue(0);
+  // const fadeAnim = useAnimatedValue(0);
+  // const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
+  // const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
 
-  const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
-  const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
+  // const fadeIn = () => {}
+  // const fadeOut = () => {}
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
-
-  //console.log("TEST ABOUT")
 
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
   const parsedMaxHorizontalInset = maxHorizontalInset * 2
@@ -34,10 +34,6 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
     state === 'book' && calcLeft ? width - hingeBounds.right - ins.right - parsedMaxHorizontalInset :
     state === 'book' && !calcLeft ? hingeBounds.left - ins.left - parsedMaxHorizontalInset :
     width - parsedMaxHorizontalInset
-
-  //console.log("horizontalInset XXXXXXXXXXXXXXXXXXXX ", maxHorizontalInset)
-  //console.log("parsedMaxHorizontalInset XXXXXXXXXXXXXXXXXXXX ", parsedMaxHorizontalInset)
-  //console.log("PARSED WIDTH XXXXXXXXXXXXXXXXXXXX ", parsedWidth)
 
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
@@ -56,11 +52,12 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   return (
     <View style={s.background}>
       <Animated.View
-        style={[ s.backgroundModal, { opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+        style={[ s.backgroundModal, { backgroundColor: twoScreens ? 'transparent' : 'rgba(0, 0, 0, 0.4)', opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
         children={
           <Pressable
-            style={[ s.backgroundModalButton,  { backgroundColor: 'yellow', /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
+            style={[ s.backgroundModalButton,  { /* backgroundColor: 'yellow', */ /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
             onPress={() => { console.log('CLICKED About'); updateShowModal(false) }}
+            //onPress={() => { if (!twoScreens) {console.log('CLICKED About'); updateShowModal(false)} }}
             children={
               <View style={s.modal}>
                 <Text
