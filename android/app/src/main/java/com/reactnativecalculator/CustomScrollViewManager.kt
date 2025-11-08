@@ -5,19 +5,21 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.views.scroll.ReactScrollView
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.ViewGroupManager
+import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.ReadableArray
 
 import android.util.Log
 import android.view.View
-import java.lang.reflect.Field
-import java.lang.reflect.Method
-import android.graphics.drawable.Drawable
-import com.facebook.react.bridge.ReadableMap
-import androidx.core.content.ContextCompat
 import android.os.Build
 import android.graphics.drawable.LayerDrawable
 import android.util.TypedValue
 import android.content.res.Resources
-import com.facebook.react.bridge.ReadableArray
+import android.graphics.drawable.Drawable
+
+import androidx.core.content.ContextCompat
+
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 
 class CustomScrollViewManager(reactContext: ReactApplicationContext) : ViewGroupManager<ReactScrollView>() {
   override fun getName(): String = "RCTScrollView"
@@ -48,7 +50,7 @@ class CustomScrollViewManager(reactContext: ReactApplicationContext) : ViewGroup
   fun setDrawableScrollbar(view: ReactScrollView, map: ReadableMap) {
     val layerDrawable = ContextCompat.getDrawable(view.context, R.drawable.thumb) as LayerDrawable
     layerDrawable.setLayerInset(0, dpToPx(map.getDouble("left")), dpToPx(map.getDouble("top")), dpToPx(map.getDouble("right")), dpToPx(map.getDouble("bottom")))
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { view.setVerticalScrollbarThumbDrawable(layerDrawable) } // 10 = setVerticalScrollbarThumbDrawable OK
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { view.setVerticalScrollbarThumbDrawable(layerDrawable) } // 10 = setVerticalScrollbarThumbDrawable
     else { setReflectionScrollbarThumbDrawable(view, layerDrawable) } // reflection
     view.scrollBy(0, 1) // RE-RENDER HELPER
     view.scrollBy(0, -1) // RE-RENDER HELPER
