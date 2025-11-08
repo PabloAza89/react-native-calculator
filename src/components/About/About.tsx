@@ -1,8 +1,8 @@
 import { ReactElement, useEffect } from 'react';
-import { View, Linking, StatusBar, Animated, useAnimatedValue, Pressable, ScrollView, AppState } from 'react-native';
+import { View, Linking, Animated, Pressable } from 'react-native';
 import { Text } from '../../utils/Text';
 import { s } from './AboutCSS';
-import { Ionicons, AntDesign, MaterialCommunityIcons, createIconSetFromFontello } from '@expo/vector-icons';
+import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import { AboutI } from '../../interfaces/interfaces';
@@ -18,13 +18,6 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
     (navigation.getState().routes.at(-1).name === 'About' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'About' })
   }, [state])
 
-  // const fadeAnim = useAnimatedValue(0);
-  // const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
-  // const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
-
-  // const fadeIn = () => {}
-  // const fadeOut = () => {}
-
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
 
   const parsedInsTop = ins.top === 0 ? 1 : ins.top // PREVENT NaN WHEN RENDER (on native side)
@@ -38,6 +31,8 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   const parsedHeight = height === 0 ? 1 : height // PREVENT NaN WHEN RENDER (on native side)
   const topByHeight = ins.top / parsedHeight
 
+  const linearGradientColors = [ 'rgb(18, 56, 117)', 'yellow' ]
+
   useEffect(() => { return () => updateShowModal(false) }, []); // ON LEAVE COMPONENT
 
   // ****** ↓↓↓ BACKGROUND SCHEME ↓↓↓ ******
@@ -49,12 +44,11 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
   return (
     <View style={s.background}>
       <Animated.View
-        style={[ s.modalForegroundAbout/* s.backgroundModal */, { backgroundColor: twoScreens ? 'transparent' : 'rgba(0, 0, 0, 0.4)', opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
+        style={[ s.modalForegroundAbout, { backgroundColor: twoScreens ? 'transparent' : 'rgba(0, 0, 0, 0.4)', opacity: fadeAnim, pointerEvents: showModal ? 'auto' : 'none', paddingTop: ins.top, paddingBottom: ins.bottom } ]}
         children={
           <Pressable
-            style={[ s.modalForegroundAboutPressable/* s.backgroundModalButton */,  { /* backgroundColor: 'yellow', */ /* marginTop: ins.top,  */ /* marginBottom: ins.bottom */ } ]}
-            onPress={() => { console.log('CLICKED About'); updateShowModal(false) }}
-            //onPress={() => { if (!twoScreens) {console.log('CLICKED About'); updateShowModal(false)} }}
+            style={[ s.modalForegroundAboutPressable ]}
+            onPress={() => updateShowModal(false)}
             children={
               <View style={s.modal}>
                 <Text
@@ -88,15 +82,15 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
       />
 
       <LinearGradient // STATUS BAR
-        colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
-        style={[ { height: ins.top, zIndex: 3, position: 'absolute', width: '100%', top: ins.top *0 , opacity: 0.7 } ]}
+        colors={linearGradientColors}
+        style={[ s.statusBarGradient, { height: ins.top } ]}
         start={[ 0, state === 'tabletop' ?  hingeBounds.top / parsedInsTop : height / parsedInsTop ]}
         end={[ 1, 0 ]}
       />
 
       <LinearGradient  // BACKGROUND
-        colors={[ 'rgba(18, 56, 117, 1)', 'yellow' ]}
-        style={[ {  zIndex: 1, height: '100%', position: 'absolute', width: '100%', top: ins.top *1 , opacity: 0.7 } ]}
+        colors={linearGradientColors}
+        style={[ s.bodyGradient, { top: ins.top } ]}
         start={[ 0, 1 - topByHeight ]}
         end={[ 1, topByHeight * -1 ]}
       />
@@ -121,7 +115,7 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
           }}
         >
           <Text
-            style={[s.title, { /* backgroundColor: 'green' */ }]}
+            style={[ s.title ]}
             children={'This App is developed by\nJuan Pablo Azambuyo'}
           />
           <View style={s.imageWrapper}>
@@ -137,7 +131,6 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               color={'rgba(0, 0, 0, .7)'}
               onPress={() => updateShowModal(true)}
               style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: (((parsedWidth / 2) - ((vmin * 30) / 2)) / -2) - 20 }}
-              //style={{ position: 'absolute', top: ((vmin * 30) / 2) - 20, right: 0 }}
             />
           </View>
 
@@ -170,7 +163,6 @@ const About = ({ navigation, vmin, width, showModal, updateShowModal, state, two
               size={30}
               color={'rgba(0, 0, 0, .7)'}
               onPress={() => nextScreen()}
-              //iconStyle={s.buttonAndIconLower}
               children={ <Text style={[ s.textInButton, s.oneLine ]} children={ state === 'tabletop' ? 'HOME' : 'HOW DOES IT WORK ?' } /> }
             /> :
             <CustomButton

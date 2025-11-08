@@ -181,6 +181,19 @@ export const s = StyleSheet.create({
   },
   buttonAndIconLower: {
     transform: [{ rotate: '180deg' }],
-    //marginTop: 40
+  },
+  statusBarGradient: {
+    zIndex: 3,
+    position: 'absolute',
+    width: '100%',
+    top: 0,
+    opacity: 0.7
+  },
+  bodyGradient: {
+    zIndex: 1,
+    height: '100%',
+    position: 'absolute',
+    width: '100%',
+    opacity: 0.7
   }
 });
