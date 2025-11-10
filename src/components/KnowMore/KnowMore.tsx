@@ -9,25 +9,25 @@ import { Entypo, FontAwesome5, Ionicons, MaterialIcons, MaterialCommunityIcons, 
 import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from '../../utils/Text';
 import { scrollBarSize, iconColor } from '../../utils/constants';
-import { counterI, KnowMoreI, goUpI } from '../../interfaces/interfaces';
+import { counterI, KnowMoreI, goUpI, ComponentI } from '../../interfaces/interfaces';
 import CustomScrollView from '../CustomScrollView/CustomScrollView';
 import CustomButton from '../CustomButton/CustomButton';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 //function KnowMore({ navigation: { navigate }, opw, port }: KnowMoreI): ReactElement {
-const KnowMore = ({ navigation, /* opw, */ height, state, switchSide, twoScreens, nextScreen, aboutUp, hingeBounds, ins, maxVerticalInset }: any): ReactElement => {
+const KnowMore = ({ navigation, /* opw, */ height, ins, state, twoScreens, aboutUp, switchSide, nextScreen,   }: KnowMoreI): ReactElement => {
 
   //const { height: screenHeight } = Dimensions.get('window');
   //console.log("screenHeight", screenHeight)
-  console.log("XXXXXXXXXXXX height KNOWMORE", height)
-  console.log("XXXXXXXXXXXX ins", ins)
+  // console.log("XXXXXXXXXXXX height KNOWMORE", height)
+  // console.log("XXXXXXXXXXXX ins", ins)
 
 
   const { navigate } = navigation;
 
   useEffect(() => {
-    (navigation.getState().routes.at(-1).name === 'KnowMore' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'KnowMore' })
+    (navigation.getState().routes.at(-1)?.name === 'KnowMore' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'KnowMore' })
   }, [state])
 
   const goUp = () => UIManager.dispatchViewManagerCommand(viewId, 0)

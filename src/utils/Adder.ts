@@ -1,7 +1,7 @@
 import { AdderI, operationI } from '../interfaces/interfaces';
 
 //export const Adder = ({ scrollEnd, input, setInput, setSecInput, setParErr }: AdderI) => {
-export const Adder = ({ scrollEnd, input, setInput, setSecInput, secInput, setParErr }: any) => {
+export const Adder = ({ scrollEnd, input, /* setInput, setSecInput, */ secInput, setParErr }: any) => {
 
   let init: string[] = input.current.replace(/ /g,'').split("") // OK
 

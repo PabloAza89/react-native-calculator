@@ -6,13 +6,13 @@ import About from '../About/About';
 import OwnButton from '../OwnButton/OwnButton';
 import KnowMore from '../KnowMore/KnowMore';
 import { createIconSetFromFontello, SimpleLineIcons } from '@expo/vector-icons';
-import { HomeI, counterI, goUpI } from '../../interfaces/interfaces';
+import { HomeI, counterI, goUpI, ComponentI } from '../../interfaces/interfaces';
 import { Text } from '../../utils/Text';
 import { portButtons, landButtons } from '../../utils/Buttons';
 import { Adder } from '../../utils/Adder';
 
-const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
-  width, height, route, /* opw, */ hingeBounds, showModal, updateShowModal, ins, maxVerticalInset, maxHorizontalInset, update, fadeAnim, fadeIn, fadeOut }: any): ReactElement => {
+const Home = ({ navigation, input, secInput, width, height, ins, state, hingeBounds, 
+  route, maxVerticalInset, maxHorizontalInset, vmin, showModal, fadeAnim, updateShowModal, update, fadeIn, fadeOut }: HomeI): ReactElement => {
 //function Home({ navigation: { navigate }, vmin, port, input, secInput, setInput, setSecInput, state }: HomeI): ReactElement {
 
   // useEffect(() => {
@@ -28,23 +28,26 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
 
   
   // useEffect(() => {
+  //   console.log("ROUTE", route)
+  // }, [route])
+  // useEffect(() => {
   //   fadeAnim = useAnimatedValue(0);
   //   Animated.timing(fadeAnim, { toValue: 0, duration: 0, useNativeDriver: true }).start();
   // }, [])
 
-  console.log("XXXXXXXXXXXX height HOME", height)
-  console.log("XXXXXXXXXXXX hingeBounds", hingeBounds)
+  //console.log("XXXXXXXXXXXX height HOME", height)
+  //console.log("XXXXXXXXXXXX hingeBounds", hingeBounds)
   //console.log("XXXXXXXXXXXX ins", ins)
 
   const { navigate } = navigation
 
   const [ showKnowMore, setShowKnowMore ] = useState(false)
 
-  useEffect(() => {
-    const lastRoute = route.params?.lastRoute
-    lastRoute === 'KnowMore' && setShowKnowMore(true)
-    lastRoute === 'About' && setShowKnowMore(false)
-  }, [route])
+  // useEffect(() => {
+  //   const lastRoute = route.params?.lastRoute
+  //   lastRoute === 'KnowMore' && setShowKnowMore(true)
+  //   lastRoute === 'About' && setShowKnowMore(false)
+  // }, [route])
 
   const [ parErr, setParErr ] = useState(false);
 
@@ -147,7 +150,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
     /// -----------> END STOPPERS <----------- ///
 
     /// -----------> BEGIN CALC <----------- ///
-    if (kP === "=") { Adder({ scrollEnd, input, setInput, setSecInput, secInput, setParErr }); update({}); return }
+    if (kP === "=") { Adder({ scrollEnd, input, /* setInput, setSecInput, */ secInput, setParErr }); update({}); return }
     /// -----------> END CALC <----------- ///
 
     /// -----------> BEGIN INPUT UPDATE <----------- ///
@@ -361,7 +364,7 @@ const Home = ({ navigation, input, secInput, setSecInput, setInput, vmin, state,
                     />
                     <View
                       style={[ s.questionContainer, { width: '100%', height: 42, bottom: -55 } ]}
-                      children={ state !== 'book' && ButtonAbout }
+                      children={ /* state !== 'book' && */ ButtonAbout }
                     />
                   </View>
                 }

@@ -89,6 +89,7 @@ const App = (): ReactElement => {
       let array = navigationRef.getState().routes // INSIDE ANY COMPONENT: navigation.getState().routes
       saveData("savedRoute", array[array.length - 1].name) // SAVE LAST ROUTE ON APP BLUR
       updateShowModal(false)
+      console.log("savedRoute", array[array.length - 1].name)
     })
     return () => blur.remove()
   }, []);
@@ -108,7 +109,7 @@ const App = (): ReactElement => {
   const [ showModal, setShowModal ] = useState(false);
   const updateShowModal = (bool: boolean) => setShowModal(bool)
 
-  const fadeAnim = useAnimatedValue(0); // ORIGINAL
+  const fadeAnim: Animated.Value = useAnimatedValue(0); // ORIGINAL
   const fadeIn = () => Animated.timing(fadeAnim, { toValue: 1, duration: 1000, useNativeDriver: true }).start();
   const fadeOut = () => Animated.timing(fadeAnim, { toValue: 0, duration: 1000, useNativeDriver: true }).start();
 
@@ -129,8 +130,7 @@ const App = (): ReactElement => {
         const Home = require('./src/components/Home/Home').default
         return (
           <Home
-            {...nav} {...sharedProps} input={input} setInput={input}
-            secInput={secInput} setSecInput={secInput}
+            {...nav} {...sharedProps} input={input} secInput={secInput}
             showModal={showModal} updateShowModal={updateShowModal}
             update={update}
           />
@@ -189,6 +189,8 @@ const App = (): ReactElement => {
 
     typeof resInput === "string" && (input.current = resInput)
     typeof resSecInput === "string" && (secInput.current = resSecInput)
+
+    console.log("RESTORED ROUTE: ", resRoute)
 
     try {
       await Font.loadAsync({

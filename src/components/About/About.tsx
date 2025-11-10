@@ -5,17 +5,17 @@ import { s } from './AboutCSS';
 import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import FastImage from 'react-native-fast-image';
-import { AboutI } from '../../interfaces/interfaces';
+import { AboutI, ComponentI } from '../../interfaces/interfaces';
 import CustomScrollView from '../CustomScrollView/CustomScrollView';
 import CustomButton from '../CustomButton/CustomButton';
 
 //function About({ navigation: { navigate }, vmin }: AboutI): ReactElement {
-const About = ({ navigation, vmin, width, showModal, updateShowModal, state, twoScreens, switchSide, nextScreen, aboutUp, ins, height, hingeBounds, calcLeft, maxVerticalInset, maxHorizontalInset, fadeAnim, fadeIn, fadeOut }: any): ReactElement => {
+const About = ({ navigation, width, height, ins, state, hingeBounds, maxVerticalInset, maxHorizontalInset, vmin, showModal, twoScreens, aboutUp, calcLeft, fadeAnim, updateShowModal,  switchSide, nextScreen, fadeIn, fadeOut }: AboutI): ReactElement => {
 
   const { navigate } = navigation
 
   useEffect(() => {
-    (navigation.getState().routes.at(-1).name === 'About' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'About' })
+    (navigation.getState().routes.at(-1)?.name === 'About' && (state === 'tabletop' || state === 'book')) && navigate('Home', { lastRoute: 'About' })
   }, [state])
 
   useEffect(() => showModal ? fadeIn() : fadeOut(), [showModal])
