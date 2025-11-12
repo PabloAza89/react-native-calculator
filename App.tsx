@@ -55,6 +55,8 @@ const App = (): ReactElement => {
     "tallBar": "false" // tallNavigationBar
   });
 
+  console.log("INSETS", layout.insets)
+
   const navigationRef = useNavigationContainerRef();
 
   const [ animation, setAnimation ] = useState<StackAnimationTypes>('none'); // NO INITIAL SCREEN ANIMATION
@@ -181,6 +183,7 @@ const App = (): ReactElement => {
   const runOnceAvailable = useRef(true)
 
   const runOnce = async () => {
+    console.log("EXEC RUN ONCE")
     const resInput = await readData("savedInput") // RESPONSE INPUT
     const resSecInput = await readData("savedSecInput") // RESPONSE INPUT
     const resDate = await readData("savedDate") // RESPONSE DATE
@@ -217,19 +220,26 @@ const App = (): ReactElement => {
       setTimeout(() => { // ONLY FIRST TIME & WHEN DEVICE WINDOW DIMENSIONS CHANGE
         setAnimation('slide_from_right') // SLIDE SCREEN ANIMATION
         BootSplash.hide()
+        console.log("runOnceAvailable.current", runOnceAvailable.current)
         runOnceAvailable.current = false
       }, 200) // AVOID ICON BLINKING
     })
   }
 
-  useLayoutEffect(() => {
+  //useLayoutEffect(() => { // THIS
+  useEffect(() => { // THIS
+    console.log("EXEC USE EFFECT")
     const nativeEvent = new NativeEventEmitter(MainActivity);
     let LayoutInfoListener = nativeEvent.addListener('LayoutInfo', e => {
+      console.log("EXEC LayoutInfo EVENT LISTENER")
       setLayout(e)
       tallBar.current = e.tallBar
       if (runOnceAvailable.current) runOnce()
     });
-    return () => LayoutInfoListener.remove();
+    return () => {
+      console.log("REMOVED LayoutInfo EVENT LISTENER")
+      LayoutInfoListener.remove();
+    }
   }, []);
 
   return (
