@@ -49,93 +49,68 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 
 @Suppress("DEPRECATION")
-class MainActivity : ReactActivity(), ReactInstanceEventListener {
-  lateinit var currentOrientation: String
-  var canUpdate: Boolean = true
+class MainActivity : ReactActivity() {
+  
+  var canUpdate: Boolean = true // 1st FLAG (MANUAL or AUTO UPDATE)
   var sendUpdate: Boolean = false
   var dotsPerInch: Double by Delegates.notNull<Double>()
-  var currentWindow: MutableMap<String, Int> = mutableMapOf()
-  var currentHingeBounds: MutableMap<String, Int> = mutableMapOf()
-  lateinit var currentState: String;
-  lateinit var currentInsets: Rect
   var currentMaxHorizontalInset: Int by Delegates.notNull<Int>()
   var currentMaxVerticalInset: Int by Delegates.notNull<Int>()
   lateinit var rootView: View
-  //lateinit var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener
+  //private val lock = Any()
+  lateinit var currentOrientation: String // UI var
+  lateinit var currentState: String // UI var
+  lateinit var currentInsets: Rect // UI var
+  var currentWindow: MutableMap<String, Int> = mutableMapOf() // UI var
+  var currentHingeBounds: MutableMap<String, Int> = mutableMapOf() // UI var
+
+
 
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.Start); // Initialize SplashScreen
     super.onCreate(null); // super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
     WindowCompat.setDecorFitsSystemWindows(window, false)
-    dotsPerInch = this@MainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
+    val mainActivity = this@MainActivity
+    dotsPerInch = mainActivity.resources.displayMetrics.density.toDouble() // Float --> Double
     rootView = findViewById<View>(android.R.id.content).rootView
 
-    // globalLayoutListener = object: ViewTreeObserver.OnGlobalLayoutListener {
-    //   override fun onGlobalLayout() {
-    //     //if (canUpdate) updateUI(null) // manual
-    //     updateUI(null) // manual
-    //   }
-    // }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    reactInstanceManager.addReactInstanceEventListener(this)
-  }
-
-  override fun onPause() {
-    super.onPause()
-    reactInstanceManager.removeReactInstanceEventListener(this)
-  }
-
-  override fun onReactContextInitialized(context: ReactContext) {
-    class ListenerCallback : Consumer<WindowLayoutInfo> {
-      override fun accept(newLayoutInfo: WindowLayoutInfo) {
-        //if (canUpdate) updateUI(newLayoutInfo) // auto info
-        updateUI(newLayoutInfo)
+    lifecycleScope.launch(Dispatchers.Main) {
+      lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+          WindowInfoTracker.getOrCreate(mainActivity)
+              .windowLayoutInfo(mainActivity)
+              .collect { newLayoutInfo ->
+                //synchronized(AppLock.lock) {
+                    Log.d("LOG", "AppLock.canUpdate auto " + canUpdate)
+                    //if (canUpdate) updateUI(newLayoutInfo)
+                    if (canUpdate) {canUpdate = false;updateUI(newLayoutInfo)} // BLOCK 1st FLAG ASAP
+                    
+                //}
+              }
       }
-    }
-
-    val listenerCallback = ListenerCallback()
-
-    val windowInfoTracker = WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this@MainActivity))
-
-    val lifecycleEventListener = object: LifecycleEventListener {
-      override fun onHostResume() {
-        // globalLayoutListener = object: ViewTreeObserver.OnGlobalLayoutListener {
-        //   override fun onGlobalLayout() {
-        //     //if (canUpdate) updateUI(null) // manual
-        //     updateUI(null) // manual
-        //   }
-        // }
-        windowInfoTracker.addWindowLayoutInfoListener(
-          this@MainActivity,
-          Executors.newSingleThreadExecutor(),
-          listenerCallback
-        )
-        //rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
-      }
-
-      override fun onHostPause() {
-        windowInfoTracker.removeWindowLayoutInfoListener(listenerCallback)
-        //rootView.viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutListener)
-      }
-      override fun onHostDestroy() { }
-    }
-    context.addLifecycleEventListener(lifecycleEventListener)
+   }
   }
+
+  // override fun onResume() {
+  //   super.onResume()
+  //   reactInstanceManager.addReactInstanceEventListener(this)
+  // }
+
+  // override fun onPause() {
+  //   super.onPause()
+  //   reactInstanceManager.removeReactInstanceEventListener(this)
+  // }
 
   fun updateUI(incomingWindowLayoutInfo: WindowLayoutInfo?) { //manual: Boolean
     Log.d("LOG", "incomingWindowLayoutInfo: " + incomingWindowLayoutInfo)
-    canUpdate = false // FLAG FOR updateUI()
+    //canUpdate = false // FLAG FOR updateUI()
 
-    //val mainActivity = this@MainActivity
+    val mainActivity = this@MainActivity
 
     // MULTI-WINDOW // 24
-    val multiWindow = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) this@MainActivity.isInMultiWindowMode else false
+    val multiWindow = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) mainActivity.isInMultiWindowMode else false
 
     // BEGIN ORIENTATION //
-    val newOrientation = this@MainActivity.resources.configuration.orientation
+    val newOrientation = mainActivity.resources.configuration.orientation
     if (newOrientation == Configuration.ORIENTATION_PORTRAIT) { currentOrientation = "portrait" }
     else { currentOrientation = "landscape" }
     // END ORIENTATION //
@@ -144,14 +119,13 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
     var job: Job? = null
 
     fun collectAndCancel(windowLayoutInfo: WindowLayoutInfo, doJob: Boolean) {
-      Log.d("LOG", "LAUNCHED COLLECT-AND-CANCEL")
       Log.d("LOG", "DATA: " + windowLayoutInfo + ", DO JOB VALUE: " + doJob)
-      //if (doJob) job.cancel();
+      if (doJob) job?.cancel(); // CANCEL CURRENT, IF ANY, JOB
 
       val mainMap = Arguments.createMap()
 
       // BEGIN WINDOW //
-      val windowBounds = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this@MainActivity).bounds
+      val windowBounds = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(mainActivity).bounds
       val newWindow = mutableMapOf("width" to windowBounds.width(), "height" to windowBounds.height())
       if (currentWindow.isEmpty() || !currentWindow.equals(newWindow)) { currentWindow = newWindow; sendUpdate = true }
       // END WINDOW //
@@ -269,44 +243,17 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
         sendUpdate = false // RESET UPDATE FLAG
       }
       canUpdate = true // FLAG FOR updateUI()
-    }
+    } // END OF updateUI()
 
     if (incomingWindowLayoutInfo != null) collectAndCancel(incomingWindowLayoutInfo, false) // AUTO FOLDING FEATURE INFO
     else {
     Log.d("LOG", "LAUNCHED MANUAL JOB")
-      //job.cancel();
-      job?.cancel();
-      job = lifecycleScope.launch(Dispatchers.Main) { // MANUAL FOLDING FEATURE INFO
-        WindowInfoTracker.getOrCreate(this@MainActivity)
-          .windowLayoutInfo(this@MainActivity)
+      job?.cancel(); // CANCEL PREVIOUS, IF ANY, JOB
+      job = lifecycleScope.launch { // MANUAL FOLDING FEATURE INFO
+        WindowInfoTracker.getOrCreate(mainActivity)
+          .windowLayoutInfo(mainActivity)
           .collect { collectAndCancel(it, true) }
       };
-      // job = lifecycleScope.launch { // MANUAL FOLDING FEATURE INFO
-      //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-      //     WindowInfoTracker.getOrCreate(this@MainActivity)
-      //       .windowLayoutInfo(this@MainActivity)
-      //       .collect { collectAndCancel(it, true) }
-      //   }
-      // };
-      // job = lifecycleScope.launch(Dispatchers.Main.immediate) { // MANUAL FOLDING FEATURE INFO
-      //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-      //     WindowInfoTracker.getOrCreate(this@MainActivity)
-      //       .windowLayoutInfo(this@MainActivity)
-      //       .collect { data -> collectAndCancel(data, true) }
-      //       //.collect { data -> Log.d("LOG", "DATA: " + data) }
-      //       //.collect { data -> collectAndCancel(data, true) }
-      //       //.collect { data -> Log.d("LOG", "DATA: " + data) }
-      //       //.collect { collectAndCancel(it, true) }
-      //   }
-      // };
-      //job.cancel(); // TEST
-      // job = lifecycleScope.launch(Dispatchers.Main.immediate) { // MANUAL FOLDING FEATURE INFO
-      //   lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-      //     WindowInfoTracker.getOrCreate(this@MainActivity)
-      //       .windowLayoutInfo(this@MainActivity)
-      //       .collect { collectAndCancel(it, true) }
-      //   }
-      // };
     }
   }
 
@@ -314,7 +261,12 @@ class MainActivity : ReactActivity(), ReactInstanceEventListener {
     super.onConfigurationChanged(newConfig)
     
     Log.d("LOG", "CONFIGURATION HAS CHANGED")
-    updateUI(null) // manual
+    //updateUI(null) // manual
+    //synchronized(AppLock.lock) {
+      //if (canUpdate) {canUpdate = false;updateUI(null)}
+      Log.d("LOG", "AppLock.canUpdate oCC " + canUpdate)
+      if (canUpdate) {canUpdate = false;updateUI(null)} // BLOCK 1st FLAG ASAP
+    //}
  
 }
 

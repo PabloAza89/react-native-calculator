@@ -55,7 +55,8 @@ const App = (): ReactElement => {
     "tallBar": "false" // tallNavigationBar
   });
 
-  console.log("INSETS", layout.insets)
+  console.log("INSETS ", layout.insets)
+  console.log("STATE ", layout.state)
 
   const navigationRef = useNavigationContainerRef();
 
